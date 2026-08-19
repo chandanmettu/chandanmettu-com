@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" id="chandan-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mettu Saichandan — Full Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Hard reset scoped to our root — blocks WordPress theme bleed */
+html#chandan-root, html#chandan-root body { margin: 0 !important; padding: 0 !important; }
+#chandan-root *, #chandan-root *::before, #chandan-root *::after {
+  box-sizing: border-box !important;
+}
+
+/* Dark theme variables */
+#chandan-root {
+  --bg:#0a0a0a; --bg2:#111111; --bg3:#181818; --bg4:#202020;
+  --nav-bg:rgba(10,10,10,0.94);
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
+  --text:#f0ede8; --text2:#9a9690; --text3:#4a4845;
+  --gold:#c8a96e; --gold2:#a07840; --goldbg:rgba(200,169,110,0.08); --goldborder:rgba(200,169,110,0.22);
+  --green:#4ade80; --greenbg:rgba(74,222,128,0.08); --greenb:rgba(74,222,128,0.22);
+  --blue:#60a5fa; --bluebg:rgba(96,165,250,0.08); --blueb:rgba(96,165,250,0.22);
+  --red:#f87171; --redbg:rgba(248,113,113,0.08); --redb:rgba(248,113,113,0.22);
+  --amber:#fbbf24; --amberbg:rgba(251,191,36,0.08); --amberb:rgba(251,191,36,0.22);
+  --tog-bg:#1c1c1c; --tog-ic:#c8a96e;
+  font-family:'Syne',sans-serif !important;
+  font-size:13px !important;
+  line-height:1.6 !important;
+  background:var(--bg) !important;
+  color:var(--text) !important;
+  transition:background .3s,color .3s !important;
+  /* full bleed regardless of WP container */
+  display:block !important;
+  width:100vw !important;
+  max-width:100vw !important;
+  position:relative !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  overflow-x:hidden !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Light theme */
+#chandan-root.light {
+  --bg:#faf9f7; --bg2:#f3f1ee; --bg3:#eceae6; --bg4:#e4e1dc;
+  --nav-bg:rgba(250,249,247,0.96);
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1a1917; --text2:#6b6762; --text3:#a8a4a0;
+  --gold:#8b6523; --gold2:#a07840; --goldbg:rgba(139,101,35,0.07); --goldborder:rgba(139,101,35,0.25);
+  --green:#166534; --greenbg:rgba(22,101,52,0.06); --greenb:rgba(22,101,52,0.2);
+  --blue:#1d4ed8; --bluebg:rgba(29,78,216,0.06); --blueb:rgba(29,78,216,0.2);
+  --red:#991b1b; --redbg:rgba(153,27,27,0.06); --redb:rgba(153,27,27,0.2);
+  --amber:#92400e; --amberbg:rgba(146,64,14,0.06); --amberb:rgba(146,64,14,0.2);
+  --tog-bg:#e8e5e0; --tog-ic:#8b6523;
+}
+
+/* grain overlay */
+#chandan-root::before {
+  content:'' !important; position:fixed !important; inset:0 !important;
+  pointer-events:none !important; z-index:999 !important; opacity:.018 !important;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") !important;
+}
+
+/* inner width cap */
+#chandan-root .cp-wrap {
+  max-width:1000px !important; margin:0 auto !important;
+  padding:0 32px 80px !important;
+}
+
+/* toggle button */
+#chandan-root .theme-toggle {
+  position:fixed !important; bottom:28px !important; right:28px !important;
+  width:44px !important; height:44px !important; border-radius:50% !important;
+  background:var(--tog-bg) !important; border:.5px solid var(--border2) !important;
+  cursor:pointer !important; display:flex !important; align-items:center !important;
+  justify-content:center !important; z-index:1000 !important;
+  transition:background .3s !important; box-shadow:0 2px 14px rgba(0,0,0,.25) !important;
+  outline:none !important;
+}
+#chandan-root .theme-toggle svg {
+  width:18px !important; height:18px !important; stroke:var(--tog-ic) !important;
+  fill:none !important; stroke-width:1.6 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
+}
+#chandan-root .icon-sun { display:none !important; }
+#chandan-root .icon-moon { display:block !important; }
+#chandan-root.light .icon-sun { display:block !important; }
+#chandan-root.light .icon-moon { display:none !important; }
+
+/* NAV */
+#chandan-root nav {
+  padding:20px 32px !important; display:flex !important; align-items:center !important;
+  justify-content:space-between !important; border-bottom:.5px solid var(--border) !important;
+  position:sticky !important; top:0 !important; background:var(--nav-bg) !important;
+  backdrop-filter:blur(16px) !important; z-index:100 !important;
+  transition:background .3s !important;
+}
+#chandan-root .nav-inner { display:flex !important; align-items:center !important; justify-content:space-between !important; max-width:1000px !important; margin:0 auto !important; width:100% !important; }
+#chandan-root .nav-logo { font-family:'Instrument Serif',serif !important; font-size:18px !important; color:var(--text) !important; }
+#chandan-root .nav-logo span { color:var(--gold) !important; font-style:italic !important; }
+#chandan-root .nav-links { display:flex !important; gap:24px !important; }
+#chandan-root .nav-links a {
+  font-family:'DM Mono',monospace !important; font-size:10px !important; letter-spacing:.15em !important;
+  text-transform:uppercase !important; color:var(--text3) !important; text-decoration:none !important; transition:color .2s !important;
+}
+#chandan-root .nav-links a:hover { color:var(--gold) !important; }
+
+/* HERO */
+#chandan-root .hero {
+  padding:80px 0 60px !important; display:grid !important;
+  grid-template-columns:1fr auto !important; gap:60px !important;
+  align-items:end !important; border-bottom:.5px solid var(--border) !important;
+}
+#chandan-root .hero-eyebrow {
+  font-family:'DM Mono',monospace !important; font-size:10px !important;
+  letter-spacing:.2em !important; text-transform:uppercase !important;
+  color:var(--gold) !important; margin-bottom:20px !important;
+  display:flex !important; align-items:center !important; gap:12px !important;
+}
+#chandan-root .hero-eyebrow::before {
+  content:'' !important; width:32px !important; height:.5px !important;
+  background:var(--gold) !important; display:block !important; flex-shrink:0 !important;
+}
+#chandan-root .hero-name {
+  font-family:'Instrument Serif',serif !important;
+  font-size:clamp(46px,7vw,86px) !important; line-height:.92 !important;
+  letter-spacing:-.02em !important; margin-bottom:28px !important; color:var(--text) !important;
+}
+#chandan-root .hero-name em { font-style:italic !important; color:var(--gold) !important; }
+#chandan-root .hero-bio { font-size:15px !important; color:var(--text2) !important; max-width:480px !important; line-height:1.8 !important; margin-bottom:32px !important; }
+#chandan-root .hero-tags { display:flex !important; flex-wrap:wrap !important; gap:8px !important; }
+#chandan-root .cp-tag {
+  font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.12em !important;
+  text-transform:uppercase !important; padding:4px 10px !important; border:.5px solid var(--border2) !important;
+  border-radius:3px !important; color:var(--text2) !important; background:transparent !important;
+  display:inline-block !important;
+}
+#chandan-root .cp-tag.gold { border-color:var(--goldborder) !important; color:var(--gold) !important; background:var(--goldbg) !important; }
+#chandan-root .hero-stats { display:flex !important; flex-direction:column !important; gap:20px !important; text-align:right !important; min-width:140px !important; }
+#chandan-root .hstat-num { font-family:'Instrument Serif',serif !important; font-size:36px !important; line-height:1 !important; color:var(--gold) !important; }
+#chandan-root .hstat-label { font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.12em !important; text-transform:uppercase !important; color:var(--text3) !important; margin-top:3px !important; }
+
+/* STAT STRIP */
+#chandan-root .stat-strip { display:grid !important; grid-template-columns:repeat(5,1fr) !important; border-bottom:.5px solid var(--border) !important; }
+#chandan-root .stat-cell { padding:24px 20px !important; border-right:.5px solid var(--border) !important; }
+#chandan-root .stat-cell:last-child { border-right:none !important; }
+#chandan-root .sc-num { font-family:'Instrument Serif',serif !important; font-size:26px !important; color:var(--text) !important; line-height:1 !important; margin-bottom:6px !important; }
+#chandan-root .sc-num.gold { color:var(--gold) !important; }
+#chandan-root .sc-label { font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.1em !important; text-transform:uppercase !important; color:var(--text3) !important; }
+
+/* SECTION HEADER */
+#chandan-root .section-header { padding:48px 0 24px !important; display:flex !important; align-items:center !important; gap:20px !important; }
+#chandan-root .sh-label { font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.2em !important; text-transform:uppercase !important; color:var(--text3) !important; white-space:nowrap !important; }
+#chandan-root .sh-line { flex:1 !important; height:.5px !important; background:var(--border) !important; }
+
+/* BADGES */
+#chandan-root .cp-badge {
+  display:inline-block !important; font-family:'DM Mono',monospace !important; font-size:9px !important;
+  letter-spacing:.1em !important; padding:3px 8px !important; border-radius:2px !important; font-weight:500 !important;
+}
+#chandan-root .b-gold { background:var(--goldbg) !important; color:var(--gold) !important; border:.5px solid var(--goldborder) !important; }
+#chandan-root .b-green { background:var(--greenbg) !important; color:var(--green) !important; border:.5px solid var(--greenb) !important; }
+#chandan-root .b-blue { background:var(--bluebg) !important; color:var(--blue) !important; border:.5px solid var(--blueb) !important; }
+#chandan-root .b-red { background:var(--redbg) !important; color:var(--red) !important; border:.5px solid var(--redb) !important; }
+#chandan-root .b-amber { background:var(--amberbg) !important; color:var(--amber) !important; border:.5px solid var(--amberb) !important; }
+
+/* BIG STAT ROW */
+#chandan-root .big-stat-row { display:grid !important; grid-template-columns:repeat(3,1fr) !important; gap:1px !important; background:var(--border) !important; border:.5px solid var(--border) !important; margin-bottom:24px !important; }
+#chandan-root .bsc { background:var(--bg2) !important; padding:24px 28px !important; }
+#chandan-root .bsc-num { font-family:'Instrument Serif',serif !important; font-size:40px !important; color:var(--gold) !important; line-height:1 !important; margin-bottom:8px !important; }
+#chandan-root .bsc-title { font-size:13px !important; font-weight:600 !important; color:var(--text) !important; margin-bottom:4px !important; }
+#chandan-root .bsc-desc { font-size:11px !important; color:var(--text2) !important; line-height:1.6 !important; }
+
+/* OLYMPIAD TABLE */
+#chandan-root .olym-table { width:100% !important; border-collapse:collapse !important; }
+#chandan-root .olym-table th {
+  font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.12em !important;
+  text-transform:uppercase !important; color:var(--text3) !important; padding:10px 14px !important;
+  text-align:left !important; border-bottom:.5px solid var(--border) !important; background:var(--bg2) !important;
+}
+#chandan-root .olym-table td { padding:12px 14px !important; font-size:12px !important; color:var(--text2) !important; border-bottom:.5px solid var(--border) !important; vertical-align:top !important; }
+#chandan-root .olym-table td:first-child { color:var(--text) !important; font-weight:500 !important; }
+#chandan-root .olym-table tr:last-child td { border-bottom:none !important; }
+
+/* PROJECTS */
+#chandan-root .project-grid { display:grid !important; grid-template-columns:1fr 1fr !important; gap:1px !important; background:var(--border) !important; border:.5px solid var(--border) !important; }
+#chandan-root .proj-card { background:var(--bg) !important; padding:28px !important; transition:background .15s !important; }
+#chandan-root .proj-card:hover { background:var(--bg3) !important; }
+#chandan-root .proj-num { font-family:'DM Mono',monospace !important; font-size:9px !important; color:var(--gold) !important; letter-spacing:.15em !important; margin-bottom:14px !important; display:block !important; }
+#chandan-root .proj-title { font-size:16px !important; font-weight:700 !important; color:var(--text) !important; margin-bottom:8px !important; line-height:1.3 !important; }
+#chandan-root .proj-url { font-family:'DM Mono',monospace !important; font-size:9px !important; color:var(--gold2) !important; letter-spacing:.08em !important; margin-bottom:12px !important; text-decoration:none !important; display:block !important; }
+#chandan-root .proj-desc { font-size:12px !important; color:var(--text2) !important; line-height:1.7 !important; margin-bottom:14px !important; }
+#chandan-root .proj-stats { display:flex !important; gap:12px !important; flex-wrap:wrap !important; margin-bottom:14px !important; }
+#chandan-root .pstat { font-family:'DM Mono',monospace !important; font-size:10px !important; color:var(--gold) !important; font-weight:500 !important; }
+#chandan-root .pstat span { color:var(--text3) !important; font-size:9px !important; }
+
+/* TIMELINE */
+#chandan-root .tl-item { display:grid !important; grid-template-columns:108px 1fr !important; gap:24px !important; padding:24px 0 !important; border-bottom:.5px solid var(--border) !important; }
+#chandan-root .tl-item:last-child { border-bottom:none !important; }
+#chandan-root .tl-year { font-family:'DM Mono',monospace !important; font-size:10px !important; color:var(--text3) !important; letter-spacing:.08em !important; padding-top:3px !important; }
+#chandan-root .tl-org { font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.12em !important; text-transform:uppercase !important; color:var(--gold) !important; margin-bottom:5px !important; }
+#chandan-root .tl-role { font-size:14px !important; font-weight:600 !important; color:var(--text) !important; margin-bottom:6px !important; }
+#chandan-root .tl-desc { font-size:12px !important; color:var(--text2) !important; line-height:1.7 !important; }
+#chandan-root .tl-tags { display:flex !important; flex-wrap:wrap !important; gap:6px !important; margin-top:10px !important; }
+#chandan-root .tl-tag { font-family:'DM Mono',monospace !important; font-size:9px !important; padding:2px 7px !important; border:.5px solid var(--border2) !important; border-radius:2px !important; color:var(--text3) !important; background:transparent !important; display:inline-block !important; }
+
+/* ATHLETICS */
+#chandan-root .ath-grid { display:grid !important; grid-template-columns:repeat(3,1fr) !important; gap:1px !important; background:var(--border) !important; border:.5px solid var(--border) !important; margin-bottom:24px !important; }
+#chandan-root .ath-card { background:var(--bg) !important; padding:22px !important; }
+#chandan-root .ath-medal { font-size:20px !important; margin-bottom:10px !important; display:block !important; }
+#chandan-root .ath-event { font-size:13px !important; font-weight:600 !important; color:var(--text) !important; margin-bottom:4px !important; }
+#chandan-root .ath-detail { font-size:11px !important; color:var(--text2) !important; line-height:1.6 !important; }
+
+/* CREATOR */
+#chandan-root .creator-grid { display:grid !important; grid-template-columns:repeat(4,1fr) !important; gap:1px !important; background:var(--border) !important; border:.5px solid var(--border) !important; margin-bottom:24px !important; }
+#chandan-root .cstat { background:var(--bg2) !important; padding:20px !important; text-align:center !important; }
+#chandan-root .cstat-num { font-family:'Instrument Serif',serif !important; font-size:28px !important; color:var(--text) !important; line-height:1 !important; margin-bottom:5px !important; }
+#chandan-root .cstat-label { font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.1em !important; text-transform:uppercase !important; color:var(--text3) !important; }
+#chandan-root .video-row { display:grid !important; grid-template-columns:1fr auto auto !important; align-items:center !important; padding:14px 0 !important; border-bottom:.5px solid var(--border) !important; gap:20px !important; }
+#chandan-root .video-row:last-child { border-bottom:none !important; }
+#chandan-root .vr-title { font-size:13px !important; color:var(--text) !important; font-weight:500 !important; }
+#chandan-root .vr-views { font-family:'DM Mono',monospace !important; font-size:11px !important; color:var(--gold) !important; font-weight:500 !important; white-space:nowrap !important; }
+#chandan-root .vr-bar-wrap { width:80px !important; height:2px !important; background:var(--bg4) !important; border-radius:1px !important; overflow:hidden !important; }
+#chandan-root .vr-bar { height:100% !important; background:var(--gold) !important; border-radius:1px !important; }
+
+/* ACADEMICS GRID */
+#chandan-root .academics-grid { display:grid !important; grid-template-columns:1fr 1fr !important; gap:1px !important; background:var(--border) !important; border:.5px solid var(--border) !important; }
+#chandan-root .acad-card { background:var(--bg) !important; padding:28px !important; }
+#chandan-root .acad-year { font-family:'DM Mono',monospace !important; font-size:9px !important; letter-spacing:.15em !important; text-transform:uppercase !important; color:var(--text3) !important; margin-bottom:10px !important; }
+#chandan-root .acad-title { font-size:15px !important; font-weight:600 !important; margin-bottom:6px !important; color:var(--text) !important; }
+#chandan-root .acad-sub { font-size:12px !important; color:var(--text2) !important; margin-bottom:14px !important; line-height:1.6 !important; }
+
+/* PILLARS */
+#chandan-root .pillars { display:grid !important; grid-template-columns:repeat(3,1fr) !important; gap:1px !important; background:var(--border) !important; border:.5px solid var(--border) !important; }
+#chandan-root .pillar { background:var(--bg) !important; padding:28px !important; }
+#chandan-root .pillar-icon { font-size:22px !important; margin-bottom:14px !important; display:block !important; }
+#chandan-root .pillar-title { font-size:14px !important; font-weight:700 !important; color:var(--text) !important; margin-bottom:8px !important; }
+#chandan-root .pillar-desc { font-size:12px !important; color:var(--text2) !important; line-height:1.7 !important; }
+
+/* INFO BOX */
+#chandan-root .info-box { background:var(--bg2) !important; border:.5px solid var(--border) !important; padding:20px 24px !important; font-size:12px !important; color:var(--text2) !important; line-height:1.8 !important; }
+#chandan-root .info-box-label { font-family:'DM Mono',monospace !important; font-size:9px !important; text-transform:uppercase !important; letter-spacing:.12em !important; color:var(--text3) !important; display:block !important; margin-bottom:10px !important; }
+#chandan-root .info-box a { color:var(--gold) !important; text-decoration:none !important; }
+
+/* CONTACT */
+#chandan-root .contact-strip { margin-top:64px !important; padding:40px !important; border:.5px solid var(--goldborder) !important; background:var(--goldbg) !important; }
+#chandan-root .cs-title { font-family:'Instrument Serif',serif !important; font-size:28px !important; margin-bottom:8px !important; color:var(--text) !important; }
+#chandan-root .cs-sub { font-size:13px !important; color:var(--text2) !important; margin-bottom:20px !important; }
+#chandan-root .cs-links { display:flex !important; flex-wrap:wrap !important; gap:10px !important; }
+#chandan-root .cs-link { font-family:'DM Mono',monospace !important; font-size:10px !important; letter-spacing:.12em !important; text-transform:uppercase !important; padding:8px 16px !important; border:.5px solid var(--goldborder) !important; color:var(--gold) !important; text-decoration:none !important; border-radius:3px !important; transition:background .2s !important; background:transparent !important; display:inline-block !important; }
+#chandan-root .cs-link:hover { background:var(--goldbg) !important; }
+#chandan-root .cs-link.primary { background:var(--gold) !important; color:#000 !important; font-weight:700 !important; border-color:var(--gold) !important; }
+
+/* FOOTER */
+#chandan-root footer { margin-top:48px !important; padding:24px 0 !important; border-top:.5px solid var(--border) !important; display:flex !important; align-items:center !important; justify-content:space-between !important; }
+#chandan-root .ft-text { font-family:'DM Mono',monospace !important; font-size:10px !important; color:var(--text3) !important; letter-spacing:.1em !important; }
+
+/* CALI BOX */
+#chandan-root .cali-box { border:.5px solid var(--border) !important; padding:20px 24px !important; margin-top:1px !important; }
+
+/* RESPONSIVE */
+@media(max-width:740px){
+  #chandan-root .cp-wrap { padding:0 16px 60px !important; }
+  #chandan-root nav { padding:16px !important; }
+  #chandan-root .hero { grid-template-columns:1fr !important; gap:32px !important; }
+  #chandan-root .hero-stats { flex-direction:row !important; flex-wrap:wrap !important; gap:16px !important; text-align:left !important; }
+  #chandan-root .academics-grid, #chandan-root .project-grid, #chandan-root .pillars, #chandan-root .big-stat-row { grid-template-columns:1fr !important; }
+  #chandan-root .ath-grid, #chandan-root .creator-grid { grid-template-columns:1fr 1fr !important; }
+  #chandan-root .stat-strip { grid-template-columns:repeat(3,1fr) !important; }
+  #chandan-root .nav-links { display:none !important; }
+  #chandan-root .tl-item { grid-template-columns:80px 1fr !important; }
+}
+</style>
+</head>
+<body style="margin:0;padding:0">
+<div id="chandan-root">
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="document.getElementById('chandan-root').classList.toggle('light')" aria-label="Toggle light/dark mode">
+  <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Mettu <span>Saichandan</span></div>
+    <div class="nav-links">
+      <a href="#academics">Academics</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#athletics">Athletics</a>
+      <a href="#creator">Creator</a>
+    </div>
+  </div>
+</nav>
+
+<div class="cp-wrap">
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">IIT Hyderabad · India</div>
+    <h1 class="hero-name">Mettu<br><em>Saichandan</em></h1>
+    <p class="hero-bio">INMO qualifier. Founder of CampusLoom — India's student ecosystem, 10,000+ users. National-level sprinter. Teaching math at 17 on Vedantu. Building in public every day.</p>
+    <div class="hero-tags">
+      <span class="cp-tag gold">Founder</span>
+      <span class="cp-tag gold">INMO Qualifier</span>
+      <span class="cp-tag gold">IIT Hyderabad</span>
+      <span class="cp-tag">EdTech Builder</span>
+      <span class="cp-tag">National Athlete</span>
+      <span class="cp-tag">Content Creator</span>
+      <span class="cp-tag">Math Olympiad</span>
+      <span class="cp-tag">WordPress Dev</span>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div><div class="hstat-num">10K+</div><div class="hstat-label">CampusLoom users</div></div>
+    <div><div class="hstat-num">99.77</div><div class="hstat-label">JEE Math %ile</div></div>
+    <div><div class="hstat-num">250K+</div><div class="hstat-label">YouTube views</div></div>
+    <div><div class="hstat-num">50+</div><div class="hstat-label">Websites built</div></div>
+  </div>
+</section>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-cell"><div class="sc-num gold">10/10</div><div class="sc-label">Class 10 CGPA</div></div>
+  <div class="stat-cell"><div class="sc-num gold">98.5%</div><div class="sc-label">Class 12 Board</div></div>
+  <div class="stat-cell"><div class="sc-num">Top 200</div><div class="sc-label">INMO Nationally</div></div>
+  <div class="stat-cell"><div class="sc-num">AIR 12,735</div><div class="sc-label">JEE Advanced</div></div>
+  <div class="stat-cell"><div class="sc-num">Top 1%</div><div class="sc-label">of 15 lakh students</div></div>
+</div>
+
+<!-- ACADEMICS -->
+<section id="academics">
+  <div class="section-header"><span class="sh-label">01 — Academics &amp; Olympiads</span><div class="sh-line"></div></div>
+  <div class="big-stat-row">
+    <div class="bsc"><div class="bsc-num">99.77</div><div class="bsc-title">JEE Mathematics Percentile</div><div class="bsc-desc">Session 2 · JEE Mains 2024. 97.94 overall. All India Rank 32,400.</div></div>
+    <div class="bsc"><div class="bsc-num">AIR 12,735</div><div class="bsc-title">JEE Advanced 2024</div><div class="bsc-desc">Score 135/360 (cutoff 109). Top 1% of 15 lakh students nationally.</div></div>
+    <div class="bsc"><div class="bsc-num">Top ~200</div><div class="bsc-title">INMO Qualifier 2023</div><div class="bsc-desc">Indian National Mathematics Olympiad. Among ~200 students nationally to qualify.</div></div>
+  </div>
+  <table class="olym-table">
+    <thead><tr><th>Achievement</th><th>Year</th><th>Result</th><th>Level</th></tr></thead>
+    <tbody>
+      <tr><td>INMO — Indian National Mathematics Olympiad</td><td>2023</td><td>Qualified · Top ~200 in India (Class 12)</td><td><span class="cp-badge b-red">National</span></td></tr>
+      <tr><td>IOQM — Indian Olympiad Qualifier in Mathematics</td><td>2022</td><td>Next Level Qualifier</td><td><span class="cp-badge b-red">National</span></td></tr>
+      <tr><td>IOQM — Indian Olympiad Qualifier in Mathematics</td><td>2020</td><td>Top 300 in Telangana</td><td><span class="cp-badge b-blue">State</span></td></tr>
+      <tr><td>SOF International Mathematics Olympiad (IMO)</td><td>2019</td><td>Gold Medalist · District Ranker · Level 2 Qualifier</td><td><span class="cp-badge b-blue">State</span></td></tr>
+      <tr><td>AMTI — 50th National Mathematics Talent Contest</td><td>2018</td><td>Top 10% in institution · Level 2 Qualifier</td><td><span class="cp-badge b-green">Institutional</span></td></tr>
+      <tr><td>Youth Resilience India — International Research</td><td>2025</td><td>Research Intern · BITS Pilani × IIT-H × Dalhousie University, Canada</td><td><span class="cp-badge b-gold">International</span></td></tr>
+      <tr><td>Perplexity AI — VIP Campus Partner</td><td>2025</td><td>Top Campus Partner in India · 1,500+ qualified leads</td><td><span class="cp-badge b-gold">National</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header"><span class="sh-label">02 — Products Built</span><div class="sh-line"></div></div>
+  <div class="project-grid">
+    <div class="proj-card">
+      <span class="proj-num">CURRENT · 2025–Present</span>
+      <div class="proj-title">CampusLoom</div>
+      <a class="proj-url" href="https://campusloom.in" target="_blank">campusloom.in ↗</a>
+      <p class="proj-desc">India's first complete JEE student ecosystem — from preparation through college selection. Built solo. Free, no signup walls, no gatekeeping.</p>
+      <div class="proj-stats"><div class="pstat">10,000+ <span>users</span></div><div class="pstat">11,973 <span>cutoff records</span></div><div class="pstat">128 <span>institutes mapped</span></div></div>
+      <div class="tl-tags"><span class="tl-tag">JEE PYQ Analysis Tool</span><span class="tl-tag">College Predictor</span><span class="tl-tag">D3.js India Map</span><span class="tl-tag">Free Resources</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-num">2020–Present</span>
+      <div class="proj-title">Learnoclub (formerly Note-IT)</div>
+      <p class="proj-desc">Started as Note-IT in Class 9 during COVID — handwritten notes for 500+ school peers. Evolved into a national JEE prep platform with notes, quizzes, and mock tests.</p>
+      <div class="proj-stats"><div class="pstat">5,000+ <span>users</span></div><div class="pstat">50K+ <span>monthly views (peak)</span></div></div>
+      <div class="tl-tags"><span class="tl-tag">5 years building</span><span class="tl-tag">JEE Prep</span><span class="tl-tag">School adopted</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-num">2024–2025</span>
+      <div class="proj-title">IIT-H Resource Hub</div>
+      <p class="proj-desc">Centralized academic portal for IIT Hyderabad students. Peer-driven sharing of previous year papers, notes, and course materials across all departments and years.</p>
+      <div class="proj-stats"><div class="pstat">3,000+ <span>active users</span></div></div>
+      <div class="tl-tags"><span class="tl-tag">IIT-H campus</span><span class="tl-tag">All branches</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-num">2024–2025</span>
+      <div class="proj-title">IIT-H Merch Store</div>
+      <p class="proj-desc">Built the first centralized merchandise platform for IIT Hyderabad. Used by 20+ student clubs during flagship events like Milan and Diesta.</p>
+      <div class="proj-stats"><div class="pstat">1,000+ <span>orders processed</span></div><div class="pstat">20+ <span>clubs served</span></div></div>
+      <div class="tl-tags"><span class="tl-tag">WooCommerce</span><span class="tl-tag">Milan &amp; Diesta</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-num">Independent · 2025</span>
+      <div class="proj-title">Context Closet — AI Try-On App</div>
+      <p class="proj-desc">Prototyping an AI-powered virtual wardrobe app. Computer vision — segmentation, pose estimation — to automate outfit decision-making. Learning ML fundamentals through building.</p>
+      <div class="tl-tags"><span class="tl-tag">Computer Vision</span><span class="tl-tag">GANs</span><span class="tl-tag">Python</span><span class="tl-tag">Self-directed</span></div>
+    </div>
+    <div class="proj-card">
+      <span class="proj-num">Freelance · 4+ years</span>
+      <div class="proj-title">Web Development Studio</div>
+      <p class="proj-desc">50+ WordPress websites built globally since age 15. Portfolio includes Tharun Speaks (major Indian creator), e-commerce stores, LMS platforms, and custom business sites.</p>
+      <div class="proj-stats"><div class="pstat">50+ <span>websites</span></div><div class="pstat">4+ <span>years</span></div></div>
+      <div class="tl-tags"><span class="tl-tag">WordPress</span><span class="tl-tag">WooCommerce</span><span class="tl-tag">UI/UX</span><span class="tl-tag">Tharun Speaks</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header"><span class="sh-label">03 — Experience &amp; Leadership</span><div class="sh-line"></div></div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-year">May 2025 –<br>Present</div>
+      <div><div class="tl-org">CampusLoom</div><div class="tl-role">Founder &amp; Developer</div><div class="tl-desc">Building India's most comprehensive JEE student ecosystem — solo. Ships features publicly. One of the first PYQ analysis tools of its kind in India. 10,000+ users and growing.</div><div class="tl-tags"><span class="tl-tag">Founder</span><span class="tl-tag">Product</span><span class="tl-tag">Full-stack</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">Jan 2026 –<br>Present</div>
+      <div><div class="tl-org">YouTube — @ChandanMettu</div><div class="tl-role">Content Creator</div><div class="tl-desc">Long-form story-driven content on student life, building in public, and the IIT + athlete experience. Top video 75K+ views. Documenting the CampusLoom journey publicly.</div><div class="tl-tags"><span class="tl-tag">250K+ total views</span><span class="tl-tag">2K+ subscribers</span><span class="tl-tag">Final Cut Pro</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">Sep – Dec<br>2025</div>
+      <div><div class="tl-org">Perplexity AI</div><div class="tl-role">VIP Campus Partner</div><div class="tl-desc">Led campus adoption for Comet browser at IIT Hyderabad. Generated 1,500+ qualified student leads through workshops and community outreach. Recognised as top performing Campus Partner nationally.</div><div class="tl-tags"><span class="tl-tag">Growth strategy</span><span class="tl-tag">Product evangelism</span><span class="tl-tag">Top nationally</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">Apr – May<br>2025</div>
+      <div><div class="tl-org">BITS Pilani × IIT Hyderabad × Dalhousie University</div><div class="tl-role">Research Intern — Youth Resilience India Project</div><div class="tl-desc">International multi-institutional research on youth resilience. Qualitative data collection and analysis from 500+ participants across student communities in India.</div><div class="tl-tags"><span class="tl-tag">Qualitative research</span><span class="tl-tag">500+ participants</span><span class="tl-tag">International</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">Jun – Nov<br>2024</div>
+      <div><div class="tl-org">TEDxIITHyderabad</div><div class="tl-role">Outreach &amp; Collaborations Coordinator</div><div class="tl-desc">Led external partnerships and speaker outreach for the flagship TEDx event at IIT Hyderabad. Core team member responsible for scaling credibility and community reach.</div><div class="tl-tags"><span class="tl-tag">Speaker outreach</span><span class="tl-tag">Partnerships</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">Aug – Nov<br>2024</div>
+      <div><div class="tl-org">ECell IIT Hyderabad</div><div class="tl-role">Assistant Marketing Manager</div><div class="tl-desc">Marketing and outreach for E-Summit, IIT-H's flagship entrepreneurial event. Content strategy, cross-team collaboration, campus visibility campaigns.</div><div class="tl-tags"><span class="tl-tag">E-Summit</span><span class="tl-tag">Marketing strategy</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">Jun 2023 –<br>Jan 2024</div>
+      <div><div class="tl-org">Vedantu — India's Leading EdTech Platform</div><div class="tl-role">Teaching Assistant — Hired at age 17</div><div class="tl-desc">Created advanced video lectures and assignments for Mathematics Olympiad learners in Vedantu's premium paid courses. Delivered 60+ lectures. Guided 100+ students. Hired at 17 — on the same platform used for own exam preparation.</div><div class="tl-tags"><span class="tl-tag">60+ lectures</span><span class="tl-tag">100+ students</span><span class="tl-tag">Olympiad math</span><span class="tl-tag">Hired at 17</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">Aug – Nov<br>2024</div>
+      <div><div class="tl-org">Elan &amp; ηVision — IIT-H Annual Fest</div><div class="tl-role">Deputy Coordinator, Public Relations &amp; Networking</div><div class="tl-desc">External vendor relations and stall logistics for one of India's premier techno-cultural college fests. High-impact outreach and on-ground event operations.</div><div class="tl-tags"><span class="tl-tag">Vendor management</span><span class="tl-tag">Event ops</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ATHLETICS -->
+<section id="athletics">
+  <div class="section-header"><span class="sh-label">04 — Athletics</span><div class="sh-line"></div></div>
+  <div class="big-stat-row" style="margin-bottom:1px">
+    <div class="bsc"><div class="bsc-num">6th</div><div class="bsc-title">Inter-IIT Sports Meet</div><div class="bsc-desc">4×100m relay · IIT Indore · Representing IIT Hyderabad against 22 IITs nationwide.</div></div>
+    <div class="bsc"><div class="bsc-num">11.40s</div><div class="bsc-title">Personal Best — 100m</div><div class="bsc-desc">Competitive sprinter. Targeting sub-11s. Structured training alongside academics and building.</div></div>
+    <div class="bsc"><div class="bsc-num">Captain</div><div class="bsc-title">IIT-H Athletics Team</div><div class="bsc-desc">Team captain and NSO (National Sports Organisation) selected member in track and field.</div></div>
+  </div>
+  <div class="ath-grid">
+    <div class="ath-card"><div class="ath-medal">🥇🥇</div><div class="ath-event">Mahindra University</div><div class="ath-detail">2× Gold — Relay events at external university competition.</div></div>
+    <div class="ath-card"><div class="ath-medal">🥇🥇🥈</div><div class="ath-event">Woxsen University</div><div class="ath-detail">Gold — Long Jump · Gold — Relay · Silver — 100m sprint.</div></div>
+    <div class="ath-card"><div class="ath-medal">🥇🥇🥈🥈🥉</div><div class="ath-event">Diesta 2025 — Inter-Dept</div><div class="ath-detail">Gold: Long Jump + Men's Relay · Silver: Mixed Relay + 200m · Bronze: 100m.</div></div>
+    <div class="ath-card"><div class="ath-medal">🥈🥈</div><div class="ath-event">Milan 2024 — Inter-Hostel</div><div class="ath-detail">Silver: Long Jump · Silver: Relay. Athlete of Tournament award.</div></div>
+    <div class="ath-card"><div class="ath-medal">🏆</div><div class="ath-event">Football — Institute League</div><div class="ath-detail">Champion. Right wing. 4 goals scored. Emerging Player of Tournament award.</div></div>
+    <div class="ath-card"><div class="ath-medal">🥇</div><div class="ath-event">Early Career — District</div><div class="ath-detail">Gold — 100m District Level (Warangal, 2017). Age 11. Cricket all-rounder selected for district team (Grade 8).</div></div>
+  </div>
+  <div class="cali-box tl-item">
+    <div class="tl-year">2024</div>
+    <div><div class="tl-org">IIT Hyderabad — Founded</div><div class="tl-role">President &amp; Co-founder — Calisthenics Club</div><div class="tl-desc">Founded the institute's first fitness club. Built a 100+ member athlete community through structured training programs, peer mentorship, and fitness goal systems.</div></div>
+  </div>
+</section>
+
+<!-- CREATOR -->
+<section id="creator">
+  <div class="section-header"><span class="sh-label">05 — Content &amp; Creator</span><div class="sh-line"></div></div>
+  <div class="creator-grid">
+    <div class="cstat"><div class="cstat-num">250K+</div><div class="cstat-label">Total views</div></div>
+    <div class="cstat"><div class="cstat-num">2K+</div><div class="cstat-label">Subscribers</div></div>
+    <div class="cstat"><div class="cstat-num">1K+</div><div class="cstat-label">LinkedIn followers</div></div>
+    <div class="cstat"><div class="cstat-num">32K</div><div class="cstat-label">Top post impressions</div></div>
+  </div>
+  <div class="info-box" style="margin-bottom:1px">
+    <div class="video-row"><div class="vr-title">How I Got Hired by Vedantu at 17</div><div class="vr-bar-wrap"><div class="vr-bar" style="width:100%"></div></div><div class="vr-views">75,000+ views</div></div>
+    <div class="video-row"><div class="vr-title">My Apple Setup at 19 (Self-earned, No Rich Parents)</div><div class="vr-bar-wrap"><div class="vr-bar" style="width:44%"></div></div><div class="vr-views">33,000+ views</div></div>
+    <div class="video-row"><div class="vr-title">Drop Year Lessons — What I Learned</div><div class="vr-bar-wrap"><div class="vr-bar" style="width:40%"></div></div><div class="vr-views">30,000+ views</div></div>
+  </div>
+  <div class="info-box">
+    <span class="info-box-label">Platforms</span>
+    <a href="https://youtube.com/@ChandanMettu" target="_blank">YouTube — @ChandanMettu</a>
+    &nbsp;·&nbsp;
+    <a href="https://linkedin.com/in/saichandanmettu" target="_blank">LinkedIn — saichandanmettu</a>
+  </div>
+</section>
+
+<!-- PUBLIC SPEAKING -->
+<section>
+  <div class="section-header"><span class="sh-label">06 — Public Speaking &amp; Recognition</span><div class="sh-line"></div></div>
+  <div class="academics-grid">
+    <div class="acad-card"><div class="acad-year">Recognition</div><div class="acad-title">Chandrabose Garu — Oscar &amp; National Award Winner</div><div class="acad-sub">Lyricist of "Naatu Naatu" (RRR) appreciated Chandan for a confident speech delivered in front of thousands at a school annual day.</div><span class="cp-badge b-gold">Oscar winner</span></div>
+    <div class="acad-card"><div class="acad-year">Recognition</div><div class="acad-title">JD Laxmi Narayana Garu — Former CBI Officer</div><div class="acad-sub">Former IAS and CBI Officer commended Chandan for bravery and truthfulness in public speaking. Praised confidence and courage on stage.</div><span class="cp-badge b-blue">Senior civil servant</span></div>
+    <div class="acad-card"><div class="acad-year">Recognition</div><div class="acad-title">Madhava Reddy Garu — Vandemataram Foundation</div><div class="acad-sub">Secretary of Vandemataram Foundation nicknamed Chandan "Orugallu KCR" comparing his oratory skills to Telangana CM KCR. Awarded memento for public speaking.</div><span class="cp-badge b-green">Foundation recognition</span></div>
+    <div class="acad-card"><div class="acad-year">Early Achievement</div><div class="acad-title">Salma Moosa — Startup Mentor</div><div class="acad-sub">Recognized live on Facebook during Make N Market fest (Grade 7) for entrepreneurial skills. Best Entrepreneur Award winner.</div><span class="cp-badge b-amber">Entrepreneur award</span></div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section>
+  <div class="section-header"><span class="sh-label">07 — Who I Am</span><div class="sh-line"></div></div>
+  <div class="pillars">
+    <div class="pillar"><span class="pillar-icon">⚡</span><div class="pillar-title">Builder &amp; Founder</div><div class="pillar-desc">Ships real products. CampusLoom built alone. Learnoclub started in Class 9. Web dev freelancing since age 15. Five years of consistent building.</div></div>
+    <div class="pillar"><span class="pillar-icon">📐</span><div class="pillar-title">Math &amp; Olympiad</div><div class="pillar-desc">INMO qualifier. 99.77 percentile JEE Math. Taught Olympiad math on Vedantu at 17. Mathematical thinking shows up in product architecture.</div></div>
+    <div class="pillar"><span class="pillar-icon">🏃</span><div class="pillar-title">National Athlete</div><div class="pillar-desc">Inter-IIT sprint representative. Team captain. Founded IIT-H's first calisthenics club. Athletics isn't a hobby — it's discipline made visible.</div></div>
+    <div class="pillar"><span class="pillar-icon">🎥</span><div class="pillar-title">Creator &amp; Storyteller</div><div class="pillar-desc">250K+ YouTube views. Documenting everything in public. The story of getting hired by Vedantu at 17 became the most-watched video. Authentic, not polished.</div></div>
+    <div class="pillar"><span class="pillar-icon">🌐</span><div class="pillar-title">Educator First</div><div class="pillar-desc">Every platform built is fundamentally for students. Note-IT, Learnoclub, IIT-H Resource Hub, CampusLoom — all free, all for the student who doesn't have a counselor.</div></div>
+    <div class="pillar"><span class="pillar-icon">🔬</span><div class="pillar-title">Research &amp; Depth</div><div class="pillar-desc">International research intern (BITS × IIT-H × Dalhousie). 500+ participant data collection. Context Closet built to understand computer vision from first principles.</div></div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section>
+  <div class="section-header"><span class="sh-label">08 — Education</span><div class="sh-line"></div></div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-year">2024</div>
+      <div><div class="tl-org">Indian Institute of Technology Hyderabad</div><div class="tl-role">B.Tech — Materials Science &amp; Metallurgical Engineering</div><div class="tl-desc">Enrolled July 2024. Active in athletics, ECell, TEDxIITH, and student leadership. Currently on entrepreneurship leave to build CampusLoom full-time.</div><div class="tl-tags"><span class="tl-tag">IIT</span><span class="tl-tag">Entrepreneurship leave</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2021–2023</div>
+      <div><div class="tl-org">Narayana Junior College, Hyderabad</div><div class="tl-role">Class 11 &amp; 12 — Telangana State Board</div><div class="tl-desc">98.5% (985/1000). Perfect 150/150 in Mathematics both years. Advanced curriculum in Maths, Physics, Chemistry. Residential boarding school.</div><div class="tl-tags"><span class="tl-tag">98.5%</span><span class="tl-tag">Perfect math score</span></div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2018–2021</div>
+      <div><div class="tl-org">SPR School of Excellence, Warangal</div><div class="tl-role">Class 8–10 — Telangana State Board</div><div class="tl-desc">10/10 CGPA. Class 9: perfect 100s in English, Maths, Social, Science. Olympiad journey began here. Sports Secretary of student council. SOF IMO Gold Medal.</div><div class="tl-tags"><span class="tl-tag">10/10 CGPA</span><span class="tl-tag">Olympiads begin</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-strip">
+  <div class="cs-title">Let's connect.</div>
+  
+  <div class="cs-links">
+    <a href="https://mettusaichandan.com" class="cs-link primary" target="_blank">Website ↗</a>
+    <a href="https://linkedin.com/in/saichandanmettu" class="cs-link" target="_blank">LinkedIn</a>
+    <a href="https://campusloom.in" class="cs-link" target="_blank">CampusLoom</a>
+    <a href="https://youtube.com/@ChandanMettu" class="cs-link" target="_blank">YouTube</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-text">Mettu Saichandan · Profile Document · May 2026</div>
+  <div class="ft-text">campusloom.in · mettusaichandan.com</div>
+</footer>
+
+</div><!-- .cp-wrap -->
+</div><!-- #chandan-root -->
+</body>
+</html>

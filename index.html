@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chandan Mettu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#151515;--line:#242424;--line2:#1a1a1a;
+  --text:#f2efe9;--text2:#8f8b84;--text3:#3a3a3a;
+  --pro:#c8a96e;--wp:#4a9eff;--builds:#8a78ff;--iith:#f06767;--athlete:#ef9a52;--creator:#41c99a;
+  --accent:var(--pro);--accent-rgb:200,169,110;
+  --mx:50vw;--my:30vh;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
+
+/* ===== BACKGROUND LAYERS ===== */
+.bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none}
+/* cursor spotlight (hover reveal) */
+.spotlight{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(520px circle at var(--mx) var(--my), rgba(var(--accent-rgb),0.10), transparent 70%);
+  transition:background 0.35s ease}
+/* dot grid revealed only around cursor */
+.grid-reveal{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.9;
+  background-image:radial-gradient(rgba(var(--accent-rgb),0.55) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(220px circle at var(--mx) var(--my), #000 0%, transparent 65%);
+  mask-image:radial-gradient(220px circle at var(--mx) var(--my), #000 0%, transparent 65%)}
+/* soft top glow */
+.top-glow{position:fixed;top:-30%;left:50%;transform:translateX(-50%);width:900px;height:600px;z-index:0;pointer-events:none;
+  background:radial-gradient(closest-side, rgba(var(--accent-rgb),0.08), transparent);filter:blur(30px);transition:background 0.5s ease}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")}
+.wrap-z{position:relative;z-index:2}
+
+/* ===== NAV ===== */
+.nav{max-width:1040px;margin:0 auto;padding:1.35rem 1.75rem;display:flex;align-items:center;justify-content:space-between}
+.nav-name{font-family:'Instrument Serif',serif;font-size:21px;letter-spacing:-0.01em}
+.nav-name span{color:var(--accent);transition:color 0.4s ease}
+.nav-links{display:flex;gap:1.75rem}
+.nav-links a{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:1px;background:var(--accent);transition:width 0.3s var(--ease)}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--text2);transition:all 0.3s}
+
+/* ===== TOGGLE (sticky) ===== */
+.toggle-shell{position:sticky;top:0;z-index:50;padding:0.9rem 1rem;
+  background:rgba(8,8,8,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;transition:border-color 0.3s}
+.toggle-shell.stuck{border-color:var(--line2)}
+.toggle-bar{display:flex;align-items:center;justify-content:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.toggle-bar::-webkit-scrollbar{display:none}
+.toggle-inner{display:inline-flex;gap:4px;flex-shrink:0;padding:4px;border:1px solid var(--line);border-radius:100px;background:rgba(15,15,15,0.5)}
+.toggle-btn{padding:8px 16px;font-family:'DM Mono',monospace;font-size:10px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:color 0.25s ease,background 0.25s ease;white-space:nowrap;border-radius:100px}
+.toggle-btn:hover{color:var(--text)}
+.toggle-btn.active{color:#080808;font-weight:500}
+.toggle-btn[data-mode="pro"].active{background:var(--pro)}
+.toggle-btn[data-mode="wp"].active{background:var(--wp)}
+.toggle-btn[data-mode="builds"].active{background:var(--builds)}
+.toggle-btn[data-mode="iith"].active{background:var(--iith)}
+.toggle-btn[data-mode="athlete"].active{background:var(--athlete)}
+.toggle-btn[data-mode="creator"].active{background:var(--creator)}
+
+/* ===== SECTIONS ===== */
+.section{display:none}
+.section.active{display:block}
+
+/* reveal-on-scroll */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.7s var(--ease),transform 0.7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ===== HERO ===== */
+.hero{padding:4.5rem 1.75rem 2.75rem;max-width:1040px;margin:0 auto}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:11px;color:var(--text2)}
+.hero-eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px 1px rgba(var(--accent-rgb),0.7);display:inline-block}
+.hero-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(50px,8.5vw,104px);line-height:0.95;letter-spacing:-0.02em;margin-bottom:1.9rem}
+.hero-name em{font-style:italic;color:var(--accent);transition:color 0.4s ease}
+.hero-desc{font-size:15.5px;line-height:1.75;color:var(--text2);max-width:540px;font-weight:400}
+.hero-desc strong{color:var(--text);font-weight:500}
+.divider{width:calc(100% - 3.5rem);height:1px;background:var(--line2);max-width:1040px;margin:2.5rem auto}
+
+/* ===== CONTENT ===== */
+.content-wrap{max-width:1040px;margin:0 auto;padding:0 1.75rem 6rem}
+.section-label{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text2);margin-bottom:1.9rem;display:flex;align-items:center;gap:14px}
+.section-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.section-label::after{content:'';flex:1;height:1px;background:var(--line2)}
+
+/* ===== STATS ===== */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
+.stat-box{background:var(--bg);padding:1.6rem 1rem;text-align:center;transition:background 0.3s}
+.stat-box:hover{background:var(--bg3)}
+.stat-num{font-family:'Instrument Serif',serif;font-size:34px;line-height:1;margin-bottom:5px;color:var(--accent);transition:color 0.4s ease}
+.stat-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:0.12em;text-transform:uppercase}
+
+/* ===== PROJECT CARDS ===== */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
+.project-card{background:var(--bg);padding:1.75rem;transition:background 0.25s;display:flex;flex-direction:column;position:relative}
+.project-card::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 0.3s;
+  background:radial-gradient(340px circle at var(--cx,50%) var(--cy,0%),rgba(var(--accent-rgb),0.06),transparent 70%)}
+.project-card:hover{background:var(--bg3)}
+.project-card:hover::before{opacity:1}
+.project-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.95rem;color:var(--accent)}
+.project-title{font-size:16px;font-weight:600;margin-bottom:7px;line-height:1.3;letter-spacing:-0.01em}
+.project-intro{font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:1.1rem;flex:1}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.1rem}
+.tag{font-family:'DM Mono',monospace;font-size:9px;font-weight:400;letter-spacing:0.06em;padding:4px 8px;border:1px solid var(--line);color:var(--text2);border-radius:100px;text-transform:uppercase}
+.expand-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--text2);padding:6px 12px;cursor:pointer;border-radius:100px;transition:all 0.2s;display:inline-flex;align-items:center;gap:7px;margin-top:auto;align-self:flex-start}
+.expand-btn:hover{border-color:var(--accent);color:var(--accent)}
+.project-detail{max-height:0;overflow:hidden;transition:max-height 0.45s var(--ease),opacity 0.3s ease;opacity:0}
+.project-detail.open{max-height:420px;opacity:1}
+.project-detail-inner{padding-top:1.1rem;margin-top:1.1rem;border-top:1px solid var(--line2)}
+.project-detail p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:0.8rem}
+.project-detail p:last-of-type{margin-bottom:0}
+.project-link{display:inline-flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:6px 12px;border-radius:100px;margin-top:0.9rem;transition:all 0.2s}
+.project-link:hover{border-color:var(--accent);background:rgba(var(--accent-rgb),0.06)}
+
+/* ===== SIMPLE CARDS (services) ===== */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
+.cert-card{background:var(--bg);padding:1.75rem;transition:background 0.25s}
+.cert-card:hover{background:var(--bg3)}
+.cert-name{font-size:14px;font-weight:600;margin-bottom:6px;line-height:1.3}
+.cert-org{font-size:12.5px;color:var(--text2);line-height:1.6}
+
+/* ===== TIMELINE ===== */
+.timeline{margin-bottom:3.5rem;position:relative}
+.timeline-item{display:grid;grid-template-columns:110px 1fr;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--line2);position:relative}
+.timeline-item:last-child{border-bottom:none}
+.timeline-year{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);padding-top:3px;line-height:1.5}
+.timeline-content h3{font-size:15px;font-weight:600;margin-bottom:5px;letter-spacing:-0.01em}
+.timeline-content .org{font-size:11px;color:var(--accent);margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.4s ease}
+.timeline-content p{font-size:13.5px;color:var(--text2);line-height:1.7}
+
+/* ===== CONNECT ===== */
+.connect-row{display:flex;gap:0.75rem;margin-top:2rem;flex-wrap:wrap}
+.connect-btn{padding:11px 22px;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;border:1px solid var(--line);background:transparent;color:var(--text2);cursor:pointer;border-radius:100px;transition:all 0.25s;text-decoration:none;display:inline-flex;align-items:center}
+.connect-btn:hover{border-color:var(--text2);color:var(--text);transform:translateY(-1px)}
+.connect-btn.primary{color:var(--accent);border-color:rgba(var(--accent-rgb),0.45);background:rgba(var(--accent-rgb),0.05)}
+.connect-btn.primary:hover{background:rgba(var(--accent-rgb),0.12);border-color:var(--accent)}
+
+/* ===== EDUCATION TIMELINE ===== */
+.edu-timeline{display:flex;flex-direction:column;gap:0;margin-bottom:3.5rem}
+.edu-item{display:grid;grid-template-columns:90px 150px 1fr;gap:1.75rem;padding:2rem 0;border-bottom:1px solid var(--line2);align-items:start}
+.edu-item:last-child{border-bottom:none}
+.edu-year-col{display:flex;flex-direction:column;align-items:center;gap:7px;padding-top:4px}
+.edu-dot{width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--text3);flex-shrink:0;transition:all 0.3s}
+.edu-item:hover .edu-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 14px rgba(var(--accent-rgb),0.6)}
+.edu-year{font-family:'Instrument Serif',serif;font-size:26px;color:var(--accent);line-height:1;transition:color 0.4s ease}
+.edu-grade{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-top:2px}
+.edu-img-wrap{position:relative;width:145px;height:100px;overflow:hidden;border-radius:5px;background:var(--bg3);border:1px solid var(--line)}
+.edu-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s var(--ease)}
+.edu-item:hover .edu-img{transform:scale(1.06)}
+.edu-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase}
+.edu-school{font-size:16px;font-weight:600;margin-bottom:4px;line-height:1.3;letter-spacing:-0.01em}
+.edu-location{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:9px;transition:color 0.4s ease}
+.edu-content p{font-size:13.5px;color:var(--text2);line-height:1.75}
+
+/* ===== 3D CERT CAROUSEL ===== */
+.cert-carousel-wrap{margin-bottom:3.5rem;user-select:none}
+.cert-carousel{position:relative;height:290px;display:flex;align-items:center;justify-content:center;perspective:1000px;overflow:visible}
+.cert3d{position:absolute;width:190px;cursor:pointer;transition:all 0.55s var(--ease)}
+.cert3d-inner{background:var(--bg3);border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 8px 34px rgba(0,0,0,0.5)}
+.cert3d.active .cert3d-inner{border-color:rgba(var(--accent-rgb),0.5);box-shadow:0 12px 40px rgba(var(--accent-rgb),0.14)}
+.cert3d-inner img{width:100%;height:135px;object-fit:cover;display:block}
+.cert3d-ph{display:none;width:100%;height:135px;background:var(--bg2);align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase}
+.cert3d-inner img[style*="display:none"] + .cert3d-ph{display:flex}
+.cert3d-label{padding:11px 13px 4px;font-size:14px;font-weight:600;line-height:1.2}
+.cert3d-sub{padding:0 13px 13px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:0.06em;line-height:1.4}
+.cert-carousel-nav{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-top:1.75rem}
+.cert-nav-btn{font-family:'DM Mono',monospace;font-size:15px;background:none;border:1px solid var(--line);color:var(--text2);width:38px;height:38px;border-radius:50%;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+.cert-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.cert-dots{display:flex;gap:7px;align-items:center}
+.cert-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:all 0.25s}
+.cert-dot.active{background:var(--accent);width:20px;border-radius:3px}
+
+/* ===== IITH IMAGE CARDS ===== */
+.iith-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
+.iith-card{background:var(--bg);display:flex;flex-direction:column;transition:background 0.25s}
+.iith-card:hover{background:var(--bg3)}
+.iith-img-wrap{position:relative;width:100%;height:170px;overflow:hidden;background:var(--bg2);flex-shrink:0}
+.iith-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.55s var(--ease)}
+.iith-card:hover .iith-img{transform:scale(1.05)}
+.iith-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3)}
+.iith-img-placeholder span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);border:1px dashed var(--line);padding:7px 13px;border-radius:100px;transition:all 0.25s}
+.iith-card:hover .iith-img-placeholder span{color:var(--accent);border-color:var(--accent)}
+.iith-card-overlay{position:absolute;bottom:0;left:0;right:0;padding:0.8rem 1.1rem;background:linear-gradient(transparent,rgba(8,8,8,0.9))}
+.iith-card-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);transition:color 0.4s ease}
+.iith-card-body{padding:1.5rem;flex:1;display:flex;flex-direction:column}
+.iith-card-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--text3);margin-bottom:5px}
+.iith-card-title{font-size:15px;font-weight:600;margin-bottom:6px;line-height:1.3;letter-spacing:-0.01em}
+.iith-card-intro{font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:1rem;flex:1}
+.iith-card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem}
+.iith-expand-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--text2);padding:5px 12px;cursor:pointer;border-radius:100px;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;margin-top:auto;align-self:flex-start}
+.iith-expand-btn:hover{border-color:var(--accent);color:var(--accent)}
+.iith-card-detail{max-height:0;overflow:hidden;transition:max-height 0.45s var(--ease),opacity 0.3s ease;opacity:0}
+.iith-card.open .iith-card-detail{max-height:340px;opacity:1}
+.iith-card-detail-inner{padding-top:1rem;border-top:1px solid var(--line2);margin-top:1rem}
+.iith-card-detail-inner p{font-size:12.5px;color:var(--text2);line-height:1.75;margin-bottom:0.65rem}
+.iith-card-detail-inner p:last-of-type{margin-bottom:0}
+
+/* ===== ATHLETE EVENT CARDS ===== */
+.event-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
+.event-card{background:var(--bg);transition:background 0.25s;display:flex;flex-direction:row}
+.event-card:hover{background:var(--bg3)}
+.event-img-wrap{position:relative;width:185px;flex-shrink:0;overflow:hidden;background:var(--bg2)}
+.event-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.55s var(--ease)}
+.event-card:hover .event-img{transform:scale(1.05)}
+.event-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3)}
+.event-img-placeholder span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);border:1px dashed var(--line);padding:7px 12px;border-radius:100px;transition:all 0.25s;writing-mode:vertical-lr;text-orientation:mixed}
+.event-card:hover .event-img-placeholder span{color:var(--accent);border-color:var(--accent)}
+.event-img-overlay{position:absolute;bottom:0;left:0;right:0;padding:0.65rem 0.9rem;background:linear-gradient(transparent,rgba(8,8,8,0.9))}
+.event-venue{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);transition:color 0.4s ease}
+.event-body{padding:1.4rem 1.6rem;flex:1;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--line2)}
+.event-name{font-size:15px;font-weight:600;margin-bottom:0.9rem;line-height:1.3;letter-spacing:-0.01em}
+.medal-list{display:flex;flex-direction:column;gap:6px}
+.medal-row{display:flex;align-items:baseline;gap:9px;font-size:12.5px}
+.medal-icon{font-size:13px;flex-shrink:0}
+.medal-event{color:var(--text2);line-height:1.5}
+.medal-event strong{color:var(--text);font-weight:600}
+
+/* ===== CREATOR TOPICS ===== */
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
+.topic-card{background:var(--bg);padding:1.75rem;transition:background 0.25s}
+.topic-card:hover{background:var(--bg3)}
+.topic-icon{color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;transition:color 0.4s ease}
+.topic-title{font-size:14px;font-weight:600;margin-bottom:7px;letter-spacing:-0.01em}
+.topic-desc{font-size:12.5px;color:var(--text2);line-height:1.65}
+
+/* ===== FOOTER ===== */
+.foot{max-width:1040px;margin:0 auto;padding:2.5rem 1.75rem 3.5rem;border-top:1px solid var(--line2);display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.foot-name{font-family:'Instrument Serif',serif;font-size:18px}
+.foot-links{display:flex;gap:1.5rem}
+.foot-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color 0.2s}
+.foot-links a:hover{color:var(--accent)}
+
+/* ===== MOBILE ===== */
+@media(max-width:680px){
+  .nav-links{display:none}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;background:var(--bg);z-index:200;padding:5.5rem 2rem 2rem;gap:2rem;border-bottom:1px solid var(--line)}
+  .nav-hamburger{display:flex}
+  .hero{padding:3.25rem 1.35rem 2rem}
+  .content-wrap{padding:0 1.35rem 4.5rem}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .project-grid,.iith-cards{grid-template-columns:1fr}
+  .cert-grid{grid-template-columns:1fr}
+  .topic-grid{grid-template-columns:repeat(2,1fr)}
+  .toggle-bar{justify-content:flex-start}
+  .timeline-item{grid-template-columns:80px 1fr;gap:1rem}
+  .divider{width:calc(100% - 2.7rem)}
+  .edu-item{grid-template-columns:64px 1fr;grid-template-rows:auto auto;gap:0.9rem}
+  .edu-img-wrap{grid-column:2;grid-row:2;width:100%;height:90px;margin-top:0.4rem}
+  .edu-content{grid-column:2;grid-row:1}
+  .cert-carousel{height:250px}
+  .cert3d{width:150px}
+  .event-list{grid-template-columns:1fr}
+  .event-card{flex-direction:column}
+  .event-img-wrap{width:100%;height:160px}
+  .event-body{border-left:none;border-top:1px solid var(--line2)}
+  .foot{flex-direction:column;align-items:flex-start;gap:1.25rem}
+}
+@media(max-width:400px){.hero-name{font-size:46px}.topic-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.grid-reveal,.spotlight{display:none}}
+</style>
+</head>
+<body class="mode-pro">
+<div class="spotlight"></div>
+<div class="grid-reveal"></div>
+<div class="top-glow"></div>
+<div class="grain"></div>
+
+<div class="wrap-z">
+<nav>
+  <div class="nav">
+    <div class="nav-name">Chandan <span>Mettu</span></div>
+    <div class="nav-links" id="navLinks">
+      <a href="https://youtube.com/@ChandanMettu" target="_blank">YouTube</a>
+      <a href="https://linkedin.com/in/chandanmettu" target="_blank">LinkedIn</a>
+      <a href="https://campusloom.in" target="_blank">CampusLoom</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="toggle-shell" id="toggleShell">
+  <div class="toggle-bar">
+    <div class="toggle-inner">
+      <button class="toggle-btn active" data-mode="pro" onclick="switchMode('pro')">Academic</button>
+      <button class="toggle-btn" data-mode="wp" onclick="switchMode('wp')">Client Work</button>
+      <button class="toggle-btn" data-mode="builds" onclick="switchMode('builds')">Products</button>
+      <button class="toggle-btn" data-mode="iith" onclick="switchMode('iith')">Campus</button>
+      <button class="toggle-btn" data-mode="athlete" onclick="switchMode('athlete')">Athletics</button>
+      <button class="toggle-btn" data-mode="creator" onclick="switchMode('creator')">Creator</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ACADEMIC ===== -->
+<div class="section active" id="mode-pro">
+  <div class="hero">
+    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Academic &amp; Teaching</div>
+    <div class="hero-name reveal">Mettu<br><em>Saichandan</em></div>
+    <p class="hero-desc reveal">I'm a first-year at <strong>IIT Hyderabad</strong>. Most of school I spent on math olympiads — five of them, up to <strong>INMO</strong>. These days I write and teach competitive math with a few edtech teams, and use it to figure out what to build next.</p>
+    <div class="connect-row reveal">
+      <a href="https://linkedin.com/in/chandanmettu" class="connect-btn primary" target="_blank">LinkedIn</a>
+      <a href="https://youtube.com/@ChandanMettu" class="connect-btn" target="_blank">YouTube</a>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="content-wrap">
+    <div class="stats-row reveal">
+      <div class="stat-box"><div class="stat-num">INMO</div><div class="stat-label">Qualified</div></div>
+      <div class="stat-box"><div class="stat-num">IIT</div><div class="stat-label">Hyderabad</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="5" data-suffix="+">5+</div><div class="stat-label">Olympiads Written</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="8" data-suffix="+">8+</div><div class="stat-label">Teams Worked With</div></div>
+    </div>
+
+    <div class="section-label reveal">Where I studied</div>
+    <div class="edu-timeline">
+      <div class="edu-item reveal">
+        <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2016</div><div class="edu-grade">6th – 7th</div></div>
+        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_1.png" alt="St. Gabriel's High School" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
+        <div class="edu-content"><div class="edu-school">St. Gabriel's High School</div><div class="edu-location">Warangal</div><p>My early school years — academics, culturals, sports, a bit of everything. Where I got comfortable juggling more than one thing at a time.</p></div>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2018</div><div class="edu-grade">8th – 10th</div></div>
+        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_2.png" alt="SPR School of Excellence" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
+        <div class="edu-content"><div class="edu-school">SPR School of Excellence</div><div class="edu-location">Warangal</div><p>Where I got into olympiads — SOF IMO, AMTI, IOQM. This is when problem-solving stopped being homework and started being the thing I actually enjoyed.</p></div>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2021</div><div class="edu-grade">11th – 12th</div></div>
+        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_3.png" alt="Narayana Junior College" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
+        <div class="edu-content"><div class="edu-school">Narayana Junior College</div><div class="edu-location">Hyderabad</div><p>Two years pointed at JEE. I also kept at the olympiads and qualified for INMO on my last attempt.</p></div>
+      </div>
+      <div class="edu-item reveal">
+        <div class="edu-year-col"><div class="edu-dot" style="background:var(--accent);border-color:var(--accent)"></div><div class="edu-year">2024</div><div class="edu-grade">B.Tech · Year 1</div></div>
+        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_4.png" alt="IIT Hyderabad" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
+        <div class="edu-content"><div class="edu-school">IIT Hyderabad</div><div class="edu-location">Hyderabad · MSME</div><p>Where I am now. I spend it building campus tools, running track, and writing most of it down as I go.</p></div>
+      </div>
+    </div>
+
+    <div class="section-label reveal">Olympiads I wrote</div>
+    <div class="cert-carousel-wrap reveal">
+      <div class="cert-carousel" id="certCarousel">
+        <div class="cert3d" data-index="0"><div class="cert3d-inner"><img src="/assets/CERT_IMG_1.png" alt="SOF IMO" onerror="this.style.display='none'"><div class="cert3d-ph">SOF IMO</div><div class="cert3d-label">SOF IMO</div><div class="cert3d-sub">Reached State Level</div></div></div>
+        <div class="cert3d" data-index="1"><div class="cert3d-inner"><img src="/assets/CERT_IMG_2.png" alt="AMTI" onerror="this.style.display='none'"><div class="cert3d-ph">AMTI</div><div class="cert3d-label">AMTI</div><div class="cert3d-sub">Reached Level II</div></div></div>
+        <div class="cert3d active" data-index="2"><div class="cert3d-inner"><img src="/assets/CERT_IMG_3.png" alt="IOQM 2020" onerror="this.style.display='none'"><div class="cert3d-ph">IOQM 2020</div><div class="cert3d-label">IOQM 2020</div><div class="cert3d-sub">Top 300 in Telangana</div></div></div>
+        <div class="cert3d" data-index="3"><div class="cert3d-inner"><img src="/assets/CERT_IMG_4.png" alt="IOQM 2022" onerror="this.style.display='none'"><div class="cert3d-ph">IOQM 2022</div><div class="cert3d-label">IOQM 2022</div><div class="cert3d-sub">Cleared to next round</div></div></div>
+        <div class="cert3d" data-index="4"><div class="cert3d-inner"><img src="/assets/CERT_IMG_5.png" alt="IOQM 2023" onerror="this.style.display='none'"><div class="cert3d-ph">IOQM 2023</div><div class="cert3d-label">IOQM 2023</div><div class="cert3d-sub">INMO · Top 300 in India</div></div></div>
+      </div>
+      <div class="cert-carousel-nav">
+        <button class="cert-nav-btn" onclick="rotateCert(-1)">←</button>
+        <div class="cert-dots" id="certDots"></div>
+        <button class="cert-nav-btn" onclick="rotateCert(1)">→</button>
+      </div>
+    </div>
+
+    <div class="section-label reveal">Where I've taught &amp; worked</div>
+    <div class="timeline">
+      <div class="timeline-item reveal"><div class="timeline-year">Aug 2023<br>– Jan 2024</div><div class="timeline-content"><div class="org">Vedantu</div><h3>Olympiad Math Creator</h3><p>Made video solutions for olympiad-level problems and worked alongside their educators to shape the content for exam aspirants.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">May 2024<br>– Present</div><div class="timeline-content"><div class="org">Neha Agarwal — Mathematically Inclined</div><h3>Assistant Content Creator</h3><p>I help build JEE math content — breaking down the harder ideas into something students can actually follow.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Aug 2024</div><div class="timeline-content"><div class="org">Yellow Chapter</div><h3>Olympiad Math Trainer</h3><p>Trained students for olympiads and JEE, writing practice sets aimed at their weak spots in problem-solving.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Sep 2024</div><div class="timeline-content"><div class="org">Physics Wallah</div><h3>Physics Doubt Solver</h3><p>Cleared the interviews for a role helping JEE students work through physics doubts at scale.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Oct 2024</div><div class="timeline-content"><div class="org">Telus International</div><h3>Freelance Math Expert</h3><p>Took on a freelance content role writing accurate, well-structured math learning material.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Nov 2024</div><div class="timeline-content"><div class="org">NNIT</div><h3>JEE Maths Mentor</h3><p>Brought on as a JEE math tutor to guide students through prep and problem-solving.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">2024</div><div class="timeline-content"><div class="org">TEDxIITHyderabad</div><h3>Outreach &amp; Collaborations</h3><p>Handled speaker outreach and external partnerships for the campus TEDx.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">2024</div><div class="timeline-content"><div class="org">E-Cell IIT Hyderabad</div><h3>Assistant Marketing Manager</h3><p>Ran marketing for E-Summit, the campus entrepreneurship event — outreach and campaigns across IIT-H.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">2025</div><div class="timeline-content"><div class="org">Perplexity AI</div><h3>VIP Campus Partner</h3><p>Led Comet browser adoption at IIT-H — brought in 1,500+ qualified student leads and ended up among the top campus partners in the country.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CLIENT WORK ===== -->
+<div class="section" id="mode-wp">
+  <div class="hero">
+    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Client Work</div>
+    <div class="hero-name reveal">Sites I've<br><em>Built for Clients</em></div>
+    <p class="hero-desc reveal">I build WordPress sites for people — custom themes, stores, course platforms. Around <strong>100 of them</strong> over the last six years, for clients in India and abroad.</p>
+    <div class="connect-row reveal">
+      <a href="https://web.chandanmettu.com" class="connect-btn primary" target="_blank">Book a Call</a>
+      <a href="https://web.chandanmettu.com" class="connect-btn" target="_blank">Full Portfolio</a>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="content-wrap">
+    <div class="stats-row reveal">
+      <div class="stat-box"><div class="stat-num" data-count="100" data-suffix="+">100+</div><div class="stat-label">Sites Built</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="6" data-suffix="+">6+</div><div class="stat-label">Years</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="50" data-suffix="+">50+</div><div class="stat-label">Clients</div></div>
+      <div class="stat-box"><div class="stat-num">WP</div><div class="stat-label">Full Stack</div></div>
+    </div>
+    <div class="section-label reveal">A few I'm happy with</div>
+    <div class="project-grid">
+      <div class="project-card reveal"><div class="project-badge">Creator Platform</div><div class="project-title">Tharun Speaks</div><div class="project-intro">A video-editing course platform for a YouTube creator — custom WordPress with course management built in.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Courses</span><span class="tag">Elementor</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>A custom build for Tharun, a well-known Indian YouTube creator. It handles structured course delivery — enrollment, video lessons, and progress tracking — designed to hold up as the audience grows.</p><p>I kept it fast and clean, and matched the whole thing to his brand.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">E-commerce</div><div class="project-title">WooCommerce Store</div><div class="project-intro">A full store with custom product filtering and a checkout built to reduce drop-off.</div><div class="project-tags"><span class="tag">WooCommerce</span><span class="tag">UI</span><span class="tag">Filters</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>Built on WooCommerce with custom categories, advanced filtering, and a streamlined checkout. I also set up order management and inventory visibility so the client could run it themselves.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">Dynamic Listing</div><div class="project-title">College Listing Platform</div><div class="project-intro">An IIT college directory with dynamic filters, profiles, and side-by-side comparison.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Dynamic Data</span><span class="tag">ACF</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>A listing platform where each college profile is filterable by branch, location, fees, and placement stats. I built it on Advanced Custom Fields with a custom query layer, so the client can edit everything without touching code.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">LMS</div><div class="project-title">JEE Course Platform</div><div class="project-intro">A structured LMS for JEE prep — subject-wise modules with progress tracking.</div><div class="project-tags"><span class="tag">Elementor</span><span class="tag">LMS</span><span class="tag">WordPress</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>An LMS built for JEE aspirants — subject-wise modules, ordered lesson flows, and progress indicators for long prep cycles. I designed it distraction-free so it holds up over long study sessions.</p></div></div></div>
+    </div>
+    <div class="section-label reveal">What I take on</div>
+    <div class="cert-grid">
+      <div class="cert-card reveal"><div class="cert-name">Custom Websites</div><div class="cert-org">WordPress sites built for speed, responsiveness, and room to grow.</div></div>
+      <div class="cert-card reveal"><div class="cert-name">E-commerce</div><div class="cert-org">WooCommerce stores that stay secure, scalable, and easy to manage.</div></div>
+      <div class="cert-card reveal"><div class="cert-name">UI / UX Design</div><div class="cert-org">Interfaces designed in Figma before anything gets coded.</div></div>
+      <div class="cert-card reveal"><div class="cert-name">Hosting &amp; Care</div><div class="cert-org">Managed hosting, updates, backups, and ongoing maintenance.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRODUCTS ===== -->
+<div class="section" id="mode-builds">
+  <div class="hero">
+    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Products</div>
+    <div class="hero-name reveal">Things I<br><em>Built Myself</em></div>
+    <p class="hero-desc reveal">Products I built on my own — usually because I needed them to exist and no one else was making them. A couple ended up reaching <strong>tens of thousands of students</strong>.</p>
+    <div class="connect-row reveal">
+      <a href="https://campusloom.in" class="connect-btn primary" target="_blank">Visit CampusLoom</a>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="content-wrap">
+    <div class="stats-row reveal">
+      <div class="stat-box"><div class="stat-num" data-count="20" data-suffix="K+">20K+</div><div class="stat-label">CampusLoom Users</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="50" data-suffix="K+">50K+</div><div class="stat-label">Learnoclub Peak</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="5">5</div><div class="stat-label">Products Built</div></div>
+      <div class="stat-box"><div class="stat-num">Solo</div><div class="stat-label">Every One</div></div>
+    </div>
+    <div class="section-label reveal">What I've shipped</div>
+    <div class="project-grid">
+      <div class="project-card reveal"><div class="project-badge">Live now</div><div class="project-title">CampusLoom 2.0</div><div class="project-intro">A detailed college-decision platform — 220+ branches, real placement data, AI-replaceability insights, and a branch-vs-college comparator.</div><div class="project-tags"><span class="tag">Live</span><span class="tag">EdTech</span><span class="tag">20K+ Users</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I built the whole thing solo — design, code, data, and getting it in front of people. It covers curriculum breakdowns, AI-replaceability scores, recruiter insights, and a comparison engine across 220+ branches in India.</p><p>It's one of the more detailed resources of its kind here, with 20,000+ people using it.</p><a href="https://campusloom.in" class="project-link" target="_blank">campusloom.in ↗</a></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">Earlier version</div><div class="project-title">CampusLoom 1.0</div><div class="project-intro">Peer guidance connecting JEE aspirants with verified IITians and NITians for honest college advice.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">Community</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>The first version ran as a community platform where aspirants could talk to verified seniors for unfiltered advice. It's what proved the idea was worth building properly — which became 2.0.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">2020 → 2022</div><div class="project-title">NOTE-IT</div><div class="project-intro">A JEE notes platform I started at 14. Grew to 30,000+ users with no ads and no budget.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span><span class="tag">30K Users</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>My first real project — a structured JEE notes repository I started at 14 with no team and no money. It grew to 30,000+ users through search and word of mouth.</p><p>It's where everything after this started.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">2022 → 2023</div><div class="project-title">Learnoclub</div><div class="project-intro">NOTE-IT grown into a fuller JEE prep platform. Hit 50,000+ monthly users at its peak.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span><span class="tag">50K Users</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I built Learnoclub on top of NOTE-IT — notes, resources, and structured content for JEE aspirants across the country. It reached 50,000+ monthly users at its peak, all without paid marketing.</p><p>I wound it down after joining IIT-H to focus on CampusLoom.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">2024</div><div class="project-title">Mentor Guidance Platform</div><div class="project-intro">Connecting incoming students with IITians and NITians for real college guidance.</div><div class="project-tags"><span class="tag">EdTech</span><span class="tag">Community</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I built this over a first-year break to connect incoming students with verified seniors at IITs and NITs. It was set up for real guidance on college decisions, branch choices, and prep — a gap I didn't see anyone else covering at the time.</p></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CAMPUS ===== -->
+<div class="section" id="mode-iith">
+  <div class="hero">
+    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Campus Tools</div>
+    <div class="hero-name reveal">Built for<br><em>IIT Hyderabad</em></div>
+    <p class="hero-desc reveal">Everything here started with a problem I ran into on campus — a broken workflow, a missing tool. So I built the fix on my own time, servers, and domains.</p>
+    <div class="connect-row reveal">
+      <a href="https://resourcehub.iith.online/" class="connect-btn primary" target="_blank">Resource Hub</a>
+      <a href="https://store.iith.online/" class="connect-btn" target="_blank">Merch Store</a>
+      <a href="https://athletics.iith.online/" class="connect-btn" target="_blank">Athletics</a>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="content-wrap">
+    <div class="stats-row reveal">
+      <div class="stat-box"><div class="stat-num" data-count="7" data-suffix="+">7+</div><div class="stat-label">Platforms Built</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="3" data-suffix="K+">3K+</div><div class="stat-label">Users Across Them</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="4" data-suffix="+">4+</div><div class="stat-label">Live Sites</div></div>
+      <div class="stat-box"><div class="stat-num">Solo</div><div class="stat-label">Built by One</div></div>
+    </div>
+    <div class="section-label reveal">The platforms</div>
+    <div class="iith-cards">
+      <div class="iith-card reveal">
+        <div class="iith-img-wrap"><img src="/assets/portfolio-hero.png" alt="IITH Resource Hub" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Live</span></div></div>
+        <div class="iith-card-body"><div class="iith-card-num">01</div><div class="iith-card-title">Resource Hub</div><div class="iith-card-intro">A searchable archive of past question papers — filter by branch, year, and course.</div><div class="iith-card-tags"><span class="tag">1.5K+ Users</span><span class="tag">Academic</span><span class="tag">Live</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>There was no central place to find past exam papers, so I made one — a searchable catalog filterable by branch, year, and course.</p><p>It's grown to 1,500+ users across departments and is still in daily use.</p><a href="https://resourcehub.iith.online/" class="project-link" target="_blank">resourcehub.iith.online ↗</a></div></div></div>
+      </div>
+      <div class="iith-card reveal">
+        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_2.png" alt="IITH Merch Store" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Live</span></div></div>
+        <div class="iith-card-body"><div class="iith-card-num">02</div><div class="iith-card-title">Merch Store</div><div class="iith-card-intro">A full store with Razorpay checkout, replacing the old Google Form workflow.</div><div class="iith-card-tags"><span class="tag">E-commerce</span><span class="tag">Razorpay</span><span class="tag">Live</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Merch orders were being taken through Google Forms. I replaced the whole thing — Razorpay payments, automated order reports, and a clean storefront for students and faculty.</p><p>Built solo in about three weeks, end to end.</p><a href="https://store.iith.online/" class="project-link" target="_blank">store.iith.online ↗</a></div></div></div>
+      </div>
+      <div class="iith-card reveal">
+        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_3.png" alt="Mess Registration Portal" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024</span></div></div>
+        <div class="iith-card-body"><div class="iith-card-num">03</div><div class="iith-card-title">Mess Registration Portal</div><div class="iith-card-intro">A purpose-built hostel mess registration system, replacing a repurposed old portal.</div><div class="iith-card-tags"><span class="tag">Student Services</span><span class="tag">Portal</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Mess registration was running on an old COVID vaccination portal that had long outlived its purpose. I built a dedicated flow for registration, allocation, and records.</p></div></div></div>
+      </div>
+      <div class="iith-card reveal">
+        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_4.png" alt="Athletics Team Website" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Live</span></div></div>
+        <div class="iith-card-body"><div class="iith-card-num">04</div><div class="iith-card-title">Athletics Team Website</div><div class="iith-card-intro">A home for IITH's track &amp; field team — records, events, and athlete profiles.</div><div class="iith-card-tags"><span class="tag">Sports</span><span class="tag">Live</span><span class="tag">Athletics</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>The athletics program had no public presence, so I gave the team a permanent home — medal records, event highlights, athlete profiles, and an achievements gallery.</p><p>I built it as Athletics Coordinator to give the program the visibility it had earned on the field.</p><a href="https://athletics.iith.online/achievements-gallery/" class="project-link" target="_blank">athletics.iith.online ↗</a></div></div></div>
+      </div>
+      <div class="iith-card reveal">
+        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_5.png" alt="Sports Ticket Portal" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024</span></div></div>
+        <div class="iith-card-body"><div class="iith-card-num">05</div><div class="iith-card-title">Sports Support Tickets</div><div class="iith-card-intro">A ticketing system for the sports department's queries and requests.</div><div class="iith-card-tags"><span class="tag">Internal Tool</span><span class="tag">Sports</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Requests for equipment, bookings, and facilities were being raised informally with nothing tracked. I built a ticketing system where students submit queries, track status, and actually get resolution.</p></div></div></div>
+      </div>
+      <div class="iith-card reveal">
+        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_6.png" alt="IPL Auction System" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2025</span></div></div>
+        <div class="iith-card-body"><div class="iith-card-num">06</div><div class="iith-card-title">Live Auction System</div><div class="iith-card-intro">A real-time athlete auction for the Institute Athletics League — live purse, live bidding.</div><div class="iith-card-tags"><span class="tag">Real-Time</span><span class="tag">Athletics</span><span class="tag">Live Event</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Team selection for the league was being done manually over projected Google Slides. I rebuilt it as an IPL-style live auction — real-time bidding, live purse tracking, team dashboards, and dynamic athlete cards.</p><p>It turned a routine selection into an event people actually showed up for.</p></div></div></div>
+      </div>
+      <div class="iith-card reveal">
+        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_7.png" alt="ERP Portal Prototype" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Prototype</span></div></div>
+        <div class="iith-card-body"><div class="iith-card-num">07</div><div class="iith-card-title">ERP Portal Prototype</div><div class="iith-card-intro">A working prototype of the student ERP, built when the original went offline.</div><div class="iith-card-tags"><span class="tag">Prototype</span><span class="tag">ERP</span><span class="tag">Complex</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>When the ERP portal went down, I started rebuilding it from scratch and got a working prototype covering the core student-facing functionality.</p><p>It's the most complex thing I've built so far — I paused it on infrastructure limits, not technical ones.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ATHLETICS ===== -->
+<div class="section" id="mode-athlete">
+  <div class="hero" style="padding-bottom:0">
+    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Athletics</div>
+    <div class="hero-name reveal">On the<br><em>Track</em></div>
+    <p class="hero-desc reveal">I sprint and long jump for IIT Hyderabad — medals across inter-IIT, inter-university, and open meets. And most other sports on campus when I get the chance. Drag the medals below.</p>
+    <div class="connect-row reveal">
+      <a href="https://athletics.iith.online/" class="connect-btn primary" target="_blank">IITH Athletics</a>
+    </div>
+  </div>
+  <div style="max-width:1040px;margin:1.5rem auto 0;padding:0 1.75rem" class="reveal">
+    <canvas id="medalCanvas" style="display:block;width:100%;touch-action:none;cursor:grab;border-radius:6px"></canvas>
+  </div>
+  <div class="divider"></div>
+  <div class="content-wrap">
+    <div class="stats-row reveal">
+      <div class="stat-box"><div class="stat-num" data-count="8">8</div><div class="stat-label">Gold</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="3">3</div><div class="stat-label">Silver</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="4">4</div><div class="stat-label">Bronze</div></div>
+      <div class="stat-box"><div class="stat-num">IIT-H</div><div class="stat-label">Athletics Coord.</div></div>
+    </div>
+    <div class="section-label reveal">Meets &amp; medals</div>
+    <div class="event-list">
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_1.png" alt="AIRO 2026" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Mahindra University</span></div></div><div class="event-body"><div class="event-name">AIRO 2026</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">100m Dash — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">200m Dash — <strong>Bronze</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×400m Relay — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">4×100m Relay — <strong>Bronze</strong></span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_2.png" alt="Infinity Cup 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Woxsen University</span></div></div><div class="event-body"><div class="event-name">Infinity Cup 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Long Jump — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">100m Dash — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×100m Relay — <strong>Gold</strong></span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_3.png" alt="AIRO 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Mahindra University</span></div></div><div class="event-body"><div class="event-name">AIRO 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×100m Relay — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×200m Relay — <strong>Gold</strong></span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_4.png" alt="Diesta 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Inter-Dept</span></div></div><div class="event-body"><div class="event-name">Diesta 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Long Jump — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Men's Relay — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">Mixed Relay — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">200m — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">100m — <strong>Bronze</strong></span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_5.png" alt="Milan 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Inter-Hostel</span></div></div><div class="event-body"><div class="event-name">Milan 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Long Jump — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">100m — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">200m — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×100m Relay — <strong>Gold</strong></span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_6.png" alt="Milan 2024" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Inter-Hostel</span></div></div><div class="event-body"><div class="event-name">Milan 2024</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">Long Jump — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">Relay — <strong>Silver</strong></span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_7.png" alt="Inter-IIT Sports Meet" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Indore · National</span></div></div><div class="event-body"><div class="event-name">Inter-IIT Sports Meet</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🏟️</span><span class="medal-event">Relay — <strong>National participant</strong>, for IIT Hyderabad</span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_9.png" alt="Inter-IIT Sports Meet 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · National</span></div></div><div class="event-body"><div class="event-name">Inter-IIT Sports Meet 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">4️⃣</span><span class="medal-event">Sprint — <strong>4th fastest</strong> across all IITs</span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_10.png" alt="Institute Football League 2024" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Football</span></div></div><div class="event-body"><div class="event-name">Institute Football League 2024</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event"><strong>Champions</strong> — Institute Football League</span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_11.png" alt="Institute Cricket League" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Cricket</span></div></div><div class="event-body"><div class="event-name">Institute Cricket League</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event"><strong>Runner-Up</strong> — Institute Cricket League</span></div></div></div></div>
+      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_8.png" alt="Early Career" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Warangal District · 2017</span></div></div><div class="event-body"><div class="event-name">Where it started</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">100m — <strong>Gold</strong>, District Level</span></div><div class="medal-row"><span class="medal-icon">🏅</span><span class="medal-event">School medals in athletics, long jump, volleyball, cricket, kho-kho</span></div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CREATOR ===== -->
+<div class="section" id="mode-creator">
+  <div class="hero">
+    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Creator</div>
+    <div class="hero-name reveal">On<br><em>YouTube</em></div>
+    <p class="hero-desc reveal">I make videos about student life, the tools I use, and the things I've tried building — mostly for students trying to figure out the same stuff I did.</p>
+    <div class="connect-row reveal">
+      <a href="https://youtube.com/@ChandanMettu" class="connect-btn primary" target="_blank">YouTube</a>
+      <a href="https://x.com/ChandanMettu" class="connect-btn" target="_blank">X / Twitter</a>
+      <a href="https://linkedin.com/in/chandanmettu" class="connect-btn" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="content-wrap">
+    <div class="stats-row reveal">
+      <div class="stat-box"><div class="stat-num" data-count="2.5" data-suffix="K+">2.5K+</div><div class="stat-label">Subscribers</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="275" data-suffix="K+">275K+</div><div class="stat-label">Total Views</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="1" data-suffix="K+">1K+</div><div class="stat-label">LinkedIn</div></div>
+      <div class="stat-box"><div class="stat-num">IIT-H</div><div class="stat-label">Student Creator</div></div>
+    </div>
+    <div class="section-label reveal">What I talk about</div>
+    <div class="topic-grid">
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="topic-title">Student Tools</div><div class="topic-desc">Apps, setups, and systems I actually use — not productivity fluff.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div><div class="topic-title">Advice</div><div class="topic-desc">College decisions, branch choices, JEE strategy — from having done it, not recycled from the internet.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="topic-title">My Experiences</div><div class="topic-desc">Getting hired at 17, building at IIT-H, earning before graduating — stories from actually doing it.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="topic-title">Building in Public</div><div class="topic-desc">The real process of building CampusLoom and the rest — including what didn't work.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div><div class="topic-title">Tech &amp; Setups</div><div class="topic-desc">Apple ecosystem, dev setups, and the tools I use day to day.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="topic-title">Wins &amp; Misses</div><div class="topic-desc">The olympiad grind, startup attempts, and the things that flopped — without the highlight reel.</div></div>
+    </div>
+    <div class="section-label reveal">Videos that landed</div>
+    <div class="timeline">
+      <div class="timeline-item reveal"><div class="timeline-year">75K views</div><div class="timeline-content"><h3>How I Got Hired by Vedantu at 17</h3><p>The story of getting hired as a student and teaching on a top edtech platform at 17 — my most-watched video.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">33K views</div><div class="timeline-content"><h3>My Apple Setup at 19</h3><p>How I put together an Apple setup with money I earned myself — no shortcuts, just consistency.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-name">Chandan Mettu</div>
+  <div class="foot-links">
+    <a href="https://youtube.com/@ChandanMettu" target="_blank">YouTube</a>
+    <a href="https://linkedin.com/in/chandanmettu" target="_blank">LinkedIn</a>
+    <a href="https://x.com/ChandanMettu" target="_blank">Twitter</a>
+    <a href="https://campusloom.in" target="_blank">CampusLoom</a>
+  </div>
+</footer>
+</div><!-- /wrap-z -->
+
+<script>
+/* ===== ACCENTS ===== */
+const ACCENTS={
+  pro:['var(--pro)','200,169,110'], wp:['var(--wp)','74,158,255'], builds:['var(--builds)','138,120,255'],
+  iith:['var(--iith)','240,103,103'], athlete:['var(--athlete)','239,154,82'], creator:['var(--creator)','65,201,154']
+};
+
+/* ===== REVEAL ON SCROLL ===== */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); maybeCount(e.target); io.unobserve(e.target);} });
+},{threshold:0.06, rootMargin:'0px 0px -6% 0px'});
+
+function applyReveal(section){
+  const els=section.querySelectorAll('.reveal');
+  let d=0;
+  els.forEach(el=>{
+    if(el.classList.contains('in')) return;
+    const r=el.getBoundingClientRect();
+    if(r.top < window.innerHeight*0.94){
+      el.style.transitionDelay=(Math.min(d,8)*55)+'ms'; d++;
+      requestAnimationFrame(()=>{el.classList.add('in'); maybeCount(el);});
+    } else { el.style.transitionDelay='0ms'; io.observe(el); }
+  });
+}
+
+/* ===== COUNTERS ===== */
+function maybeCount(el){
+  el.querySelectorAll('.stat-num[data-count]').forEach(n=>{
+    if(n.dataset.done) return; n.dataset.done='1';
+    const target=parseFloat(n.dataset.count), suf=n.dataset.suffix||'', dec=(target%1!==0)?1:0;
+    const dur=900, t0=performance.now();
+    function step(t){
+      const p=Math.min((t-t0)/dur,1), e=1-Math.pow(1-p,3), v=target*e;
+      n.textContent=(dec?v.toFixed(1):Math.round(v))+suf;
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* ===== MODE SWITCH ===== */
+function switchMode(mode){
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-mode="'+mode+'"]').classList.add('active');
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const sec=document.getElementById('mode-'+mode); sec.classList.add('active');
+  document.body.className='mode-'+mode;
+  const [ac,rgb]=ACCENTS[mode];
+  document.documentElement.style.setProperty('--accent',ac);
+  document.documentElement.style.setProperty('--accent-rgb',rgb);
+  // reset open details
+  document.querySelectorAll('.project-detail').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.expand-btn .arrow').forEach(a=>a.textContent='+');
+  document.querySelectorAll('.iith-card').forEach(c=>c.classList.remove('open'));
+  document.querySelectorAll('.iith-expand-btn .arrow').forEach(a=>a.textContent='+');
+  window.scrollTo({top:0,behavior:'smooth'});
+  requestAnimationFrame(()=>applyReveal(sec));
+}
+
+/* ===== DETAIL TOGGLES ===== */
+function toggleDetail(btn){
+  const card=btn.closest('.project-card'), detail=card.querySelector('.project-detail'), open=detail.classList.contains('open');
+  btn.closest('.project-grid').querySelectorAll('.project-detail').forEach(d=>d.classList.remove('open'));
+  btn.closest('.project-grid').querySelectorAll('.expand-btn .arrow').forEach(a=>a.textContent='+');
+  if(!open){detail.classList.add('open');btn.querySelector('.arrow').textContent='−';}
+}
+function toggleIITH(btn){
+  const card=btn.closest('.iith-card'), open=card.classList.contains('open');
+  document.querySelectorAll('.iith-card').forEach(c=>c.classList.remove('open'));
+  document.querySelectorAll('.iith-expand-btn .arrow').forEach(a=>a.textContent='+');
+  if(!open){card.classList.add('open');btn.querySelector('.arrow').textContent='−';}
+}
+function toggleNav(){document.getElementById('navLinks').classList.toggle('open');document.getElementById('hamburger').classList.toggle('open');}
+
+/* ===== CURSOR SPOTLIGHT ===== */
+(function(){
+  let rx=innerWidth/2, ry=innerHeight*0.3, cx=rx, cy=ry, raf;
+  window.addEventListener('pointermove',e=>{ rx=e.clientX; ry=e.clientY; if(!raf) raf=requestAnimationFrame(tick); },{passive:true});
+  function tick(){
+    cx+=(rx-cx)*0.16; cy+=(ry-cy)*0.16;
+    document.documentElement.style.setProperty('--mx',cx+'px');
+    document.documentElement.style.setProperty('--my',cy+'px');
+    if(Math.abs(rx-cx)>0.4||Math.abs(ry-cy)>0.4){raf=requestAnimationFrame(tick);} else {raf=null;}
+  }
+  // per-card local glow
+  document.addEventListener('pointermove',e=>{
+    const card=e.target.closest('.project-card');
+    if(card){const r=card.getBoundingClientRect();card.style.setProperty('--cx',(e.clientX-r.left)+'px');card.style.setProperty('--cy',(e.clientY-r.top)+'px');}
+  },{passive:true});
+})();
+
+/* ===== STICKY TOGGLE SHADOW ===== */
+const shell=document.getElementById('toggleShell');
+window.addEventListener('scroll',()=>{ shell.classList.toggle('stuck', window.scrollY>60); },{passive:true});
+
+/* ===== 3D CERT CAROUSEL ===== */
+(function(){
+  const cards=document.querySelectorAll('.cert3d'), dotsWrap=document.getElementById('certDots'), total=cards.length;
+  let active=2;
+  function getPos(i){const o=i-active,a=Math.abs(o);return{tx:o*165,tz:-a*100,ry:o*-18,scale:a===0?1:a===1?0.8:0.62,opacity:a>2?0:a===2?0.35:a===1?0.7:1,z:10-a};}
+  function render(){
+    cards.forEach((c,i)=>{const p=getPos(i);c.style.transform=`translateX(${p.tx}px) translateZ(${p.tz}px) rotateY(${p.ry}deg) scale(${p.scale})`;c.style.opacity=p.opacity;c.style.zIndex=p.z;c.classList.toggle('active',i===active);});
+    document.querySelectorAll('.cert-dot').forEach((d,i)=>d.classList.toggle('active',i===active));
+  }
+  if(dotsWrap){for(let i=0;i<total;i++){const d=document.createElement('div');d.className='cert-dot'+(i===active?' active':'');d.onclick=()=>{active=i;render();};dotsWrap.appendChild(d);}}
+  cards.forEach((c,i)=>{c.onclick=()=>{active=i;render();};});
+  render();
+  window.rotateCert=function(dir){active=(active+dir+total)%total;render();};
+})();
+
+/* ===== MEDAL SHELF ===== */
+(function(){
+  const canvas=document.getElementById('medalCanvas'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const MEDALS=[
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFFFFF','#000080']},
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#000080','#FFFFFF','#CC0000']},
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFD700','#006400']},
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#FF6600','#FFFFFF','#006400']},
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFFFFF','#CC0000']},
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#000080','#FFD700','#000080']},
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFFFFF','#000080']},
+    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#006400','#FFFFFF','#CC0000']},
+    {color:'#B8B8B8',rim:'#808080',label:'S',ribbon:['#CC0000','#FFFFFF','#CC0000']},
+    {color:'#B8B8B8',rim:'#808080',label:'S',ribbon:['#000080','#FFFFFF','#CC0000']},
+    {color:'#B8B8B8',rim:'#808080',label:'S',ribbon:['#CC0000','#FFD700','#006400']},
+    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#CC0000','#FFFFFF','#000080']},
+    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#006400','#FFFFFF','#006400']},
+    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#CC0000','#FFFFFF','#CC0000']},
+    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#000080','#FFD700','#CC0000']},
+  ];
+  const N=MEDALS.length, GRAVITY=1400,DAMPING=0.983,ITERS=12,SEGS=8;
+  let W,H,shelfY,anchorXs,pendulums=[],drag=null,lastT=0,mouseDown=false,mouseX=0,mouseY=0;
+  function dst(a,b){return Math.sqrt((a.x-b.x)**2+(a.y-b.y)**2);}
+  function ltn(hex,a){let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgb(${Math.min(255,(r+255*a)|0)},${Math.min(255,(g+255*a)|0)},${Math.min(255,(b+255*a)|0)})`;}
+  function dkn(hex,a){let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgb(${Math.max(0,(r-255*a)|0)},${Math.max(0,(g-255*a)|0)},${Math.max(0,(b-255*a)|0)})`;}
+  class Point{constructor(x,y,pinned=false){this.x=x;this.y=y;this.px=x;this.py=y;this.pinned=pinned;}update(dt){if(this.pinned)return;const vx=(this.x-this.px)*DAMPING,vy=(this.y-this.py)*DAMPING;this.px=this.x;this.py=this.y;this.x+=vx;this.y+=vy+GRAVITY*dt*dt;}}
+  class Stick{constructor(a,b){this.a=a;this.b=b;this.len=dst(a,b);}constrain(){const dx=this.b.x-this.a.x,dy=this.b.y-this.a.y,d=Math.sqrt(dx*dx+dy*dy)||0.001,diff=(d-this.len)/d*0.5;if(!this.a.pinned){this.a.x+=dx*diff;this.a.y+=dy*diff;}if(!this.b.pinned){this.b.x-=dx*diff;this.b.y-=dy*diff;}}}
+  class Medal{
+    constructor(ax,medal){this.ax=ax;this.data=medal;this.dragging=false;const spread=Math.min(11,W/(N+1)*0.30);this.lp=[];this.rp=[];this.sticks=[];
+      for(let i=0;i<=SEGS;i++){const frac=i/SEGS,lx=ax-spread*(1-frac),rx=ax+spread*(1-frac),y=shelfY+frac*(H*0.72);this.lp.push(new Point(lx+(Math.random()-.5)*28,y+(Math.random()-.5)*8,i===0));this.rp.push(new Point(rx+(Math.random()-.5)*28,y+(Math.random()-.5)*8,i===0));}
+      for(let i=0;i<SEGS;i++){this.sticks.push(new Stick(this.lp[i],this.lp[i+1]));this.sticks.push(new Stick(this.rp[i],this.rp[i+1]));}
+      const bl=this.lp[SEGS],br=this.rp[SEGS];this.sticks.push(new Stick(bl,br));this.mp=new Point((bl.x+br.x)/2,(bl.y+br.y)/2);this.sticks.push(new Stick(bl,this.mp));this.sticks.push(new Stick(br,this.mp));}
+    update(dt){if(this.dragging)return;const t=this.mp,dx=t.x-mouseX,dy=t.y-mouseY,d=dst({x:mouseX,y:mouseY},t),hoverR=60;if(d<hoverR&&d>1){const force=(hoverR-d)/hoverR*3.5;t.x+=dx/d*force;t.y+=dy/d*force;}
+      this.lp.forEach(p=>p.update(dt));this.rp.forEach(p=>p.update(dt));this.mp.update(dt);const spread=Math.min(11,W/(N+1)*0.30);
+      for(let it=0;it<ITERS;it++){this.sticks.forEach(s=>s.constrain());this.lp[0].x=this.ax-spread;this.lp[0].y=shelfY;this.rp[0].x=this.ax+spread;this.rp[0].y=shelfY;const bl=this.lp[SEGS],br=this.rp[SEGS],mx=(bl.x+br.x)/2,my=(bl.y+br.y)/2,ddx=this.mp.x-mx,ddy=this.mp.y-my,dd=Math.sqrt(ddx*ddx+ddy*ddy);if(dd>2){this.mp.x-=ddx*0.3;this.mp.y-=ddy*0.3;}}}
+    collide(others){const t=this.mp,R=20;for(let o of others){if(o===this)continue;const ot=o.mp,dx=t.x-ot.x,dy=t.y-ot.y,d=Math.sqrt(dx*dx+dy*dy)||0.001,min=R*2+2;if(d<min){const nx=dx/d,ny=dy/d,push=(min-d)*0.5;t.x+=nx*push;t.y+=ny*push;t.px+=nx*push*.5;t.py+=ny*push*.5;ot.x-=nx*push;ot.y-=ny*push;ot.px-=nx*push*.5;ot.py-=ny*push*.5;}}}
+    draw(){const m=this.data,lp=this.lp,rp=this.rp,colors=m.ribbon,R=20;
+      for(let i=0;i<SEGS;i++){const la=lp[i],lb=lp[i+1],ra=rp[i],rb=rp[i+1];for(let ci=0;ci<colors.length;ci++){const t0=ci/colors.length,t1=(ci+1)/colors.length;ctx.beginPath();ctx.moveTo(la.x+(ra.x-la.x)*t0,la.y+(ra.y-la.y)*t0);ctx.lineTo(la.x+(ra.x-la.x)*t1,la.y+(ra.y-la.y)*t1);ctx.lineTo(lb.x+(rb.x-lb.x)*t1,lb.y+(rb.y-lb.y)*t1);ctx.lineTo(lb.x+(rb.x-lb.x)*t0,lb.y+(rb.y-lb.y)*t0);ctx.closePath();ctx.fillStyle=colors[ci];ctx.fill();}ctx.beginPath();ctx.moveTo(la.x,la.y);ctx.lineTo(lb.x,lb.y);ctx.moveTo(ra.x,ra.y);ctx.lineTo(rb.x,rb.y);ctx.strokeStyle='rgba(0,0,0,0.12)';ctx.lineWidth=0.5;ctx.stroke();}
+      const t=this.mp;ctx.beginPath();ctx.arc(t.x,t.y,R+2.5,0,Math.PI*2);ctx.fillStyle=m.rim;ctx.fill();const g=ctx.createRadialGradient(t.x-4,t.y-4,1,t.x,t.y,R);g.addColorStop(0,ltn(m.color,.38));g.addColorStop(.45,m.color);g.addColorStop(1,dkn(m.color,.22));ctx.beginPath();ctx.arc(t.x,t.y,R,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.beginPath();ctx.arc(t.x,t.y,R*.62,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.stroke();ctx.font=`bold ${Math.round(R*.82)}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=m.label==='G'?'#3a2000':m.label==='S'?'#2a2a2a':'#2a1000';ctx.fillText(m.label,t.x,t.y);}
+    hit(px,py){return dst({x:px,y:py},this.mp)<26;}
+  }
+  function drawShelf(){ctx.fillStyle='#2a1a08';ctx.fillRect(0,shelfY-12,W,12);ctx.fillStyle='#4a3018';ctx.fillRect(0,shelfY-14,W,3);ctx.fillStyle='#6a4828';ctx.fillRect(0,shelfY-14,W,1);for(let i=0;i<N;i++){const ax=anchorXs[i];ctx.beginPath();ctx.arc(ax,shelfY-6,3.5,0,Math.PI*2);ctx.fillStyle='#999';ctx.fill();ctx.beginPath();ctx.arc(ax,shelfY-6,2,0,Math.PI*2);ctx.fillStyle='#ccc';ctx.fill();}}
+  function setup(){const rect=canvas.parentElement.getBoundingClientRect();W=Math.max(rect.width||860,320);H=Math.max(340,W*0.46);canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;canvas.style.height=H+'px';ctx.setTransform(1,0,0,1,0,0);ctx.scale(devicePixelRatio,devicePixelRatio);shelfY=H*0.14;anchorXs=Array.from({length:N},(_,i)=>(i+1)*W/(N+1));pendulums=anchorXs.map((ax,i)=>new Medal(ax,MEDALS[i]));}
+  function loop(t){const dt=Math.min((t-lastT)/1000,.028);lastT=t;ctx.clearRect(0,0,W,H);drawShelf();pendulums.forEach(p=>p.update(dt));pendulums.forEach(p=>p.collide(pendulums));pendulums.forEach(p=>p.draw());requestAnimationFrame(loop);}
+  function xy(e){const r=canvas.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return[(s.clientX-r.left),(s.clientY-r.top)];}
+  canvas.addEventListener('mousemove',e=>{const[mx,my]=xy(e);mouseX=mx;mouseY=my;if(drag&&mouseDown){const t=drag.mp;t.px=t.x;t.py=t.y;t.x=mx;t.y=my;}});
+  canvas.addEventListener('mousedown',e=>{mouseDown=true;const[mx,my]=xy(e);for(let p of pendulums){if(p.hit(mx,my)){p.dragging=true;drag=p;canvas.style.cursor='grabbing';break;}}});
+  canvas.addEventListener('mouseup',()=>{mouseDown=false;if(drag){drag.dragging=false;drag=null;canvas.style.cursor='grab';}});
+  canvas.addEventListener('mouseleave',()=>{mouseDown=false;mouseX=-999;mouseY=-999;if(drag){drag.dragging=false;drag=null;canvas.style.cursor='grab';}});
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();const[mx,my]=xy(e);mouseX=mx;mouseY=my;for(let p of pendulums){if(p.hit(mx,my)){p.dragging=true;drag=p;break;}}},{passive:false});
+  canvas.addEventListener('touchmove',e=>{e.preventDefault();const[mx,my]=xy(e);mouseX=mx;mouseY=my;if(drag){const t=drag.mp;t.px=t.x;t.py=t.y;t.x=mx;t.y=my;}},{passive:false});
+  canvas.addEventListener('touchend',()=>{mouseX=-999;mouseY=-999;if(drag){drag.dragging=false;drag=null;}});
+  window.addEventListener('resize',()=>{setup();});
+  mouseX=-999;mouseY=-999;setup();requestAnimationFrame(t=>{lastT=t;loop(t);});
+})();
+
+/* ===== INIT ===== */
+applyReveal(document.getElementById('mode-pro'));
+</script>
+</body>
+</html>
