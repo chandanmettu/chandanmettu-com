@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chandan Mettu</title>
+<meta name="description" content="Chandan Mettu is a student at IIT Hyderabad who builds student products, creates videos, teaches mathematics and competes in athletics.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -154,6 +155,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .edu-year{font-family:'Instrument Serif',serif;font-size:26px;color:var(--accent);line-height:1;transition:color 0.4s ease}
 .edu-grade{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-top:2px}
 .edu-img-wrap{position:relative;width:145px;height:100px;overflow:hidden;border-radius:5px;background:var(--bg3);border:1px solid var(--line)}
+.edu-img-col{display:none}
+.edu-item{grid-template-columns:80px 1fr}
 .edu-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s var(--ease)}
 .edu-item:hover .edu-img{transform:scale(1.06)}
 .edu-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase}
@@ -208,7 +211,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .event-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
 .event-card{background:var(--bg);transition:background 0.25s;display:flex;flex-direction:row}
 .event-card:hover{background:var(--bg3)}
-.event-img-wrap{position:relative;width:185px;flex-shrink:0;overflow:hidden;background:var(--bg2)}
+.event-img-wrap{display:none}
 .event-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.55s var(--ease)}
 .event-card:hover .event-img{transform:scale(1.05)}
 .event-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3)}
@@ -280,7 +283,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
     <div class="nav-name">Chandan <span>Mettu</span></div>
     <div class="nav-links" id="navLinks">
       <a href="https://youtube.com/@ChandanMettu" target="_blank">YouTube</a>
-      <a href="https://linkedin.com/in/chandanmettu" target="_blank">LinkedIn</a>
+      <a href="https://linkedin.com/in/saichandanmettu" target="_blank">LinkedIn</a>
       <a href="https://campusloom.in" target="_blank">CampusLoom</a>
     </div>
     <button class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
@@ -306,10 +309,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 <div class="section active" id="mode-pro">
   <div class="hero">
     <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Academic &amp; Teaching</div>
-    <div class="hero-name reveal">Mettu<br><em>Saichandan</em></div>
-    <p class="hero-desc reveal">I'm a first-year at <strong>IIT Hyderabad</strong>. Most of school I spent on math olympiads — five of them, up to <strong>INMO</strong>. These days I write and teach competitive math with a few edtech teams, and use it to figure out what to build next.</p>
+    <div class="hero-name reveal">Chandan<br><em>Mettu</em></div>
+    <p class="hero-desc reveal">I'm a student at <strong>IIT Hyderabad</strong>, studying Materials Science and Metallurgical Engineering. I build student products, teach mathematics, create videos and compete in athletics.</p>
     <div class="connect-row reveal">
-      <a href="https://linkedin.com/in/chandanmettu" class="connect-btn primary" target="_blank">LinkedIn</a>
+      <a href="https://linkedin.com/in/saichandanmettu" class="connect-btn primary" target="_blank">LinkedIn</a>
       <a href="https://youtube.com/@ChandanMettu" class="connect-btn" target="_blank">YouTube</a>
     </div>
   </div>
@@ -318,42 +321,38 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
     <div class="stats-row reveal">
       <div class="stat-box"><div class="stat-num">INMO</div><div class="stat-label">Qualified</div></div>
       <div class="stat-box"><div class="stat-num">IIT</div><div class="stat-label">Hyderabad</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="5" data-suffix="+">5+</div><div class="stat-label">Olympiads Written</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="8" data-suffix="+">8+</div><div class="stat-label">Teams Worked With</div></div>
+      <div class="stat-box"><div class="stat-num">MSME</div><div class="stat-label">B.Tech</div></div>
+      <div class="stat-box"><div class="stat-num">Math</div><div class="stat-label">Educator</div></div>
     </div>
 
     <div class="section-label reveal">Where I studied</div>
     <div class="edu-timeline">
       <div class="edu-item reveal">
         <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2016</div><div class="edu-grade">6th – 7th</div></div>
-        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_1.png" alt="St. Gabriel's High School" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
-        <div class="edu-content"><div class="edu-school">St. Gabriel's High School</div><div class="edu-location">Warangal</div><p>My early school years — academics, culturals, sports, a bit of everything. Where I got comfortable juggling more than one thing at a time.</p></div>
+        <div class="edu-content"><div class="edu-school">St. Gabriel's High School</div><div class="edu-location">Warangal</div><p>Classes 6 and 7.</p></div>
       </div>
       <div class="edu-item reveal">
         <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2018</div><div class="edu-grade">8th – 10th</div></div>
-        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_2.png" alt="SPR School of Excellence" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
-        <div class="edu-content"><div class="edu-school">SPR School of Excellence</div><div class="edu-location">Warangal</div><p>Where I got into olympiads — SOF IMO, AMTI, IOQM. This is when problem-solving stopped being homework and started being the thing I actually enjoyed.</p></div>
+        <div class="edu-content"><div class="edu-school">SPR School of Excellence</div><div class="edu-location">Warangal</div><p>Classes 8 to 10. This is where I began participating in mathematics olympiads.</p></div>
       </div>
       <div class="edu-item reveal">
         <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2021</div><div class="edu-grade">11th – 12th</div></div>
-        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_3.png" alt="Narayana Junior College" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
-        <div class="edu-content"><div class="edu-school">Narayana Junior College</div><div class="edu-location">Hyderabad</div><p>Two years pointed at JEE. I also kept at the olympiads and qualified for INMO on my last attempt.</p></div>
+        <div class="edu-content"><div class="edu-school">Narayana Junior College</div><div class="edu-location">Hyderabad</div><p>Classes 11 and 12, alongside JEE and mathematics olympiad preparation.</p></div>
       </div>
       <div class="edu-item reveal">
-        <div class="edu-year-col"><div class="edu-dot" style="background:var(--accent);border-color:var(--accent)"></div><div class="edu-year">2024</div><div class="edu-grade">B.Tech · Year 1</div></div>
-        <div class="edu-img-col"><div class="edu-img-wrap"><img src="/assets/EDU_IMG_4.png" alt="IIT Hyderabad" class="edu-img" onerror="this.style.display='none'"><div class="edu-img-ph"><span>+ Add Photo</span></div></div></div>
-        <div class="edu-content"><div class="edu-school">IIT Hyderabad</div><div class="edu-location">Hyderabad · MSME</div><p>Where I am now. I spend it building campus tools, running track, and writing most of it down as I go.</p></div>
+        <div class="edu-year-col"><div class="edu-dot" style="background:var(--accent);border-color:var(--accent)"></div><div class="edu-year">2024</div><div class="edu-grade">B.Tech</div></div>
+        <div class="edu-content"><div class="edu-school">IIT Hyderabad</div><div class="edu-location">Hyderabad · MSME</div><p>Studying Materials Science and Metallurgical Engineering while building products and competing for IIT Hyderabad in athletics.</p></div>
       </div>
     </div>
 
     <div class="section-label reveal">Olympiads I wrote</div>
     <div class="cert-carousel-wrap reveal">
       <div class="cert-carousel" id="certCarousel">
-        <div class="cert3d" data-index="0"><div class="cert3d-inner"><img src="/assets/CERT_IMG_1.png" alt="SOF IMO" onerror="this.style.display='none'"><div class="cert3d-ph">SOF IMO</div><div class="cert3d-label">SOF IMO</div><div class="cert3d-sub">Reached State Level</div></div></div>
-        <div class="cert3d" data-index="1"><div class="cert3d-inner"><img src="/assets/CERT_IMG_2.png" alt="AMTI" onerror="this.style.display='none'"><div class="cert3d-ph">AMTI</div><div class="cert3d-label">AMTI</div><div class="cert3d-sub">Reached Level II</div></div></div>
-        <div class="cert3d active" data-index="2"><div class="cert3d-inner"><img src="/assets/CERT_IMG_3.png" alt="IOQM 2020" onerror="this.style.display='none'"><div class="cert3d-ph">IOQM 2020</div><div class="cert3d-label">IOQM 2020</div><div class="cert3d-sub">Top 300 in Telangana</div></div></div>
-        <div class="cert3d" data-index="3"><div class="cert3d-inner"><img src="/assets/CERT_IMG_4.png" alt="IOQM 2022" onerror="this.style.display='none'"><div class="cert3d-ph">IOQM 2022</div><div class="cert3d-label">IOQM 2022</div><div class="cert3d-sub">Cleared to next round</div></div></div>
-        <div class="cert3d" data-index="4"><div class="cert3d-inner"><img src="/assets/CERT_IMG_5.png" alt="IOQM 2023" onerror="this.style.display='none'"><div class="cert3d-ph">IOQM 2023</div><div class="cert3d-label">IOQM 2023</div><div class="cert3d-sub">INMO · Top 300 in India</div></div></div>
+        <div class="cert3d" data-index="0"><div class="cert3d-inner"><div class="cert3d-label">SOF IMO</div><div class="cert3d-sub">Reached State Level</div></div></div>
+        <div class="cert3d" data-index="1"><div class="cert3d-inner"><div class="cert3d-label">AMTI</div><div class="cert3d-sub">Reached Level II</div></div></div>
+        <div class="cert3d active" data-index="2"><div class="cert3d-inner"><div class="cert3d-label">IOQM 2020</div><div class="cert3d-sub">Top 300 in Telangana</div></div></div>
+        <div class="cert3d" data-index="3"><div class="cert3d-inner"><div class="cert3d-label">IOQM 2022</div><div class="cert3d-sub">Cleared to next round</div></div></div>
+        <div class="cert3d" data-index="4"><div class="cert3d-inner"><div class="cert3d-label">IOQM 2023</div><div class="cert3d-sub">Qualified for INMO</div></div></div>
       </div>
       <div class="cert-carousel-nav">
         <button class="cert-nav-btn" onclick="rotateCert(-1)">←</button>
@@ -362,17 +361,12 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
       </div>
     </div>
 
-    <div class="section-label reveal">Where I've taught &amp; worked</div>
+    <div class="section-label reveal">Selected experience</div>
     <div class="timeline">
-      <div class="timeline-item reveal"><div class="timeline-year">Aug 2023<br>– Jan 2024</div><div class="timeline-content"><div class="org">Vedantu</div><h3>Olympiad Math Creator</h3><p>Made video solutions for olympiad-level problems and worked alongside their educators to shape the content for exam aspirants.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">May 2024<br>– Present</div><div class="timeline-content"><div class="org">Neha Agarwal — Mathematically Inclined</div><h3>Assistant Content Creator</h3><p>I help build JEE math content — breaking down the harder ideas into something students can actually follow.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">Aug 2024</div><div class="timeline-content"><div class="org">Yellow Chapter</div><h3>Olympiad Math Trainer</h3><p>Trained students for olympiads and JEE, writing practice sets aimed at their weak spots in problem-solving.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">Sep 2024</div><div class="timeline-content"><div class="org">Physics Wallah</div><h3>Physics Doubt Solver</h3><p>Cleared the interviews for a role helping JEE students work through physics doubts at scale.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">Oct 2024</div><div class="timeline-content"><div class="org">Telus International</div><h3>Freelance Math Expert</h3><p>Took on a freelance content role writing accurate, well-structured math learning material.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">Nov 2024</div><div class="timeline-content"><div class="org">NNIT</div><h3>JEE Maths Mentor</h3><p>Brought on as a JEE math tutor to guide students through prep and problem-solving.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">2024</div><div class="timeline-content"><div class="org">TEDxIITHyderabad</div><h3>Outreach &amp; Collaborations</h3><p>Handled speaker outreach and external partnerships for the campus TEDx.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">2024</div><div class="timeline-content"><div class="org">E-Cell IIT Hyderabad</div><h3>Assistant Marketing Manager</h3><p>Ran marketing for E-Summit, the campus entrepreneurship event — outreach and campaigns across IIT-H.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">2025</div><div class="timeline-content"><div class="org">Perplexity AI</div><h3>VIP Campus Partner</h3><p>Led Comet browser adoption at IIT-H — brought in 1,500+ qualified student leads and ended up among the top campus partners in the country.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Sep 2026<br>– Present</div><div class="timeline-content"><div class="org">OpenAI Student Collective</div><h3>Campus Lead, IIT Hyderabad</h3><p>A student leadership role focused on helping more students at IIT Hyderabad learn and build with AI.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">May 2024<br>– Present</div><div class="timeline-content"><div class="org">Mathematically Inclined</div><h3>Mathematics Content &amp; Teaching</h3><p>I work on mathematics content and help students prepare for JEE and olympiads.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Jun 2023<br>– Jan 2024</div><div class="timeline-content"><div class="org">Vedantu Olympiad School</div><h3>Teaching Assistant</h3><p>I created mathematics lessons and assignments for olympiad students. It was my first teaching role, at 17.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Sep – Dec<br>2025</div><div class="timeline-content"><div class="org">Perplexity</div><h3>VIP Campus Partner</h3><p>I worked on campus adoption at IIT Hyderabad and generated more than 1,500 qualified student leads.</p></div></div>
     </div>
   </div>
 </div>
@@ -382,26 +376,25 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="hero">
     <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Client Work</div>
     <div class="hero-name reveal">Sites I've<br><em>Built for Clients</em></div>
-    <p class="hero-desc reveal">I build WordPress sites for people — custom themes, stores, course platforms. Around <strong>100 of them</strong> over the last six years, for clients in India and abroad.</p>
+    <p class="hero-desc reveal">I've built <strong>more than 50 websites</strong> for clients, including course platforms, online stores and business websites.</p>
     <div class="connect-row reveal">
-      <a href="https://web.chandanmettu.com" class="connect-btn primary" target="_blank">Book a Call</a>
-      <a href="https://web.chandanmettu.com" class="connect-btn" target="_blank">Full Portfolio</a>
+      <a href="https://web.chandanmettu.com" class="connect-btn primary" target="_blank">Selected client work</a>
     </div>
   </div>
   <div class="divider"></div>
   <div class="content-wrap">
     <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num" data-count="100" data-suffix="+">100+</div><div class="stat-label">Sites Built</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="6" data-suffix="+">6+</div><div class="stat-label">Years</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="50" data-suffix="+">50+</div><div class="stat-label">Clients</div></div>
-      <div class="stat-box"><div class="stat-num">WP</div><div class="stat-label">Full Stack</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="50" data-suffix="+">50+</div><div class="stat-label">Sites Built</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="5" data-suffix="+">5+</div><div class="stat-label">Years</div></div>
+      <div class="stat-box"><div class="stat-num">India +</div><div class="stat-label">International Clients</div></div>
+      <div class="stat-box"><div class="stat-num">WP</div><div class="stat-label">Primary Platform</div></div>
     </div>
-    <div class="section-label reveal">A few I'm happy with</div>
+    <div class="section-label reveal">Selected work</div>
     <div class="project-grid">
-      <div class="project-card reveal"><div class="project-badge">Creator Platform</div><div class="project-title">Tharun Speaks</div><div class="project-intro">A video-editing course platform for a YouTube creator — custom WordPress with course management built in.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Courses</span><span class="tag">Elementor</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>A custom build for Tharun, a well-known Indian YouTube creator. It handles structured course delivery — enrollment, video lessons, and progress tracking — designed to hold up as the audience grows.</p><p>I kept it fast and clean, and matched the whole thing to his brand.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">E-commerce</div><div class="project-title">WooCommerce Store</div><div class="project-intro">A full store with custom product filtering and a checkout built to reduce drop-off.</div><div class="project-tags"><span class="tag">WooCommerce</span><span class="tag">UI</span><span class="tag">Filters</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>Built on WooCommerce with custom categories, advanced filtering, and a streamlined checkout. I also set up order management and inventory visibility so the client could run it themselves.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">Dynamic Listing</div><div class="project-title">College Listing Platform</div><div class="project-intro">An IIT college directory with dynamic filters, profiles, and side-by-side comparison.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Dynamic Data</span><span class="tag">ACF</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>A listing platform where each college profile is filterable by branch, location, fees, and placement stats. I built it on Advanced Custom Fields with a custom query layer, so the client can edit everything without touching code.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">LMS</div><div class="project-title">JEE Course Platform</div><div class="project-intro">A structured LMS for JEE prep — subject-wise modules with progress tracking.</div><div class="project-tags"><span class="tag">Elementor</span><span class="tag">LMS</span><span class="tag">WordPress</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>An LMS built for JEE aspirants — subject-wise modules, ordered lesson flows, and progress indicators for long prep cycles. I designed it distraction-free so it holds up over long study sessions.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">Course Platform</div><div class="project-title">Tharun Speaks</div><div class="project-intro">A WordPress course website built for a video-editing creator.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Courses</span><span class="tag">Elementor</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I worked on the course structure, lesson experience and visual system for the website.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">E-commerce</div><div class="project-title">Online Stores</div><div class="project-intro">WooCommerce websites with product catalogues, filters, checkout and order management.</div><div class="project-tags"><span class="tag">WooCommerce</span><span class="tag">UI</span><span class="tag">Operations</span></div></div>
+      <div class="project-card reveal"><div class="project-badge">Directories</div><div class="project-title">Listing Websites</div><div class="project-intro">Searchable websites with custom fields, filters and editable content.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Dynamic Data</span><span class="tag">ACF</span></div></div>
+      <div class="project-card reveal"><div class="project-badge">Learning</div><div class="project-title">Education Platforms</div><div class="project-intro">Course and learning websites with structured lessons and progress tools.</div><div class="project-tags"><span class="tag">LMS</span><span class="tag">WordPress</span><span class="tag">Education</span></div></div>
     </div>
     <div class="section-label reveal">What I take on</div>
     <div class="cert-grid">
@@ -418,7 +411,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="hero">
     <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Products</div>
     <div class="hero-name reveal">Things I<br><em>Built Myself</em></div>
-    <p class="hero-desc reveal">Products I built on my own — usually because I needed them to exist and no one else was making them. A couple ended up reaching <strong>tens of thousands of students</strong>.</p>
+    <p class="hero-desc reveal">I build products around problems I've experienced myself, especially education and campus life.</p>
     <div class="connect-row reveal">
       <a href="https://campusloom.in" class="connect-btn primary" target="_blank">Visit CampusLoom</a>
     </div>
@@ -427,17 +420,17 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="content-wrap">
     <div class="stats-row reveal">
       <div class="stat-box"><div class="stat-num" data-count="20" data-suffix="K+">20K+</div><div class="stat-label">CampusLoom Users</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="50" data-suffix="K+">50K+</div><div class="stat-label">Learnoclub Peak</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="5">5</div><div class="stat-label">Products Built</div></div>
-      <div class="stat-box"><div class="stat-num">Solo</div><div class="stat-label">Every One</div></div>
+      <div class="stat-box"><div class="stat-num">11,973</div><div class="stat-label">College Cutoffs</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="128">128</div><div class="stat-label">Institutes Mapped</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="10" data-suffix="+">10+</div><div class="stat-label">Projects Built</div></div>
     </div>
     <div class="section-label reveal">What I've shipped</div>
     <div class="project-grid">
-      <div class="project-card reveal"><div class="project-badge">Live now</div><div class="project-title">CampusLoom 2.0</div><div class="project-intro">A detailed college-decision platform — 220+ branches, real placement data, AI-replaceability insights, and a branch-vs-college comparator.</div><div class="project-tags"><span class="tag">Live</span><span class="tag">EdTech</span><span class="tag">20K+ Users</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I built the whole thing solo — design, code, data, and getting it in front of people. It covers curriculum breakdowns, AI-replaceability scores, recruiter insights, and a comparison engine across 220+ branches in India.</p><p>It's one of the more detailed resources of its kind here, with 20,000+ people using it.</p><a href="https://campusloom.in" class="project-link" target="_blank">campusloom.in ↗</a></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">Earlier version</div><div class="project-title">CampusLoom 1.0</div><div class="project-intro">Peer guidance connecting JEE aspirants with verified IITians and NITians for honest college advice.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">Community</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>The first version ran as a community platform where aspirants could talk to verified seniors for unfiltered advice. It's what proved the idea was worth building properly — which became 2.0.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">2020 → 2022</div><div class="project-title">NOTE-IT</div><div class="project-intro">A JEE notes platform I started at 14. Grew to 30,000+ users with no ads and no budget.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span><span class="tag">30K Users</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>My first real project — a structured JEE notes repository I started at 14 with no team and no money. It grew to 30,000+ users through search and word of mouth.</p><p>It's where everything after this started.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">2022 → 2023</div><div class="project-title">Learnoclub</div><div class="project-intro">NOTE-IT grown into a fuller JEE prep platform. Hit 50,000+ monthly users at its peak.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span><span class="tag">50K Users</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I built Learnoclub on top of NOTE-IT — notes, resources, and structured content for JEE aspirants across the country. It reached 50,000+ monthly users at its peak, all without paid marketing.</p><p>I wound it down after joining IIT-H to focus on CampusLoom.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">2024</div><div class="project-title">Mentor Guidance Platform</div><div class="project-intro">Connecting incoming students with IITians and NITians for real college guidance.</div><div class="project-tags"><span class="tag">EdTech</span><span class="tag">Community</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I built this over a first-year break to connect incoming students with verified seniors at IITs and NITs. It was set up for real guidance on college decisions, branch choices, and prep — a gap I didn't see anyone else covering at the time.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">Live</div><div class="project-title">CampusLoom</div><div class="project-intro">Free tools for students preparing for JEE and making college decisions.</div><div class="project-tags"><span class="tag">20K+ Users</span><span class="tag">College Finder</span><span class="tag">JEE Tools</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>CampusLoom includes JEE resources and a College Finder covering 11,973 cutoffs across 128 institutes.</p><a href="https://campusloom.in" class="project-link" target="_blank">campusloom.in ↗</a></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">Live</div><div class="project-title">Campus Kit</div><div class="project-intro">A practical collection of college packing, laptop and student-discount tools.</div><div class="project-tags"><span class="tag">Checklist</span><span class="tag">Laptop Finder</span><span class="tag">Student Perks</span></div><a href="https://kit.campusloom.in" class="project-link" target="_blank">kit.campusloom.in ↗</a></div>
+      <div class="project-card reveal"><div class="project-badge">2020 → 2022</div><div class="project-title">NOTE-IT</div><div class="project-intro">The JEE notes website I started while I was in school.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>NOTE-IT was my first public student project and later grew into Learnoclub.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">2022 → 2023</div><div class="project-title">Learnoclub</div><div class="project-intro">A larger JEE preparation platform that grew out of NOTE-IT.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span><span class="tag">50K+ Monthly Views at Peak</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>Learnoclub combined notes, resources and structured preparation content. It is no longer active.</p></div></div></div>
+      <div class="project-card reveal"><div class="project-badge">Live</div><div class="project-title">Brand My Desk</div><div class="project-intro">A small marketplace for sponsoring physical spaces on my everyday devices and gear.</div><div class="project-tags"><span class="tag">Independent</span><span class="tag">Experiment</span><span class="tag">Live</span></div><a href="https://desk.chandanmettu.com" class="project-link" target="_blank">desk.chandanmettu.com ↗</a></div>
     </div>
   </div>
 </div>
@@ -447,51 +440,30 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="hero">
     <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Campus Tools</div>
     <div class="hero-name reveal">Built for<br><em>IIT Hyderabad</em></div>
-    <p class="hero-desc reveal">Everything here started with a problem I ran into on campus — a broken workflow, a missing tool. So I built the fix on my own time, servers, and domains.</p>
+    <p class="hero-desc reveal">I build and maintain tools for recurring student problems at IIT Hyderabad. Some are public services; others are still being tested.</p>
     <div class="connect-row reveal">
-      <a href="https://resourcehub.iith.online/" class="connect-btn primary" target="_blank">Resource Hub</a>
-      <a href="https://store.iith.online/" class="connect-btn" target="_blank">Merch Store</a>
+      <a href="https://abhyas.iith.online/" class="connect-btn primary" target="_blank">Abhyas</a>
+      <a href="https://nivas.iith.online/" class="connect-btn" target="_blank">Nivas</a>
       <a href="https://athletics.iith.online/" class="connect-btn" target="_blank">Athletics</a>
     </div>
   </div>
   <div class="divider"></div>
   <div class="content-wrap">
     <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num" data-count="7" data-suffix="+">7+</div><div class="stat-label">Platforms Built</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="3" data-suffix="K+">3K+</div><div class="stat-label">Users Across Them</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="4" data-suffix="+">4+</div><div class="stat-label">Live Sites</div></div>
-      <div class="stat-box"><div class="stat-num">Solo</div><div class="stat-label">Built by One</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="7" data-suffix="+">7+</div><div class="stat-label">Campus Projects</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="864">864</div><div class="stat-label">Abhyas Resources</div></div>
+      <div class="stat-box"><div class="stat-num">Live</div><div class="stat-label">Student Services</div></div>
+      <div class="stat-box"><div class="stat-num">IITH</div><div class="stat-label">Built on Campus</div></div>
     </div>
     <div class="section-label reveal">The platforms</div>
     <div class="iith-cards">
-      <div class="iith-card reveal">
-        <div class="iith-img-wrap"><img src="/assets/portfolio-hero.png" alt="IITH Resource Hub" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Live</span></div></div>
-        <div class="iith-card-body"><div class="iith-card-num">01</div><div class="iith-card-title">Resource Hub</div><div class="iith-card-intro">A searchable archive of past question papers — filter by branch, year, and course.</div><div class="iith-card-tags"><span class="tag">1.5K+ Users</span><span class="tag">Academic</span><span class="tag">Live</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>There was no central place to find past exam papers, so I made one — a searchable catalog filterable by branch, year, and course.</p><p>It's grown to 1,500+ users across departments and is still in daily use.</p><a href="https://resourcehub.iith.online/" class="project-link" target="_blank">resourcehub.iith.online ↗</a></div></div></div>
-      </div>
-      <div class="iith-card reveal">
-        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_2.png" alt="IITH Merch Store" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Live</span></div></div>
-        <div class="iith-card-body"><div class="iith-card-num">02</div><div class="iith-card-title">Merch Store</div><div class="iith-card-intro">A full store with Razorpay checkout, replacing the old Google Form workflow.</div><div class="iith-card-tags"><span class="tag">E-commerce</span><span class="tag">Razorpay</span><span class="tag">Live</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Merch orders were being taken through Google Forms. I replaced the whole thing — Razorpay payments, automated order reports, and a clean storefront for students and faculty.</p><p>Built solo in about three weeks, end to end.</p><a href="https://store.iith.online/" class="project-link" target="_blank">store.iith.online ↗</a></div></div></div>
-      </div>
-      <div class="iith-card reveal">
-        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_3.png" alt="Mess Registration Portal" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024</span></div></div>
-        <div class="iith-card-body"><div class="iith-card-num">03</div><div class="iith-card-title">Mess Registration Portal</div><div class="iith-card-intro">A purpose-built hostel mess registration system, replacing a repurposed old portal.</div><div class="iith-card-tags"><span class="tag">Student Services</span><span class="tag">Portal</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Mess registration was running on an old COVID vaccination portal that had long outlived its purpose. I built a dedicated flow for registration, allocation, and records.</p></div></div></div>
-      </div>
-      <div class="iith-card reveal">
-        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_4.png" alt="Athletics Team Website" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Live</span></div></div>
-        <div class="iith-card-body"><div class="iith-card-num">04</div><div class="iith-card-title">Athletics Team Website</div><div class="iith-card-intro">A home for IITH's track &amp; field team — records, events, and athlete profiles.</div><div class="iith-card-tags"><span class="tag">Sports</span><span class="tag">Live</span><span class="tag">Athletics</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>The athletics program had no public presence, so I gave the team a permanent home — medal records, event highlights, athlete profiles, and an achievements gallery.</p><p>I built it as Athletics Coordinator to give the program the visibility it had earned on the field.</p><a href="https://athletics.iith.online/achievements-gallery/" class="project-link" target="_blank">athletics.iith.online ↗</a></div></div></div>
-      </div>
-      <div class="iith-card reveal">
-        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_5.png" alt="Sports Ticket Portal" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024</span></div></div>
-        <div class="iith-card-body"><div class="iith-card-num">05</div><div class="iith-card-title">Sports Support Tickets</div><div class="iith-card-intro">A ticketing system for the sports department's queries and requests.</div><div class="iith-card-tags"><span class="tag">Internal Tool</span><span class="tag">Sports</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Requests for equipment, bookings, and facilities were being raised informally with nothing tracked. I built a ticketing system where students submit queries, track status, and actually get resolution.</p></div></div></div>
-      </div>
-      <div class="iith-card reveal">
-        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_6.png" alt="IPL Auction System" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2025</span></div></div>
-        <div class="iith-card-body"><div class="iith-card-num">06</div><div class="iith-card-title">Live Auction System</div><div class="iith-card-intro">A real-time athlete auction for the Institute Athletics League — live purse, live bidding.</div><div class="iith-card-tags"><span class="tag">Real-Time</span><span class="tag">Athletics</span><span class="tag">Live Event</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>Team selection for the league was being done manually over projected Google Slides. I rebuilt it as an IPL-style live auction — real-time bidding, live purse tracking, team dashboards, and dynamic athlete cards.</p><p>It turned a routine selection into an event people actually showed up for.</p></div></div></div>
-      </div>
-      <div class="iith-card reveal">
-        <div class="iith-img-wrap"><img src="/assets/YOUR_IMAGE_7.png" alt="ERP Portal Prototype" class="iith-img" onerror="this.style.display='none'"><div class="iith-img-placeholder"><span>+ Add Screenshot</span></div><div class="iith-card-overlay"><span class="iith-card-badge">2024 · Prototype</span></div></div>
-        <div class="iith-card-body"><div class="iith-card-num">07</div><div class="iith-card-title">ERP Portal Prototype</div><div class="iith-card-intro">A working prototype of the student ERP, built when the original went offline.</div><div class="iith-card-tags"><span class="tag">Prototype</span><span class="tag">ERP</span><span class="tag">Complex</span></div><button class="iith-expand-btn" onclick="toggleIITH(this)"><span class="arrow">+</span> Details</button><div class="iith-card-detail"><div class="iith-card-detail-inner"><p>When the ERP portal went down, I started rebuilding it from scratch and got a working prototype covering the core student-facing functionality.</p><p>It's the most complex thing I've built so far — I paused it on infrastructure limits, not technical ones.</p></div></div></div>
-      </div>
+      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">01 · Live</div><div class="iith-card-title">Abhyas</div><div class="iith-card-intro">IIT Hyderabad's student resource archive for notes, papers, assignments and books.</div><div class="iith-card-tags"><span class="tag">864 Resources</span><span class="tag">20 Contributors</span></div><a href="https://abhyas.iith.online/" class="project-link" target="_blank">abhyas.iith.online ↗</a></div></div>
+      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">02 · Live</div><div class="iith-card-title">Nivas</div><div class="iith-card-intro">A hostel room-swap board with a visual building and room browser.</div><div class="iith-card-tags"><span class="tag">Hostels</span><span class="tag">Student Utility</span></div><a href="https://nivas.iith.online/" class="project-link" target="_blank">nivas.iith.online ↗</a></div></div>
+      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">03 · Built</div><div class="iith-card-title">Sanchari</div><div class="iith-card-intro">A bus ticketing system for IIT Hyderabad. The product is built; the production payment flow is awaiting approval.</div><div class="iith-card-tags"><span class="tag">Transport</span><span class="tag">Rollout Pending</span></div><a href="https://sanchari.iith.online/" class="project-link" target="_blank">sanchari.iith.online ↗</a></div></div>
+      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">04 · Live</div><div class="iith-card-title">IITH Athletics</div><div class="iith-card-intro">The public website for the institute's athletics team, records, events and athletes.</div><div class="iith-card-tags"><span class="tag">Sports</span><span class="tag">Team Website</span></div><a href="https://athletics.iith.online/" class="project-link" target="_blank">athletics.iith.online ↗</a></div></div>
+      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">05 · Testing</div><div class="iith-card-title">Ruchi</div><div class="iith-card-intro">A mess registration and dining portal. The interface is live while the production backend is still being completed.</div><div class="iith-card-tags"><span class="tag">Dining</span><span class="tag">Testing</span></div><a href="https://ruchi.iith.online/" class="project-link" target="_blank">ruchi.iith.online ↗</a></div></div>
+      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">06 · Live</div><div class="iith-card-title">IITH Aquatics</div><div class="iith-card-intro">Pool timings, fees, rules, registration and documents in one place.</div><div class="iith-card-tags"><span class="tag">Aquatics</span><span class="tag">Information</span></div><a href="https://aquatics.iith.online/" class="project-link" target="_blank">aquatics.iith.online ↗</a></div></div>
+      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">07 · Live</div><div class="iith-card-title">IITH Garage</div><div class="iith-card-intro">A public index of the student products I've built for IIT Hyderabad.</div><div class="iith-card-tags"><span class="tag">Project Index</span><span class="tag">Live</span></div><a href="https://iith.online/" class="project-link" target="_blank">iith.online ↗</a></div></div>
     </div>
   </div>
 </div>
@@ -501,7 +473,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="hero" style="padding-bottom:0">
     <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Athletics</div>
     <div class="hero-name reveal">On the<br><em>Track</em></div>
-    <p class="hero-desc reveal">I sprint and long jump for IIT Hyderabad — medals across inter-IIT, inter-university, and open meets. And most other sports on campus when I get the chance. Drag the medals below.</p>
+    <p class="hero-desc reveal">I represent IIT Hyderabad in sprinting and long jump, and currently serve as Athletics Captain.</p>
     <div class="connect-row reveal">
       <a href="https://athletics.iith.online/" class="connect-btn primary" target="_blank">IITH Athletics</a>
     </div>
@@ -512,11 +484,12 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="divider"></div>
   <div class="content-wrap">
     <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num" data-count="8">8</div><div class="stat-label">Gold</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="3">3</div><div class="stat-label">Silver</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="4">4</div><div class="stat-label">Bronze</div></div>
-      <div class="stat-box"><div class="stat-num">IIT-H</div><div class="stat-label">Athletics Coord.</div></div>
+      <div class="stat-box"><div class="stat-num">Captain</div><div class="stat-label">IIT-H Athletics</div></div>
+      <div class="stat-box"><div class="stat-num">Inter-IIT</div><div class="stat-label">Representative</div></div>
+      <div class="stat-box"><div class="stat-num">Sprint</div><div class="stat-label">100m &amp; 200m</div></div>
+      <div class="stat-box"><div class="stat-num">Jump</div><div class="stat-label">Long Jump</div></div>
     </div>
+    <!-- Detailed medal history is intentionally deferred until the design and data pass are complete.
     <div class="section-label reveal">Meets &amp; medals</div>
     <div class="event-list">
       <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_1.png" alt="AIRO 2026" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Mahindra University</span></div></div><div class="event-body"><div class="event-name">AIRO 2026</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">100m Dash — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">200m Dash — <strong>Bronze</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×400m Relay — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">4×100m Relay — <strong>Bronze</strong></span></div></div></div></div>
@@ -531,6 +504,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
       <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_11.png" alt="Institute Cricket League" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Cricket</span></div></div><div class="event-body"><div class="event-name">Institute Cricket League</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event"><strong>Runner-Up</strong> — Institute Cricket League</span></div></div></div></div>
       <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_8.png" alt="Early Career" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Warangal District · 2017</span></div></div><div class="event-body"><div class="event-name">Where it started</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">100m — <strong>Gold</strong>, District Level</span></div><div class="medal-row"><span class="medal-icon">🏅</span><span class="medal-event">School medals in athletics, long jump, volleyball, cricket, kho-kho</span></div></div></div></div>
     </div>
+    -->
   </div>
 </div>
 
@@ -539,34 +513,34 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="hero">
     <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Creator</div>
     <div class="hero-name reveal">On<br><em>YouTube</em></div>
-    <p class="hero-desc reveal">I make videos about student life, the tools I use, and the things I've tried building — mostly for students trying to figure out the same stuff I did.</p>
+    <p class="hero-desc reveal">I make videos about the products I build, technology I use, student life at IIT Hyderabad, opportunities, athletics and personal experiences.</p>
     <div class="connect-row reveal">
       <a href="https://youtube.com/@ChandanMettu" class="connect-btn primary" target="_blank">YouTube</a>
       <a href="https://x.com/ChandanMettu" class="connect-btn" target="_blank">X / Twitter</a>
-      <a href="https://linkedin.com/in/chandanmettu" class="connect-btn" target="_blank">LinkedIn</a>
+      <a href="https://linkedin.com/in/saichandanmettu" class="connect-btn" target="_blank">LinkedIn</a>
     </div>
   </div>
   <div class="divider"></div>
   <div class="content-wrap">
     <div class="stats-row reveal">
       <div class="stat-box"><div class="stat-num" data-count="2.5" data-suffix="K+">2.5K+</div><div class="stat-label">Subscribers</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="275" data-suffix="K+">275K+</div><div class="stat-label">Total Views</div></div>
+      <div class="stat-box"><div class="stat-num" data-count="290" data-suffix="K+">290K+</div><div class="stat-label">Total Views</div></div>
       <div class="stat-box"><div class="stat-num" data-count="1" data-suffix="K+">1K+</div><div class="stat-label">LinkedIn</div></div>
-      <div class="stat-box"><div class="stat-num">IIT-H</div><div class="stat-label">Student Creator</div></div>
+      <div class="stat-box"><div class="stat-num">IIT-H</div><div class="stat-label">Student</div></div>
     </div>
     <div class="section-label reveal">What I talk about</div>
     <div class="topic-grid">
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="topic-title">Student Tools</div><div class="topic-desc">Apps, setups, and systems I actually use — not productivity fluff.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div><div class="topic-title">Advice</div><div class="topic-desc">College decisions, branch choices, JEE strategy — from having done it, not recycled from the internet.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="topic-title">My Experiences</div><div class="topic-desc">Getting hired at 17, building at IIT-H, earning before graduating — stories from actually doing it.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="topic-title">Building in Public</div><div class="topic-desc">The real process of building CampusLoom and the rest — including what didn't work.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div><div class="topic-title">Tech &amp; Setups</div><div class="topic-desc">Apple ecosystem, dev setups, and the tools I use day to day.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="topic-title">Wins &amp; Misses</div><div class="topic-desc">The olympiad grind, startup attempts, and the things that flopped — without the highlight reel.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="topic-title">Products</div><div class="topic-desc">Why I built a product, how it works and what I learned from it.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div><div class="topic-title">Student Life</div><div class="topic-desc">College decisions, life at IIT Hyderabad and useful student resources.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="topic-title">Personal Stories</div><div class="topic-desc">Teaching at 17, building before college and the opportunities I've pursued.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="topic-title">Building</div><div class="topic-desc">The decisions, experiments and mistakes behind my work.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div><div class="topic-title">Technology</div><div class="topic-desc">AI, software, devices and the tools I use.</div></div>
+      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="topic-title">Athletics</div><div class="topic-desc">Training, competitions and representing IIT Hyderabad.</div></div>
     </div>
-    <div class="section-label reveal">Videos that landed</div>
+    <div class="section-label reveal">Selected videos</div>
     <div class="timeline">
-      <div class="timeline-item reveal"><div class="timeline-year">75K views</div><div class="timeline-content"><h3>How I Got Hired by Vedantu at 17</h3><p>The story of getting hired as a student and teaching on a top edtech platform at 17 — my most-watched video.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">33K views</div><div class="timeline-content"><h3>My Apple Setup at 19</h3><p>How I put together an Apple setup with money I earned myself — no shortcuts, just consistency.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Teaching</div><div class="timeline-content"><h3>How I Got Hired by Vedantu at 17</h3><p>How I found the opportunity, got selected and began teaching before college.</p></div></div>
+      <div class="timeline-item reveal"><div class="timeline-year">Technology</div><div class="timeline-content"><h3>My Apple Setup at 19</h3><p>A walkthrough of the devices I use and how I bought them with my own earnings.</p></div></div>
     </div>
   </div>
 </div>
@@ -575,7 +549,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="foot-name">Chandan Mettu</div>
   <div class="foot-links">
     <a href="https://youtube.com/@ChandanMettu" target="_blank">YouTube</a>
-    <a href="https://linkedin.com/in/chandanmettu" target="_blank">LinkedIn</a>
+    <a href="https://linkedin.com/in/saichandanmettu" target="_blank">LinkedIn</a>
     <a href="https://x.com/ChandanMettu" target="_blank">Twitter</a>
     <a href="https://campusloom.in" target="_blank">CampusLoom</a>
   </div>
