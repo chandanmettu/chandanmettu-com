@@ -1,730 +1,2089 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chandan Mettu</title>
-<meta name="description" content="Chandan Mettu is a student at IIT Hyderabad who builds student products, creates videos, teaches mathematics and competes in athletics.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#080808;--bg2:#0f0f0f;--bg3:#151515;--line:#242424;--line2:#1a1a1a;
-  --text:#f2efe9;--text2:#8f8b84;--text3:#3a3a3a;
-  --pro:#c8a96e;--wp:#4a9eff;--builds:#8a78ff;--iith:#f06767;--athlete:#ef9a52;--creator:#41c99a;
-  --accent:var(--pro);--accent-rgb:200,169,110;
-  --mx:50vw;--my:30vh;
-  --ease:cubic-bezier(0.22,1,0.36,1);
-}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
-
-/* ===== BACKGROUND LAYERS ===== */
-.bg-fixed{position:fixed;inset:0;z-index:0;pointer-events:none}
-/* cursor spotlight (hover reveal) */
-.spotlight{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(520px circle at var(--mx) var(--my), rgba(var(--accent-rgb),0.10), transparent 70%);
-  transition:background 0.35s ease}
-/* dot grid revealed only around cursor */
-.grid-reveal{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.9;
-  background-image:radial-gradient(rgba(var(--accent-rgb),0.55) 1px, transparent 1px);
-  background-size:26px 26px;
-  -webkit-mask-image:radial-gradient(220px circle at var(--mx) var(--my), #000 0%, transparent 65%);
-  mask-image:radial-gradient(220px circle at var(--mx) var(--my), #000 0%, transparent 65%)}
-/* soft top glow */
-.top-glow{position:fixed;top:-30%;left:50%;transform:translateX(-50%);width:900px;height:600px;z-index:0;pointer-events:none;
-  background:radial-gradient(closest-side, rgba(var(--accent-rgb),0.08), transparent);filter:blur(30px);transition:background 0.5s ease}
-.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")}
-.wrap-z{position:relative;z-index:2}
-
-/* ===== NAV ===== */
-.nav{max-width:1040px;margin:0 auto;padding:1.35rem 1.75rem;display:flex;align-items:center;justify-content:space-between}
-.nav-name{font-family:'Instrument Serif',serif;font-size:21px;letter-spacing:-0.01em}
-.nav-name span{color:var(--accent);transition:color 0.4s ease}
-.nav-links{display:flex;gap:1.75rem}
-.nav-links a{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color 0.2s;position:relative}
-.nav-links a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:1px;background:var(--accent);transition:width 0.3s var(--ease)}
-.nav-links a:hover{color:var(--text)}
-.nav-links a:hover::after{width:100%}
-.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
-.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--text2);transition:all 0.3s}
-
-/* ===== TOGGLE (sticky) ===== */
-.toggle-shell{position:sticky;top:0;z-index:50;padding:0.9rem 1rem;
-  background:rgba(8,8,8,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid transparent;transition:border-color 0.3s}
-.toggle-shell.stuck{border-color:var(--line2)}
-.toggle-bar{display:flex;align-items:center;justify-content:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.toggle-bar::-webkit-scrollbar{display:none}
-.toggle-inner{display:inline-flex;gap:4px;flex-shrink:0;padding:4px;border:1px solid var(--line);border-radius:100px;background:rgba(15,15,15,0.5)}
-.toggle-btn{padding:8px 16px;font-family:'DM Mono',monospace;font-size:10px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:color 0.25s ease,background 0.25s ease;white-space:nowrap;border-radius:100px}
-.toggle-btn:hover{color:var(--text)}
-.toggle-btn.active{color:#080808;font-weight:500}
-.toggle-btn[data-mode="pro"].active{background:var(--pro)}
-.toggle-btn[data-mode="wp"].active{background:var(--wp)}
-.toggle-btn[data-mode="builds"].active{background:var(--builds)}
-.toggle-btn[data-mode="iith"].active{background:var(--iith)}
-.toggle-btn[data-mode="athlete"].active{background:var(--athlete)}
-.toggle-btn[data-mode="creator"].active{background:var(--creator)}
-
-/* ===== SECTIONS ===== */
-.section{display:none}
-.section.active{display:block}
-
-/* reveal-on-scroll */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.7s var(--ease),transform 0.7s var(--ease)}
-.reveal.in{opacity:1;transform:none}
-
-/* ===== HERO ===== */
-.hero{padding:4.5rem 1.75rem 2.75rem;max-width:1040px;margin:0 auto}
-.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:11px;color:var(--text2)}
-.hero-eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px 1px rgba(var(--accent-rgb),0.7);display:inline-block}
-.hero-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(50px,8.5vw,104px);line-height:0.95;letter-spacing:-0.02em;margin-bottom:1.9rem}
-.hero-name em{font-style:italic;color:var(--accent);transition:color 0.4s ease}
-.hero-desc{font-size:15.5px;line-height:1.75;color:var(--text2);max-width:540px;font-weight:400}
-.hero-desc strong{color:var(--text);font-weight:500}
-.divider{width:calc(100% - 3.5rem);height:1px;background:var(--line2);max-width:1040px;margin:2.5rem auto}
-
-/* ===== CONTENT ===== */
-.content-wrap{max-width:1040px;margin:0 auto;padding:0 1.75rem 6rem}
-.section-label{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text2);margin-bottom:1.9rem;display:flex;align-items:center;gap:14px}
-.section-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.section-label::after{content:'';flex:1;height:1px;background:var(--line2)}
-
-/* ===== STATS ===== */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
-.stat-box{background:var(--bg);padding:1.6rem 1rem;text-align:center;transition:background 0.3s}
-.stat-box:hover{background:var(--bg3)}
-.stat-num{font-family:'Instrument Serif',serif;font-size:34px;line-height:1;margin-bottom:5px;color:var(--accent);transition:color 0.4s ease}
-.stat-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:0.12em;text-transform:uppercase}
-
-/* ===== PROJECT CARDS ===== */
-.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
-.project-card{background:var(--bg);padding:1.75rem;transition:background 0.25s;display:flex;flex-direction:column;position:relative}
-.project-card::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 0.3s;
-  background:radial-gradient(340px circle at var(--cx,50%) var(--cy,0%),rgba(var(--accent-rgb),0.06),transparent 70%)}
-.project-card:hover{background:var(--bg3)}
-.project-card:hover::before{opacity:1}
-.project-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.95rem;color:var(--accent)}
-.project-title{font-size:16px;font-weight:600;margin-bottom:7px;line-height:1.3;letter-spacing:-0.01em}
-.project-intro{font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:1.1rem;flex:1}
-.project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.1rem}
-.tag{font-family:'DM Mono',monospace;font-size:9px;font-weight:400;letter-spacing:0.06em;padding:4px 8px;border:1px solid var(--line);color:var(--text2);border-radius:100px;text-transform:uppercase}
-.expand-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--text2);padding:6px 12px;cursor:pointer;border-radius:100px;transition:all 0.2s;display:inline-flex;align-items:center;gap:7px;margin-top:auto;align-self:flex-start}
-.expand-btn:hover{border-color:var(--accent);color:var(--accent)}
-.project-detail{max-height:0;overflow:hidden;transition:max-height 0.45s var(--ease),opacity 0.3s ease;opacity:0}
-.project-detail.open{max-height:420px;opacity:1}
-.project-detail-inner{padding-top:1.1rem;margin-top:1.1rem;border-top:1px solid var(--line2)}
-.project-detail p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:0.8rem}
-.project-detail p:last-of-type{margin-bottom:0}
-.project-link{display:inline-flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:6px 12px;border-radius:100px;margin-top:0.9rem;transition:all 0.2s}
-.project-link:hover{border-color:var(--accent);background:rgba(var(--accent-rgb),0.06)}
-
-/* ===== SIMPLE CARDS (services) ===== */
-.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
-.cert-card{background:var(--bg);padding:1.75rem;transition:background 0.25s}
-.cert-card:hover{background:var(--bg3)}
-.cert-name{font-size:14px;font-weight:600;margin-bottom:6px;line-height:1.3}
-.cert-org{font-size:12.5px;color:var(--text2);line-height:1.6}
-
-/* ===== TIMELINE ===== */
-.timeline{margin-bottom:3.5rem;position:relative}
-.timeline-item{display:grid;grid-template-columns:110px 1fr;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--line2);position:relative}
-.timeline-item:last-child{border-bottom:none}
-.timeline-year{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);padding-top:3px;line-height:1.5}
-.timeline-content h3{font-size:15px;font-weight:600;margin-bottom:5px;letter-spacing:-0.01em}
-.timeline-content .org{font-size:11px;color:var(--accent);margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.4s ease}
-.timeline-content p{font-size:13.5px;color:var(--text2);line-height:1.7}
-
-/* ===== CONNECT ===== */
-.connect-row{display:flex;gap:0.75rem;margin-top:2rem;flex-wrap:wrap}
-.connect-btn{padding:11px 22px;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;border:1px solid var(--line);background:transparent;color:var(--text2);cursor:pointer;border-radius:100px;transition:all 0.25s;text-decoration:none;display:inline-flex;align-items:center}
-.connect-btn:hover{border-color:var(--text2);color:var(--text);transform:translateY(-1px)}
-.connect-btn.primary{color:var(--accent);border-color:rgba(var(--accent-rgb),0.45);background:rgba(var(--accent-rgb),0.05)}
-.connect-btn.primary:hover{background:rgba(var(--accent-rgb),0.12);border-color:var(--accent)}
-
-/* ===== EDUCATION TIMELINE ===== */
-.edu-timeline{display:flex;flex-direction:column;gap:0;margin-bottom:3.5rem}
-.edu-item{display:grid;grid-template-columns:90px 150px 1fr;gap:1.75rem;padding:2rem 0;border-bottom:1px solid var(--line2);align-items:start}
-.edu-item:last-child{border-bottom:none}
-.edu-year-col{display:flex;flex-direction:column;align-items:center;gap:7px;padding-top:4px}
-.edu-dot{width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--text3);flex-shrink:0;transition:all 0.3s}
-.edu-item:hover .edu-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 14px rgba(var(--accent-rgb),0.6)}
-.edu-year{font-family:'Instrument Serif',serif;font-size:26px;color:var(--accent);line-height:1;transition:color 0.4s ease}
-.edu-grade{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-top:2px}
-.edu-img-wrap{position:relative;width:145px;height:100px;overflow:hidden;border-radius:5px;background:var(--bg3);border:1px solid var(--line)}
-.edu-img-col{display:none}
-.edu-item{grid-template-columns:80px 1fr}
-.edu-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s var(--ease)}
-.edu-item:hover .edu-img{transform:scale(1.06)}
-.edu-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase}
-.edu-school{font-size:16px;font-weight:600;margin-bottom:4px;line-height:1.3;letter-spacing:-0.01em}
-.edu-location{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:9px;transition:color 0.4s ease}
-.edu-content p{font-size:13.5px;color:var(--text2);line-height:1.75}
-
-/* ===== 3D CERT CAROUSEL ===== */
-.cert-carousel-wrap{margin-bottom:3.5rem;user-select:none}
-.cert-carousel{position:relative;height:290px;display:flex;align-items:center;justify-content:center;perspective:1000px;overflow:visible}
-.cert3d{position:absolute;width:190px;cursor:pointer;transition:all 0.55s var(--ease)}
-.cert3d-inner{background:var(--bg3);border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 8px 34px rgba(0,0,0,0.5)}
-.cert3d.active .cert3d-inner{border-color:rgba(var(--accent-rgb),0.5);box-shadow:0 12px 40px rgba(var(--accent-rgb),0.14)}
-.cert3d-inner img{width:100%;height:135px;object-fit:cover;display:block}
-.cert3d-ph{display:none;width:100%;height:135px;background:var(--bg2);align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase}
-.cert3d-inner img[style*="display:none"] + .cert3d-ph{display:flex}
-.cert3d-label{padding:11px 13px 4px;font-size:14px;font-weight:600;line-height:1.2}
-.cert3d-sub{padding:0 13px 13px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:0.06em;line-height:1.4}
-.cert-carousel-nav{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-top:1.75rem}
-.cert-nav-btn{font-family:'DM Mono',monospace;font-size:15px;background:none;border:1px solid var(--line);color:var(--text2);width:38px;height:38px;border-radius:50%;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
-.cert-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
-.cert-dots{display:flex;gap:7px;align-items:center}
-.cert-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:all 0.25s}
-.cert-dot.active{background:var(--accent);width:20px;border-radius:3px}
-
-/* ===== IITH IMAGE CARDS ===== */
-.iith-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
-.iith-card{background:var(--bg);display:flex;flex-direction:column;transition:background 0.25s}
-.iith-card:hover{background:var(--bg3)}
-.iith-img-wrap{position:relative;width:100%;height:170px;overflow:hidden;background:var(--bg2);flex-shrink:0}
-.iith-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.55s var(--ease)}
-.iith-card:hover .iith-img{transform:scale(1.05)}
-.iith-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3)}
-.iith-img-placeholder span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);border:1px dashed var(--line);padding:7px 13px;border-radius:100px;transition:all 0.25s}
-.iith-card:hover .iith-img-placeholder span{color:var(--accent);border-color:var(--accent)}
-.iith-card-overlay{position:absolute;bottom:0;left:0;right:0;padding:0.8rem 1.1rem;background:linear-gradient(transparent,rgba(8,8,8,0.9))}
-.iith-card-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);transition:color 0.4s ease}
-.iith-card-body{padding:1.5rem;flex:1;display:flex;flex-direction:column}
-.iith-card-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--text3);margin-bottom:5px}
-.iith-card-title{font-size:15px;font-weight:600;margin-bottom:6px;line-height:1.3;letter-spacing:-0.01em}
-.iith-card-intro{font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:1rem;flex:1}
-.iith-card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem}
-.iith-expand-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--text2);padding:5px 12px;cursor:pointer;border-radius:100px;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;margin-top:auto;align-self:flex-start}
-.iith-expand-btn:hover{border-color:var(--accent);color:var(--accent)}
-.iith-card-detail{max-height:0;overflow:hidden;transition:max-height 0.45s var(--ease),opacity 0.3s ease;opacity:0}
-.iith-card.open .iith-card-detail{max-height:340px;opacity:1}
-.iith-card-detail-inner{padding-top:1rem;border-top:1px solid var(--line2);margin-top:1rem}
-.iith-card-detail-inner p{font-size:12.5px;color:var(--text2);line-height:1.75;margin-bottom:0.65rem}
-.iith-card-detail-inner p:last-of-type{margin-bottom:0}
-
-/* ===== ATHLETE EVENT CARDS ===== */
-.event-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
-.event-card{background:var(--bg);transition:background 0.25s;display:flex;flex-direction:row}
-.event-card:hover{background:var(--bg3)}
-.event-img-wrap{display:none}
-.event-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.55s var(--ease)}
-.event-card:hover .event-img{transform:scale(1.05)}
-.event-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg3)}
-.event-img-placeholder span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);border:1px dashed var(--line);padding:7px 12px;border-radius:100px;transition:all 0.25s;writing-mode:vertical-lr;text-orientation:mixed}
-.event-card:hover .event-img-placeholder span{color:var(--accent);border-color:var(--accent)}
-.event-img-overlay{position:absolute;bottom:0;left:0;right:0;padding:0.65rem 0.9rem;background:linear-gradient(transparent,rgba(8,8,8,0.9))}
-.event-venue{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);transition:color 0.4s ease}
-.event-body{padding:1.4rem 1.6rem;flex:1;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--line2)}
-.event-name{font-size:15px;font-weight:600;margin-bottom:0.9rem;line-height:1.3;letter-spacing:-0.01em}
-.medal-list{display:flex;flex-direction:column;gap:6px}
-.medal-row{display:flex;align-items:baseline;gap:9px;font-size:12.5px}
-.medal-icon{font-size:13px;flex-shrink:0}
-.medal-event{color:var(--text2);line-height:1.5}
-.medal-event strong{color:var(--text);font-weight:600}
-
-/* ===== CREATOR TOPICS ===== */
-.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;margin-bottom:3.5rem}
-.topic-card{background:var(--bg);padding:1.75rem;transition:background 0.25s}
-.topic-card:hover{background:var(--bg3)}
-.topic-icon{color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;transition:color 0.4s ease}
-.topic-title{font-size:14px;font-weight:600;margin-bottom:7px;letter-spacing:-0.01em}
-.topic-desc{font-size:12.5px;color:var(--text2);line-height:1.65}
-
-/* ===== FOOTER ===== */
-.foot{max-width:1040px;margin:0 auto;padding:2.5rem 1.75rem 3.5rem;border-top:1px solid var(--line2);display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
-.foot-name{font-family:'Instrument Serif',serif;font-size:18px}
-.foot-links{display:flex;gap:1.5rem}
-.foot-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color 0.2s}
-.foot-links a:hover{color:var(--accent)}
-
-/* ===== MOBILE ===== */
-@media(max-width:680px){
-  .nav-links{display:none}
-  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;background:var(--bg);z-index:200;padding:5.5rem 2rem 2rem;gap:2rem;border-bottom:1px solid var(--line)}
-  .nav-hamburger{display:flex}
-  .hero{padding:3.25rem 1.35rem 2rem}
-  .content-wrap{padding:0 1.35rem 4.5rem}
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .project-grid,.iith-cards{grid-template-columns:1fr}
-  .cert-grid{grid-template-columns:1fr}
-  .topic-grid{grid-template-columns:repeat(2,1fr)}
-  .toggle-bar{justify-content:flex-start}
-  .timeline-item{grid-template-columns:80px 1fr;gap:1rem}
-  .divider{width:calc(100% - 2.7rem)}
-  .edu-item{grid-template-columns:64px 1fr;grid-template-rows:auto auto;gap:0.9rem}
-  .edu-img-wrap{grid-column:2;grid-row:2;width:100%;height:90px;margin-top:0.4rem}
-  .edu-content{grid-column:2;grid-row:1}
-  .cert-carousel{height:250px}
-  .cert3d{width:150px}
-  .event-list{grid-template-columns:1fr}
-  .event-card{flex-direction:column}
-  .event-img-wrap{width:100%;height:160px}
-  .event-body{border-left:none;border-top:1px solid var(--line2)}
-  .foot{flex-direction:column;align-items:flex-start;gap:1.25rem}
-}
-@media(max-width:400px){.hero-name{font-size:46px}.topic-grid{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.grid-reveal,.spotlight{display:none}}
-</style>
-</head>
-<body class="mode-pro">
-<div class="spotlight"></div>
-<div class="grid-reveal"></div>
-<div class="top-glow"></div>
-<div class="grain"></div>
-
-<div class="wrap-z">
-<nav>
-  <div class="nav">
-    <div class="nav-name">Chandan <span>Mettu</span></div>
-    <div class="nav-links" id="navLinks">
-      <a href="https://youtube.com/@ChandanMettu" target="_blank">YouTube</a>
-      <a href="https://linkedin.com/in/saichandanmettu" target="_blank">LinkedIn</a>
-      <a href="https://campusloom.in" target="_blank">CampusLoom</a>
-    </div>
-    <button class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-<div class="toggle-shell" id="toggleShell">
-  <div class="toggle-bar">
-    <div class="toggle-inner">
-      <button class="toggle-btn active" data-mode="pro" onclick="switchMode('pro')">Academic</button>
-      <button class="toggle-btn" data-mode="wp" onclick="switchMode('wp')">Client Work</button>
-      <button class="toggle-btn" data-mode="builds" onclick="switchMode('builds')">Products</button>
-      <button class="toggle-btn" data-mode="iith" onclick="switchMode('iith')">Campus</button>
-      <button class="toggle-btn" data-mode="athlete" onclick="switchMode('athlete')">Athletics</button>
-      <button class="toggle-btn" data-mode="creator" onclick="switchMode('creator')">Creator</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== ACADEMIC ===== -->
-<div class="section active" id="mode-pro">
-  <div class="hero">
-    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Academic &amp; Teaching</div>
-    <div class="hero-name reveal">Chandan<br><em>Mettu</em></div>
-    <p class="hero-desc reveal">I'm a student at <strong>IIT Hyderabad</strong>. I build student products, teach mathematics, create videos and compete in athletics.</p>
-    <div class="connect-row reveal">
-      <a href="https://linkedin.com/in/saichandanmettu" class="connect-btn primary" target="_blank">LinkedIn</a>
-      <a href="https://youtube.com/@ChandanMettu" class="connect-btn" target="_blank">YouTube</a>
-    </div>
-  </div>
-  <div class="divider"></div>
-  <div class="content-wrap">
-    <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num">INMO</div><div class="stat-label">Qualified</div></div>
-      <div class="stat-box"><div class="stat-num">IIT</div><div class="stat-label">Hyderabad</div></div>
-      <div class="stat-box"><div class="stat-num">Builder</div><div class="stat-label">Student products</div></div>
-      <div class="stat-box"><div class="stat-num">Math</div><div class="stat-label">Educator</div></div>
-    </div>
-
-    <div class="section-label reveal">Where I studied</div>
-    <div class="edu-timeline">
-      <div class="edu-item reveal">
-        <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2016</div><div class="edu-grade">6th – 7th</div></div>
-        <div class="edu-content"><div class="edu-school">St. Gabriel's High School</div><div class="edu-location">Warangal</div><p>Classes 6 and 7.</p></div>
-      </div>
-      <div class="edu-item reveal">
-        <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2018</div><div class="edu-grade">8th – 10th</div></div>
-        <div class="edu-content"><div class="edu-school">SPR School of Excellence</div><div class="edu-location">Warangal</div><p>Classes 8 to 10. This is where I began participating in mathematics olympiads.</p></div>
-      </div>
-      <div class="edu-item reveal">
-        <div class="edu-year-col"><div class="edu-dot"></div><div class="edu-year">2021</div><div class="edu-grade">11th – 12th</div></div>
-        <div class="edu-content"><div class="edu-school">Narayana Junior College</div><div class="edu-location">Hyderabad</div><p>Classes 11 and 12, alongside JEE and mathematics olympiad preparation.</p></div>
-      </div>
-      <div class="edu-item reveal">
-        <div class="edu-year-col"><div class="edu-dot" style="background:var(--accent);border-color:var(--accent)"></div><div class="edu-year">2024</div><div class="edu-grade">Present</div></div>
-        <div class="edu-content"><div class="edu-school">IIT Hyderabad</div><div class="edu-location">Hyderabad</div><p>Student at IIT Hyderabad.</p></div>
-      </div>
-    </div>
-
-    <div class="section-label reveal">Olympiads I wrote</div>
-    <div class="cert-carousel-wrap reveal">
-      <div class="cert-carousel" id="certCarousel">
-        <div class="cert3d" data-index="0"><div class="cert3d-inner"><div class="cert3d-label">SOF IMO</div><div class="cert3d-sub">Reached State Level</div></div></div>
-        <div class="cert3d" data-index="1"><div class="cert3d-inner"><div class="cert3d-label">AMTI</div><div class="cert3d-sub">Reached Level II</div></div></div>
-        <div class="cert3d active" data-index="2"><div class="cert3d-inner"><div class="cert3d-label">IOQM 2020</div><div class="cert3d-sub">Top 300 in Telangana</div></div></div>
-        <div class="cert3d" data-index="3"><div class="cert3d-inner"><div class="cert3d-label">IOQM 2022</div><div class="cert3d-sub">Cleared to next round</div></div></div>
-        <div class="cert3d" data-index="4"><div class="cert3d-inner"><div class="cert3d-label">IOQM 2023</div><div class="cert3d-sub">Qualified for INMO</div></div></div>
-      </div>
-      <div class="cert-carousel-nav">
-        <button class="cert-nav-btn" onclick="rotateCert(-1)">←</button>
-        <div class="cert-dots" id="certDots"></div>
-        <button class="cert-nav-btn" onclick="rotateCert(1)">→</button>
-      </div>
-    </div>
-
-    <div class="section-label reveal">Selected experience</div>
-    <div class="timeline">
-      <div class="timeline-item reveal"><div class="timeline-year">Sep 2026<br>– Present</div><div class="timeline-content"><div class="org">OpenAI Student Collective</div><h3>Campus Lead, IIT Hyderabad</h3><p>A student leadership role focused on helping more students at IIT Hyderabad learn and build with AI.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">May 2024<br>– Present</div><div class="timeline-content"><div class="org">Mathematically Inclined</div><h3>Mathematics Content &amp; Teaching</h3><p>I work on mathematics content and help students prepare for JEE and olympiads.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">Jun 2023<br>– Jan 2024</div><div class="timeline-content"><div class="org">Vedantu Olympiad School</div><h3>Teaching Assistant</h3><p>I created mathematics lessons and assignments for olympiad students. It was my first teaching role, at 17.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">Sep – Dec<br>2025</div><div class="timeline-content"><div class="org">Perplexity</div><h3>VIP Campus Partner</h3><p>I worked on campus adoption at IIT Hyderabad and generated more than 1,500 qualified student leads.</p></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== CLIENT WORK ===== -->
-<div class="section" id="mode-wp">
-  <div class="hero">
-    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Client Work</div>
-    <div class="hero-name reveal">Sites I've<br><em>Built for Clients</em></div>
-    <p class="hero-desc reveal">I've built <strong>more than 50 websites</strong> for clients, including course platforms, online stores and business websites.</p>
-    <div class="connect-row reveal">
-      <a href="https://web.chandanmettu.com" class="connect-btn primary" target="_blank">Selected client work</a>
-    </div>
-  </div>
-  <div class="divider"></div>
-  <div class="content-wrap">
-    <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num" data-count="50" data-suffix="+">50+</div><div class="stat-label">Sites Built</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="5" data-suffix="+">5+</div><div class="stat-label">Years</div></div>
-      <div class="stat-box"><div class="stat-num">India +</div><div class="stat-label">International Clients</div></div>
-      <div class="stat-box"><div class="stat-num">WP</div><div class="stat-label">Primary Platform</div></div>
-    </div>
-    <div class="section-label reveal">Selected work</div>
-    <div class="project-grid">
-      <div class="project-card reveal"><div class="project-badge">Course Platform</div><div class="project-title">Tharun Speaks</div><div class="project-intro">A WordPress course website built for a video-editing creator.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Courses</span><span class="tag">Elementor</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>I worked on the course structure, lesson experience and visual system for the website.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">E-commerce</div><div class="project-title">Online Stores</div><div class="project-intro">WooCommerce websites with product catalogues, filters, checkout and order management.</div><div class="project-tags"><span class="tag">WooCommerce</span><span class="tag">UI</span><span class="tag">Operations</span></div></div>
-      <div class="project-card reveal"><div class="project-badge">Directories</div><div class="project-title">Listing Websites</div><div class="project-intro">Searchable websites with custom fields, filters and editable content.</div><div class="project-tags"><span class="tag">WordPress</span><span class="tag">Dynamic Data</span><span class="tag">ACF</span></div></div>
-      <div class="project-card reveal"><div class="project-badge">Learning</div><div class="project-title">Education Platforms</div><div class="project-intro">Course and learning websites with structured lessons and progress tools.</div><div class="project-tags"><span class="tag">LMS</span><span class="tag">WordPress</span><span class="tag">Education</span></div></div>
-    </div>
-    <div class="section-label reveal">What I take on</div>
-    <div class="cert-grid">
-      <div class="cert-card reveal"><div class="cert-name">Custom Websites</div><div class="cert-org">WordPress sites built for speed, responsiveness, and room to grow.</div></div>
-      <div class="cert-card reveal"><div class="cert-name">E-commerce</div><div class="cert-org">WooCommerce stores that stay secure, scalable, and easy to manage.</div></div>
-      <div class="cert-card reveal"><div class="cert-name">UI / UX Design</div><div class="cert-org">Interfaces designed in Figma before anything gets coded.</div></div>
-      <div class="cert-card reveal"><div class="cert-name">Hosting &amp; Care</div><div class="cert-org">Managed hosting, updates, backups, and ongoing maintenance.</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== PRODUCTS ===== -->
-<div class="section" id="mode-builds">
-  <div class="hero">
-    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Products</div>
-    <div class="hero-name reveal">Things I<br><em>Built Myself</em></div>
-    <p class="hero-desc reveal">I build products around problems I've experienced myself, especially education and campus life.</p>
-    <div class="connect-row reveal">
-      <a href="https://campusloom.in" class="connect-btn primary" target="_blank">Visit CampusLoom</a>
-    </div>
-  </div>
-  <div class="divider"></div>
-  <div class="content-wrap">
-    <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num" data-count="20" data-suffix="K+">20K+</div><div class="stat-label">CampusLoom Users</div></div>
-      <div class="stat-box"><div class="stat-num">11,973</div><div class="stat-label">College Cutoffs</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="128">128</div><div class="stat-label">Institutes Mapped</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="10" data-suffix="+">10+</div><div class="stat-label">Projects Built</div></div>
-    </div>
-    <div class="section-label reveal">What I've shipped</div>
-    <div class="project-grid">
-      <div class="project-card reveal"><div class="project-badge">Live</div><div class="project-title">CampusLoom</div><div class="project-intro">Free tools for students preparing for JEE and making college decisions.</div><div class="project-tags"><span class="tag">20K+ Users</span><span class="tag">College Finder</span><span class="tag">JEE Tools</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>CampusLoom includes JEE resources and a College Finder covering 11,973 cutoffs across 128 institutes.</p><a href="https://campusloom.in" class="project-link" target="_blank">campusloom.in ↗</a></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">Live</div><div class="project-title">Campus Kit</div><div class="project-intro">A practical collection of college packing, laptop and student-discount tools.</div><div class="project-tags"><span class="tag">Checklist</span><span class="tag">Laptop Finder</span><span class="tag">Student Perks</span></div><a href="https://kit.campusloom.in" class="project-link" target="_blank">kit.campusloom.in ↗</a></div>
-      <div class="project-card reveal"><div class="project-badge">2020 → 2022</div><div class="project-title">NOTE-IT</div><div class="project-intro">The JEE notes website I started while I was in school.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>NOTE-IT was my first public student project and later grew into Learnoclub.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">2022 → 2023</div><div class="project-title">Learnoclub</div><div class="project-intro">A larger JEE preparation platform that grew out of NOTE-IT.</div><div class="project-tags"><span class="tag">Archived</span><span class="tag">JEE</span><span class="tag">50K+ Monthly Views at Peak</span></div><button class="expand-btn" onclick="toggleDetail(this)"><span class="arrow">+</span> Details</button><div class="project-detail"><div class="project-detail-inner"><p>Learnoclub combined notes, resources and structured preparation content. It is no longer active.</p></div></div></div>
-      <div class="project-card reveal"><div class="project-badge">Live</div><div class="project-title">Brand My Desk</div><div class="project-intro">A small marketplace for sponsoring physical spaces on my everyday devices and gear.</div><div class="project-tags"><span class="tag">Independent</span><span class="tag">Experiment</span><span class="tag">Live</span></div><a href="https://desk.chandanmettu.com" class="project-link" target="_blank">desk.chandanmettu.com ↗</a></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== CAMPUS ===== -->
-<div class="section" id="mode-iith">
-  <div class="hero">
-    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Campus Tools</div>
-    <div class="hero-name reveal">Built for<br><em>IIT Hyderabad</em></div>
-    <p class="hero-desc reveal">I build and maintain tools for recurring student problems at IIT Hyderabad. Some are public services; others are still being tested.</p>
-    <div class="connect-row reveal">
-      <a href="https://abhyas.iith.online/" class="connect-btn primary" target="_blank">Abhyas</a>
-      <a href="https://nivas.iith.online/" class="connect-btn" target="_blank">Nivas</a>
-      <a href="https://athletics.iith.online/" class="connect-btn" target="_blank">Athletics</a>
-    </div>
-  </div>
-  <div class="divider"></div>
-  <div class="content-wrap">
-    <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num" data-count="7" data-suffix="+">7+</div><div class="stat-label">Campus Projects</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="864">864</div><div class="stat-label">Abhyas Resources</div></div>
-      <div class="stat-box"><div class="stat-num">Live</div><div class="stat-label">Student Services</div></div>
-      <div class="stat-box"><div class="stat-num">IITH</div><div class="stat-label">Built on Campus</div></div>
-    </div>
-    <div class="section-label reveal">The platforms</div>
-    <div class="iith-cards">
-      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">01 · Live</div><div class="iith-card-title">Abhyas</div><div class="iith-card-intro">IIT Hyderabad's student resource archive for notes, papers, assignments and books.</div><div class="iith-card-tags"><span class="tag">864 Resources</span><span class="tag">20 Contributors</span></div><a href="https://abhyas.iith.online/" class="project-link" target="_blank">abhyas.iith.online ↗</a></div></div>
-      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">02 · Live</div><div class="iith-card-title">Nivas</div><div class="iith-card-intro">A hostel room-swap board with a visual building and room browser.</div><div class="iith-card-tags"><span class="tag">Hostels</span><span class="tag">Student Utility</span></div><a href="https://nivas.iith.online/" class="project-link" target="_blank">nivas.iith.online ↗</a></div></div>
-      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">03 · Built</div><div class="iith-card-title">Sanchari</div><div class="iith-card-intro">A bus ticketing system for IIT Hyderabad. The product is built; the production payment flow is awaiting approval.</div><div class="iith-card-tags"><span class="tag">Transport</span><span class="tag">Rollout Pending</span></div><a href="https://sanchari.iith.online/" class="project-link" target="_blank">sanchari.iith.online ↗</a></div></div>
-      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">04 · Live</div><div class="iith-card-title">IITH Athletics</div><div class="iith-card-intro">The public website for the institute's athletics team, records, events and athletes.</div><div class="iith-card-tags"><span class="tag">Sports</span><span class="tag">Team Website</span></div><a href="https://athletics.iith.online/" class="project-link" target="_blank">athletics.iith.online ↗</a></div></div>
-      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">05 · Testing</div><div class="iith-card-title">Ruchi</div><div class="iith-card-intro">A mess registration and dining portal. The interface is live while the production backend is still being completed.</div><div class="iith-card-tags"><span class="tag">Dining</span><span class="tag">Testing</span></div><a href="https://ruchi.iith.online/" class="project-link" target="_blank">ruchi.iith.online ↗</a></div></div>
-      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">06 · Live</div><div class="iith-card-title">IITH Aquatics</div><div class="iith-card-intro">Pool timings, fees, rules, registration and documents in one place.</div><div class="iith-card-tags"><span class="tag">Aquatics</span><span class="tag">Information</span></div><a href="https://aquatics.iith.online/" class="project-link" target="_blank">aquatics.iith.online ↗</a></div></div>
-      <div class="iith-card reveal"><div class="iith-card-body"><div class="iith-card-num">07 · Live</div><div class="iith-card-title">IITH Garage</div><div class="iith-card-intro">A public index of the student products I've built for IIT Hyderabad.</div><div class="iith-card-tags"><span class="tag">Project Index</span><span class="tag">Live</span></div><a href="https://iith.online/" class="project-link" target="_blank">iith.online ↗</a></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== ATHLETICS ===== -->
-<div class="section" id="mode-athlete">
-  <div class="hero" style="padding-bottom:0">
-    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Athletics</div>
-    <div class="hero-name reveal">On the<br><em>Track</em></div>
-    <p class="hero-desc reveal">I represent IIT Hyderabad in sprinting and long jump, and currently serve as Athletics Captain.</p>
-    <div class="connect-row reveal">
-      <a href="https://athletics.iith.online/" class="connect-btn primary" target="_blank">IITH Athletics</a>
-    </div>
-  </div>
-  <div style="max-width:1040px;margin:1.5rem auto 0;padding:0 1.75rem" class="reveal">
-    <canvas id="medalCanvas" style="display:block;width:100%;touch-action:none;cursor:grab;border-radius:6px"></canvas>
-  </div>
-  <div class="divider"></div>
-  <div class="content-wrap">
-    <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num">Captain</div><div class="stat-label">IIT-H Athletics</div></div>
-      <div class="stat-box"><div class="stat-num">Inter-IIT</div><div class="stat-label">Representative</div></div>
-      <div class="stat-box"><div class="stat-num">Sprint</div><div class="stat-label">100m &amp; 200m</div></div>
-      <div class="stat-box"><div class="stat-num">Jump</div><div class="stat-label">Long Jump</div></div>
-    </div>
-    <!-- Detailed medal history is intentionally deferred until the design and data pass are complete.
-    <div class="section-label reveal">Meets &amp; medals</div>
-    <div class="event-list">
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_1.png" alt="AIRO 2026" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Mahindra University</span></div></div><div class="event-body"><div class="event-name">AIRO 2026</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">100m Dash — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">200m Dash — <strong>Bronze</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×400m Relay — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">4×100m Relay — <strong>Bronze</strong></span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_2.png" alt="Infinity Cup 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Woxsen University</span></div></div><div class="event-body"><div class="event-name">Infinity Cup 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Long Jump — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">100m Dash — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×100m Relay — <strong>Gold</strong></span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_3.png" alt="AIRO 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Mahindra University</span></div></div><div class="event-body"><div class="event-name">AIRO 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×100m Relay — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×200m Relay — <strong>Gold</strong></span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_4.png" alt="Diesta 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Inter-Dept</span></div></div><div class="event-body"><div class="event-name">Diesta 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Long Jump — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Men's Relay — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">Mixed Relay — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">200m — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥉</span><span class="medal-event">100m — <strong>Bronze</strong></span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_5.png" alt="Milan 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Inter-Hostel</span></div></div><div class="event-body"><div class="event-name">Milan 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">Long Jump — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">100m — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">200m — <strong>Gold</strong></span></div><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">4×100m Relay — <strong>Gold</strong></span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_6.png" alt="Milan 2024" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Inter-Hostel</span></div></div><div class="event-body"><div class="event-name">Milan 2024</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">Long Jump — <strong>Silver</strong></span></div><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event">Relay — <strong>Silver</strong></span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_7.png" alt="Inter-IIT Sports Meet" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Indore · National</span></div></div><div class="event-body"><div class="event-name">Inter-IIT Sports Meet</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🏟️</span><span class="medal-event">Relay — <strong>National participant</strong>, for IIT Hyderabad</span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_9.png" alt="Inter-IIT Sports Meet 2025" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · National</span></div></div><div class="event-body"><div class="event-name">Inter-IIT Sports Meet 2025</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">4️⃣</span><span class="medal-event">Sprint — <strong>4th fastest</strong> across all IITs</span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_10.png" alt="Institute Football League 2024" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Football</span></div></div><div class="event-body"><div class="event-name">Institute Football League 2024</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event"><strong>Champions</strong> — Institute Football League</span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_11.png" alt="Institute Cricket League" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">IIT Hyderabad · Cricket</span></div></div><div class="event-body"><div class="event-name">Institute Cricket League</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥈</span><span class="medal-event"><strong>Runner-Up</strong> — Institute Cricket League</span></div></div></div></div>
-      <div class="event-card reveal"><div class="event-img-wrap"><img src="/assets/ATHLETE_IMG_8.png" alt="Early Career" class="event-img" onerror="this.style.display='none'"><div class="event-img-placeholder"><span>+ Add Photo</span></div><div class="event-img-overlay"><span class="event-venue">Warangal District · 2017</span></div></div><div class="event-body"><div class="event-name">Where it started</div><div class="medal-list"><div class="medal-row"><span class="medal-icon">🥇</span><span class="medal-event">100m — <strong>Gold</strong>, District Level</span></div><div class="medal-row"><span class="medal-icon">🏅</span><span class="medal-event">School medals in athletics, long jump, volleyball, cricket, kho-kho</span></div></div></div></div>
-    </div>
-    -->
-  </div>
-</div>
-
-<!-- ===== CREATOR ===== -->
-<div class="section" id="mode-creator">
-  <div class="hero">
-    <div class="hero-eyebrow reveal"><span class="hero-eyebrow-dot"></span>Creator</div>
-    <div class="hero-name reveal">On<br><em>YouTube</em></div>
-    <p class="hero-desc reveal">I make videos about the products I build, technology I use, student life at IIT Hyderabad, opportunities, athletics and personal experiences.</p>
-    <div class="connect-row reveal">
-      <a href="https://youtube.com/@ChandanMettu" class="connect-btn primary" target="_blank">YouTube</a>
-      <a href="https://x.com/ChandanMettu" class="connect-btn" target="_blank">X / Twitter</a>
-      <a href="https://linkedin.com/in/saichandanmettu" class="connect-btn" target="_blank">LinkedIn</a>
-    </div>
-  </div>
-  <div class="divider"></div>
-  <div class="content-wrap">
-    <div class="stats-row reveal">
-      <div class="stat-box"><div class="stat-num" data-count="2.5" data-suffix="K+">2.5K+</div><div class="stat-label">Subscribers</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="290" data-suffix="K+">290K+</div><div class="stat-label">Total Views</div></div>
-      <div class="stat-box"><div class="stat-num" data-count="1" data-suffix="K+">1K+</div><div class="stat-label">LinkedIn</div></div>
-      <div class="stat-box"><div class="stat-num">IIT-H</div><div class="stat-label">Student</div></div>
-    </div>
-    <div class="section-label reveal">What I talk about</div>
-    <div class="topic-grid">
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="topic-title">Products</div><div class="topic-desc">Why I built a product, how it works and what I learned from it.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div><div class="topic-title">Student Life</div><div class="topic-desc">College decisions, life at IIT Hyderabad and useful student resources.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="topic-title">Personal Stories</div><div class="topic-desc">Teaching at 17, building before college and the opportunities I've pursued.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="topic-title">Building</div><div class="topic-desc">The decisions, experiments and mistakes behind my work.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div><div class="topic-title">Technology</div><div class="topic-desc">AI, software, devices and the tools I use.</div></div>
-      <div class="topic-card reveal"><div class="topic-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="topic-title">Athletics</div><div class="topic-desc">Training, competitions and representing IIT Hyderabad.</div></div>
-    </div>
-    <div class="section-label reveal">Selected videos</div>
-    <div class="timeline">
-      <div class="timeline-item reveal"><div class="timeline-year">Teaching</div><div class="timeline-content"><h3>How I Got Hired by Vedantu at 17</h3><p>How I found the opportunity, got selected and began teaching before college.</p></div></div>
-      <div class="timeline-item reveal"><div class="timeline-year">Technology</div><div class="timeline-content"><h3>My Apple Setup at 19</h3><p>A walkthrough of the devices I use and how I bought them with my own earnings.</p></div></div>
-    </div>
-  </div>
-</div>
-
-<footer class="foot">
-  <div class="foot-name">Chandan Mettu</div>
-  <div class="foot-links">
-    <a href="https://youtube.com/@ChandanMettu" target="_blank">YouTube</a>
-    <a href="https://linkedin.com/in/saichandanmettu" target="_blank">LinkedIn</a>
-    <a href="https://x.com/ChandanMettu" target="_blank">Twitter</a>
-    <a href="https://campusloom.in" target="_blank">CampusLoom</a>
-  </div>
-</footer>
-</div><!-- /wrap-z -->
-
-<script>
-/* ===== ACCENTS ===== */
-const ACCENTS={
-  pro:['var(--pro)','200,169,110'], wp:['var(--wp)','74,158,255'], builds:['var(--builds)','138,120,255'],
-  iith:['var(--iith)','240,103,103'], athlete:['var(--athlete)','239,154,82'], creator:['var(--creator)','65,201,154']
-};
-
-/* ===== REVEAL ON SCROLL ===== */
-const io=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); maybeCount(e.target); io.unobserve(e.target);} });
-},{threshold:0.06, rootMargin:'0px 0px -6% 0px'});
-
-function applyReveal(section){
-  const els=section.querySelectorAll('.reveal');
-  let d=0;
-  els.forEach(el=>{
-    if(el.classList.contains('in')) return;
-    const r=el.getBoundingClientRect();
-    if(r.top < window.innerHeight*0.94){
-      el.style.transitionDelay=(Math.min(d,8)*55)+'ms'; d++;
-      requestAnimationFrame(()=>{el.classList.add('in'); maybeCount(el);});
-    } else { el.style.transitionDelay='0ms'; io.observe(el); }
-  });
-}
-
-/* ===== COUNTERS ===== */
-function maybeCount(el){
-  el.querySelectorAll('.stat-num[data-count]').forEach(n=>{
-    if(n.dataset.done) return; n.dataset.done='1';
-    const target=parseFloat(n.dataset.count), suf=n.dataset.suffix||'', dec=(target%1!==0)?1:0;
-    const dur=900, t0=performance.now();
-    function step(t){
-      const p=Math.min((t-t0)/dur,1), e=1-Math.pow(1-p,3), v=target*e;
-      n.textContent=(dec?v.toFixed(1):Math.round(v))+suf;
-      if(p<1) requestAnimationFrame(step);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chandan Mettu is a student at IIT Hyderabad who builds student products, creates videos, teaches mathematics and competes in athletics.">
+  <meta name="theme-color" content="#df7350">
+  <link rel="canonical" href="https://chandanmettu.com/">
+  <title>Chandan Mettu — Student, Builder, Creator & Athlete</title>
+  <script>
+    document.documentElement.classList.add(
+      window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)')
+        ? 'native-reveal'
+        : 'no-native-reveal'
+    );
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&family=League+Spartan:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #df7350;
+      --coral-deep: #c85336;
+      --ink: #10151f;
+      --cream: #f4efe6;
+      --paper: #fffaf2;
+      --blue: #2452e8;
+      --lime: #d8f36a;
+      --green: #2ecb91;
+      --rose: #f4a1aa;
+      --line: rgba(16, 21, 31, .18);
+      --display: "League Spartan", sans-serif;
+      --serif: "Instrument Serif", serif;
+      --body: "DM Sans", sans-serif;
     }
-    requestAnimationFrame(step);
-  });
-}
 
-/* ===== MODE SWITCH ===== */
-function switchMode(mode){
-  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('[data-mode="'+mode+'"]').classList.add('active');
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  const sec=document.getElementById('mode-'+mode); sec.classList.add('active');
-  document.body.className='mode-'+mode;
-  const [ac,rgb]=ACCENTS[mode];
-  document.documentElement.style.setProperty('--accent',ac);
-  document.documentElement.style.setProperty('--accent-rgb',rgb);
-  // reset open details
-  document.querySelectorAll('.project-detail').forEach(d=>d.classList.remove('open'));
-  document.querySelectorAll('.expand-btn .arrow').forEach(a=>a.textContent='+');
-  document.querySelectorAll('.iith-card').forEach(c=>c.classList.remove('open'));
-  document.querySelectorAll('.iith-expand-btn .arrow').forEach(a=>a.textContent='+');
-  window.scrollTo({top:0,behavior:'smooth'});
-  requestAnimationFrame(()=>applyReveal(sec));
-}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    html.lenis, html.lenis body { height: auto; }
+    html.lenis { scroll-behavior: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-stopped { overflow: hidden; }
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+    }
+    img, svg, canvas { max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    ::selection { color: var(--ink); background: var(--lime); }
 
-/* ===== DETAIL TOGGLES ===== */
-function toggleDetail(btn){
-  const card=btn.closest('.project-card'), detail=card.querySelector('.project-detail'), open=detail.classList.contains('open');
-  btn.closest('.project-grid').querySelectorAll('.project-detail').forEach(d=>d.classList.remove('open'));
-  btn.closest('.project-grid').querySelectorAll('.expand-btn .arrow').forEach(a=>a.textContent='+');
-  if(!open){detail.classList.add('open');btn.querySelector('.arrow').textContent='−';}
-}
-function toggleIITH(btn){
-  const card=btn.closest('.iith-card'), open=card.classList.contains('open');
-  document.querySelectorAll('.iith-card').forEach(c=>c.classList.remove('open'));
-  document.querySelectorAll('.iith-expand-btn .arrow').forEach(a=>a.textContent='+');
-  if(!open){card.classList.add('open');btn.querySelector('.arrow').textContent='−';}
-}
-function toggleNav(){document.getElementById('navLinks').classList.toggle('open');document.getElementById('hamburger').classList.toggle('open');}
+    .site-nav {
+      position: absolute;
+      z-index: 30;
+      inset: 0 0 auto;
+      height: 84px;
+      padding: 0 clamp(22px, 4vw, 68px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--ink);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      gap: 11px;
+      font-family: var(--display);
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -.04em;
+      font-size: 1.06rem;
+    }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      aspect-ratio: 1;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      font-size: .7rem;
+      letter-spacing: -.08em;
+    }
+    .nav-links { display: flex; align-items: center; gap: clamp(18px, 2.7vw, 42px); }
+    .nav-links a {
+      position: relative;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .nav-links a:not(.nav-cta)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: -6px;
+      height: 2px;
+      background: currentColor;
+      transition: right .25s ease;
+    }
+    .nav-links a:hover::after { right: 0; }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 11px 18px;
+      border: 2px solid currentColor;
+      border-radius: 999px;
+    }
 
-/* ===== CURSOR SPOTLIGHT ===== */
-(function(){
-  let rx=innerWidth/2, ry=innerHeight*0.3, cx=rx, cy=ry, raf;
-  window.addEventListener('pointermove',e=>{ rx=e.clientX; ry=e.clientY; if(!raf) raf=requestAnimationFrame(tick); },{passive:true});
-  function tick(){
-    cx+=(rx-cx)*0.16; cy+=(ry-cy)*0.16;
-    document.documentElement.style.setProperty('--mx',cx+'px');
-    document.documentElement.style.setProperty('--my',cy+'px');
-    if(Math.abs(rx-cx)>0.4||Math.abs(ry-cy)>0.4){raf=requestAnimationFrame(tick);} else {raf=null;}
-  }
-  // per-card local glow
-  document.addEventListener('pointermove',e=>{
-    const card=e.target.closest('.project-card');
-    if(card){const r=card.getBoundingClientRect();card.style.setProperty('--cx',(e.clientX-r.left)+'px');card.style.setProperty('--cy',(e.clientY-r.top)+'px');}
-  },{passive:true});
-})();
+    .hero {
+      min-height: 100svh;
+      position: relative;
+      background: var(--coral);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(380px, .92fr);
+      padding: 116px clamp(22px, 4vw, 68px) 44px;
+    }
+    .hero::before {
+      content: "CHANDAN";
+      position: absolute;
+      top: 13%;
+      left: -2vw;
+      color: rgba(16, 21, 31, .07);
+      font: 800 clamp(9rem, 24vw, 25rem)/.72 var(--display);
+      letter-spacing: -.09em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .hero-copy {
+      position: relative;
+      z-index: 4;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 8vh;
+    }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    .eyebrow::before { content: ""; width: 38px; height: 3px; background: currentColor; }
+    .hero h1 {
+      max-width: 820px;
+      margin: 0;
+      font: 800 clamp(4rem, 8.6vw, 9rem)/.78 var(--display);
+      letter-spacing: -.075em;
+      text-transform: uppercase;
+    }
+    .hero h1 em {
+      display: block;
+      margin: .17em 0 .06em;
+      font: italic 400 clamp(4.6rem, 10vw, 10.4rem)/.72 var(--serif);
+      letter-spacing: -.055em;
+      text-transform: none;
+      color: var(--paper);
+    }
+    .hero-intro {
+      max-width: 570px;
+      margin: 32px 0 0;
+      font-size: clamp(1.03rem, 1.5vw, 1.25rem);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 50px;
+      padding: 0 24px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: .84rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      transition: transform .2s ease, background .2s ease, color .2s ease;
+    }
+    .button:hover { transform: translateY(-3px); }
+    .button.dark { background: var(--ink); color: var(--paper); }
+    .button.light { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+    .button .arrow { display: inline-block; font-size: 1.2rem; line-height: 1; }
+    .hero-visual {
+      position: relative;
+      z-index: 3;
+      min-width: 0;
+      min-height: 690px;
+      align-self: end;
+    }
+    .portrait-disc {
+      position: absolute;
+      width: min(44vw, 680px);
+      aspect-ratio: 1;
+      right: -2.7vw;
+      bottom: -6.7vw;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 2px solid var(--ink);
+    }
+    .portrait-frame {
+      position: absolute;
+      z-index: 2;
+      width: min(40.5vw, 620px);
+      aspect-ratio: 1;
+      right: -.9vw;
+      bottom: -4.7vw;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--coral);
+      box-shadow: inset 0 0 0 8px rgba(255,250,242,.32);
+    }
+    .portrait {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 38%;
+      transform: scale(1.075) translateY(1.8%);
+      filter: saturate(.8) contrast(1.03);
+    }
+    .role-card {
+      position: absolute;
+      z-index: 5;
+      right: 2vw;
+      top: 10%;
+      width: 190px;
+      padding: 18px;
+      background: var(--lime);
+      border: 2px solid var(--ink);
+      border-radius: 18px;
+      transform: rotate(4deg);
+      box-shadow: 8px 8px 0 var(--ink);
+      color: var(--ink);
+      font: inherit;
+      text-align: left;
+      appearance: none;
+      cursor: pointer;
+      isolation: isolate;
+      transition: box-shadow .2s ease;
+    }
+    .role-card:hover { box-shadow: 11px 11px 0 var(--ink); }
+    .role-card:focus-visible { outline: 3px solid var(--paper); outline-offset: 5px; }
+    .role-card::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -14px;
+      border: 2px solid var(--ink);
+      border-radius: 26px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .role-card::after {
+      content: "✦";
+      position: absolute;
+      right: -10px;
+      top: -18px;
+      color: var(--paper);
+      font-size: 2.2rem;
+      opacity: 0;
+      pointer-events: none;
+      text-shadow: 2px 2px 0 var(--ink);
+    }
+    .role-card small { display: block; margin-bottom: 18px; font-size: .67rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+    .role-card strong { display: block; font: 700 1.45rem/1.02 var(--display); letter-spacing: -.04em; text-transform: uppercase; }
+    .role-card-hint { display: block; margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(16,21,31,.3); font-size: .6rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+    .role-card.is-activated { animation: role-card-activate .86s cubic-bezier(.16,1,.3,1) !important; }
+    .role-card.is-activated::before { animation: role-card-ring .78s ease-out; }
+    .role-card.is-activated::after { animation: role-card-spark .72s ease-out .05s; }
+    .role-card.is-activated strong { animation: role-card-type .72s cubic-bezier(.16,1,.3,1); }
+    .hero-note {
+      position: absolute;
+      z-index: 6;
+      left: 50%;
+      bottom: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      transform: translateX(-50%);
+    }
+    .scroll-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink); animation: pulse 1.7s ease infinite; }
 
-/* ===== STICKY TOGGLE SHADOW ===== */
-const shell=document.getElementById('toggleShell');
-window.addEventListener('scroll',()=>{ shell.classList.toggle('stuck', window.scrollY>60); },{passive:true});
+    .identity-strip {
+      overflow: hidden;
+      padding: 20px 0 17px;
+      background: var(--ink);
+      color: var(--paper);
+      border-top: 1px solid rgba(255,255,255,.2);
+      border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+    .identity-track {
+      width: max-content;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font: 700 clamp(1.1rem, 2vw, 1.8rem)/1 var(--display);
+      text-transform: uppercase;
+      letter-spacing: -.025em;
+      animation: marquee 26s linear infinite;
+    }
+    .identity-track span:nth-child(4n+2) { color: var(--coral); }
+    .identity-track i { color: var(--lime); font: italic 400 1.2em var(--serif); text-transform: none; }
 
-/* ===== 3D CERT CAROUSEL ===== */
-(function(){
-  const cards=document.querySelectorAll('.cert3d'), dotsWrap=document.getElementById('certDots'), total=cards.length;
-  let active=2;
-  function getPos(i){const o=i-active,a=Math.abs(o);return{tx:o*165,tz:-a*100,ry:o*-18,scale:a===0?1:a===1?0.8:0.62,opacity:a>2?0:a===2?0.35:a===1?0.7:1,z:10-a};}
-  function render(){
-    cards.forEach((c,i)=>{const p=getPos(i);c.style.transform=`translateX(${p.tx}px) translateZ(${p.tz}px) rotateY(${p.ry}deg) scale(${p.scale})`;c.style.opacity=p.opacity;c.style.zIndex=p.z;c.classList.toggle('active',i===active);});
-    document.querySelectorAll('.cert-dot').forEach((d,i)=>d.classList.toggle('active',i===active));
-  }
-  if(dotsWrap){for(let i=0;i<total;i++){const d=document.createElement('div');d.className='cert-dot'+(i===active?' active':'');d.onclick=()=>{active=i;render();};dotsWrap.appendChild(d);}}
-  cards.forEach((c,i)=>{c.onclick=()=>{active=i;render();};});
-  render();
-  window.rotateCert=function(dir){active=(active+dir+total)%total;render();};
-})();
+    .section { position: relative; min-width: 0; padding: clamp(78px, 10vw, 150px) clamp(22px, 5vw, 84px); overflow: hidden; }
+    .hero-copy, .hero-visual, .builder-head > *, .campus-copy > *, .live-work-head > *, .creator-head > *, .athlete-intro > *, .educator-header > *, .history-head > *, .roles-head > *, .project-feature > *, .project-copy, .project-numbers, .campus-item > *, .school > *, .role-list article > * { min-width: 0; }
+    .section-kicker { margin: 0 0 22px; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .section-title { margin: 0; font: 800 clamp(3.5rem, 8.5vw, 8.5rem)/.8 var(--display); letter-spacing: -.07em; text-transform: uppercase; }
+    .section-title em { font-family: var(--serif); font-weight: 400; text-transform: none; }
+    .body-large { font-size: clamp(1.15rem, 2vw, 1.65rem); line-height: 1.38; letter-spacing: -.025em; }
+    .fine { font-size: .78rem; line-height: 1.5; }
 
-/* ===== MEDAL SHELF ===== */
-(function(){
-  const canvas=document.getElementById('medalCanvas'); if(!canvas) return;
-  const ctx=canvas.getContext('2d');
-  const MEDALS=[
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFFFFF','#000080']},
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#000080','#FFFFFF','#CC0000']},
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFD700','#006400']},
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#FF6600','#FFFFFF','#006400']},
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFFFFF','#CC0000']},
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#000080','#FFD700','#000080']},
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#CC0000','#FFFFFF','#000080']},
-    {color:'#D4A820',rim:'#A07828',label:'G',ribbon:['#006400','#FFFFFF','#CC0000']},
-    {color:'#B8B8B8',rim:'#808080',label:'S',ribbon:['#CC0000','#FFFFFF','#CC0000']},
-    {color:'#B8B8B8',rim:'#808080',label:'S',ribbon:['#000080','#FFFFFF','#CC0000']},
-    {color:'#B8B8B8',rim:'#808080',label:'S',ribbon:['#CC0000','#FFD700','#006400']},
-    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#CC0000','#FFFFFF','#000080']},
-    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#006400','#FFFFFF','#006400']},
-    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#CC0000','#FFFFFF','#CC0000']},
-    {color:'#C07830',rim:'#8B5010',label:'B',ribbon:['#000080','#FFD700','#CC0000']},
-  ];
-  const N=MEDALS.length, GRAVITY=1400,DAMPING=0.983,ITERS=12,SEGS=8;
-  let W,H,shelfY,anchorXs,pendulums=[],drag=null,lastT=0,mouseDown=false,mouseX=0,mouseY=0;
-  function dst(a,b){return Math.sqrt((a.x-b.x)**2+(a.y-b.y)**2);}
-  function ltn(hex,a){let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgb(${Math.min(255,(r+255*a)|0)},${Math.min(255,(g+255*a)|0)},${Math.min(255,(b+255*a)|0)})`;}
-  function dkn(hex,a){let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgb(${Math.max(0,(r-255*a)|0)},${Math.max(0,(g-255*a)|0)},${Math.max(0,(b-255*a)|0)})`;}
-  class Point{constructor(x,y,pinned=false){this.x=x;this.y=y;this.px=x;this.py=y;this.pinned=pinned;}update(dt){if(this.pinned)return;const vx=(this.x-this.px)*DAMPING,vy=(this.y-this.py)*DAMPING;this.px=this.x;this.py=this.y;this.x+=vx;this.y+=vy+GRAVITY*dt*dt;}}
-  class Stick{constructor(a,b){this.a=a;this.b=b;this.len=dst(a,b);}constrain(){const dx=this.b.x-this.a.x,dy=this.b.y-this.a.y,d=Math.sqrt(dx*dx+dy*dy)||0.001,diff=(d-this.len)/d*0.5;if(!this.a.pinned){this.a.x+=dx*diff;this.a.y+=dy*diff;}if(!this.b.pinned){this.b.x-=dx*diff;this.b.y-=dy*diff;}}}
-  class Medal{
-    constructor(ax,medal){this.ax=ax;this.data=medal;this.dragging=false;const spread=Math.min(11,W/(N+1)*0.30);this.lp=[];this.rp=[];this.sticks=[];
-      for(let i=0;i<=SEGS;i++){const frac=i/SEGS,lx=ax-spread*(1-frac),rx=ax+spread*(1-frac),y=shelfY+frac*(H*0.72);this.lp.push(new Point(lx+(Math.random()-.5)*28,y+(Math.random()-.5)*8,i===0));this.rp.push(new Point(rx+(Math.random()-.5)*28,y+(Math.random()-.5)*8,i===0));}
-      for(let i=0;i<SEGS;i++){this.sticks.push(new Stick(this.lp[i],this.lp[i+1]));this.sticks.push(new Stick(this.rp[i],this.rp[i+1]));}
-      const bl=this.lp[SEGS],br=this.rp[SEGS];this.sticks.push(new Stick(bl,br));this.mp=new Point((bl.x+br.x)/2,(bl.y+br.y)/2);this.sticks.push(new Stick(bl,this.mp));this.sticks.push(new Stick(br,this.mp));}
-    update(dt){if(this.dragging)return;const t=this.mp,dx=t.x-mouseX,dy=t.y-mouseY,d=dst({x:mouseX,y:mouseY},t),hoverR=60;if(d<hoverR&&d>1){const force=(hoverR-d)/hoverR*3.5;t.x+=dx/d*force;t.y+=dy/d*force;}
-      this.lp.forEach(p=>p.update(dt));this.rp.forEach(p=>p.update(dt));this.mp.update(dt);const spread=Math.min(11,W/(N+1)*0.30);
-      for(let it=0;it<ITERS;it++){this.sticks.forEach(s=>s.constrain());this.lp[0].x=this.ax-spread;this.lp[0].y=shelfY;this.rp[0].x=this.ax+spread;this.rp[0].y=shelfY;const bl=this.lp[SEGS],br=this.rp[SEGS],mx=(bl.x+br.x)/2,my=(bl.y+br.y)/2,ddx=this.mp.x-mx,ddy=this.mp.y-my,dd=Math.sqrt(ddx*ddx+ddy*ddy);if(dd>2){this.mp.x-=ddx*0.3;this.mp.y-=ddy*0.3;}}}
-    collide(others){const t=this.mp,R=20;for(let o of others){if(o===this)continue;const ot=o.mp,dx=t.x-ot.x,dy=t.y-ot.y,d=Math.sqrt(dx*dx+dy*dy)||0.001,min=R*2+2;if(d<min){const nx=dx/d,ny=dy/d,push=(min-d)*0.5;t.x+=nx*push;t.y+=ny*push;t.px+=nx*push*.5;t.py+=ny*push*.5;ot.x-=nx*push;ot.y-=ny*push;ot.px-=nx*push*.5;ot.py-=ny*push*.5;}}}
-    draw(){const m=this.data,lp=this.lp,rp=this.rp,colors=m.ribbon,R=20;
-      for(let i=0;i<SEGS;i++){const la=lp[i],lb=lp[i+1],ra=rp[i],rb=rp[i+1];for(let ci=0;ci<colors.length;ci++){const t0=ci/colors.length,t1=(ci+1)/colors.length;ctx.beginPath();ctx.moveTo(la.x+(ra.x-la.x)*t0,la.y+(ra.y-la.y)*t0);ctx.lineTo(la.x+(ra.x-la.x)*t1,la.y+(ra.y-la.y)*t1);ctx.lineTo(lb.x+(rb.x-lb.x)*t1,lb.y+(rb.y-lb.y)*t1);ctx.lineTo(lb.x+(rb.x-lb.x)*t0,lb.y+(rb.y-lb.y)*t0);ctx.closePath();ctx.fillStyle=colors[ci];ctx.fill();}ctx.beginPath();ctx.moveTo(la.x,la.y);ctx.lineTo(lb.x,lb.y);ctx.moveTo(ra.x,ra.y);ctx.lineTo(rb.x,rb.y);ctx.strokeStyle='rgba(0,0,0,0.12)';ctx.lineWidth=0.5;ctx.stroke();}
-      const t=this.mp;ctx.beginPath();ctx.arc(t.x,t.y,R+2.5,0,Math.PI*2);ctx.fillStyle=m.rim;ctx.fill();const g=ctx.createRadialGradient(t.x-4,t.y-4,1,t.x,t.y,R);g.addColorStop(0,ltn(m.color,.38));g.addColorStop(.45,m.color);g.addColorStop(1,dkn(m.color,.22));ctx.beginPath();ctx.arc(t.x,t.y,R,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.beginPath();ctx.arc(t.x,t.y,R*.62,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.stroke();ctx.font=`bold ${Math.round(R*.82)}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=m.label==='G'?'#3a2000':m.label==='S'?'#2a2a2a':'#2a1000';ctx.fillText(m.label,t.x,t.y);}
-    hit(px,py){return dst({x:px,y:py},this.mp)<26;}
-  }
-  function drawShelf(){ctx.fillStyle='#2a1a08';ctx.fillRect(0,shelfY-12,W,12);ctx.fillStyle='#4a3018';ctx.fillRect(0,shelfY-14,W,3);ctx.fillStyle='#6a4828';ctx.fillRect(0,shelfY-14,W,1);for(let i=0;i<N;i++){const ax=anchorXs[i];ctx.beginPath();ctx.arc(ax,shelfY-6,3.5,0,Math.PI*2);ctx.fillStyle='#999';ctx.fill();ctx.beginPath();ctx.arc(ax,shelfY-6,2,0,Math.PI*2);ctx.fillStyle='#ccc';ctx.fill();}}
-  function setup(){const rect=canvas.parentElement.getBoundingClientRect();W=Math.max(rect.width||860,320);H=Math.max(340,W*0.46);canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;canvas.style.height=H+'px';ctx.setTransform(1,0,0,1,0,0);ctx.scale(devicePixelRatio,devicePixelRatio);shelfY=H*0.14;anchorXs=Array.from({length:N},(_,i)=>(i+1)*W/(N+1));pendulums=anchorXs.map((ax,i)=>new Medal(ax,MEDALS[i]));}
-  function loop(t){const dt=Math.min((t-lastT)/1000,.028);lastT=t;ctx.clearRect(0,0,W,H);drawShelf();pendulums.forEach(p=>p.update(dt));pendulums.forEach(p=>p.collide(pendulums));pendulums.forEach(p=>p.draw());requestAnimationFrame(loop);}
-  function xy(e){const r=canvas.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return[(s.clientX-r.left),(s.clientY-r.top)];}
-  canvas.addEventListener('mousemove',e=>{const[mx,my]=xy(e);mouseX=mx;mouseY=my;if(drag&&mouseDown){const t=drag.mp;t.px=t.x;t.py=t.y;t.x=mx;t.y=my;}});
-  canvas.addEventListener('mousedown',e=>{mouseDown=true;const[mx,my]=xy(e);for(let p of pendulums){if(p.hit(mx,my)){p.dragging=true;drag=p;canvas.style.cursor='grabbing';break;}}});
-  canvas.addEventListener('mouseup',()=>{mouseDown=false;if(drag){drag.dragging=false;drag=null;canvas.style.cursor='grab';}});
-  canvas.addEventListener('mouseleave',()=>{mouseDown=false;mouseX=-999;mouseY=-999;if(drag){drag.dragging=false;drag=null;canvas.style.cursor='grab';}});
-  canvas.addEventListener('touchstart',e=>{e.preventDefault();const[mx,my]=xy(e);mouseX=mx;mouseY=my;for(let p of pendulums){if(p.hit(mx,my)){p.dragging=true;drag=p;break;}}},{passive:false});
-  canvas.addEventListener('touchmove',e=>{e.preventDefault();const[mx,my]=xy(e);mouseX=mx;mouseY=my;if(drag){const t=drag.mp;t.px=t.x;t.py=t.y;t.x=mx;t.y=my;}},{passive:false});
-  canvas.addEventListener('touchend',()=>{mouseX=-999;mouseY=-999;if(drag){drag.dragging=false;drag=null;}});
-  window.addEventListener('resize',()=>{setup();});
-  mouseX=-999;mouseY=-999;setup();requestAnimationFrame(t=>{lastT=t;loop(t);});
-})();
+    .image-slot {
+      --slot-surface: rgba(255,255,255,.28);
+      position: relative;
+      isolation: isolate;
+      min-height: 220px;
+      margin: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      padding: clamp(20px, 3vw, 34px);
+      overflow: hidden;
+      border: 2px dashed currentColor;
+      border-radius: 20px 34px 20px 20px;
+      background:
+        linear-gradient(135deg, transparent 0 48%, rgba(16,21,31,.06) 48% 52%, transparent 52%) 0 0 / 34px 34px,
+        var(--slot-surface);
+    }
+    .image-slot::before {
+      content: "Image space";
+      position: absolute;
+      z-index: -1;
+      top: 20px;
+      right: 22px;
+      font: 700 .68rem var(--body);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .55;
+    }
+    .image-slot-mark {
+      width: 48px;
+      aspect-ratio: 1;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      font: 400 1.8rem/1 var(--body);
+    }
+    .image-slot figcaption { max-width: 460px; margin-left: auto; text-align: right; }
+    .image-slot figcaption strong { display: block; font: 700 clamp(1.15rem, 2vw, 1.75rem)/1 var(--display); letter-spacing: -.035em; text-transform: uppercase; }
+    .image-slot figcaption span { display: block; margin-top: 7px; font-size: .69rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; opacity: .66; }
 
-/* ===== INIT ===== */
-applyReveal(document.getElementById('mode-pro'));
-</script>
+    .builder { background: var(--cream); }
+    .builder-head {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      align-items: end;
+      gap: 60px;
+      margin-bottom: clamp(60px, 8vw, 110px);
+    }
+    .builder-head .body-large { max-width: 420px; margin: 0 0 6px auto; }
+    .project-feature {
+      min-height: 620px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr);
+      background: var(--blue);
+      color: white;
+      border: 2px solid var(--ink);
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+    .project-copy { display: flex; flex-direction: column; padding: clamp(32px, 5vw, 72px); }
+    .project-index { font: 600 .78rem var(--body); text-transform: uppercase; letter-spacing: .12em; }
+    .project-name { margin: auto 0 18px; font: 800 clamp(4rem, 9vw, 8.8rem)/.76 var(--display); letter-spacing: -.08em; text-transform: uppercase; }
+    .project-image-slot { --slot-surface: rgba(255,255,255,.08); min-height: clamp(180px, 20vw, 250px); margin: 6px 0 26px; border-color: rgba(255,255,255,.72); color: white; }
+    .project-image-slot::before { opacity: .7; }
+    .project-copy p { max-width: 570px; margin: 0 0 28px; font-size: 1.08rem; line-height: 1.55; }
+    .project-copy .button { align-self: flex-start; border-color: white; color: var(--ink); }
+    .project-numbers {
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      background: var(--lime);
+      color: var(--ink);
+      border-left: 2px solid var(--ink);
+    }
+    .project-number { display: flex; flex-direction: column; justify-content: center; padding: 34px; border-bottom: 2px solid var(--ink); }
+    .project-number:last-child { border-bottom: 0; }
+    .project-number strong { font: 800 clamp(3rem, 5.8vw, 6rem)/.8 var(--display); letter-spacing: -.06em; }
+    .project-number span { margin-top: 12px; font-size: .76rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+
+    .launches { margin-top: 92px; }
+    .launches-top { display: flex; justify-content: space-between; gap: 28px; align-items: flex-end; padding-bottom: 20px; border-bottom: 2px solid var(--ink); }
+    .launches-top h3 { margin: 0; font: 700 clamp(2.2rem, 4.5vw, 4.6rem)/.9 var(--display); letter-spacing: -.05em; text-transform: uppercase; }
+    .launches-top span { font: italic 400 1.6rem var(--serif); }
+    .launch-group { display: grid; grid-template-columns: 70px 1fr; gap: 28px; align-items: center; padding: 28px 2px 10px; color: var(--coral-deep); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .launch-group:not(:first-of-type) { margin-top: 18px; }
+    .launch-row { display: grid; grid-template-columns: 70px 1fr auto; gap: 28px; align-items: center; padding: 25px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+    .launch-row:hover .launch-name { transform: translateX(10px); }
+    .launch-no { font-size: .76rem; font-weight: 700; }
+    .launch-name { font: 700 clamp(1.6rem, 3.3vw, 3.2rem)/1 var(--display); letter-spacing: -.045em; text-transform: uppercase; transition: transform .2s ease; }
+    .launch-type { font-size: .73rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-align: right; }
+
+    .origin-story {
+      display: grid;
+      grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr);
+      margin-top: 72px;
+      overflow: hidden;
+      background: var(--ink);
+      color: white;
+      border: 2px solid var(--ink);
+      border-radius: 26px 44px 26px 26px;
+      box-shadow: 10px 10px 0 var(--blue);
+    }
+    .origin-copy { padding: clamp(30px,4.5vw,62px); }
+    .origin-kicker { color: var(--lime); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .origin-copy h3 { max-width: 680px; margin: 18px 0 22px; font: 700 clamp(2.5rem,5.4vw,5.6rem)/.88 var(--display); letter-spacing: -.055em; text-transform: uppercase; }
+    .origin-copy p { max-width: 650px; margin: 0; color: rgba(255,255,255,.72); font-size: 1rem; line-height: 1.65; }
+    .origin-proof { display: grid; grid-template-columns: 1fr; border-left: 1px solid rgba(255,255,255,.2); }
+    .origin-proof div { min-height: 150px; display: flex; flex-direction: column; justify-content: center; padding: 28px 32px; border-bottom: 1px solid rgba(255,255,255,.2); }
+    .origin-proof div:last-child { border-bottom: 0; }
+    .origin-proof strong { color: var(--lime); font: 700 clamp(2.2rem,4.5vw,4.5rem)/.8 var(--display); letter-spacing: -.05em; }
+    .origin-proof span { margin-top: 14px; color: rgba(255,255,255,.68); font-size: .72rem; font-weight: 700; letter-spacing: .08em; line-height: 1.4; text-transform: uppercase; }
+
+    .campus {
+      min-height: 860px;
+      background: var(--coral);
+    }
+    .campus::after {
+      content: "08";
+      position: absolute;
+      right: -1vw;
+      top: 2vw;
+      color: rgba(16,21,31,.07);
+      font: 800 clamp(13rem, 35vw, 40rem)/.7 var(--display);
+      letter-spacing: -.12em;
+    }
+    .campus-copy {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .52fr);
+      gap: 50px;
+      align-items: end;
+    }
+    .campus-copy .body-large { max-width: 510px; margin: 0 0 5px auto; }
+    .campus-icon-grid {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: clamp(14px, 2.2vw, 30px);
+      margin-top: clamp(54px, 7vw, 90px);
+    }
+    .campus-icon-link {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-width: 0;
+      text-decoration: none;
+      transition: transform .22s cubic-bezier(.16,1,.3,1);
+    }
+    .campus-icon-link:hover, .campus-icon-link:focus-visible { transform: translateY(-7px) scale(1.03); }
+    .campus-icon-link::after {
+      content: attr(data-name);
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translate(-50%, 5px);
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .campus-icon-link:hover::after, .campus-icon-link:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+    .campus-icon {
+      width: clamp(68px, 7vw, 96px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      padding: 7px;
+      border: 2px solid var(--ink);
+      border-radius: 24px;
+      background: var(--paper);
+      box-shadow: 5px 5px 0 var(--ink);
+      overflow: hidden;
+      transition: box-shadow .22s ease;
+    }
+    .campus-icon-link:hover .campus-icon,
+    .campus-icon-link:focus-visible .campus-icon { box-shadow: 8px 8px 0 var(--ink); }
+    .campus-icon img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 18%;
+      background: var(--paper);
+      object-fit: contain;
+    }
+    .campus-list {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 14px;
+      margin-top: clamp(58px, 7vw, 92px);
+    }
+    .campus-item {
+      display: grid;
+      grid-template-columns: 140px minmax(210px, .8fr) minmax(280px, 1.2fr) auto 24px;
+      gap: clamp(18px, 3vw, 46px);
+      align-items: center;
+      min-height: 116px;
+      padding: 24px 26px;
+      border: 2px solid var(--ink);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: 5px 5px 0 rgba(16,21,31,.92);
+      color: var(--ink);
+      text-decoration: none;
+      transition: transform .22s cubic-bezier(.16,1,.3,1), box-shadow .22s ease;
+    }
+    .campus-item:nth-child(2) { background: #e9eeff; }
+    .campus-item:nth-child(3) { background: #fff0dc; }
+    .campus-item:nth-child(4) { background: #eef6ce; }
+    .campus-item:nth-child(5) { background: #ffe9df; }
+    .campus-item:nth-child(6) { background: #def4f3; }
+    .campus-item:nth-child(7) { background: #efe9df; }
+    .campus-item:hover,
+    .campus-item:focus-visible { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); }
+    .campus-card-copy { display: contents; }
+    .campus-category { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .campus-name { font: 700 clamp(1.35rem, 2.2vw, 2.25rem)/.95 var(--display); letter-spacing: -.045em; text-transform: uppercase; }
+    .campus-meta { max-width: 460px; font-size: .88rem; line-height: 1.45; }
+    .campus-status { padding: 8px 11px; border: 1px solid currentColor; border-radius: 999px; font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .campus-arrow { font-size: 1.35rem; transition: transform .2s ease; }
+    .campus-item:hover .campus-arrow { transform: translate(3px, -3px); }
+
+    .live-work { background: var(--cream); }
+    .live-work-head {
+      display: grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(300px,.55fr);
+      gap: 52px;
+      align-items: end;
+    }
+    .live-work-head .section-title em { color: var(--coral-deep); }
+    .live-work-head .body-large { max-width: 520px; margin: 0 0 6px auto; }
+    .live-browser {
+      margin-top: clamp(58px,8vw,100px);
+      overflow: hidden;
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 26px 44px 26px 26px;
+      box-shadow: 12px 12px 0 var(--coral);
+    }
+    .live-browser-bar {
+      min-height: 66px;
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr) auto;
+      gap: 20px;
+      align-items: center;
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.18);
+    }
+    .live-browser-dots { display: flex; gap: 7px; }
+    .live-browser-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--coral); }
+    .live-browser-dots i:nth-child(2) { background: var(--lime); }
+    .live-browser-dots i:nth-child(3) { background: var(--green); }
+    .live-domain {
+      min-width: 0;
+      overflow: hidden;
+      color: rgba(255,255,255,.66);
+      font-size: .78rem;
+      font-weight: 600;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .live-open {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,255,255,.48);
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .live-open:hover, .live-open:focus-visible { background: var(--paper); color: var(--ink); }
+    .live-preview-shell { position: relative; aspect-ratio: 16 / 9; min-height: 430px; background: #e8e9ec; }
+    .live-preview-frame { display: block; width: 100%; height: 100%; border: 0; background: white; }
+    .live-preview-loading {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #e8e9ec;
+      color: var(--ink);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: opacity .24s ease;
+    }
+    .live-browser.is-loaded .live-preview-loading { opacity: 0; pointer-events: none; }
+    .live-caption {
+      display: grid;
+      grid-template-columns: minmax(220px,.72fr) minmax(280px,1fr) auto;
+      gap: 36px;
+      align-items: center;
+      padding: clamp(24px,3.5vw,46px);
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+    .live-category { color: var(--lime); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .live-name { margin: 9px 0 0; font: 700 clamp(2.4rem,5vw,5rem)/.78 var(--display); letter-spacing: -.055em; text-transform: uppercase; }
+    .live-description { max-width: 560px; margin: 0; color: rgba(255,255,255,.68); font-size: 1rem; line-height: 1.55; }
+    .live-controls { display: flex; align-items: center; gap: 10px; }
+    .live-control {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid rgba(255,255,255,.42);
+      border-radius: 50%;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      font: 500 1.1rem var(--body);
+    }
+    .live-control:hover, .live-control:focus-visible { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+    .live-count { min-width: 68px; color: rgba(255,255,255,.58); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-align: center; }
+    .live-index {
+      display: flex;
+      gap: 12px;
+      margin-top: 34px;
+      padding: 8px 0 16px;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+    }
+    .live-index-button {
+      min-width: 190px;
+      min-height: 76px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 14px 16px;
+      scroll-snap-align: start;
+      border: 2px solid var(--ink);
+      border-radius: 14px;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .2s cubic-bezier(.16,1,.3,1), background .2s ease, box-shadow .2s ease;
+    }
+    .live-index-button:hover, .live-index-button:focus-visible { transform: translateY(-3px); box-shadow: 4px 4px 0 var(--ink); }
+    .live-index-button[aria-selected="true"] { background: var(--lime); box-shadow: 4px 4px 0 var(--ink); }
+    .live-index-button small { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .62; }
+    .live-index-button strong { font: 700 1.1rem/1 var(--display); letter-spacing: -.025em; text-transform: uppercase; }
+
+    .creator { background: var(--ink); color: var(--paper); padding-bottom: 0; }
+    .creator-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, .55fr); gap: 50px; align-items: end; }
+    .creator-head .section-title em { color: var(--green); }
+    .creator-copy { max-width: 470px; margin: 0 0 5px auto; }
+    .creator-copy .body-large { margin: 0 0 26px; }
+    .creator-image-slot { --slot-surface: rgba(255,255,255,.035); min-height: clamp(300px, 38vw, 520px); margin-top: 76px; color: var(--paper); border-color: rgba(255,255,255,.44); }
+    .creator-image-slot + .creator-stage { margin-top: 42px; }
+    .creator-stage {
+      position: relative;
+      min-height: 520px;
+      margin-top: 76px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: end;
+      border-top: 1px solid rgba(255,255,255,.2);
+    }
+    .creator-stat { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 46px 26px; border-right: 1px solid rgba(255,255,255,.2); }
+    .creator-stat:first-child { padding-left: 0; }
+    .creator-stat:last-child { border-right: 0; }
+    .creator-stat strong { font: 800 clamp(4rem, 9vw, 9rem)/.75 var(--display); letter-spacing: -.08em; color: var(--coral); }
+    .creator-stat span { margin-top: 18px; font-size: .77rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .creator-stat.editorial { justify-content: center; }
+    .creator-stat.editorial strong { color: var(--paper); font: italic 400 clamp(3rem, 6vw, 6.5rem)/.84 var(--serif); letter-spacing: -.035em; }
+    .creator-stat.editorial p { max-width: 310px; margin: 24px 0 0; color: rgba(255,255,255,.66); line-height: 1.55; }
+    .creator-platforms {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid rgba(255,255,255,.2);
+    }
+    .creator-platforms div { min-height: 155px; padding: 32px 24px; border-right: 1px solid rgba(255,255,255,.2); display: flex; flex-direction: column; justify-content: space-between; }
+    .creator-platforms div:first-child { padding-left: 0; }
+    .creator-platforms div:last-child { border-right: 0; }
+    .creator-platforms strong { font: 700 clamp(1.5rem,3vw,2.7rem)/1 var(--display); letter-spacing: -.04em; }
+    .creator-platforms span { color: rgba(255,255,255,.56); font-size: .75rem; line-height: 1.45; text-transform: uppercase; letter-spacing: .07em; }
+
+    .athlete {
+      background: var(--blue);
+      color: white;
+    }
+    .athlete::before {
+      content: "FAST";
+      position: absolute;
+      right: -3vw;
+      bottom: -3vw;
+      color: rgba(255,255,255,.07);
+      font: 800 clamp(12rem, 34vw, 35rem)/.7 var(--display);
+      letter-spacing: -.09em;
+    }
+    .athlete .section-title { font-size: clamp(5rem, 13vw, 13rem); }
+    .athlete .section-title em { display: block; color: var(--lime); }
+    .athlete-intro { position: relative; z-index: 2; display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px; align-items: center; }
+    .athlete-panel {
+      position: relative;
+      z-index: 3;
+      padding: clamp(32px, 5vw, 64px);
+      background: var(--lime);
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 50% 50% 24px 24px;
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+    .athlete-panel .mini-label { display: block; text-align: center; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .captain { margin: 38px 0 24px; text-align: center; font: 800 clamp(4rem, 8vw, 8rem)/.75 var(--display); letter-spacing: -.08em; text-transform: uppercase; }
+    .athlete-panel p { max-width: 390px; margin: 0 auto 32px; text-align: center; font-size: 1.06rem; line-height: 1.5; }
+    .athlete-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; }
+    .athlete-tags span { padding: 9px 13px; border: 1px solid var(--ink); border-radius: 999px; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .athlete-image-slot { --slot-surface: rgba(255,255,255,.08); min-height: clamp(300px, 43vw, 560px); margin-top: 88px; color: white; border-color: rgba(255,255,255,.72); }
+    .athlete-image-slot + .medal-lab { margin-top: 56px; }
+    .medal-lab { position: relative; z-index: 4; margin-top: 110px; padding: clamp(24px,4vw,52px); background: var(--paper); color: var(--ink); border: 2px solid var(--ink); border-radius: 30px 54px 30px 30px; box-shadow: 12px 12px 0 var(--ink); }
+    .medal-lab-head { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-bottom: 28px; }
+    .medal-lab-head h3 { margin: 10px 0 0; font: 700 clamp(2.2rem,5vw,5.2rem)/.9 var(--display); letter-spacing: -.055em; text-transform: uppercase; }
+    .physics-stage { position: relative; height: clamp(560px,52vw,660px); overflow: clip; background: #151a27; border: 2px solid var(--ink); border-radius: 22px 38px 22px 22px; }
+    #medalPhysics { display: block; width: 100%; height: 100%; touch-action: pan-y; }
+    .medal-tip { position: absolute; z-index: 5; width: min(300px,calc(100% - 24px)); padding: 15px 17px; border: 1px solid rgba(255,255,255,.24); border-radius: 15px; background: rgba(16,21,31,.94); color: white; box-shadow: 0 18px 46px rgba(0,0,0,.28); pointer-events: none; opacity: 0; transform: translateY(8px); transition: opacity .18s ease,transform .18s ease; }
+    .medal-tip.show { opacity: 1; transform: none; }
+    .medal-tip small { display: block; margin-bottom: 5px; color: var(--lime); font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .medal-tip strong { display: block; margin-bottom: 4px; font-size: .95rem; }
+    .medal-tip span { display: block; color: rgba(255,255,255,.68); font-size: .78rem; line-height: 1.45; }
+    .physics-help { margin: 13px 0 0; color: rgba(16,21,31,.56); font-size: .72rem; text-align: right; }
+    .achievement-ledger { margin-top: 26px; border-top: 2px solid var(--ink); }
+    .achievement-ledger summary { display: flex; justify-content: space-between; gap: 22px; padding: 22px 0; cursor: pointer; list-style: none; font-weight: 700; }
+    .achievement-ledger summary::-webkit-details-marker { display: none; }
+    .achievement-ledger summary span { color: rgba(16,21,31,.55); font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; }
+    .ledger-wrap { overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
+    .achievement-ledger table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .achievement-ledger th,.achievement-ledger td { padding: 14px 12px; border-top: 1px solid rgba(16,21,31,.13); text-align: left; vertical-align: top; }
+    .achievement-ledger th { font-size: .64rem; text-transform: uppercase; letter-spacing: .08em; color: rgba(16,21,31,.5); }
+    .achievement-ledger td:last-child { font-weight: 700; }
+
+    .educator { background: var(--paper); padding-top: 0; }
+    .equation-line {
+      margin: 0 calc(clamp(22px, 5vw, 84px) * -1) clamp(78px, 9vw, 130px);
+      padding: 24px clamp(22px, 5vw, 84px);
+      background: var(--rose);
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      font: italic 400 clamp(1.8rem, 4.5vw, 4.5rem)/1 var(--serif);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .educator-header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .48fr); gap: 50px; align-items: end; }
+    .educator-copy .section-title em { display: block; color: var(--coral-deep); }
+    .educator-copy .body-large { max-width: 520px; margin: 0 0 5px auto; }
+    .math-carousel { position: relative; height: 540px; margin-top: 72px; perspective: 1400px; overflow: clip; touch-action: pan-y; }
+    .math-track { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .math-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: min(410px, 58vw);
+      min-height: 360px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      border: 2px solid var(--ink);
+      border-radius: 28px 46px 28px 28px;
+      background: var(--cream);
+      color: var(--ink);
+      box-shadow: 9px 9px 0 var(--ink);
+      transform-style: preserve-3d;
+      transition: transform .75s cubic-bezier(.16,1,.3,1), opacity .5s ease, filter .5s ease;
+      cursor: pointer;
+      overflow: clip;
+    }
+    .math-card:nth-child(2) { background: var(--rose); }
+    .math-card:nth-child(3) { background: var(--lime); }
+    .math-card:nth-child(4) { background: var(--coral); }
+    .math-card:nth-child(5) { background: white; }
+    .math-card[data-position="active"] { z-index: 6; opacity: 1; filter: none; transform: translate(-50%,-50%) translate3d(0,-18px,130px) rotateY(0) rotateZ(0) scale(1); }
+    .math-card[data-position="previous"] { z-index: 5; opacity: .82; filter: saturate(.78); transform: translate(-50%,-50%) translate3d(-58%,18px,-40px) rotateY(42deg) rotateZ(-4deg) scale(.86); }
+    .math-card[data-position="next"] { z-index: 5; opacity: .82; filter: saturate(.78); transform: translate(-50%,-50%) translate3d(58%,18px,-40px) rotateY(-42deg) rotateZ(4deg) scale(.86); }
+    .math-card[data-position="far-previous"] { z-index: 3; opacity: .34; filter: saturate(.45); transform: translate(-50%,-50%) translate3d(-104%,66px,-160px) rotateY(58deg) rotateZ(-8deg) scale(.67); }
+    .math-card[data-position="far-next"] { z-index: 3; opacity: .34; filter: saturate(.45); transform: translate(-50%,-50%) translate3d(104%,66px,-160px) rotateY(-58deg) rotateZ(8deg) scale(.67); }
+    .math-card[data-position="hidden"] { z-index: 1; opacity: 0; pointer-events: none; transform: translate(-50%,-50%) translate3d(0,100px,-260px) scale(.5); }
+    .math-card-label { position: relative; z-index: 2; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .math-symbol { position: absolute; right: -4px; top: -24px; color: rgba(16,21,31,.08); font: italic 400 11rem/1 var(--serif); }
+    .math-card h3 { position: relative; z-index: 2; margin: auto 0 18px; font: 700 clamp(2.4rem,5vw,4.8rem)/.82 var(--display); letter-spacing: -.065em; text-transform: uppercase; }
+    .math-card p { position: relative; z-index: 2; max-width: 310px; margin: 0; color: rgba(16,21,31,.68); font-size: .94rem; line-height: 1.5; }
+    .math-controls { position: absolute; z-index: 10; left: 50%; bottom: 5px; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; }
+    .math-control { width: 46px; height: 46px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%; background: var(--paper); color: var(--ink); font: 700 1.2rem var(--body); cursor: pointer; transition: transform .2s ease, background .2s ease; }
+    .math-control:hover { transform: translateY(-3px); background: var(--lime); }
+    .math-count { min-width: 64px; text-align: center; font-size: .68rem; font-weight: 700; letter-spacing: .1em; }
+
+    .history { background: var(--cream); }
+    .history-head { display: grid; grid-template-columns: 1fr .7fr; gap: 60px; align-items: end; margin-bottom: 78px; }
+    .history-head .body-large { max-width: 500px; margin: 0 0 4px auto; }
+    .school-path { border-top: 2px solid var(--ink); }
+    .school { display: grid; grid-template-columns: 150px minmax(0,1fr) minmax(170px,230px); gap: 34px; align-items: center; padding: 30px 0; border-bottom: 1px solid var(--line); }
+    .school-year { font: 500 .72rem var(--body); letter-spacing: .08em; text-transform: uppercase; }
+    .school h3 { margin: 0; font: 700 clamp(1.7rem,3.5vw,3.4rem)/.95 var(--display); letter-spacing: -.045em; text-transform: uppercase; }
+    .school p { margin: 8px 0 10px; color: var(--coral-deep); font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .school small { display: block; max-width: 700px; color: rgba(16,21,31,.65); font-size: .9rem; line-height: 1.55; }
+    .school.current { color: white; background: var(--blue); margin-inline: -24px; padding-inline: 24px; border: 2px solid var(--ink); border-radius: 22px 38px 22px 22px; }
+    .school.current p { color: var(--lime); }
+    .school.current small { color: rgba(255,255,255,.72); }
+    .school-image-slot { min-height: 132px; padding: 16px; border-radius: 15px 24px 15px 15px; }
+    .school-image-slot::before { top: 12px; right: 13px; font-size: .55rem; }
+    .school-image-slot .image-slot-mark { width: 34px; font-size: 1.2rem; }
+    .school-image-slot figcaption strong { font-size: .88rem; }
+    .school-image-slot figcaption span { margin-top: 4px; font-size: .55rem; }
+    .school.current .school-image-slot { --slot-surface: rgba(255,255,255,.08); border-color: rgba(255,255,255,.7); }
+    .academic-receipts { display: grid; grid-template-columns: repeat(4,1fr); margin-top: 72px; border: 2px solid var(--ink); border-radius: 22px 38px 22px 22px; overflow: clip; }
+    .academic-receipts div { min-height: 150px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; border-right: 2px solid var(--ink); }
+    .academic-receipts div:last-child { border-right: 0; }
+    .academic-receipts div:nth-child(1){background:var(--lime)}.academic-receipts div:nth-child(2){background:var(--rose)}.academic-receipts div:nth-child(3){background:var(--coral)}.academic-receipts div:nth-child(4){background:white}
+    .academic-receipts strong { font: 700 clamp(2.2rem,4.4vw,4.6rem)/.8 var(--display); letter-spacing: -.06em; }
+    .academic-receipts span { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .olympiad-path { margin-top: 80px; }
+    .olympiad-head { display: flex; justify-content: space-between; gap: 30px; padding-bottom: 18px; border-bottom: 2px solid var(--ink); }
+    .olympiad-head span { font-size: .72rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+    .olympiad-head strong { font: italic 400 1.35rem var(--serif); }
+    .olympiad-steps { display: grid; grid-template-columns: repeat(5,1fr); gap: 0; }
+    .olympiad-steps div { min-height: 190px; padding: 24px 18px; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+    .olympiad-steps div:last-child { border-right: 0; }
+    .olympiad-steps div.top { margin-top: -2px; background: var(--ink); color: white; border-radius: 0 0 20px 20px; }
+    .olympiad-steps span { font-size: .68rem; font-weight: 700; }
+    .olympiad-steps strong { margin: auto 0 8px; font: 700 clamp(1.5rem,2.8vw,2.7rem)/1 var(--display); letter-spacing: -.04em; }
+    .olympiad-steps small { color: rgba(16,21,31,.58); font-size: .75rem; line-height: 1.4; }
+    .olympiad-steps .top small { color: rgba(255,255,255,.68); }
+
+    .roles { background: var(--rose); }
+    .roles-head { display: grid; grid-template-columns: minmax(0,1fr) minmax(280px,.46fr); gap: 50px; align-items: end; }
+    .roles-intro { max-width: 480px; margin: 0 0 5px auto; }
+    .role-image-slot { min-height: clamp(250px, 34vw, 430px); margin-top: 72px; }
+    .role-image-slot + .role-list { margin-top: 40px; }
+    .role-list { margin-top: 72px; border-top: 2px solid var(--ink); }
+    .role-list article { display: grid; grid-template-columns: 62px minmax(240px,.82fr) minmax(320px,1.18fr) 100px; gap: clamp(18px,3vw,42px); align-items: center; padding: 23px 0; border-bottom: 1px solid rgba(16,21,31,.25); }
+    .role-icon { width: 54px; aspect-ratio: 1; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 16px; background: var(--paper); }
+    .role-list article:nth-child(odd) .role-icon { background: var(--lime); }
+    .role-icon svg { width: 24px; height: 24px; }
+    .role-icon strong { font: italic 400 1.8rem/1 var(--serif); }
+    .role-period { justify-self: end; font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    .role-list h3 { margin: 0; font: 700 clamp(1.35rem,2.4vw,2.25rem)/1 var(--display); letter-spacing: -.04em; text-transform: uppercase; }
+    .role-list p { margin: 0; color: rgba(16,21,31,.68); line-height: 1.5; }
+
+    .contact {
+      position: relative;
+      min-height: 720px;
+      display: grid;
+      place-items: center;
+      padding: 80px 22px;
+      background: var(--coral);
+      text-align: center;
+      overflow: hidden;
+    }
+    .contact::before, .contact::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      aspect-ratio: 1;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+    }
+    .contact::before { left: -100px; top: -80px; background: var(--lime); }
+    .contact::after { right: -80px; bottom: -100px; background: var(--blue); }
+    .contact-inner { position: relative; z-index: 2; }
+    .contact h2 { margin: 0; font: 800 clamp(4.2rem, 12vw, 12.5rem)/.72 var(--display); letter-spacing: -.08em; text-transform: uppercase; }
+    .contact h2 em { display: block; color: var(--paper); font: italic 400 .82em/.8 var(--serif); text-transform: none; }
+    .contact p { max-width: 520px; margin: 34px auto 30px; font-size: 1.12rem; line-height: 1.5; }
+    .socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 26px; }
+    .socials a { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 8px 4px; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .footer-line {
+      position: absolute;
+      z-index: 3;
+      left: clamp(22px, 4vw, 68px);
+      right: clamp(22px, 4vw, 68px);
+      bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(16,21,31,.35);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .motion-ready .portrait-disc { animation: slow-orbit 28s linear infinite; }
+    .button:hover .arrow, .launch-row:hover .launch-type, .campus-item:hover .campus-arrow { animation: arrow-kick .5s cubic-bezier(.16,1,.3,1); }
+    .button:active, .math-control:active { transform: translateY(1px) scale(.98); }
+
+    .reveal { opacity: 1; transform: none; }
+    .no-native-reveal .reveal {
+      opacity: 0;
+      filter: blur(7px);
+      transform: translateY(32px);
+      transition: opacity .9s cubic-bezier(.22,.61,.36,1), transform 1.05s cubic-bezier(.22,.61,.36,1), filter .9s cubic-bezier(.22,.61,.36,1);
+    }
+    .no-native-reveal .reveal.visible { opacity: 1; filter: none; transform: none; }
+
+    .kinetic-heading .k-word {
+      display: inline-block;
+      vertical-align: baseline;
+      opacity: 0;
+      filter: blur(16px);
+      transform: translateY(.28em) scale(.965);
+      will-change: opacity, filter, transform;
+      transition:
+        opacity .82s cubic-bezier(.16,1,.3,1),
+        filter .94s cubic-bezier(.16,1,.3,1),
+        transform .94s cubic-bezier(.16,1,.3,1);
+      transition-delay: calc(var(--word-index, 0) * 70ms);
+    }
+    .kinetic-heading.is-visible .k-word { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      @media (prefers-reduced-motion: no-preference) {
+        .native-reveal .reveal {
+          animation: reveal-in .9s cubic-bezier(.16,1,.3,1) both;
+          animation-timeline: view();
+          animation-range: entry 6% cover 30%;
+        }
+      }
+    }
+
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    @keyframes pulse { 50% { transform: scale(1.7); opacity: .45; } }
+    @keyframes role-card-activate {
+      0% { transform: rotate(4deg) translateY(0) scale(1); }
+      24% { transform: rotate(-7deg) translateY(5px) scale(.94); }
+      54% { transform: rotate(11deg) translateY(-18px) scale(1.08); }
+      76% { transform: rotate(1deg) translateY(2px) scale(.985); }
+      100% { transform: rotate(4deg) translateY(0) scale(1); }
+    }
+    @keyframes role-card-ring {
+      0% { opacity: .8; transform: scale(.72) rotate(-8deg); }
+      75% { opacity: .42; }
+      100% { opacity: 0; transform: scale(1.28) rotate(8deg); }
+    }
+    @keyframes role-card-spark {
+      0% { opacity: 0; transform: translate(-12px, 16px) rotate(-30deg) scale(.3); }
+      45% { opacity: 1; transform: translate(8px, -5px) rotate(18deg) scale(1.2); }
+      100% { opacity: 0; transform: translate(22px, -24px) rotate(44deg) scale(.65); }
+    }
+    @keyframes role-card-type {
+      0%, 24% { letter-spacing: -.04em; transform: translateX(0); }
+      48% { letter-spacing: .015em; transform: translateX(5px); }
+      100% { letter-spacing: -.04em; transform: translateX(0); }
+    }
+    @keyframes reveal-in { from { opacity: 0; filter: blur(7px); transform: translateY(32px); } to { opacity: 1; filter: none; transform: none; } }
+    @keyframes slow-orbit { to { rotate: 360deg; } }
+    @keyframes arrow-kick { 45% { transform: translate(5px,-6px) rotate(12deg); } }
+
+    @media (max-width: 1100px) {
+      .hero { grid-template-columns: 1fr; padding-top: 130px; }
+      .hero-copy { padding-bottom: 30px; }
+      .hero-visual { min-height: 590px; }
+      .portrait-frame { width: min(68vw, 600px); right: 50%; bottom: -8vw; transform: translateX(56%); }
+      .portrait { transform: scale(1.075) translateY(1.8%); }
+      .portrait-disc { width: min(73vw, 640px); right: 50%; bottom: -10vw; transform: translateX(56%); }
+      .role-card { right: 6%; }
+      .hero-note { display: none; }
+      .builder-head, .campus-copy, .live-work-head, .creator-head, .athlete-intro, .educator-header, .history-head, .roles-head { grid-template-columns: 1fr; }
+      .builder-head .body-large, .creator-copy { margin-left: 0; }
+      .campus-copy .body-large { margin-left: 0; }
+      .live-work-head .body-large { margin-left: 0; }
+      .educator-copy .body-large, .roles-intro { margin-left: 0; }
+      .history-head .body-large { margin-left: 0; }
+      .campus { min-height: auto; }
+      .campus-icon-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 42px; }
+      .campus-list { margin-top: 62px; }
+      .campus-item { grid-template-columns: 96px minmax(150px, .7fr) minmax(200px, 1.3fr) auto 20px; gap: 16px; }
+      .project-feature { grid-template-columns: 1fr; }
+      .project-numbers { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; border-left: 0; border-top: 2px solid var(--ink); }
+      .project-number { border-bottom: 0; border-right: 2px solid var(--ink); }
+      .project-number:last-child { border-right: 0; }
+      .athlete-panel { max-width: 620px; }
+      .role-list article { grid-template-columns: 62px minmax(0,1fr) 100px; gap: 10px 24px; align-items: start; }
+      .role-list p { grid-column: 2 / -1; }
+      .role-period { grid-column: 3; grid-row: 1; padding-top: 5px; }
+      .academic-receipts { grid-template-columns: repeat(2,1fr); }
+      .academic-receipts div:nth-child(2) { border-right: 0; }
+      .academic-receipts div:nth-child(-n+2) { border-bottom: 2px solid var(--ink); }
+    }
+
+    @media (max-width: 900px) {
+      .site-nav { padding-inline: 24px; gap: 16px; }
+      .nav-links { gap: 14px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .campus-item { grid-template-columns: minmax(0, 1fr) auto; gap: 10px 18px; min-height: 0; padding: 22px; border-radius: 18px; }
+      .campus-category { grid-column: 1; grid-row: 1; }
+      .campus-card-copy { display: block; grid-column: 1 / -1; grid-row: 2; }
+      .campus-meta { margin-top: 7px; }
+      .campus-status { grid-column: 2; grid-row: 1; }
+      .campus-arrow { display: none; }
+      .live-preview-shell { min-height: 360px; }
+      .live-caption { grid-template-columns: minmax(200px,.8fr) minmax(260px,1.2fr); }
+      .live-controls { grid-column: 1 / -1; justify-content: flex-end; }
+      .school { grid-template-columns: 110px minmax(0, 1fr) minmax(150px, 190px); gap: 22px; }
+      .role-list article { grid-template-columns: 56px minmax(0,1fr) 94px; gap: 10px 20px; }
+    }
+
+    @media (max-width: 700px) {
+      .site-nav { height: 74px; padding-inline: 18px; gap: 12px; }
+      .brand { min-width: 0; gap: 8px; font-size: .9rem; }
+      .brand-mark { width: 28px; flex: 0 0 28px; }
+      .nav-links { flex: 0 0 auto; gap: 0; }
+      .nav-cta { min-height: 44px; padding-inline: 14px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { min-height: auto; padding: 112px 18px 38px; }
+      .hero h1 { max-width: 100%; font-size: clamp(3.25rem, 17vw, 6rem); overflow-wrap: anywhere; }
+      .hero h1 em { font-size: 1.13em; }
+      .hero-intro { max-width: 100%; font-size: 1rem; overflow-wrap: anywhere; }
+      .hero-visual { min-height: 410px; }
+      .portrait-frame { width: 88vw; bottom: -27vw; }
+      .portrait-disc { width: 94vw; bottom: -30vw; }
+      .role-card { top: 2%; right: 8px; width: min(148px, 42vw); padding: 14px; border-radius: 14px; box-shadow: 5px 5px 0 var(--ink); }
+      .role-card strong { font-size: 1.12rem; }
+      .role-card-hint { margin-top: 10px; padding-top: 8px; font-size: .52rem; }
+      .hero-actions { width: 100%; min-width: 0; flex-direction: column; }
+      .hero-actions .button { width: 100%; max-width: 100%; padding-inline: 16px; }
+      .project-feature { min-height: 0; border-radius: 20px; box-shadow: 7px 7px 0 var(--ink); }
+      .project-copy { min-height: 500px; }
+      .project-image-slot { min-height: 210px; }
+      .project-numbers { grid-template-columns: 1fr; }
+      .project-number { min-height: 150px; border-right: 0; border-bottom: 2px solid var(--ink); }
+      .launch-row { grid-template-columns: 42px 1fr; gap: 12px; }
+      .launch-group { grid-template-columns: 42px 1fr; gap: 12px; padding-top: 24px; }
+      .launch-type { display: none; }
+      .origin-story { grid-template-columns: 1fr; border-radius: 20px 34px 20px 20px; box-shadow: 7px 7px 0 var(--blue); }
+      .origin-proof { grid-template-columns: repeat(3,1fr); border-left: 0; border-top: 1px solid rgba(255,255,255,.2); }
+      .origin-proof div { min-height: 130px; padding: 22px 18px; border-right: 1px solid rgba(255,255,255,.2); border-bottom: 0; }
+      .origin-proof div:last-child { border-right: 0; }
+      .campus-icon-link::after { display: none; }
+      .campus-item { grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; min-height: 0; padding: 20px; border-radius: 16px; }
+      .campus-category { grid-column: 1; grid-row: 1; }
+      .campus-card-copy { display: block; grid-column: 1 / -1; grid-row: 2; }
+      .campus-name { font-size: 1.5rem; }
+      .campus-meta { margin-top: 7px; }
+      .campus-status { grid-column: 2; grid-row: 1; }
+      .campus-arrow { display: none; }
+      .live-browser { border-radius: 20px 34px 20px 20px; box-shadow: 7px 7px 0 var(--coral); }
+      .live-preview-shell { height: 340px; min-height: 0; aspect-ratio: auto; }
+      .live-caption { grid-template-columns: 1fr; gap: 22px; }
+      .live-controls { grid-column: auto; justify-content: space-between; }
+      .live-index-button { min-width: 168px; }
+      .creator-stage { min-height: 0; grid-template-columns: 1fr; }
+      .creator-stat { min-height: 270px; padding: 40px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
+      .creator-stat:last-child { border-bottom: 0; }
+      .creator-platforms { grid-template-columns: 1fr 1fr; }
+      .creator-platforms div { min-height: 132px; padding: 24px 16px; border-bottom: 1px solid rgba(255,255,255,.2); }
+      .creator-platforms div:nth-child(2) { border-right: 0; }
+      .creator-platforms div:nth-last-child(-n+2) { border-bottom: 0; }
+      .creator-platforms div:first-child { padding-left: 16px; }
+      .athlete-intro { gap: 70px; }
+      .athlete-panel { border-radius: 150px 150px 20px 20px; box-shadow: 7px 7px 0 var(--ink); }
+      .medal-lab { margin-top: 78px; padding: 18px; border-radius: 22px 38px 22px 22px; box-shadow: 7px 7px 0 var(--ink); }
+      .medal-lab-head { align-items: start; flex-direction: column; }
+      .physics-stage { height: 680px; border-radius: 16px 28px 16px 16px; }
+      .physics-help { text-align: left; }
+      .achievement-ledger summary { min-height: 72px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 5px; }
+      .math-carousel { height: 500px; margin-top: 56px; }
+      .math-card { width: min(360px,74vw); min-height: 340px; }
+      .math-card[data-position="previous"] { transform: translate(-50%,-50%) translate3d(-48%,18px,-40px) rotateY(42deg) rotateZ(-4deg) scale(.83); }
+      .math-card[data-position="next"] { transform: translate(-50%,-50%) translate3d(48%,18px,-40px) rotateY(-42deg) rotateZ(4deg) scale(.83); }
+      .math-card[data-position="far-previous"] { transform: translate(-50%,-50%) translate3d(-88%,60px,-160px) rotateY(58deg) rotateZ(-8deg) scale(.64); }
+      .math-card[data-position="far-next"] { transform: translate(-50%,-50%) translate3d(88%,60px,-160px) rotateY(-58deg) rotateZ(8deg) scale(.64); }
+      .history-head { margin-bottom: 50px; }
+      .school { grid-template-columns: 1fr; gap: 12px; padding: 25px 0; }
+      .school-image-slot { min-height: 210px; margin-top: 8px; }
+      .school.current { margin-inline: -10px; padding-inline: 14px; }
+      .olympiad-head { flex-direction: column; gap: 8px; }
+      .olympiad-steps { display: flex; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+      .olympiad-steps div { min-width: 68vw; scroll-snap-align: start; border-right: 1px solid var(--line); }
+      .role-list { margin-top: 52px; }
+      .role-list article { grid-template-columns: 50px minmax(0,1fr); gap: 7px 16px; }
+      .role-icon { width: 48px; grid-row: 1 / span 3; }
+      .role-list h3 { grid-column: 2; }
+      .role-period { grid-column: 2; grid-row: 2; justify-self: start; padding: 0; }
+      .role-list p { grid-column: 2; grid-row: 3; }
+      .footer-line { flex-direction: column; align-items: center; }
+      .image-slot { min-height: 240px; align-items: flex-end; padding: 20px; }
+      .image-slot figcaption { max-width: 72%; }
+    }
+
+    @media (max-width: 430px) {
+      .site-nav { padding-inline: 14px; }
+      .brand { font-size: .84rem; }
+      .nav-cta { padding-inline: 12px; font-size: .7rem !important; }
+      .section { padding-inline: 18px; }
+      .campus-icon-grid { gap: 12px; row-gap: 28px; margin-top: 46px; }
+      .campus-icon { width: 58px; padding: 4px; border-radius: 16px; box-shadow: 3px 3px 0 var(--ink); }
+      .campus-status { padding: 6px 7px; font-size: .56rem; }
+      .campus-category { font-size: .62rem; }
+      .campus-name { font-size: 1.35rem; }
+      .campus-meta { font-size: .72rem; line-height: 1.35; }
+      .live-browser-bar { grid-template-columns: minmax(0,1fr) auto; gap: 10px; padding-inline: 12px; }
+      .live-browser-dots { display: none; }
+      .live-domain { text-align: left; }
+      .live-open { padding-inline: 11px; font-size: .68rem; }
+      .live-preview-shell { height: 300px; }
+      .live-caption { padding: 22px 18px; }
+      .live-description { font-size: .9rem; }
+      .live-index-button { min-width: 154px; min-height: 70px; }
+      .math-carousel { height: 470px; margin-inline: -18px; }
+      .math-card { width: 78vw; min-height: 320px; padding: 22px; border-radius: 22px 36px 22px 22px; box-shadow: 7px 7px 0 var(--ink); }
+      .math-card h3 { font-size: 2.25rem; }
+      .math-card p { font-size: .84rem; }
+      .math-symbol { font-size: 8rem; }
+      .math-control { width: 44px; height: 44px; }
+      .academic-receipts { grid-template-columns: 1fr; }
+      .academic-receipts div { min-height: 125px; border-right: 0; border-bottom: 2px solid var(--ink); }
+      .academic-receipts div:last-child { border-bottom: 0; }
+      .creator-platforms { grid-template-columns: 1fr; }
+      .creator-platforms div { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2) !important; }
+      .creator-platforms div:last-child { border-bottom: 0 !important; }
+      .origin-proof { grid-template-columns: 1fr; }
+      .origin-proof div { min-height: 104px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.2); }
+      .origin-proof div:last-child { border-bottom: 0; }
+      .physics-stage { height: 720px; }
+      .achievement-ledger th,.achievement-ledger td { padding: 12px 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a class="brand" href="#top"><span class="brand-mark">CM</span> Chandan Mettu</a>
+    <div class="nav-links">
+      <a href="#builder">Work</a>
+      <a href="#campus">Campus</a>
+      <a href="#live-work">Live sites</a>
+      <a href="#creator">Creator</a>
+      <a href="#athlete">Athletics</a>
+      <a class="nav-cta" href="#contact">Connect</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <div class="eyebrow">Student at IIT Hyderabad</div>
+        <h1>Many lanes.<em>One person.</em></h1>
+        <p class="hero-intro">I build products, make videos, teach mathematics and compete in athletics. This is where those parts of my life meet.</p>
+        <div class="hero-actions">
+          <a class="button dark" href="#builder">See what I build <span class="arrow">↘</span></a>
+          <a class="button" href="https://youtube.com/@ChandanMettu" target="_blank" rel="noopener noreferrer">Watch on YouTube <span class="arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Portrait of Chandan Mettu">
+        <div class="portrait-disc"></div>
+        <div class="portrait-frame"><img class="portrait" src="/assets/social-card.png" alt="Chandan Mettu"></div>
+        <button class="role-card" id="roleCard" type="button" aria-pressed="false" aria-label="Current focus: building, testing and learning. Activate animation."><small>Current focus</small><strong>Building. Testing. Learning.</strong><span class="role-card-hint">Click to activate ↻</span></button>
+      </div>
+      <div class="hero-note"><span class="scroll-dot"></span> Scroll through the lanes</div>
+    </section>
+
+    <div class="identity-strip" aria-hidden="true">
+      <div class="identity-track">
+        <span>Builder</span><i>and</i><span>Creator</span><span>•</span><span>Athlete</span><i>and</i><span>Educator</span><span>•</span><span>Campus maker</span><i>and</i><span>Student</span><span>•</span>
+        <span>Builder</span><i>and</i><span>Creator</span><span>•</span><span>Athlete</span><i>and</i><span>Educator</span><span>•</span><span>Campus maker</span><i>and</i><span>Student</span><span>•</span>
+      </div>
+    </div>
+
+    <section class="section builder" id="builder">
+      <div class="builder-head reveal">
+        <div>
+          <p class="section-kicker">01 / The builder</p>
+          <h2 class="section-title">Useful<br><em>by design.</em></h2>
+        </div>
+        <p class="body-large">I like turning scattered information and everyday friction into products people can actually use.</p>
+      </div>
+
+      <article class="project-feature reveal">
+        <div class="project-copy">
+          <span class="project-index">Selected product / CampusLoom</span>
+          <h3 class="project-name">Find your<br>college.</h3>
+          <figure class="image-slot project-image-slot" data-image-slot="campusloom-product">
+            <span class="image-slot-mark" aria-hidden="true">+</span>
+            <figcaption><strong>CampusLoom product screen</strong><span>Landscape screenshot · 16:10</span></figcaption>
+          </figure>
+          <p>A student-first college discovery platform built around real cutoffs, clearer comparisons and fewer confusing tabs.</p>
+          <a class="button light" href="https://campusloom.in" target="_blank" rel="noopener noreferrer">Visit CampusLoom <span class="arrow">↗</span></a>
+        </div>
+        <div class="project-numbers" aria-label="CampusLoom statistics">
+          <div class="project-number"><strong>20K+</strong><span>students have used it</span></div>
+          <div class="project-number"><strong>8</strong><span>decision tools</span></div>
+          <div class="project-number"><strong>220+</strong><span>branches explored</span></div>
+        </div>
+      </article>
+
+      <div class="launches reveal">
+        <div class="launches-top"><h3>More things I’ve shipped</h3><span>Built for real use.</span></div>
+        <div class="launch-group"><span>01–03</span><span>Independent products</span></div>
+        <a class="launch-row" href="https://kit.campusloom.in" target="_blank" rel="noopener noreferrer"><span class="launch-no">01</span><span class="launch-name">Campus Kit</span><span class="launch-type">Student tools ↗</span></a>
+        <a class="launch-row" href="https://desk.chandanmettu.com" target="_blank" rel="noopener noreferrer"><span class="launch-no">02</span><span class="launch-name">Brand My Desk</span><span class="launch-type">Personal branding ↗</span></a>
+        <div class="launch-row"><span class="launch-no">03</span><span class="launch-name">Learnoclub</span><span class="launch-type">50K+ users · archived</span></div>
+        <div class="launch-group"><span>04–06</span><span>Client and studio work</span></div>
+        <a class="launch-row" href="https://web.chandanmettu.com" target="_blank" rel="noopener noreferrer"><span class="launch-no">04</span><span class="launch-name">Chandan Web Studio</span><span class="launch-type">100+ websites · building since 14 ↗</span></a>
+        <div class="launch-row"><span class="launch-no">05</span><span class="launch-name">Tharun Speaks</span><span class="launch-type">Creator course platform · WordPress</span></div>
+        <a class="launch-row" href="https://web.chandanmettu.com/project122/" target="_blank" rel="noopener noreferrer"><span class="launch-no">06</span><span class="launch-name">Project Configurator</span><span class="launch-type">Interactive scoping tool · 2026 ↗</span></a>
+      </div>
+
+      <article class="origin-story reveal">
+        <div class="origin-copy">
+          <span class="origin-kicker">The first chapter</span>
+          <h3>Built before college.</h3>
+          <p>I started making websites around 14—using WordPress, design tools, no-code and whatever helped me ship. Client work, my own products, AdSense and teaching later added up to my first ₹1 lakh before college.</p>
+        </div>
+        <div class="origin-proof" aria-label="Early builder milestones">
+          <div><strong>100+</strong><span>websites built</span></div>
+          <div><strong>50K+</strong><span>Learnoclub users</span></div>
+          <div><strong>17</strong><span>when Vedantu hired me</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section campus" id="campus">
+      <div class="campus-copy reveal">
+        <p class="section-kicker">02 / On campus</p>
+        <h2 class="section-title">Made at<br><em>IITH.</em></h2>
+        <p class="body-large">Eight student products, each built around something that should be simpler on campus.</p>
+      </div>
+      <div class="campus-icon-grid reveal" id="campusIcons" aria-label="Visual index of apps made for IIT Hyderabad">
+        <a class="campus-icon-link" data-name="Abhyas" aria-label="Open Abhyas" href="https://abhyas.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="assets/campus-icons/abhyas.png" alt="" loading="lazy"></span></a>
+        <a class="campus-icon-link" data-name="Nivas" aria-label="Open Nivas" href="https://nivas.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="assets/campus-icons/nivas.jpg" alt="" loading="lazy"></span></a>
+        <a class="campus-icon-link" data-name="Sanchari" aria-label="Open Sanchari" href="https://sanchari.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="assets/campus-icons/sanchari.png" alt="" loading="lazy"></span></a>
+        <a class="campus-icon-link" data-name="IITH Athletics" aria-label="Open IITH Athletics" href="https://athletics.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="assets/campus-icons/athletics.png" alt="" loading="lazy"></span></a>
+        <a class="campus-icon-link" data-name="Ruchi" aria-label="Open Ruchi" href="https://ruchi.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="assets/campus-icons/ruchi.jpg" alt="" loading="lazy"></span></a>
+        <a class="campus-icon-link" data-name="IITH Aquatics" aria-label="Open IITH Aquatics" href="https://aquatics.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="assets/campus-icons/aquatics.jpg" alt="" loading="lazy"></span></a>
+        <a class="campus-icon-link" data-name="IITH Merch Store" aria-label="Open IITH Merch Store" href="https://store.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="https://store.iith.online/wp-content/uploads/2025/02/cropped-Merch-store-192x192.png" alt="" loading="lazy"></span></a>
+        <a class="campus-icon-link" data-name="IITH Garage" aria-label="Open IITH Garage" href="https://iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-icon"><img src="assets/campus-icons/garage.jpg" alt="" loading="lazy"></span></a>
+      </div>
+      <div class="campus-list reveal" id="campusProjects" aria-label="IIT Hyderabad product details">
+        <a class="campus-item" id="campusProjectAbhyas" href="https://abhyas.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Academics</span><div class="campus-card-copy"><div class="campus-name">Abhyas</div><div class="campus-meta">Past papers, notes and references—searchable by course</div></div><span class="campus-status">Live</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+        <a class="campus-item" href="https://nivas.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Housing</span><div class="campus-card-copy"><div class="campus-name">Nivas</div><div class="campus-meta">Hostel information without the hunt</div></div><span class="campus-status">Live</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+        <a class="campus-item" href="https://sanchari.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Mobility</span><div class="campus-card-copy"><div class="campus-name">Sanchari</div><div class="campus-meta">Campus transport, in one place</div></div><span class="campus-status">Live</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+        <a class="campus-item" href="https://athletics.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Sport</span><div class="campus-card-copy"><div class="campus-name">IITH Athletics</div><div class="campus-meta">Results, records, athlete profiles and the public home of track and field at IITH</div></div><span class="campus-status">Live</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+        <a class="campus-item" href="https://ruchi.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Dining</span><div class="campus-card-copy"><div class="campus-name">Ruchi</div><div class="campus-meta">Mess registration and a clearer daily dining experience</div></div><span class="campus-status">Public beta</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+        <a class="campus-item" href="https://aquatics.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Facilities</span><div class="campus-card-copy"><div class="campus-name">IITH Aquatics</div><div class="campus-meta">Pool timings, registration, fees and rules</div></div><span class="campus-status">Live</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+        <a class="campus-item" href="https://store.iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Commerce</span><div class="campus-card-copy"><div class="campus-name">IITH Merch Store</div><div class="campus-meta">A proper storefront, checkout and order flow in place of Google Forms</div></div><span class="campus-status">Live</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+        <a class="campus-item" href="https://iith.online" target="_blank" rel="noopener noreferrer"><span class="campus-category">Collection</span><div class="campus-card-copy"><div class="campus-name">IITH Garage</div><div class="campus-meta">The index of student products I have made for campus</div></div><span class="campus-status">Live</span><span class="campus-arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="section live-work" id="live-work">
+      <div class="live-work-head reveal">
+        <div>
+          <p class="section-kicker">03 / Live websites</p>
+          <h2 class="section-title">See them<br><em>running.</em></h2>
+        </div>
+        <p class="body-large">Products for campus, students and independent work—currently online.</p>
+      </div>
+
+      <div class="live-browser reveal" id="liveBrowser" role="tabpanel" aria-labelledby="liveTab0">
+        <div class="live-browser-bar">
+          <span class="live-browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="live-domain" id="liveDomain">abhyas.iith.online</span>
+          <a class="live-open" id="liveOpen" href="https://abhyas.iith.online/" target="_blank" rel="noopener noreferrer">Open live site ↗</a>
+        </div>
+        <div class="live-preview-shell">
+          <div class="live-preview-loading" id="liveLoading" aria-live="polite">Loading Abhyas</div>
+          <iframe class="live-preview-frame" id="liveFrame" src="https://abhyas.iith.online/" title="Live preview of Abhyas" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+        </div>
+        <div class="live-caption">
+          <div><span class="live-category" id="liveCategory">IIT Hyderabad · Academics</span><h3 class="live-name" id="liveName">Abhyas</h3></div>
+          <p class="live-description" id="liveDescription">Past papers, notes and references, organised into one searchable academic archive.</p>
+          <div class="live-controls" aria-label="Live website slideshow controls">
+            <button class="live-control" id="livePrevious" type="button" aria-label="Previous live website">←</button>
+            <span class="live-count" id="liveCount" aria-live="polite">01 / 11</span>
+            <button class="live-control" id="liveNext" type="button" aria-label="Next live website">→</button>
+          </div>
+        </div>
+      </div>
+      <div class="live-index reveal" id="liveIndex" role="tablist" aria-label="Live website catalogue"></div>
+    </section>
+
+    <section class="section creator" id="creator">
+      <div class="creator-head reveal">
+        <div>
+          <p class="section-kicker">04 / The creator</p>
+          <h2 class="section-title">Learning<br><em>out loud.</em></h2>
+        </div>
+        <div class="creator-copy">
+          <p class="body-large">Videos about the things I build, the tools I use and what student life actually looks like.</p>
+          <a class="button light" href="https://youtube.com/@ChandanMettu" target="_blank" rel="noopener noreferrer">Open the channel <span class="arrow">↗</span></a>
+        </div>
+      </div>
+      <figure class="image-slot creator-image-slot reveal" data-image-slot="creator-still">
+        <span class="image-slot-mark" aria-hidden="true">+</span>
+        <figcaption><strong>YouTube still or filming photograph</strong><span>Landscape image · 16:9</span></figcaption>
+      </figure>
+      <div class="creator-stage reveal">
+        <div class="creator-stat"><strong>2.5K+</strong><span>YouTube subscribers</span></div>
+        <div class="creator-stat editorial"><strong>Not a niche.<br>A point of view.</strong><p>Products, technology, opportunities, athletics and the honest parts in between.</p></div>
+        <div class="creator-stat"><strong>275K+</strong><span>YouTube views</span></div>
+      </div>
+      <div class="creator-platforms reveal" aria-label="Creator audience">
+        <div><strong>@chandanmettu</strong><span>Instagram · stories and short-form experiments</span></div>
+        <div><strong>1K+</strong><span>LinkedIn</span></div>
+        <div><strong>Products</strong><span>Build logs and launches</span></div>
+        <div><strong>Student life</strong><span>IITH, opportunities and athletics</span></div>
+      </div>
+    </section>
+
+    <section class="section athlete" id="athlete">
+      <div class="athlete-intro">
+        <div class="reveal">
+          <p class="section-kicker">05 / The athlete</p>
+          <h2 class="section-title">Built to<br><em>move.</em></h2>
+        </div>
+        <div class="athlete-panel reveal">
+          <span class="mini-label">IIT Hyderabad Athletics</span>
+          <div class="captain">Captain</div>
+          <p>I represent IIT Hyderabad in sprinting and long jump—and help lead the team that trains beside me.</p>
+          <div class="athlete-tags"><span>100m · 11.3s</span><span>200m · 25.6s</span><span>Long jump · 5.6m</span><span>Inter-IIT</span></div>
+        </div>
+      </div>
+      <figure class="image-slot athlete-image-slot reveal" data-image-slot="athletics-action">
+        <span class="image-slot-mark" aria-hidden="true">+</span>
+        <figcaption><strong>Race, jump or team photograph</strong><span>Wide action image · 16:9</span></figcaption>
+      </figure>
+      <div class="medal-lab reveal">
+        <div class="medal-lab-head">
+          <div><span class="mini-label">Selected competition results</span><h3>Earned. Hung. Still moving.</h3></div>
+        </div>
+        <div class="physics-stage" id="physicsStage">
+          <canvas id="medalPhysics" aria-label="An interactive wall of selected athletics medals hanging from one continuous rack. Move the cursor through them, drag a ribbon, or tap a medal for details."></canvas>
+          <div class="medal-tip" id="medalTip" role="status" aria-live="polite"></div>
+        </div>
+        <p class="physics-help"><strong>One rack, mixed finishes.</strong> Move through the wall to make the medals sway; drag with a mouse or tap for the result.</p>
+        <details class="achievement-ledger">
+          <summary>Open the selected results ledger <span>Competition results and Inter-IIT representation</span></summary>
+          <div class="ledger-wrap"><table><thead><tr><th>Date</th><th>Meet</th><th>Performance</th><th>Result</th></tr></thead><tbody id="achievementRows"></tbody></table></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section educator" id="educator">
+      <div class="equation-line" aria-hidden="true">Curiosity × clarity = a better way to learn &nbsp; · &nbsp; Curiosity × clarity = a better way to learn</div>
+      <div class="educator-header reveal">
+        <div class="educator-copy">
+          <p class="section-kicker">06 / The educator</p>
+          <h2 class="section-title">Math,<br><em>made clear.</em></h2>
+        </div>
+        <p class="body-large">I teach the kind of mathematics that rewards thinking—not memorising a route to the answer.</p>
+      </div>
+      <div class="math-carousel reveal" id="mathCarousel" aria-label="Mathematics journey carousel">
+        <div class="math-track">
+          <article class="math-card" data-math-card data-position="far-previous" aria-label="Olympiad roots"><span class="math-card-label">01 / Competition roots</span><span class="math-symbol" aria-hidden="true">Σ</span><h3>Olympiad<br>roots</h3><p>AMTI, SOF IMO and IOQM turned mathematics into a long-running practice in problem solving.</p></article>
+          <article class="math-card" data-math-card data-position="previous" aria-label="Vedantu Olympiad School"><span class="math-card-label">02 / First teaching role</span><span class="math-symbol" aria-hidden="true">π</span><h3>Teaching<br>at 17</h3><p>Supported young problem solvers as a teaching assistant at Vedantu Olympiad School.</p></article>
+          <article class="math-card" data-math-card data-position="active" aria-label="Mathematics content"><span class="math-card-label">03 / Creator work</span><span class="math-symbol" aria-hidden="true">ƒ</span><h3>Math,<br>made clear</h3><p>Creating mathematics lessons and problem-solving content for students who want to understand the why.</p></article>
+          <article class="math-card" data-math-card data-position="next" aria-label="INMO qualifier"><span class="math-card-label">04 / National stage</span><span class="math-symbol" aria-hidden="true">∞</span><h3>Reached<br>INMO</h3><p>Reached the Indian National Mathematics Olympiad after years of competitive mathematics.</p></article>
+          <article class="math-card" data-math-card data-position="far-next" aria-label="Teaching philosophy"><span class="math-card-label">05 / The method</span><span class="math-symbol" aria-hidden="true">△</span><h3>Think<br>first</h3><p>The goal is clarity: build the idea, test the reasoning, and only then reach for a shortcut.</p></article>
+        </div>
+        <div class="math-controls" aria-label="Mathematics carousel controls"><button class="math-control" id="mathPrevious" type="button" aria-label="Previous mathematics story">←</button><span class="math-count" id="mathCount" aria-live="polite">03 / 05</span><button class="math-control" id="mathNext" type="button" aria-label="Next mathematics story">→</button></div>
+      </div>
+    </section>
+
+    <section class="section history" id="history">
+      <div class="history-head reveal">
+        <div><p class="section-kicker">07 / The road here</p><h2 class="section-title">School,<br><em>then beyond.</em></h2></div>
+        <p class="body-large">Warangal to Hyderabad. Sport, mathematics, building and teaching kept overlapping long before they became sections on a website.</p>
+      </div>
+      <div class="school-path">
+        <article class="school reveal"><span class="school-year">2016–18</span><div><h3>St. Gabriel’s High School</h3><p>Classes 6 and 7 · Warangal</p><small>Academics, cultural activities and sport—the years when doing more than one thing started to feel normal.</small></div><figure class="image-slot school-image-slot" data-image-slot="school-st-gabriels"><span class="image-slot-mark" aria-hidden="true">+</span><figcaption><strong>School photograph</strong><span>St. Gabriel’s</span></figcaption></figure></article>
+        <article class="school reveal"><span class="school-year">2018–21</span><div><h3>SPR School of Excellence</h3><p>Classes 8 to 10 · Warangal</p><small>Where competitive mathematics began through SOF IMO, AMTI and IOQM.</small></div><figure class="image-slot school-image-slot" data-image-slot="school-spr"><span class="image-slot-mark" aria-hidden="true">+</span><figcaption><strong>School photograph</strong><span>SPR</span></figcaption></figure></article>
+        <article class="school reveal"><span class="school-year">2021–23</span><div><h3>Narayana Junior College</h3><p>Classes 11 and 12 · Hyderabad</p><small>Two years focused on JEE, while continuing the olympiad path and qualifying for INMO.</small></div><figure class="image-slot school-image-slot" data-image-slot="school-narayana"><span class="image-slot-mark" aria-hidden="true">+</span><figcaption><strong>College photograph</strong><span>Narayana</span></figcaption></figure></article>
+        <article class="school current reveal"><span class="school-year">2024–now</span><div><h3>IIT Hyderabad</h3><p>Student · Hyderabad</p><small>Building campus products, creating, teaching mathematics and representing IITH in athletics.</small></div><figure class="image-slot school-image-slot" data-image-slot="school-iith"><span class="image-slot-mark" aria-hidden="true">+</span><figcaption><strong>Campus-life photograph</strong><span>IIT Hyderabad</span></figcaption></figure></article>
+      </div>
+      <div class="academic-receipts reveal" aria-label="Academic record">
+        <div><strong>10/10</strong><span>Class 10 CGPA</span></div><div><strong>98.5%</strong><span>Class 12 board</span></div><div><strong>99.77</strong><span>JEE mathematics percentile</span></div><div><strong>12,735</strong><span>JEE Advanced AIR · 2024</span></div>
+      </div>
+      <div class="olympiad-path reveal">
+        <div class="olympiad-head"><span>Mathematics olympiad progression</span><strong>A long competition arc. One national stage.</strong></div>
+        <div class="olympiad-steps"><div><span>Early years</span><strong>AMTI</strong><small>An early competition milestone</small></div><div><span>School</span><strong>SOF IMO</strong><small>Progressing beyond school rounds</small></div><div><span>Olympiad path</span><strong>IOQM</strong><small>Entering the national pathway</small></div><div><span>Return</span><strong>IOQM</strong><small>Coming back and advancing</small></div><div class="top"><span>National stage</span><strong>INMO</strong><small>Reached the Indian national olympiad</small></div></div>
+      </div>
+    </section>
+
+    <section class="section roles" id="roles">
+      <div class="roles-head reveal"><div><p class="section-kicker">08 / Selected roles</p><h2 class="section-title">Work that<br><em>shaped me.</em></h2></div><p class="roles-intro body-large">Teaching, research, student communities and campus leadership—roles where the responsibility became real.</p></div>
+      <figure class="image-slot role-image-slot reveal" data-image-slot="experience-community">
+        <span class="image-slot-mark" aria-hidden="true">+</span>
+        <figcaption><strong>Community, teaching or event photograph</strong><span>Wide image · 16:9</span></figcaption>
+      </figure>
+      <div class="role-list reveal">
+        <article><span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16v12H4z"></path><path d="M8 10h8M8 14h5"></path><path d="m15.5 14 1.5 1.5 3-3"></path></svg></span><h3>Independent Web Studio</h3><p>Built 100+ websites across creator courses, online stores, business sites and portfolios for clients in India and abroad.</p><span class="role-period">2020–now</span></article>
+        <article><span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5a3 3 0 0 1 6 0v6a3 3 0 0 1-6 0V5Z"></path><path d="M6 10v1a6 6 0 0 0 12 0v-1M12 17v4M8 21h8"></path></svg></span><h3>TEDxIITH</h3><p>Helping shape outreach for ideas and speakers as Outreach Coordinator.</p><span class="role-period">2025–now</span></article>
+        <article><span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 7 5v8l-7 5-7-5V8l7-5Z"></path><path d="m8 14 3-6 2 4 3-2"></path></svg></span><h3>Perplexity</h3><p>Built student reach as a VIP Campus Partner, generating 1,500+ qualified leads.</p><span class="role-period">2025</span></article>
+        <article><span class="role-icon" aria-hidden="true"><strong>Y</strong></span><h3>YC Startup School Paris</h3><p>Selected to join the 2026 Startup School gathering in Paris.</p><span class="role-period">2026</span></article>
+        <article><span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6m-5 0v6l-5 9a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"></path><path d="M7.5 16h9"></path></svg></span><h3>Youth Resilience India</h3><p>Contributed to research involving BITS Pilani, IIT Hyderabad and Dalhousie University.</p><span class="role-period">2025</span></article>
+        <article><span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M8 21h8m-4-4v4M7 9h4m-4 4h8"></path></svg></span><h3>Vedantu</h3><p>Hired at 17 to work on Olympiad mathematics content and support younger problem solvers.</p><span class="role-period">2023–24</span></article>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-inner reveal">
+        <p class="section-kicker">The next lane</p>
+        <h2>Let’s make<em>something useful.</em></h2>
+        <p>If you’re building for students, campus communities or the internet at large, I’d like to hear about it.</p>
+        <a class="button dark" href="mailto:hello@chandanmettu.com">Email me <span class="arrow">↗</span></a>
+        <div class="socials"><a href="https://youtube.com/@ChandanMettu" target="_blank" rel="noopener noreferrer">YouTube ↗</a><a href="https://instagram.com/chandanmettu" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://linkedin.com/in/saichandanmettu" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://x.com/ChandanMettu" target="_blank" rel="noopener noreferrer">X ↗</a><a href="https://www.threads.net/@chandanmettu" target="_blank" rel="noopener noreferrer">Threads ↗</a><a href="https://github.com/saichandanmettu" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+      </div>
+      <div class="footer-line"><span>Chandan Mettu · Hyderabad</span><span>Student · Builder · Creator · Athlete · Educator</span></div>
+    </section>
+  </main>
+
+  <script src="assets/js/lenis.min.js"></script>
+  <script>
+    (() => {
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (typeof window.Lenis === 'undefined' || reduced) return;
+
+      const lenis = new window.Lenis({
+        lerp: .085,
+        wheelMultiplier: .95,
+        smoothWheel: true,
+        syncTouch: false,
+        touchMultiplier: 1.5
+      });
+      window.__lenis = lenis;
+
+      const frame = (time) => {
+        lenis.raf(time);
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+
+      document.addEventListener('click', (event) => {
+        const anchor = event.target.closest?.('a[href^="#"]');
+        const href = anchor?.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        event.preventDefault();
+        lenis.scrollTo(target, {
+          offset: -84,
+          duration: 1.35,
+          easing: (value) => 1 - Math.pow(1 - value, 4)
+        });
+        history.replaceState(null, '', href);
+      });
+    })();
+
+    (() => {
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const headings = [...document.querySelectorAll('.hero h1,.section-title,.project-name,.launches-top h3,.origin-copy h3,.medal-lab-head h3,.contact h2')];
+
+      const splitNode = (node, state) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          if (!node.textContent.trim()) return;
+          const fragment = document.createDocumentFragment();
+          node.textContent.split(/(\s+)/).forEach((chunk) => {
+            if (!chunk) return;
+            if (/^\s+$/.test(chunk)) {
+              fragment.appendChild(document.createTextNode(chunk));
+              return;
+            }
+            const word = document.createElement('span');
+            word.className = 'k-word';
+            word.style.setProperty('--word-index', state.index++);
+            word.textContent = chunk;
+            fragment.appendChild(word);
+          });
+          node.replaceWith(fragment);
+          return;
+        }
+        if (node.nodeType !== Node.ELEMENT_NODE || node.matches('svg,[data-no-split]')) return;
+        [...node.childNodes].forEach((child) => splitNode(child, state));
+      };
+
+      headings.forEach((heading) => {
+        splitNode(heading, { index: 0 });
+        heading.classList.add('kinetic-heading');
+      });
+
+      const show = (heading) => heading.classList.add('is-visible');
+      if (reduced || !('IntersectionObserver' in window)) {
+        headings.forEach(show);
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          show(entry.target);
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: .12, rootMargin: '0px 0px -5% 0px' });
+
+      headings.forEach((heading) => observer.observe(heading));
+      requestAnimationFrame(() => headings.forEach((heading) => {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top < innerHeight && rect.bottom > 0) show(heading);
+      }));
+    })();
+
+    if (document.documentElement.classList.contains('no-native-reveal')) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+    }
+
+    (() => {
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const roleCard = document.querySelector('#roleCard');
+      let roleCardTimer;
+
+      if (roleCard) {
+        roleCard.addEventListener('click', () => {
+          clearTimeout(roleCardTimer);
+          roleCard.classList.remove('is-activated');
+          void roleCard.offsetWidth;
+          roleCard.classList.add('is-activated');
+          roleCard.setAttribute('aria-pressed', 'true');
+          roleCardTimer = setTimeout(() => {
+            roleCard.classList.remove('is-activated');
+            roleCard.setAttribute('aria-pressed', 'false');
+          }, reduced ? 20 : 900);
+        });
+      }
+      const numberTargets = [...document.querySelectorAll('.project-number strong,.origin-proof strong,.creator-stat > strong,.creator-platforms strong,.academic-receipts strong')]
+        .map((element) => {
+          const raw=element.textContent.trim();
+          const match=raw.match(/[\d,.]+/);
+          if(!match)return null;
+          const token=match[0];
+          const value=Number(token.replaceAll(',',''));
+          const decimals=(token.split('.')[1]||'').length;
+          return Number.isFinite(value)?{element,raw,token,value,decimals,prefix:raw.slice(0,match.index),suffix:raw.slice(match.index+token.length)}:null;
+        }).filter(Boolean);
+
+      function formatNumber(item,value) {
+        return item.prefix+value.toLocaleString('en-US',{minimumFractionDigits:item.decimals,maximumFractionDigits:item.decimals})+item.suffix;
+      }
+
+      function animateNumber(item) {
+        if(item.element.dataset.counted)return;
+        item.element.dataset.counted='true';
+        if(reduced){item.element.textContent=item.raw;return;}
+        const start=performance.now();
+        const duration=1100+Math.min(900,item.value*.025);
+        function frame(now) {
+          const progress=Math.min(1,(now-start)/duration);
+          const eased=1-Math.pow(1-progress,4);
+          const current=item.decimals?item.value*eased:Math.round(item.value*eased);
+          item.element.textContent=formatNumber(item,current);
+          if(progress<1)requestAnimationFrame(frame);else item.element.textContent=item.raw;
+        }
+        requestAnimationFrame(frame);
+      }
+
+      const numberObserver=new IntersectionObserver((entries) => entries.forEach((entry) => {
+        if(entry.isIntersecting){const item=numberTargets.find(target => target.element===entry.target);if(item)animateNumber(item);numberObserver.unobserve(entry.target);}
+      }),{threshold:.65});
+      numberTargets.forEach(item => numberObserver.observe(item.element));
+
+      if(reduced)return;
+      document.body.classList.add('motion-ready');
+    })();
+
+    (() => {
+      const projects = [
+        { name:'Abhyas', category:'IIT Hyderabad · Academics', url:'https://abhyas.iith.online/', description:'Past papers, notes and references, organised into one searchable academic archive.' },
+        { name:'Sanchari', category:'IIT Hyderabad · Mobility', url:'https://sanchari.iith.online/', description:'Campus transport information brought together so routes, stops and timings are easier to find.' },
+        { name:'Nivas', category:'IIT Hyderabad · Housing', url:'https://nivas.iith.online/', description:'A clearer public guide to hostels and residential information at IIT Hyderabad.' },
+        { name:'IITH Athletics', category:'IIT Hyderabad · Sport', url:'https://athletics.iith.online/', description:'Results, records and athlete profiles for the institute’s track-and-field community.' },
+        { name:'IITH Aquatics', category:'IIT Hyderabad · Facilities', url:'https://aquatics.iith.online/', description:'Pool timings, registration, fees and rules collected into one practical public resource.' },
+        { name:'Ruchi', category:'IIT Hyderabad · Public beta', url:'https://ruchi.iith.online/', description:'A public beta for mess registration and a clearer daily dining experience.' },
+        { name:'IITH Merch Store', category:'IIT Hyderabad · Commerce', url:'https://store.iith.online/', description:'The institute merchandise storefront, with products, checkout and orders in one flow.' },
+        { name:'IITH Garage', category:'IIT Hyderabad · Collection', url:'https://iith.online/', description:'The public index of the digital systems I have built for the IIT Hyderabad community.' },
+        { name:'CampusLoom', category:'Students · College discovery', url:'https://campusloom.in/', description:'College discovery and decision tools designed around the questions students actually ask.' },
+        { name:'Campus Kit', category:'Students · College preparation', url:'https://kit.campusloom.in/', description:'Packing checklists, product picks, laptop advice and student discounts for college freshers.' },
+        { name:'Brand My Desk', category:'Independent · Brand experiment', url:'https://desk.chandanmettu.com/', description:'A small physical-media experiment that puts a brand on the devices at my IIT Hyderabad desk.' }
+      ];
+      const browser = document.getElementById('liveBrowser');
+      const frame = document.getElementById('liveFrame');
+      const loading = document.getElementById('liveLoading');
+      const domain = document.getElementById('liveDomain');
+      const open = document.getElementById('liveOpen');
+      const category = document.getElementById('liveCategory');
+      const name = document.getElementById('liveName');
+      const description = document.getElementById('liveDescription');
+      const previous = document.getElementById('livePrevious');
+      const next = document.getElementById('liveNext');
+      const count = document.getElementById('liveCount');
+      const index = document.getElementById('liveIndex');
+      if (!browser || !frame || !loading || !domain || !open || !category || !name || !description || !previous || !next || !count || !index) return;
+
+      let active = 0;
+      let loadTimer;
+      let touchStart = null;
+
+      const tabs = projects.map((project,projectIndex) => {
+        const button = document.createElement('button');
+        button.className = 'live-index-button';
+        button.id = `liveTab${projectIndex}`;
+        button.type = 'button';
+        button.role = 'tab';
+        button.setAttribute('aria-controls','liveBrowser');
+        button.innerHTML = `<small>${String(projectIndex+1).padStart(2,'0')} · ${project.category.split(' · ')[0]}</small><strong>${project.name}</strong>`;
+        button.addEventListener('click',() => select(projectIndex,true));
+        index.appendChild(button);
+        return button;
+      });
+
+      function finishLoading() {
+        clearTimeout(loadTimer);
+        browser.classList.add('is-loaded');
+        loading.textContent = `${projects[active].name} is live`;
+      }
+
+      function select(projectIndex,moveFocus=false,scrollTab=true) {
+        active = (projectIndex+projects.length)%projects.length;
+        const project = projects[active];
+        browser.classList.remove('is-loaded');
+        loading.textContent = `Loading ${project.name}`;
+        domain.textContent = new URL(project.url).hostname;
+        open.href = project.url;
+        open.setAttribute('aria-label',`Open ${project.name} in a new tab`);
+        category.textContent = project.category;
+        name.textContent = project.name;
+        description.textContent = project.description;
+        count.textContent = `${String(active+1).padStart(2,'0')} / ${String(projects.length).padStart(2,'0')}`;
+        frame.title = `Live preview of ${project.name}`;
+        if (frame.src !== project.url) frame.src = project.url;
+        tabs.forEach((tab,tabIndex) => {
+          const selected = tabIndex === active;
+          tab.setAttribute('aria-selected',String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+        browser.setAttribute('aria-labelledby',tabs[active].id);
+        if (scrollTab) tabs[active].scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+        if (moveFocus) tabs[active].focus({ preventScroll:true });
+        clearTimeout(loadTimer);
+        loadTimer = setTimeout(finishLoading,4500);
+      }
+
+      frame.addEventListener('load',finishLoading);
+      previous.addEventListener('click',() => select(active-1));
+      next.addEventListener('click',() => select(active+1));
+      index.addEventListener('keydown',(event) => {
+        if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+        event.preventDefault();
+        if (event.key === 'Home') select(0,true);
+        else if (event.key === 'End') select(projects.length-1,true);
+        else select(active+(event.key === 'ArrowRight' ? 1 : -1),true);
+      });
+      browser.addEventListener('touchstart',(event) => { touchStart = event.changedTouches[0].clientX; },{passive:true});
+      browser.addEventListener('touchend',(event) => {
+        if (touchStart === null || event.target.closest('a,button') || event.target === frame) { touchStart = null; return; }
+        const distance = event.changedTouches[0].clientX-touchStart;
+        if (Math.abs(distance)>54) select(active+(distance<0?1:-1));
+        touchStart = null;
+      },{passive:true});
+      select(0,false,false);
+    })();
+
+    (() => {
+      const carousel = document.getElementById('mathCarousel');
+      const cards = carousel ? [...carousel.querySelectorAll('[data-math-card]')] : [];
+      const previous = document.getElementById('mathPrevious');
+      const next = document.getElementById('mathNext');
+      const count = document.getElementById('mathCount');
+      if (!carousel || !cards.length || !previous || !next || !count) return;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let active = 2;
+      let timer = null;
+      let visible = true;
+      let touchStart = null;
+
+      function renderMathCarousel() {
+        cards.forEach((card,index) => {
+          let offset = (index-active+cards.length)%cards.length;
+          if (offset>cards.length/2) offset-=cards.length;
+          const position = offset===0 ? 'active' : offset===-1 ? 'previous' : offset===1 ? 'next' : offset===-2 ? 'far-previous' : offset===2 ? 'far-next' : 'hidden';
+          card.dataset.position=position;
+          card.setAttribute('aria-hidden',position==='active' ? 'false' : 'true');
+          card.tabIndex=position==='active' ? 0 : -1;
+        });
+        count.textContent=`${String(active+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
+      }
+
+      function go(step,manual=true) {
+        active=(active+step+cards.length)%cards.length;
+        renderMathCarousel();
+        if(manual) restart();
+      }
+
+      function stop() { if(timer){clearInterval(timer);timer=null;} }
+      function start() { if(!reduced && visible && !timer) timer=setInterval(() => go(1,false),4200); }
+      function restart() { stop(); start(); }
+
+      previous.addEventListener('click',() => go(-1));
+      next.addEventListener('click',() => go(1));
+      cards.forEach((card,index) => card.addEventListener('click',() => { if(index!==active){active=index;renderMathCarousel();restart();} }));
+      carousel.addEventListener('mouseenter',stop);
+      carousel.addEventListener('mouseleave',start);
+      carousel.addEventListener('focusin',stop);
+      carousel.addEventListener('focusout',(event) => { if(!carousel.contains(event.relatedTarget)) start(); });
+      carousel.addEventListener('touchstart',(event) => { touchStart=event.changedTouches[0].clientX; stop(); },{passive:true});
+      carousel.addEventListener('touchend',(event) => { if(touchStart===null)return; const distance=event.changedTouches[0].clientX-touchStart; if(Math.abs(distance)>44)go(distance<0?1:-1); touchStart=null; start(); },{passive:true});
+      new IntersectionObserver(([entry]) => { visible=entry.isIntersecting; visible?start():stop(); },{rootMargin:'120px'}).observe(carousel);
+      renderMathCarousel();
+      start();
+    })();
+
+    const MEDAL_RESULTS = [
+      { medal:'gold', date:'10 Feb 2026', meet:'AIRO 2026', venue:'Mahindra University', event:'4×400m relay', result:'Gold' },
+      { medal:'silver', date:'10 Feb 2026', meet:'AIRO 2026', venue:'Mahindra University', event:'100m', result:'Silver' },
+      { medal:'bronze', date:'10 Feb 2026', meet:'AIRO 2026', venue:'Mahindra University', event:'200m', result:'Bronze' },
+      { medal:'bronze', date:'10 Feb 2026', meet:'AIRO 2026', venue:'Mahindra University', event:'4×100m relay', result:'Bronze' },
+      { medal:'gold', date:'4 Mar 2025', meet:'Infinity Cup', venue:'Woxsen University', event:'Long jump', result:'Gold' },
+      { medal:'gold', date:'4 Mar 2025', meet:'Infinity Cup', venue:'Woxsen University', event:'4×100m relay', result:'Gold' },
+      { medal:'silver', date:'4 Mar 2025', meet:'Infinity Cup', venue:'Woxsen University', event:'100m', result:'Silver' },
+      { medal:'gold', date:'13 Feb 2025', meet:'AIRO 2025', venue:'Mahindra University', event:'4×100m relay', result:'Gold' },
+      { medal:'gold', date:'13 Feb 2025', meet:'AIRO 2025', venue:'Mahindra University', event:'4×200m relay', result:'Gold' },
+      { medal:'gold', date:'2025', meet:'Diesta', venue:'IIT Hyderabad', event:'Long jump', result:'Gold' },
+      { medal:'gold', date:'2025', meet:'Diesta', venue:'IIT Hyderabad', event:'Men’s relay', result:'Gold' },
+      { medal:'silver', date:'2025', meet:'Diesta', venue:'IIT Hyderabad', event:'Mixed relay', result:'Silver' },
+      { medal:'silver', date:'2025', meet:'Diesta', venue:'IIT Hyderabad', event:'200m', result:'Silver' },
+      { medal:'bronze', date:'2025', meet:'Diesta', venue:'IIT Hyderabad', event:'100m', result:'Bronze' },
+      { medal:'silver', date:'2024', meet:'Milan', venue:'IIT Hyderabad', event:'Long jump', result:'Silver' },
+      { medal:'silver', date:'2024', meet:'Milan', venue:'IIT Hyderabad', event:'Relay', result:'Silver' }
+    ];
+
+    const OTHER_RESULTS = [
+      { date:'2024–25', meet:'Inter-IIT Sports Meet', event:'Sprints and relay', result:'Represented IIT Hyderabad' }
+    ];
+
+    const rows = document.getElementById('achievementRows');
+    [...MEDAL_RESULTS, ...OTHER_RESULTS].forEach((item) => {
+      const tr = document.createElement('tr');
+      [item.date, item.meet + (item.venue ? ` · ${item.venue}` : ''), item.event, item.result].forEach((value) => {
+        const td = document.createElement('td');
+        td.textContent = value;
+        tr.appendChild(td);
+      });
+      rows.appendChild(tr);
+    });
+
+    (() => {
+      const canvas = document.getElementById('medalPhysics');
+      const stage = document.getElementById('physicsStage');
+      const tip = document.getElementById('medalTip');
+      if (!canvas || !stage || !tip) return;
+      const ctx = canvas.getContext('2d');
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const finePointer = matchMedia('(pointer: fine)').matches;
+      const palette = {
+        gold: ['#f9df78','#d4a820','#8d6412'],
+        silver: ['#f1f3f5','#aeb5bf','#68717d'],
+        bronze: ['#e8ad72','#b96c32','#70401f']
+      };
+      const ribbonThemes = {
+        'AIRO 2026': { base:'#19324f', stripe:'#f2eee4', edge:'#b64031' },
+        'Infinity Cup': { base:'#711f31', stripe:'#e3ba50', edge:'#3d101b' },
+        'AIRO 2025': { base:'#242737', stripe:'#df7350', edge:'#f2eee4' },
+        'Diesta': { base:'#5f2443', stripe:'#f2eee4', edge:'#b98632' },
+        'Milan': { base:'#2452e8', stripe:'#f2eee4', edge:'#132a78' },
+        'District athletics': { base:'#205b47', stripe:'#d8f36a', edge:'#10382a' }
+      };
+      let width = 0, height = 0, dpr = 1, bodies = [], hovered = null, dragged = null, active = true, last = performance.now();
+      let pointer = { x:-500, y:-500, px:-500, py:-500, time:performance.now() };
+
+      function resize() {
+        const rect = stage.getBoundingClientRect();
+        width = Math.max(280, rect.width);
+        height = Math.max(360, rect.height);
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const compact = width < 700;
+        const side = compact ? 24 : 38;
+        const radius = width < 430 ? 14 : width < 700 ? 15 : width < 900 ? 18 : 22;
+        const railY = compact ? 58 : 66;
+        const usable = width - side * 2;
+        const tierPattern = [0,1,2,1,3,0,2,3,1,0,3,2,0,2,1,3];
+        const baseLength = compact ? 154 : 174;
+        const tierStep = compact ? 48 : 58;
+        const maxLength = height - railY - radius - 28;
+        bodies = MEDAL_RESULTS.map((data,index) => {
+          const length = Math.min(maxLength,baseLength+tierPattern[index%tierPattern.length]*tierStep+(index%2)*7);
+          return makeBody(data,radius,length,
+            side+index*(usable/Math.max(1,MEDAL_RESULTS.length-1)),
+            railY,index);
+        });
+        bodies.forEach(positionBody);
+        draw();
+      }
+
+      function makeBody(data, radius, length, anchorX, anchorY, index) {
+        return {
+          data, radius, length, anchorX, anchorY,
+          theta: reduced ? 0 : Math.sin(index*1.7)*.055,
+          omega: reduced ? 0 : Math.cos(index*1.31)*.08,
+          ribbon: ribbonThemes[data.meet] || ribbonThemes.Milan,
+          x:0, y:0
+        };
+      }
+
+      function roundRect(x,y,w,h,r) {
+        ctx.beginPath();
+        ctx.roundRect(x,y,w,h,r);
+      }
+
+      function positionBody(body) {
+        body.x = body.anchorX + Math.sin(body.theta) * body.length;
+        body.y = body.anchorY + Math.cos(body.theta) * body.length;
+      }
+
+      function drawWall() {
+        const glow = ctx.createRadialGradient(width * .5, height * .42, 20, width * .5, height * .42, width * .72);
+        glow.addColorStop(0,'rgba(223,115,80,.2)');
+        glow.addColorStop(1,'rgba(21,26,39,0)');
+        ctx.fillStyle = glow; ctx.fillRect(0,0,width,height);
+        ctx.strokeStyle = 'rgba(255,255,255,.025)';
+        ctx.lineWidth = 1;
+        for (let x=24; x<width; x+=36) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,height); ctx.stroke(); }
+        for (let y=32; y<height; y+=36) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(width,y); ctx.stroke(); }
+        const railY = bodies[0]?.anchorY || 64;
+        ctx.fillStyle = 'rgba(255,255,255,.46)';
+        ctx.font = `700 ${width < 700 ? 8 : 9}px DM Sans, sans-serif`;
+        ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.fillText('SELECTED RESULTS · ONE RACK',20,20);
+
+        [width*.1,width*.9].forEach((mountX) => {
+          const mount = ctx.createLinearGradient(mountX-10,0,mountX+10,0);
+          mount.addColorStop(0,'#343b49'); mount.addColorStop(.48,'#8d96a5'); mount.addColorStop(1,'#2a303d');
+          roundRect(mountX-9,railY-16,18,32,6); ctx.fillStyle = mount; ctx.fill();
+          ctx.fillStyle = '#171c28'; ctx.beginPath(); ctx.arc(mountX,railY-9,2.4,0,Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(mountX,railY+9,2.4,0,Math.PI*2); ctx.fill();
+        });
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,.46)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 7;
+        const rod = ctx.createLinearGradient(0,railY-7,0,railY+7);
+        rod.addColorStop(0,'#687283'); rod.addColorStop(.28,'#d8dde4'); rod.addColorStop(.52,'#8993a2'); rod.addColorStop(1,'#323947');
+        roundRect(16,railY-6,width-32,12,6); ctx.fillStyle = rod; ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.strokeStyle = 'rgba(255,255,255,.46)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(22,railY-3); ctx.lineTo(width-22,railY-3); ctx.stroke();
+        ['left','right'].forEach((side) => {
+          const x = side === 'left' ? 16 : width-16;
+          ctx.fillStyle = '#798392'; ctx.beginPath(); ctx.arc(x,railY,8,0,Math.PI*2); ctx.fill();
+          ctx.fillStyle = '#d6dbe2'; ctx.beginPath(); ctx.arc(x-2,railY-2,2,0,Math.PI*2); ctx.fill();
+        });
+        ctx.restore();
+      }
+
+      function drawRibbon(body) {
+        const neckY = body.y-body.radius*.79;
+        const spread = body.radius*.31;
+        const theme = body.ribbon;
+        const drawStrand = (fromX,toX,bow) => {
+          const path = () => {
+            ctx.beginPath();
+            ctx.moveTo(fromX,body.anchorY+4);
+            ctx.quadraticCurveTo((fromX+toX)/2+bow,(body.anchorY+neckY)/2,toX,neckY);
+          };
+          ctx.strokeStyle = 'rgba(0,0,0,.22)'; ctx.lineWidth = Math.max(11,body.radius*.54); path(); ctx.stroke();
+          ctx.strokeStyle = theme.edge; ctx.lineWidth = Math.max(9,body.radius*.48); path(); ctx.stroke();
+          ctx.strokeStyle = theme.base; ctx.lineWidth = Math.max(6.5,body.radius*.36); path(); ctx.stroke();
+          ctx.globalAlpha = .76;
+          ctx.strokeStyle = theme.stripe; ctx.lineWidth = Math.max(1.2,body.radius*.06); path(); ctx.stroke();
+          ctx.globalAlpha = 1;
+        };
+        ctx.save();
+        ctx.lineCap = 'round';
+        drawStrand(body.anchorX-5,body.x-spread,-2);
+        drawStrand(body.anchorX+5,body.x+spread,2);
+        ctx.strokeStyle = theme.edge; ctx.lineWidth = 5;
+        ctx.beginPath(); ctx.arc(body.anchorX,body.anchorY+3,8,Math.PI,Math.PI*2); ctx.stroke();
+        ctx.strokeStyle = theme.base; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.arc(body.anchorX,body.anchorY+3,8,Math.PI,Math.PI*2); ctx.stroke();
+        ctx.fillStyle = '#8f96a5'; ctx.beginPath(); ctx.arc(body.anchorX,body.anchorY,4.5,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#e7e9ed'; ctx.beginPath(); ctx.arc(body.anchorX-1,body.anchorY-1,1.4,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle = '#d4d8df'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(body.x,neckY+3,body.radius*.16,0,Math.PI*2); ctx.stroke();
+        ctx.restore();
+      }
+
+      function starPath(cx,cy,outer,inner) {
+        ctx.beginPath();
+        for (let point=0; point<10; point++) {
+          const angle=-Math.PI/2+point*Math.PI/5;
+          const radius=point%2===0?outer:inner;
+          const x=cx+Math.cos(angle)*radius, y=cy+Math.sin(angle)*radius;
+          if(point===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.closePath();
+      }
+
+      function drawMedal(body) {
+        const {x,y,radius:r,data} = body;
+        ctx.save(); ctx.translate(x,y); ctx.rotate(body.theta*.16);
+        ctx.fillStyle = '#8b93a1'; roundRect(-r*.21,-r*.92,r*.42,r*.3,r*.1); ctx.fill();
+        ctx.shadowColor = 'rgba(0,0,0,.34)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 6;
+        const colors = palette[data.medal];
+        const gradient = ctx.createRadialGradient(-r*.34,-r*.38,1,0,0,r);
+        gradient.addColorStop(0,colors[0]); gradient.addColorStop(.54,colors[1]); gradient.addColorStop(1,colors[2]);
+        ctx.fillStyle = colors[2]; ctx.beginPath(); ctx.arc(0,0,r+2.7,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = gradient; ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+        ctx.shadowColor = 'transparent';
+        ctx.strokeStyle = 'rgba(255,255,255,.43)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(0,0,r*.76,0,Math.PI*2); ctx.stroke();
+        ctx.strokeStyle = 'rgba(54,43,22,.34)'; ctx.beginPath(); ctx.arc(0,0,r*.6,0,Math.PI*2); ctx.stroke();
+        const ink = data.medal === 'gold' ? '#4b360d' : data.medal === 'silver' ? '#303741' : '#462713';
+        ctx.fillStyle = ink; starPath(0,-r*.08,r*.28,r*.13); ctx.fill();
+        ctx.fillStyle = ink; ctx.font = `800 ${Math.max(6,r*.22)}px DM Sans, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(data.date.slice(-4),0,r*.43);
+        if (hovered === body) { ctx.strokeStyle = '#d8f36a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0,0,r+6,0,Math.PI*2); ctx.stroke(); }
+        ctx.restore();
+      }
+
+      function collide() {
+        bodies.forEach(positionBody);
+        for (let pass = 0; pass < 2; pass++) {
+          for (let i = 0; i < bodies.length; i++) for (let j = i + 1; j < bodies.length; j++) {
+            const a = bodies[i], b = bodies[j], dx = b.x-a.x, dy = b.y-a.y, min = a.radius+b.radius+1;
+            const dist = Math.hypot(dx,dy) || .001;
+            if (dist >= min) continue;
+            const direction = dx >= 0 ? 1 : -1;
+            const impulse = (min-dist)/min*.085;
+            if (a !== dragged) a.omega -= direction*impulse;
+            if (b !== dragged) b.omega += direction*impulse;
+          }
+        }
+      }
+
+      function update(dt) {
+        bodies.forEach((body) => {
+          if (body === dragged) return;
+          const gravity = -(980/body.length)*Math.sin(body.theta);
+          body.omega += gravity*dt;
+          body.omega *= Math.pow(.985,dt*60);
+          body.theta += body.omega*dt;
+          body.theta = Math.max(-1.12,Math.min(1.12,body.theta));
+          positionBody(body);
+        });
+        collide();
+      }
+
+      function draw() {
+        ctx.clearRect(0,0,width,height); drawWall(); bodies.forEach(drawRibbon); bodies.forEach(drawMedal);
+        if (hovered) placeTip(hovered);
+      }
+
+      function frame(now) {
+        const dt=Math.min((now-last)/1000,.025); last=now;
+        if(active && !reduced) update(dt);
+        draw(); requestAnimationFrame(frame);
+      }
+
+      function hit(x,y) {
+        let best=null,bestD=Infinity;
+        bodies.forEach((body) => { const d=Math.hypot(x-body.x,y-body.y); if(d<body.radius+8 && d<bestD){best=body;bestD=d;} });
+        return best;
+      }
+
+      function point(event) { const rect=canvas.getBoundingClientRect(); return {x:event.clientX-rect.left,y:event.clientY-rect.top}; }
+      function moveWithPointer(p,eventTime) {
+        const elapsed = Math.max(12,eventTime-pointer.time);
+        const velocityX = (p.x-pointer.x)/elapsed*16;
+        const velocityY = (p.y-pointer.y)/elapsed*16;
+        bodies.forEach((body) => {
+          if (body===dragged) return;
+          const dx=body.x-p.x, dy=body.y-p.y, distance=Math.hypot(dx,dy);
+          if(distance>105 || distance<.01) return;
+          const proximity=(105-distance)/105;
+          const tangentX=Math.cos(body.theta), tangentY=-Math.sin(body.theta);
+          const cursorPush=(velocityX*tangentX+velocityY*tangentY)*proximity;
+          const separation=(dx/distance)*proximity;
+          body.omega += (cursorPush*.036+separation*.028);
+        });
+        pointer={x:p.x,y:p.y,px:pointer.x,py:pointer.y,time:eventTime};
+      }
+      function placeTip(body) {
+        const mobile=width<640;
+        if(mobile){tip.style.left='12px';tip.style.right='12px';tip.style.top='auto';tip.style.bottom='12px';return;}
+        tip.style.right='auto';tip.style.bottom='auto';
+        tip.style.left=Math.max(12,Math.min(width-312,body.x+body.radius+13))+'px';
+        tip.style.top=Math.max(42,Math.min(height-130,body.y-58))+'px';
+      }
+      function showTip(body) {
+        hovered=body;
+        if(!body){tip.classList.remove('show');canvas.style.cursor='default';return;}
+        tip.replaceChildren();
+        const small=document.createElement('small');small.textContent=`${body.data.date} · ${body.data.venue}`;
+        const strong=document.createElement('strong');strong.textContent=`${body.data.event} · ${body.data.result}`;
+        const span=document.createElement('span');span.textContent=body.data.meet;
+        tip.append(small,strong,span);tip.classList.add('show');placeTip(body);canvas.style.cursor=finePointer?'grab':'default';
+      }
+
+      canvas.addEventListener('pointermove',(event) => {
+        const p=point(event);
+        if(dragged){
+          const previous=dragged.theta;
+          dragged.theta=Math.max(-1.18,Math.min(1.18,Math.atan2(p.x-dragged.anchorX,p.y-dragged.anchorY)));
+          dragged.omega=(dragged.theta-previous)*18;
+          positionBody(dragged);
+          showTip(dragged);
+          pointer={x:p.x,y:p.y,px:pointer.x,py:pointer.y,time:event.timeStamp};
+          return;
+        }
+        if(finePointer && !reduced) moveWithPointer(p,event.timeStamp);
+        showTip(hit(p.x,p.y));
+      });
+      canvas.addEventListener('pointerdown',(event) => {
+        const p=point(event), body=hit(p.x,p.y); showTip(body);
+        pointer={x:p.x,y:p.y,px:p.x,py:p.y,time:event.timeStamp};
+        if(body && finePointer && !reduced){dragged=body;canvas.setPointerCapture(event.pointerId);canvas.style.cursor='grabbing';}
+      });
+      canvas.addEventListener('pointerup',(event) => { if(dragged){dragged.omega=Math.max(-2.4,Math.min(2.4,dragged.omega));dragged=null;} if(canvas.hasPointerCapture(event.pointerId))canvas.releasePointerCapture(event.pointerId); });
+      canvas.addEventListener('pointerleave',() => { pointer={x:-500,y:-500,px:-500,py:-500,time:performance.now()}; if(!dragged)showTip(null); });
+      new IntersectionObserver(([entry]) => { active=entry.isIntersecting; last=performance.now(); },{rootMargin:'120px'}).observe(stage);
+      new ResizeObserver(resize).observe(stage);
+      resize(); requestAnimationFrame(frame);
+    })();
+  </script>
 </body>
 </html>

@@ -1,40 +1,37 @@
 # chandanmettu.com
 
-The personal site — portfolio, links page and full profile. Plain static HTML,
-no build step, no framework.
+The live personal portfolio, links page and full profile.
+
+- **Live:** [chandanmettu.com](https://chandanmettu.com)
+- **Repository:** `saichandanmettu/chandanmettu-com` (public)
+- **Stack:** static HTML and assets; no framework or build step
+
+The repository carries `CNAME` and `.nojekyll`, while the public response is
+delivered through Hostinger's CDN. Releases are pushed to `main` and verified
+against the public URL after Hostinger's Git deployment completes.
 
 ## Pages
 
-| URL | File | What it is |
+| URL | Source | Purpose |
 |---|---|---|
-| `/` | `index.html` | Portfolio — work, campus tools, athletics, clients |
-| `/links` | `links/index.html` | Link-in-bio page, for social profiles |
-| `/profile` | `profile/index.html` | Full profile / CV |
+| `/` | `index.html` | portfolio and product overview |
+| `/links` | `links/index.html` | link-in-bio page |
+| `/profile` | `profile/index.html` | extended profile/CV |
+| `/variations` | `variations/index.html` | archived design explorations |
 
-Clean URLs come from the folder layout (`links/index.html` → `/links`), so they
-work on any static host without server rewrite rules.
+Shared files are root-relative under `assets/`, so test nested pages through an
+HTTP server rather than moving assets beside each page.
 
-## Assets
-
-Everything lives in `/assets` and is referenced **root-relative** (`/assets/…`),
-not relatively — pages in `/links` and `/profile` would otherwise look for their
-own local copies.
-
-## Deploying
-
-GitHub Pages, from the default branch, root folder. `CNAME` holds the custom
-domain and `.nojekyll` stops Jekyll from processing the files.
-
-Push to `main` and Pages rebuilds. No build step — files are served exactly as
-committed.
+```sh
+python3 -m http.server 8040
+```
 
 ## Known gaps
 
-- **26 images were never supplied.** `YOUR_IMAGE_*`, `ATHLETE_IMG_*`, `CERT_IMG_*`
-  and `EDU_IMG_*` are placeholder filenames from the original template. Each has
-  `onerror="this.style.display='none'"`, so they hide themselves rather than
-  showing broken icons — the page degrades cleanly, but those slots are empty
-  until real images are dropped into `/assets` under the same names.
-- **The three pages don't link to each other.** They were built standalone; there
-  is no shared nav. Worth adding in the revamp.
-- Styling is inline per page, so the three don't share a design system yet.
+- placeholder photo filenames still leave intended image slots empty
+- the links and profile pages do not yet share the homepage design system
+- inline page styling makes cross-page maintenance repetitive
+- live-site previews depend on the framed projects remaining publicly available
+
+Follow the workspace [`DEPLOY.md`](../../DEPLOY.md), verify all three routes,
+and review the live source after any release.
