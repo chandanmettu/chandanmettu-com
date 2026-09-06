@@ -118,6 +118,38 @@
       border: 2px solid currentColor;
       border-radius: 999px;
     }
+    .scroll-top {
+      position: fixed;
+      z-index: 60;
+      right: clamp(16px, 2.4vw, 34px);
+      bottom: calc(clamp(16px, 2.4vw, 34px) + env(safe-area-inset-bottom, 0px));
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--ink);
+      box-shadow: 5px 5px 0 var(--ink);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(12px) scale(.92);
+      transition: opacity .22s ease, visibility .22s ease, transform .22s ease, background-color .22s ease, color .22s ease;
+    }
+    .scroll-top.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+    .scroll-top:hover { background: var(--lime); transform: translateY(-3px) scale(1); }
+    .scroll-top:active { transform: translate(2px, 2px) scale(.97); box-shadow: 3px 3px 0 var(--ink); }
+    .scroll-top:focus-visible { outline: 4px solid var(--blue); outline-offset: 4px; }
+    .scroll-top svg { width: 22px; height: 22px; }
 
     .hero {
       min-height: 100svh;
@@ -1093,6 +1125,7 @@
       .nav-links { flex: 0 0 auto; gap: 0; }
       .nav-cta { min-height: 44px; padding-inline: 14px; }
       .nav-links a:not(.nav-cta) { display: none; }
+      .scroll-top { width: 48px; height: 48px; box-shadow: 4px 4px 0 var(--ink); }
       .hero { min-height: auto; padding: 112px 18px 38px; }
       .hero h1 { max-width: 100%; font-size: clamp(3.25rem, 17vw, 6rem); overflow-wrap: anywhere; }
       .hero h1 em { font-size: 1.13em; }
@@ -1242,6 +1275,9 @@
       <a class="nav-cta" href="#contact">Connect</a>
     </div>
   </nav>
+  <button class="scroll-top" id="scrollTop" type="button" aria-label="Scroll back to the top" title="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="m6.5 10.5 5.5-5.5 5.5 5.5"></path></svg>
+  </button>
 
   <main>
     <section class="hero" id="top">
@@ -1548,6 +1584,35 @@
         });
         history.replaceState(null, '', href);
       });
+    })();
+
+    (() => {
+      const button = document.getElementById('scrollTop');
+      if (!button) return;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let scheduled = false;
+      const update = () => {
+        button.classList.toggle('is-visible', scrollY > Math.max(640, innerHeight * .75));
+        scheduled = false;
+      };
+      const scheduleUpdate = () => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(update);
+      };
+      addEventListener('scroll', scheduleUpdate, { passive: true });
+      addEventListener('resize', scheduleUpdate, { passive: true });
+      button.addEventListener('click', () => {
+        if (window.__lenis && !reduced) {
+          window.__lenis.scrollTo(0, {
+            duration: 1.1,
+            easing: (value) => 1 - Math.pow(1 - value, 4)
+          });
+        } else {
+          scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+        }
+      });
+      update();
     })();
 
     (() => {
