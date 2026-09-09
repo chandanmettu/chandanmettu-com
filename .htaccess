@@ -1,0 +1,4 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^assets/account-insights-jun-aug-2026\.pdf$ - [G,L,NC]
+</IfModule>
