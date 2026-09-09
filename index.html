@@ -77,7 +77,7 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 .hero-copy>p:last-child{max-width:620px;font-size:clamp(1rem,1.25vw,1.14rem);line-height:1.55;margin:0}
 .stage{position:absolute;left:0;right:0;bottom:clamp(52px,6.8vh,72px);height:clamp(385px,45vh,420px);padding:0;overflow:visible;touch-action:pan-y;cursor:grab;scroll-snap-type:none;scroll-padding:0;user-select:none;-webkit-user-select:none}
 .stage:active{cursor:grabbing}
-.persona{position:absolute;left:50%;top:50px;flex:none;width:clamp(156px,15vw,204px);margin-left:calc(clamp(156px,15vw,204px)/-2);aspect-ratio:.77;border:1px solid rgba(255,255,255,.56);border-radius:26px;box-shadow:0 26px 50px -24px rgba(4,20,31,.5);transform:translate3d(var(--wheel-x,0),var(--wheel-y,0),0) rotate(var(--wheel-r,0deg)) scale(var(--wheel-scale,1));opacity:var(--wheel-opacity,1);filter:saturate(var(--wheel-sat,1)) blur(var(--wheel-blur,0));transition:box-shadow .25s,outline-color .25s;will-change:transform,opacity,filter;cursor:pointer}
+.persona{position:absolute;left:50%;top:50px;flex:none;width:clamp(156px,15vw,204px);margin-left:calc(clamp(156px,15vw,204px)/-2);aspect-ratio:.77;border:1px solid rgba(255,255,255,.56);border-radius:26px;box-shadow:0 26px 50px -24px rgba(4,20,31,.5);transform:translate3d(var(--wheel-x,0),var(--wheel-y,0),0) rotate(var(--wheel-r,0deg)) scale(var(--wheel-scale,1));opacity:var(--wheel-opacity,1);filter:none;transition:box-shadow .25s,outline-color .25s;will-change:transform,opacity;cursor:pointer;backface-visibility:hidden}
 .persona[data-slot="0"]{outline:0}
 .persona[data-active="true"]{outline:3.5px solid rgba(255,255,255,.95);box-shadow:0 30px 64px -22px rgba(4,20,31,.65)}
 .persona:after,.persona[data-active="true"]:after,.persona[aria-pressed="true"]:after{display:none!important;content:none!important}
@@ -1038,11 +1038,11 @@ body[data-mode="overview"] .item {
     </div>
     <svg class="wheel-thread" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M15 305 Q500 -80 985 305"/></svg>
     <div class="stage" id="stage" tabindex="0" aria-label="Scrollable versions of Chandan Mettu" aria-describedby="modeHint">
-      <button class="persona" style="--card:#dfff63;--position:61% center" type="button" data-mode="builder" data-slot="-2" aria-pressed="false"><img src="assets/personas/builder-campusloom.jpg" width="1800" height="1012" alt="Chandan Mettu working on CampusLoom"><span class="persona-label"><strong>Builder</strong><span>CampusLoom · IITH</span></span></button>
-      <button class="persona" style="--card:#ff7a62" type="button" data-mode="creator" data-slot="-1" aria-pressed="false"><img src="assets/social-card-alt.png?v=2" width="620" height="620" alt=""><span class="persona-label"><strong>Creator</strong><span>YouTube · Behind the work</span></span></button>
-      <button class="persona" style="--card:#79b4d5;--position:center 24%" type="button" data-mode="overview" data-slot="0" aria-pressed="true"><img src="assets/social-card-alt.png?v=2" width="1012" height="1800" alt="Portrait of Chandan Mettu"><span class="persona-label"><strong>Chandan Mettu</strong><span>Start here</span></span></button>
-      <button class="persona" style="--card:#5d74ff;--position:center 17%" type="button" data-mode="athlete" data-slot="1" aria-pressed="false"><img src="assets/personas/athlete-medals.jpg" width="1526" height="1800" alt="Chandan Mettu on the track wearing medals"><span class="persona-label"><strong>Athlete</strong><span>Sprint · Jump · Lead</span></span></button>
-      <button class="persona" style="--card:#ffc857" type="button" data-mode="educator" data-slot="2" aria-pressed="false"><img src="assets/social-card-alt.png?v=2" width="620" height="620" alt=""><span class="persona-label"><strong>Educator</strong><span>Proof · Intuition · Clarity</span></span></button>
+      <button class="persona" style="--card:#dfff63;--position:61% center" type="button" data-mode="builder" data-slot="-2" aria-pressed="false"><img src="assets/personas/builder-campusloom.jpg" width="1800" height="1012" loading="lazy" decoding="async" fetchpriority="low" alt="Chandan Mettu working on CampusLoom"><span class="persona-label"><strong>Builder</strong><span>CampusLoom · IITH</span></span></button>
+      <button class="persona" style="--card:#ff7a62" type="button" data-mode="creator" data-slot="-1" aria-pressed="false"><img src="assets/social-card-alt.png?v=2" width="620" height="620" loading="lazy" decoding="async" alt=""><span class="persona-label"><strong>Creator</strong><span>YouTube · Behind the work</span></span></button>
+      <button class="persona" style="--card:#79b4d5;--position:center 24%" type="button" data-mode="overview" data-slot="0" aria-pressed="true"><img src="assets/social-card-alt.png?v=2" width="1012" height="1800" decoding="async" fetchpriority="high" alt="Portrait of Chandan Mettu"><span class="persona-label"><strong>Chandan Mettu</strong><span>Start here</span></span></button>
+      <button class="persona" style="--card:#5d74ff;--position:center 17%" type="button" data-mode="athlete" data-slot="1" aria-pressed="false"><img src="assets/personas/athlete-medals-card.jpg" width="542" height="640" loading="lazy" decoding="async" alt="Chandan Mettu on the track wearing medals"><span class="persona-label"><strong>Athlete</strong><span>Sprint · Jump · Lead</span></span></button>
+      <button class="persona" style="--card:#ffc857" type="button" data-mode="educator" data-slot="2" aria-pressed="false"><img src="assets/social-card-alt.png?v=2" width="620" height="620" loading="lazy" decoding="async" fetchpriority="low" alt=""><span class="persona-label"><strong>Educator</strong><span>Proof · Intuition · Clarity</span></span></button>
     </div>
     <p class="mode-hint" id="modeHint">Scroll sideways, swipe, or use arrow keys to change lanes</p>
   </header>
@@ -1051,7 +1051,7 @@ body[data-mode="overview"] .item {
     <section class="panel" id="experience" aria-live="polite" aria-labelledby="panelTitle">
       <div class="inner" id="panelInner">
         <div class="profile-grid">
-          <figure class="profile-visual apple-bento-card" id="profileVisual"><div class="bento-spotlight" aria-hidden="true"></div><img id="profileImage" src="assets/social-card-alt.png?v=2" alt="Portrait of Chandan Mettu"><figcaption class="profile-caption"><strong id="profileBadge">Chandan</strong></figcaption></figure>
+          <figure class="profile-visual apple-bento-card" id="profileVisual"><div class="bento-spotlight" aria-hidden="true"></div><img id="profileImage" src="assets/social-card-alt.png?v=2" loading="lazy" decoding="async" alt="Portrait of Chandan Mettu"><figcaption class="profile-caption"><strong id="profileBadge">Chandan</strong></figcaption></figure>
           <div class="profile-story apple-bento-card"><div class="bento-spotlight" aria-hidden="true"></div><p class="kicker" id="panelKicker">The work</p><h2 id="panelTitle" tabindex="-1">Different disciplines. Same discipline.</h2><p class="panel-summary" id="panelSummary">Software, sport, storytelling, and mathematics—each with something real to show.</p><div class="links" id="modeLinks"></div></div>
         </div>
         <div class="stats" id="stats"></div>
@@ -1175,7 +1175,7 @@ body[data-mode="overview"] .item {
 <script src="assets/js/lenis.min.js?v=1"></script>
 <script src="assets/js/smooth.js?v=1"></script>
 <script src="assets/js/medal-cabinet.js?v=2"></script>
-<script src="assets/js/athlete-gallery.js?v=2"></script>
+<script src="assets/js/athlete-gallery.js?v=3"></script>
 <script src="assets/js/athlete-focus.js?v=2"></script>
 <script src="assets/js/certificate-loop.js?v=2"></script>
 <script>
@@ -1207,7 +1207,7 @@ const modeMedia={
   overview:{image:'assets/social-card-alt.png?v=2',alt:'Portrait of Chandan Mettu',position:'center 12%'},
   builder:{image:'assets/personas/builder-campusloom.jpg',alt:'Chandan Mettu working on CampusLoom',position:'center'},
   creator:{image:'assets/social-card-alt.png?v=2',alt:'Chandan Mettu, creator profile',position:'center 12%'},
-  athlete:{image:'assets/personas/athlete-medals.jpg',alt:'Chandan Mettu on the track wearing medals',position:'center 22%'},
+  athlete:{image:'assets/personas/athlete-medals-display.jpg',alt:'Chandan Mettu on the track wearing medals',position:'center 22%'},
   educator:{image:'assets/social-card-alt.png?v=2',alt:'Chandan Mettu, educator profile',position:'center 12%'}
 };
 const modes={
@@ -1224,7 +1224,7 @@ const heroKicker=document.getElementById('heroKicker'),heroTitle=document.getEle
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cards=[...stage.querySelectorAll('.persona')],count=cards.length;
 const iconAliases={CL:'users','100':'timer','↗':'grid',BR:'branch',IITH:'building',B:'code',C:'video',A:'medal',E:'book',IG:'instagram',in:'linkedin',X:'x','@':'chat',GH:'github',LJ:'jump',IIT:'school','∑':'calculator','17':'school',V:'school','01':'route','02':'route','03':'route','04':'route','05':'route'};
-let current='overview',wheelPosition=2,wheelTarget=2,wheelFrame=0,wheelSnapTimer=0,countFrames=[],dragStartX=0,dragStartTarget=0,dragDistance=0,didDrag=false,transitionLock=false,kineticToken=0,kineticTimers=[],bentoObserver=null,scrollEffectFrame=0;
+let current='overview',wheelPosition=2,wheelTarget=2,wheelFrame=0,wheelLastTime=0,wheelDirection=1,wheelSnapTimer=0,countFrames=[],dragStartX=0,dragStartTarget=0,dragDistance=0,didDrag=false,transitionLock=false,kineticToken=0,kineticTimers=[],bentoObserver=null,scrollEffectFrame=0;
 let medalCabinetCleanup=()=>{};
 let athleteGalleryCleanup=()=>{};
 let athleteFocusCleanup=()=>{};
@@ -1309,6 +1309,22 @@ function attachSpotlightListeners(){
     },{passive:true});
   });
 }
+function mountWhenNear(root,mount){
+  if(!root)return()=>{};
+  let cleanup=()=>{},mounted=false,observer=null;
+  const start=()=>{
+    if(mounted||root.isConnected===false)return;
+    mounted=true;observer?.disconnect();cleanup=mount(root)||(()=>{});
+  };
+  if(!('IntersectionObserver' in window))start();
+  else{
+    observer=new IntersectionObserver(entries=>{
+      if(entries.some(entry=>entry.isIntersecting))start();
+    },{rootMargin:'480px 0px',threshold:.01});
+    observer.observe(root);
+  }
+  return()=>{observer?.disconnect();cleanup()};
+}
 function applyText(data){
   heroKicker.textContent=data.kicker;heroTitle.innerHTML=data.title;heroCopy.textContent=data.hero;
   panelKicker.textContent=data.panelKicker;panelTitle.textContent=data.panelTitle;panelSummary.textContent=data.summary;profileBadge.textContent=data.label;
@@ -1355,25 +1371,28 @@ function render(mode,animateText=true,direction=1){
   if(mode==='athlete'&&window.AthleteGallery)athleteGalleryCleanup=window.AthleteGallery.mountAll(collection);
   if(athleteFocus){
     const athleteFocusRoot=collection.querySelector('[data-athlete-focus]');
-    if(athleteFocusRoot)athleteFocusCleanup=window.AthleteFocus.mount(athleteFocusRoot);
+    if(athleteFocusRoot)athleteFocusCleanup=mountWhenNear(athleteFocusRoot,window.AthleteFocus.mount);
   }
   if(certificateArchive){
     const certificateRoot=collection.querySelector('[data-certificate-loop]');
-    if(certificateRoot)certificateLoopCleanup=window.CertificateLoop.mount(certificateRoot);
+    if(certificateRoot)certificateLoopCleanup=mountWhenNear(certificateRoot,window.CertificateLoop.mount);
   }
   modeLinks.innerHTML=data.links.map(([label,href],index)=>`<a class="mode-link ${index?'secondary':''}" href="${href}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`).join('');
   cards.forEach(card=>{const active=card.dataset.mode===mode;card.dataset.active=String(active);card.setAttribute('aria-pressed',String(active))});
   current=mode;animateCounts();revealBentos();attachSpotlightListeners();
   if(cabinet)requestAnimationFrame(()=>{
     const root=collection.querySelector('[data-medal-cabinet]');
-    if(root&&mode===current)medalCabinetCleanup=window.MedalCabinet.mount(root);
+    if(root&&mode===current)medalCabinetCleanup=mountWhenNear(root,window.MedalCabinet.mount);
   });
 }
 function requestWheel(){if(!wheelFrame)wheelFrame=requestAnimationFrame(paintWheel)}
-function paintWheel(){
+function paintWheel(now){
   wheelFrame=0;
   const difference=wheelTarget-wheelPosition;
-  wheelPosition=reduced?wheelTarget:wheelPosition+difference*.145;
+  const elapsed=wheelLastTime?Math.min(34,now-wheelLastTime):16.7;
+  wheelLastTime=now;
+  const response=reduced?1:1-Math.exp(-elapsed/34);
+  wheelPosition+=difference*response;
   if(Math.abs(wheelTarget-wheelPosition)<.001)wheelPosition=wheelTarget;
   const gap=clamp(innerWidth*.17,158,224);
   cards.forEach((card,index)=>{
@@ -1383,30 +1402,31 @@ function paintWheel(){
     card.style.setProperty('--wheel-r',`${clamp(distance*11.5,-27,27).toFixed(2)}deg`);
     card.style.setProperty('--wheel-scale',Math.max(.78,1.14-absolute*.115).toFixed(3));
     card.style.setProperty('--wheel-opacity',Math.max(.25,1-absolute*.22).toFixed(3));
-    card.style.setProperty('--wheel-sat',Math.max(.5,1-absolute*.16).toFixed(3));
-    card.style.setProperty('--wheel-blur',`${Math.max(0,absolute-1.8)*.8}px`);
     card.style.zIndex=String(60-Math.round(absolute*10));
   });
   if(wheelPosition!==wheelTarget){requestWheel();return}
+  wheelLastTime=0;
   const mode=order[mod(Math.round(wheelTarget),count)];
-  if(mode!==current&&!transitionLock)render(mode,true,wheelTarget>=wheelPosition?1:-1);
+  if(mode!==current&&!transitionLock)render(mode,true,wheelDirection);
 }
 function targetForMode(mode){
   const index=order.indexOf(mode);
   return index+Math.round((wheelTarget-index)/count)*count;
 }
 function moveWheel(amount,snap=true){
+  wheelDirection=amount>=0?1:-1;
   wheelTarget+=amount;requestWheel();
   clearTimeout(wheelSnapTimer);
-  if(snap)wheelSnapTimer=setTimeout(()=>{wheelTarget=Math.round(wheelTarget);requestWheel()},130);
+  if(snap)wheelSnapTimer=setTimeout(()=>{wheelTarget=Math.round(wheelTarget);requestWheel()},90);
 }
 function openProfile(mode){
   choose(mode);
 }
 function choose(mode){
-  if(!modes[mode])return;
+  if(!modes[mode]||transitionLock)return;
   const savedScroll=window.scrollY;
   const destination=targetForMode(mode),direction=destination>=wheelPosition?1:-1;
+  wheelDirection=direction;
   wheelTarget=destination;requestWheel();
   if(mode===current)return;
   const restoreScroll=()=>requestAnimationFrame(()=>{
@@ -1422,14 +1442,14 @@ function choose(mode){
 }
 stage.addEventListener('wheel',event=>{
   if(event.ctrlKey||Math.abs(event.deltaX)<=Math.abs(event.deltaY))return;
-  event.preventDefault();moveWheel(clamp(event.deltaX,-120,120)/210);
+  event.preventDefault();moveWheel(clamp(event.deltaX,-120,120)/180);
 },{passive:false});
 stage.addEventListener('pointerdown',event=>{
   if(event.pointerType==='mouse'&&event.button!==0)return;
   dragStartX=event.clientX;dragStartTarget=wheelTarget;dragDistance=0;didDrag=false;
   stage.setPointerCapture(event.pointerId);
 });
-stage.addEventListener('pointermove',event=>{if(!stage.hasPointerCapture(event.pointerId))return;dragDistance=event.clientX-dragStartX;if(Math.abs(dragDistance)>7)didDrag=true;wheelTarget=dragStartTarget-dragDistance/clamp(innerWidth*.17,158,224);requestWheel()});
+stage.addEventListener('pointermove',event=>{if(!stage.hasPointerCapture(event.pointerId))return;dragDistance=event.clientX-dragStartX;if(Math.abs(dragDistance)>7)didDrag=true;const nextTarget=dragStartTarget-dragDistance/clamp(innerWidth*.17,158,224);wheelDirection=nextTarget>=wheelTarget?1:-1;wheelTarget=nextTarget;requestWheel()});
 stage.addEventListener('pointerup',event=>{
   if(stage.hasPointerCapture(event.pointerId))stage.releasePointerCapture(event.pointerId);
   wheelTarget=Math.round(wheelTarget);requestWheel();

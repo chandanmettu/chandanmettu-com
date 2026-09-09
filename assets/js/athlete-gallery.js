@@ -21,7 +21,7 @@
       const src = escapeHtml(slide.src);
       const alt = escapeHtml(slide.alt || `${item.name} image ${index + 1}`);
       const position = escapeHtml(slide.position || 'center');
-      return `<div class="athlete-gallery-slide ${index === 0 ? 'is-active' : ''}" data-gallery-slide aria-hidden="${index === 0 ? 'false' : 'true'}" style="--slide-position:${position}"><img class="athlete-gallery-backdrop" src="${src}" alt="" loading="lazy" aria-hidden="true"><img class="athlete-gallery-image" src="${src}" alt="${alt}" loading="lazy"></div>`;
+      return `<div class="athlete-gallery-slide ${index === 0 ? 'is-active' : ''}" data-gallery-slide aria-hidden="${index === 0 ? 'false' : 'true'}" style="--slide-position:${position}"><img class="athlete-gallery-backdrop" data-src="${src}" alt="" loading="lazy" decoding="async" aria-hidden="true"><img class="athlete-gallery-image" data-src="${src}" alt="${alt}" loading="lazy" decoding="async"></div>`;
     }).join('');
     const dots = slides.map((_, index) => `<button class="athlete-gallery-dot" type="button" data-gallery-dot="${index}" aria-label="Show ${name} image ${index + 1}" aria-pressed="${index === 0 ? 'true' : 'false'}"></button>`).join('');
 
@@ -111,8 +111,36 @@
   }
 
   function mountAll(root) {
-    const cleanups = [...root.querySelectorAll('[data-athlete-gallery]')].map(mount);
-    return () => cleanups.forEach(cleanup => cleanup());
+    const cards = [...root.querySelectorAll('[data-athlete-gallery]')];
+    const cleanups = new Map();
+    let observer = null;
+
+    const hydrate = card => {
+      if (cleanups.has(card)) return;
+      card.querySelectorAll('img[data-src]').forEach(image => {
+        image.src = image.dataset.src;
+        image.removeAttribute('data-src');
+      });
+      cleanups.set(card, mount(card));
+      observer?.unobserve(card);
+    };
+
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) hydrate(entry.target);
+        });
+      }, { rootMargin: '480px 0px', threshold: 0.01 });
+      cards.forEach(card => observer.observe(card));
+    } else {
+      cards.forEach(hydrate);
+    }
+
+    return () => {
+      observer?.disconnect();
+      cleanups.forEach(cleanup => cleanup());
+      cleanups.clear();
+    };
   }
 
   window.AthleteGallery = { markup, mountAll };
