@@ -1,0 +1,226 @@
+/* Athlete image stories
+   Each card accepts any number of slides without changing the surrounding grid. */
+
+body[data-mode="athlete"] .athlete-gallery-card {
+  isolation: isolate;
+  min-height: clamp(540px, 49vw, 650px);
+  cursor: default;
+  background: #080d27;
+  touch-action: pan-y;
+}
+
+body[data-mode="athlete"] .athlete-gallery-card::before {
+  z-index: 2;
+  opacity: 0.46;
+}
+
+body[data-mode="athlete"] .athlete-gallery-card::after {
+  z-index: 3;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 9, 27, 0.18) 0%, transparent 35%),
+    linear-gradient(180deg, transparent 48%, rgba(4, 8, 24, 0.93) 100%);
+}
+
+.athlete-gallery-stage,
+.athlete-gallery-slide {
+  position: absolute;
+  inset: 0;
+}
+
+.athlete-gallery-stage {
+  z-index: 0;
+  overflow: hidden;
+  background: #080d27;
+}
+
+.athlete-gallery-slide {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.025);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.7s;
+}
+
+.athlete-gallery-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition-delay: 0s;
+}
+
+.athlete-gallery-backdrop,
+.athlete-gallery-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.athlete-gallery-backdrop {
+  object-fit: cover;
+  object-position: var(--slide-position, center);
+  opacity: 0.58;
+  filter: blur(24px) saturate(0.88) brightness(0.64);
+  transform: scale(1.11);
+}
+
+.athlete-gallery-image {
+  z-index: 1;
+  object-fit: contain;
+  object-position: var(--slide-position, center);
+  filter: saturate(0.96) contrast(1.025);
+  transform: scale(0.985);
+}
+
+.athlete-gallery-card .bento-spotlight {
+  z-index: 4;
+}
+
+.athlete-gallery-card .photo-copy {
+  z-index: 5;
+  width: min(100%, 680px);
+  min-height: 100%;
+  padding: clamp(28px, 3vw, 42px);
+  pointer-events: none;
+}
+
+.athlete-gallery-card .photo-copy h3 {
+  font-size: clamp(1.9rem, 3vw, 3.2rem);
+  letter-spacing: -0.05em;
+}
+
+.athlete-gallery-card .photo-copy p:not(.item-meta) {
+  max-width: 470px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(0.95rem, 1.25vw, 1.05rem);
+}
+
+.athlete-gallery-controls {
+  position: absolute;
+  z-index: 6;
+  top: clamp(18px, 2vw, 28px);
+  right: clamp(18px, 2vw, 28px);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(7, 11, 31, 0.52);
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(1, 5, 19, 0.22);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+}
+
+.athlete-gallery-arrow {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.athlete-gallery-arrow:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: scale(1.05);
+}
+
+.athlete-gallery-count {
+  min-width: 55px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.athlete-gallery-card[data-gallery-single="true"] .athlete-gallery-arrow {
+  display: none;
+}
+
+.athlete-gallery-card[data-gallery-single="true"] .athlete-gallery-controls {
+  padding-inline: 10px;
+}
+
+.athlete-gallery-dots {
+  position: absolute;
+  z-index: 6;
+  right: clamp(26px, 3vw, 42px);
+  bottom: clamp(28px, 3vw, 42px);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.athlete-gallery-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  cursor: pointer;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+}
+
+.athlete-gallery-dot[aria-pressed="true"] {
+  width: 25px;
+  background: #fff;
+}
+
+.athlete-gallery-card[data-gallery-single="true"] .athlete-gallery-dots {
+  display: none;
+}
+
+@media (max-width: 1040px) {
+  body[data-mode="athlete"] .athlete-gallery-card {
+    min-height: clamp(520px, 72vw, 680px);
+  }
+}
+
+@media (max-width: 620px) {
+  body[data-mode="athlete"] .athlete-gallery-card,
+  body[data-mode="athlete"] .athlete-gallery-card.wide {
+    min-height: min(76svh, 620px);
+  }
+
+  .athlete-gallery-card .photo-copy {
+    padding: 26px 22px;
+  }
+
+  .athlete-gallery-card .photo-copy h3 {
+    font-size: clamp(1.75rem, 9vw, 2.35rem);
+  }
+
+  .athlete-gallery-controls {
+    top: 16px;
+    right: 16px;
+  }
+
+  .athlete-gallery-dots {
+    right: 22px;
+    bottom: 27px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .athlete-gallery-slide {
+    transform: none !important;
+    transition: none !important;
+  }
+}

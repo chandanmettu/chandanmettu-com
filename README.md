@@ -1,37 +1,41 @@
 # chandanmettu.com
 
-The live personal portfolio, links page and full profile.
+The live source for Chandan Mettu's personal website.
 
 - **Live:** [chandanmettu.com](https://chandanmettu.com)
 - **Repository:** `saichandanmettu/chandanmettu-com` (public)
-- **Stack:** static HTML and assets; no framework or build step
+- **Stack:** static HTML, CSS, JavaScript and image assets
+- **Delivery:** Git push to `main`, followed by Hostinger deployment
 
-The repository carries `CNAME` and `.nojekyll`, while the public response is
-delivered through Hostinger's CDN. Releases are pushed to `main` and verified
-against the public URL after Hostinger's Git deployment completes.
-
-## Pages
+## Public pages
 
 | URL | Source | Purpose |
 |---|---|---|
-| `/` | `index.html` | portfolio and product overview |
-| `/links` | `links/index.html` | link-in-bio page |
-| `/profile` | `profile/index.html` | extended profile/CV |
-| `/variations` | `variations/index.html` | archived design explorations |
+| `/` | `index.html` | Interactive overview of Builder, Creator, Athlete and Educator |
+| `/links/` | `links/index.html` | Mobile-first directory of channels, products and contact routes |
+| `/profile/` | `profile/index.html` | Extended profile and resume-style record |
+| `/v1/` | `v1/index.html` | Compatibility redirect to the homepage |
+| `/404.html` | `404.html` | Not-found page |
 
-Shared files are root-relative under `assets/`, so test nested pages through an
-HTTP server rather than moving assets beside each page.
+The homepage uses a circular identity selector, palette transitions, profile-specific
+proof cards and responsive content collections. Athlete results, galleries and the
+Educator certificate loop use the shared files under `assets/css/` and `assets/js/`.
+
+## Local preview
 
 ```sh
-python3 -m http.server 8040
+python3 -m http.server 8050 --bind 127.0.0.1
 ```
 
-## Known gaps
+Open `http://127.0.0.1:8050/`. The site has no build step or package dependencies.
 
-- placeholder photo filenames still leave intended image slots empty
-- the links and profile pages do not yet share the homepage design system
-- inline page styling makes cross-page maintenance repetitive
-- live-site previews depend on the framed projects remaining publicly available
+## Release boundary
 
-Follow the workspace [`DEPLOY.md`](../../DEPLOY.md), verify all three routes,
-and review the live source after any release.
+The repository root maps to the public website. Never commit private documents,
+analytics exports, credentials, raw photographs, archives or internal handoff files.
+Older versions are recoverable through Git and the dated local backup outside this
+repository.
+
+Before a release, check all three public routes on mobile and desktop, validate local
+assets and external destinations, review the complete diff, push `main`, then verify
+the cache-busted public URL.

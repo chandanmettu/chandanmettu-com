@@ -1,0 +1,16 @@
+{
+  "name": "Chandan Mettu",
+  "short_name": "Chandan",
+  "description": "The personal website of Chandan Mettu.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2f9fc",
+  "theme_color": "#79acd1",
+  "icons": [
+    {
+      "src": "/assets/brand/portrait-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

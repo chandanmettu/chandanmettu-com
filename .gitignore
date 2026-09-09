@@ -1,3 +1,11 @@
 .DS_Store
 node_modules/
 *.log
+*.pdf
+.env
+.env.*
+
+# Work material must stay outside the public website tree.
+/private/
+/reference/
+/source-images/
