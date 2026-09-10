@@ -2,12 +2,11 @@
   'use strict';
 
   const RECORDS = Object.freeze([
-    { year: '2018', mark: 'A', short: 'AMTI', title: 'National Mathematics Talent Contest', kind: 'Competition certificate', image: '' },
-    { year: '2019', mark: 'S', short: 'SOF IMO', title: 'School mathematics competition', kind: 'Olympiad certificate', image: '' },
-    { year: '2020', mark: 'I', short: 'IOQM', title: 'Indian Olympiad Qualifier in Mathematics', kind: 'Qualification record', image: '' },
-    { year: '2022', mark: 'I', short: 'IOQM', title: 'Indian Olympiad Qualifier in Mathematics', kind: 'Qualification record', image: '' },
-    { year: 'National stage', mark: '∞', short: 'INMO', title: 'Indian National Mathematical Olympiad', kind: 'Qualification record', image: '' },
-    { year: '2023–24', mark: 'V', short: 'Vedantu', title: 'Olympiad School', kind: 'Teaching record', image: '' }
+    { year: '2018', short: 'AMTI NMTC', title: 'Top 10% at the institution level in the Sub-Junior screening test', kind: 'Top 10% · Institution', image: 'assets/certificates/amti-nmtc-2018-top-10-percent.jpg', shape: 'standard' },
+    { year: '2018', short: 'SOF IMO', title: 'Gold medal for performance excellence at the school level', kind: 'School-level gold medal', image: 'assets/certificates/sof-imo-2018-school-gold-medal.jpg', shape: 'square' },
+    { year: '2020', short: 'IOQM', title: 'Certificate of merit for placing within the top 300 ranks in Telangana', kind: 'Top 300 · Telangana', image: 'assets/certificates/ioqm-2020-top-300-telangana.png', shape: 'landscape' },
+    { year: '2021–22', short: 'IOQM', title: 'Certificate of merit for scoring 20% or more in Part A', kind: 'Certificate of merit', image: 'assets/certificates/ioqm-2021-22-certificate-of-merit.png', shape: 'landscape' },
+    { year: '2022–23', short: 'IOQM', title: 'Certificate of merit for scoring 20% or more of the total marks', kind: 'Certificate of merit', image: 'assets/certificates/ioqm-2022-23-certificate-of-merit.png', shape: 'landscape' }
   ]);
 
   const escapeHtml = value => String(value ?? '')
@@ -19,16 +18,19 @@
 
   function card(record, duplicate = false) {
     const media = record.image
-      ? `<img src="${escapeHtml(record.image)}" alt="${escapeHtml(`${record.short} certificate`)}" loading="lazy">`
+      ? `<img src="${escapeHtml(record.image)}" alt="${escapeHtml(`${record.short}: ${record.title}`)}" loading="lazy" decoding="async">`
       : `<span class="certificate-placeholder-label">Certificate image pending</span><span class="certificate-mark" aria-hidden="true">${escapeHtml(record.mark)}</span><strong>${escapeHtml(record.short)}</strong><small>${escapeHtml(record.title)}</small>`;
 
-    return `<figure class="certificate-card" ${duplicate ? 'aria-hidden="true"' : ''}><div class="certificate-paper">${media}</div><figcaption><span class="certificate-year">${escapeHtml(record.year)}</span><span class="certificate-kind">${escapeHtml(record.kind)}</span></figcaption></figure>`;
+    const classes = ['certificate-card'];
+    if (record.image) classes.push('has-certificate-image');
+    if (record.shape) classes.push(`certificate-card-${record.shape}`);
+    return `<figure class="${classes.join(' ')}" ${duplicate ? 'aria-hidden="true"' : ''}><div class="certificate-paper">${media}</div><figcaption><span class="certificate-year">${escapeHtml(record.year)}</span><span class="certificate-kind">${escapeHtml(record.kind)}</span></figcaption></figure>`;
   }
 
   function markup() {
     const primary = RECORDS.map(record => card(record)).join('');
     const duplicate = RECORDS.map(record => card(record, true)).join('');
-    return `<article class="item certificate-loop apple-bento-card" data-certificate-loop><div class="bento-spotlight" aria-hidden="true"></div><div class="certificate-loop-head"><div><span class="certificate-loop-kicker">Certificate archive · ${RECORDS.length} records</span><h3>The work,<br>documented.</h3></div><p class="certificate-loop-intro">Competitions, qualifications, and the first teaching role—kept in one continuous record.</p></div><div class="certificate-viewport" data-certificate-viewport tabindex="0" aria-label="Scrollable certificate archive"><div class="certificate-track" data-certificate-track><div class="certificate-set">${primary}</div><div class="certificate-set" aria-hidden="true">${duplicate}</div></div></div><div class="certificate-loop-foot"><span class="certificate-loop-help"><strong>Keep moving.</strong> Drag, scroll, or use the arrow keys.</span><div class="certificate-controls"><button class="certificate-control" type="button" data-certificate-previous aria-label="Previous certificate">←</button><button class="certificate-control" type="button" data-certificate-toggle aria-pressed="false">Pause</button><button class="certificate-control" type="button" data-certificate-next aria-label="Next certificate">→</button></div></div></article>`;
+    return `<article class="item certificate-loop apple-bento-card" data-certificate-loop><div class="bento-spotlight" aria-hidden="true"></div><div class="certificate-loop-head"><div><h3>The journey,<br>documented.</h3></div><p class="certificate-loop-intro">Five records, from school competitions to three IOQM merit certificates.</p></div><div class="certificate-viewport" data-certificate-viewport tabindex="0" aria-label="Scrollable certificate archive"><div class="certificate-track" data-certificate-track><div class="certificate-set">${primary}</div><div class="certificate-set" aria-hidden="true">${duplicate}</div></div></div><div class="certificate-loop-foot"><span class="certificate-loop-help"><strong>Keep moving.</strong> Drag, scroll, or use the arrow keys.</span><div class="certificate-controls"><button class="certificate-control" type="button" data-certificate-previous aria-label="Previous certificate">←</button><button class="certificate-control" type="button" data-certificate-toggle aria-pressed="false">Pause</button><button class="certificate-control" type="button" data-certificate-next aria-label="Next certificate">→</button></div></div></article>`;
   }
 
   function mount(root) {

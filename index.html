@@ -71,10 +71,10 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 .nav-contact:hover{transform:translateY(-2px);box-shadow:0 12px 28px color-mix(in srgb,var(--deep) 32%,transparent)}
 .hero{position:sticky;top:0;min-height:min(940px,100svh);padding-top:clamp(94px,11.4vh,118px);background:radial-gradient(circle at 15% 18%,rgba(255,255,255,.58),transparent 27%),radial-gradient(circle at 84% 16%,rgba(255,255,255,.34),transparent 24%),linear-gradient(145deg,color-mix(in srgb,var(--hero) 86%,#fff),var(--hero));box-shadow:inset 0 -80px 100px rgba(255,255,255,.16);transition:background .55s,color .55s}
 .hero:after{background:linear-gradient(115deg,transparent 24%,rgba(255,255,255,.18) 44%,transparent 62%)}
-.hero-copy{gap:clamp(12px,1.6vh,16px)}
+.hero-copy{width:100%;gap:clamp(12px,1.6vh,16px)}
 .hero-copy>*{will-change:transform,opacity}.kinetic-out{pointer-events:none}.kinetic-out[data-kinetic="forward"]{animation:kineticOutForward .16s cubic-bezier(.4,0,1,1) both}.kinetic-out[data-kinetic="backward"]{animation:kineticOutBackward .16s cubic-bezier(.4,0,1,1) both}.kinetic-in[data-kinetic="forward"]{animation:kineticInForward .58s cubic-bezier(.16,1,.3,1) both}.kinetic-in[data-kinetic="backward"]{animation:kineticInBackward .58s cubic-bezier(.16,1,.3,1) both}@keyframes kineticOutForward{to{opacity:0;transform:translate3d(-16px,-14px,0) scale(.985)}}@keyframes kineticOutBackward{to{opacity:0;transform:translate3d(16px,-14px,0) scale(.985)}}@keyframes kineticInForward{from{opacity:0;transform:translate3d(22px,24px,0) scale(.985)}}@keyframes kineticInBackward{from{opacity:0;transform:translate3d(-22px,24px,0) scale(.985)}}
-.hero h1{font-size:clamp(3.2rem,6.4vw,5.8rem);line-height:0.92;letter-spacing:-0.065em;max-width:980px;margin:0;font-weight:500}
-.hero-copy>p:last-child{max-width:620px;font-size:clamp(1rem,1.25vw,1.14rem);line-height:1.55;margin:0}
+.hero h1{width:min(100%,980px);font-size:clamp(3.2rem,6.4vw,5.8rem);line-height:0.92;letter-spacing:-0.065em;max-width:980px;margin:0;font-weight:500}
+.hero-copy>p:last-child{width:min(100%,620px);max-width:620px;font-size:clamp(1rem,1.25vw,1.14rem);line-height:1.55;margin:0}
 .stage{position:absolute;left:0;right:0;bottom:clamp(52px,6.8vh,72px);height:clamp(385px,45vh,420px);padding:0;overflow:visible;touch-action:pan-y;cursor:grab;scroll-snap-type:none;scroll-padding:0;user-select:none;-webkit-user-select:none}
 .stage:active{cursor:grabbing}
 .persona{position:absolute;left:50%;top:50px;flex:none;width:clamp(156px,15vw,204px);margin-left:calc(clamp(156px,15vw,204px)/-2);aspect-ratio:.77;border:1px solid rgba(255,255,255,.56);border-radius:26px;box-shadow:0 26px 50px -24px rgba(4,20,31,.5);transform:translate3d(var(--wheel-x,0),var(--wheel-y,0),0) rotate(var(--wheel-r,0deg)) scale(var(--wheel-scale,1));opacity:var(--wheel-opacity,1);filter:none;transition:box-shadow .25s,outline-color .25s;will-change:transform,opacity;cursor:pointer;backface-visibility:hidden}
@@ -83,6 +83,11 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 .persona:after,.persona[data-active="true"]:after,.persona[aria-pressed="true"]:after{display:none!important;content:none!important}
 .persona img{width:100%;height:100%;object-fit:cover;object-position:var(--position,center 16%);transform:scale(1.02);pointer-events:none}
 .persona-label{position:absolute;inset:auto 0 0;padding:55px 14px 15px;text-align:left;color:#fff;background:linear-gradient(180deg,transparent,rgba(4,15,23,.9))}
+.persona[data-mode="builder"]{background:var(--card)}
+.persona[data-mode="builder"] img{object-fit:cover;object-position:center;transform:none;filter:none}
+.persona[data-mode="builder"] .persona-label{z-index:2;background:linear-gradient(180deg,transparent,rgba(7,26,18,.9))}
+.persona[data-mode="educator"]{background:#ffc857}
+.persona[data-mode="educator"] img{object-fit:cover;object-position:var(--position,center);transform:none;filter:none}
 .persona-label strong,.persona-label span{display:block}
 .persona-label strong{font-size:16.5px;font-weight:600}
 .persona-label span{margin-top:2px;color:rgba(255,255,255,.78);font-size:12px}
@@ -196,6 +201,93 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
   will-change: transform;
   transition: opacity 0.35s;
 }
+
+.profile-media-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.profile-media-track img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-position: var(--profile-position, center);
+}
+
+.profile-media-track img[hidden] { display: none; }
+
+.profile-visual.has-profile-carousel .profile-media-track {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x pan-y;
+}
+
+.profile-visual.has-profile-carousel .profile-media-track::-webkit-scrollbar { display: none; }
+
+.profile-visual.has-profile-carousel .profile-media-track img {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  transform: none;
+}
+
+.profile-carousel-controls {
+  position: absolute;
+  z-index: 3;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.profile-carousel-controls[hidden] { display: none; }
+
+.profile-carousel-arrow {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.48);
+  border-radius: 50%;
+  background: rgba(7,22,16,.68);
+  color: #fff;
+  font: inherit;
+  font-size: 19px;
+  line-height: 1;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  cursor: pointer;
+}
+
+.profile-carousel-arrow:hover { background: rgba(7,22,16,.86); }
+.profile-carousel-arrow:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+.profile-carousel-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 2px;
+}
+
+.profile-carousel-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,.52);
+  transition: width .2s ease,background .2s ease;
+  cursor: pointer;
+}
+
+.profile-carousel-dot[aria-current="true"] { width: 19px; background: #fff; }
+.profile-carousel-dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
 .profile-caption {
   position: absolute;
@@ -389,11 +481,30 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 
 /* Master Asymmetric Bento Grid (.collection) */
 .collection-head {
+  display: flex;
+  align-items: end;
+  gap: 20px;
   margin: 110px 0 32px;
+  flex-wrap: wrap;
+}
+
+.collection-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 470px);
+  align-items: end;
+  gap: clamp(24px, 5vw, 80px);
+  flex: 1 1 680px;
 }
 
 .collection-head h3 {
+  margin: 0;
   font-size: clamp(2.7rem, 4.2vw, 4.8rem);
+}
+
+.collection-heading p {
+  max-width: 470px;
+  margin: 0;
+  color: var(--muted);
 }
 
 .collection {
@@ -401,6 +512,87 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(16px, 2vw, 24px);
 }
+
+.project-filters {
+  order: 3;
+  display: flex;
+  flex: 1 0 100%;
+  gap: 8px;
+  margin-top: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 3px;
+  scrollbar-width: none;
+}
+.project-filters[hidden] { display: none; }
+.project-filters::-webkit-scrollbar { display: none; }
+.project-view-switch {
+  order: 2;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid color-mix(in srgb, var(--deep) 14%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, #fff 60%, var(--surface));
+  box-shadow: 0 12px 28px -24px color-mix(in srgb, var(--deep) 55%, transparent);
+}
+.project-view-switch[hidden] { display: none; }
+.project-view-button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background .22s, color .22s, box-shadow .22s, transform .22s;
+}
+.project-view-button:hover { color: var(--ink); }
+.project-view-button:focus-visible { outline: 2px solid var(--deep); outline-offset: 2px; }
+.project-view-button[aria-pressed="true"] {
+  background: var(--deep);
+  color: #fff;
+  box-shadow: 0 10px 20px -14px color-mix(in srgb, var(--deep) 72%, transparent);
+}
+.project-view-button svg { width: 16px; height: 16px; }
+.project-filter {
+  min-height: 44px;
+  padding: 10px 17px;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--deep) 16%, transparent);
+  border-radius: 15px;
+  background: color-mix(in srgb, #fff 66%, var(--surface));
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: -.015em;
+  cursor: pointer;
+  transition: background .25s, color .25s, border-color .25s, transform .25s;
+}
+.project-filter:hover { transform: translateY(-2px); color: var(--ink); }
+.project-filter[aria-pressed="true"] {
+  border-color: var(--deep);
+  background: var(--deep);
+  color: #fff;
+  box-shadow: 0 10px 24px -16px color-mix(in srgb, var(--deep) 72%, transparent);
+}
+.project-card-filtered { display: none !important; }
+.project-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: clamp(34px, 5vw, 58px);
+  border: 1px dashed color-mix(in srgb, var(--deep) 24%, transparent);
+  border-radius: var(--radius-lg);
+  color: var(--muted);
+  text-align: center;
+}
+.project-empty[hidden] { display: none; }
 
 body[data-mode="overview"] .collection {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -443,6 +635,12 @@ body[data-mode="overview"] .item {
 
 .item-icon img {
   border-radius: 16px;
+}
+
+.item-icon img.contain {
+  object-fit: contain;
+  padding: 7px;
+  background: #fff;
 }
 
 .item:hover .item-icon {
@@ -551,6 +749,264 @@ body[data-mode="overview"] .item {
   padding-top: 16px;
 }
 
+/* Builder work can switch between compact identity cards and homepage previews. */
+.project-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.project-card-muted {
+  opacity: .68;
+  filter: saturate(.52);
+}
+.project-card-muted:hover {
+  opacity: .82;
+}
+.project-card-compact {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.project-card-compact .item-icon {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 34px;
+  border-radius: 15px;
+}
+.project-symbol {
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .03em;
+}
+.project-card-compact h3 { font-size: clamp(1.18rem, 1.7vw, 1.45rem); }
+.project-card-compact > p:not(.item-meta) { max-width: 32ch; }
+.project-card-preview { display: none; }
+
+body[data-mode="builder"] .collection[data-project-view="icons"] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
+  min-height: 250px;
+}
+.collection[data-project-view="preview"] .project-card.has-project-preview {
+  min-height: 370px;
+  padding: 10px;
+}
+.collection[data-project-view="preview"] .project-card.has-project-preview .project-card-compact { display: none; }
+.collection[data-project-view="preview"] .project-card.has-project-preview .project-card-preview {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+}
+.project-preview-media {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--deep) 10%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, #fff 70%, var(--surface));
+}
+.project-preview-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  visibility: hidden;
+  opacity: 0;
+  color: color-mix(in srgb, var(--deep) 72%, transparent);
+  background:
+    radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 46%),
+    color-mix(in srgb, #fff 72%, var(--surface));
+  font-size: 13px;
+  font-weight: 650;
+  transition: opacity .2s;
+}
+.project-preview-media.is-missing .project-preview-fallback { visibility: visible; opacity: 1; }
+.project-preview-media img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--preview-position, center top);
+  color: transparent;
+  transition: transform .65s cubic-bezier(.16,1,.3,1);
+}
+.project-preview-media img[hidden] { display: none; }
+.project-card:hover .project-preview-media img { transform: scale(1.03); }
+.project-preview-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 19px 12px 11px;
+}
+.project-preview-title-row {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+}
+.project-preview-title-row h3 {
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  line-height: 1.05;
+}
+.project-card-open {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--deep) 8%, transparent);
+  color: var(--deep);
+  font-size: 16px;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), background .25s, color .25s;
+}
+.project-card-open-live { background: #dff5dc; color: #17623b; }
+.project-card-open-beta { background: #fff0c9; color: #9a5700; }
+.project-card:hover .project-card-open { transform: translate(2px,-2px); }
+.project-card:hover .project-card-open-live { background: #1d824d; color: #fff; }
+.project-card:hover .project-card-open-beta { background: #c97400; color: #fff; }
+.project-preview-body > p {
+  display: -webkit-box;
+  max-width: 42ch;
+  margin: 9px 0 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.48;
+}
+/* Builder toolkit — a dense icon wall that can grow without new layout rules. */
+.builder-toolkit {
+  grid-column: 1 / -1;
+  margin-top: clamp(44px, 6vw, 76px);
+  padding: clamp(26px, 4vw, 48px);
+  background:
+    radial-gradient(circle at 84% 10%, color-mix(in srgb, var(--accent) 32%, transparent), transparent 29%),
+    color-mix(in srgb, #fff 79%, var(--surface));
+}
+.builder-toolkit::before {
+  background:
+    radial-gradient(circle 520px at 90% 0%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 68%),
+    radial-gradient(circle 380px at 4% 100%, color-mix(in srgb, var(--hero) 17%, transparent), transparent 68%);
+}
+.toolkit-head,.toolkit-icon-wall,.toolkit-namebar { position: relative; z-index: 4; }
+.toolkit-head {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: end;
+  padding-bottom: clamp(26px, 4vw, 44px);
+  border-bottom: 1px solid color-mix(in srgb, var(--deep) 14%, transparent);
+}
+.toolkit-head h3 {
+  max-width: 700px;
+  margin: 0;
+  font-size: clamp(2.25rem, 4.6vw, 4.9rem);
+  font-weight: 500;
+  letter-spacing: -.06em;
+  line-height: .95;
+}
+.toolkit-intro {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: clamp(.95rem, 1.2vw, 1.08rem);
+  line-height: 1.6;
+}
+.toolkit-icon-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: clamp(8px, 1vw, 12px);
+  margin: clamp(24px, 3.5vw, 38px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.toolkit-logo {
+  position: relative;
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  place-items: center;
+  padding: clamp(14px, 1.7vw, 20px);
+  border: 1px solid color-mix(in srgb, var(--deep) 10%, transparent);
+  border-radius: clamp(16px, 1.8vw, 22px);
+  background: color-mix(in srgb, #fff 76%, var(--surface));
+  box-shadow: 0 14px 30px -25px color-mix(in srgb, var(--deep) 48%, transparent);
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .25s, background .25s, box-shadow .35s;
+}
+.toolkit-logo::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid transparent;
+  border-radius: calc(clamp(16px, 1.8vw, 22px) - 5px);
+  pointer-events: none;
+  transition: border-color .25s;
+}
+.toolkit-logo:hover,
+.toolkit-logo:focus-visible,
+.toolkit-logo[aria-pressed="true"] {
+  transform: translateY(-5px) scale(1.025);
+  border-color: color-mix(in srgb, var(--deep) 26%, transparent);
+  background: #fff;
+  box-shadow: 0 22px 40px -26px color-mix(in srgb, var(--deep) 60%, transparent);
+  outline: none;
+}
+.toolkit-logo:focus-visible::after,
+.toolkit-logo[aria-pressed="true"]::after {
+  border-color: color-mix(in srgb, var(--deep) 24%, transparent);
+}
+.toolkit-logo img {
+  display: block;
+  width: min(56px, 68%);
+  height: min(56px, 68%);
+  object-fit: contain;
+  filter: saturate(.92);
+  transition: transform .35s cubic-bezier(.16,1,.3,1), filter .25s;
+}
+.toolkit-logo:hover img,
+.toolkit-logo:focus-visible img,
+.toolkit-logo[aria-pressed="true"] img {
+  transform: scale(1.08);
+  filter: saturate(1.08);
+}
+.toolkit-namebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  margin-top: 12px;
+  padding: 12px 18px;
+  border: 1px solid color-mix(in srgb, var(--deep) 10%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, #fff 52%, transparent);
+  color: var(--deep);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -.015em;
+}
+.toolkit-namebar[hidden] { display: none; }
+
 /* ==========================================================================
    APPLE SCROLL-DRIVEN ENTRANCE & LAZY INERTIAL REVEALS
    ========================================================================== */
@@ -583,6 +1039,9 @@ body[data-mode="overview"] .item {
   }
   .photo-item{min-height:260px}
   .photo-item.wide{grid-column:span 1}
+  body[data-mode="builder"] .collection[data-project-view="icons"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .toolkit-head{grid-template-columns:minmax(0,1fr) minmax(210px,280px)}
+  .toolkit-icon-wall{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}
 }
 
 @media(max-width:850px){
@@ -596,6 +1055,9 @@ body[data-mode="overview"] .item {
   .profile-story{grid-column:span 12}
   .profile-visual{min-height:360px;aspect-ratio:1.3 / 1}
   .profile-story{min-height:0;padding:clamp(28px,4vw,40px)}
+  .collection-heading{grid-template-columns:1fr;gap:12px}
+  .project-view-switch{align-self:flex-start}
+  body[data-mode="builder"] .collection[data-project-view="icons"]{grid-template-columns:repeat(2,minmax(0,1fr))}
   .footer-top-grid { grid-template-columns: 1fr; gap: 32px; }
   .footer-signature-text { font-size: clamp(2.6rem, 7.5vw, 3.6rem); }
 }
@@ -612,6 +1074,8 @@ body[data-mode="overview"] .item {
   .profile-grid,.stats,.collection{gap:12px}
   .profile-visual{min-height:300px;aspect-ratio:1 / 1;border-radius:26px}
   .profile-caption{inset:auto 22px 22px}
+  .profile-carousel-controls{right:18px;bottom:18px}
+  .profile-carousel-arrow{width:36px;height:36px}
   .profile-story{padding:26px;border-radius:26px}
   .profile-story h2{font-size:clamp(2.1rem,9vw,2.8rem)}
   .stats{grid-template-columns:1fr}
@@ -619,11 +1083,23 @@ body[data-mode="overview"] .item {
   body[data-mode="overview"] .collection {
     grid-template-columns: 1fr;
   }
+  body[data-mode="builder"] .collection[data-project-view="icons"]{grid-template-columns:1fr}
   .photo-item.wide{grid-column:span 1}
   .stat{min-height:190px;border-radius:24px}
   .item{min-height:200px}
   .photo-item{min-height:240px}
+  .collection[data-project-view="preview"] .project-card.has-project-preview{min-height:370px;padding:9px}
+  .project-preview-body{padding:16px 9px 9px}
   .collection-head{margin-top:75px}
+  .project-view-switch{order:2}
+  .project-filters{width:calc(100vw - 62px);margin-top:5px;padding-bottom:4px}
+  .project-filter{padding-inline:15px}
+  .builder-toolkit{margin-top:36px;padding:24px 20px 20px;border-radius:26px}
+  .toolkit-head{display:block;padding:0 2px 22px}
+  .toolkit-intro{margin-top:17px}
+  .toolkit-icon-wall{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:20px}
+  .toolkit-logo{padding:12px;border-radius:16px}
+  .toolkit-namebar{min-height:48px;margin-top:9px;border-radius:15px}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -1019,7 +1495,7 @@ body[data-mode="overview"] .item {
 <link rel="stylesheet" href="assets/css/medal-cabinet.css">
 <link rel="stylesheet" href="assets/css/athlete-gallery.css">
 <link rel="stylesheet" href="assets/css/athlete-focus.css">
-<link rel="stylesheet" href="assets/css/certificate-loop.css">
+<link rel="stylesheet" href="assets/css/certificate-loop.css?v=3">
 </head>
 <body data-mode="overview">
 <a class="skip" href="#experience">Skip to the selected profile</a>
@@ -1038,11 +1514,11 @@ body[data-mode="overview"] .item {
     </div>
     <svg class="wheel-thread" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M15 305 Q500 -80 985 305"/></svg>
     <div class="stage" id="stage" tabindex="0" aria-label="Scrollable versions of Chandan Mettu" aria-describedby="modeHint">
-      <button class="persona" style="--card:#dfff63;--position:center" type="button" data-mode="builder" data-slot="-2" aria-pressed="false"><img src="assets/personas/builder-card.jpg" width="720" height="935" loading="lazy" decoding="async" fetchpriority="low" alt="Chandan Mettu building a product at his desk"><span class="persona-label"><strong>Builder</strong><span>Founder · Designer · Developer</span></span></button>
+      <button class="persona" style="--card:#dfff63;--position:center" type="button" data-mode="builder" data-slot="-2" aria-pressed="false"><img src="assets/personas/builder-card-real.jpg" width="1088" height="1400" loading="lazy" decoding="async" fetchpriority="low" alt="Chandan Mettu building a product on his laptop"><span class="persona-label"><strong>Builder</strong><span>Founder · Designer · Developer</span></span></button>
       <button class="persona" style="--card:#ff7a62" type="button" data-mode="creator" data-slot="-1" aria-pressed="false"><img src="assets/social-card-alt.png?v=2" width="620" height="620" loading="lazy" decoding="async" alt=""><span class="persona-label"><strong>Creator</strong><span>YouTube · Behind the work</span></span></button>
       <button class="persona" style="--card:#79b4d5;--position:center 24%" type="button" data-mode="overview" data-slot="0" aria-pressed="true"><img src="assets/social-card-alt.png?v=2" width="1012" height="1800" decoding="async" fetchpriority="high" alt="Portrait of Chandan Mettu"><span class="persona-label"><strong>Chandan Mettu</strong><span>Start here</span></span></button>
       <button class="persona" style="--card:#5d74ff;--position:center 17%" type="button" data-mode="athlete" data-slot="1" aria-pressed="false"><img src="assets/personas/athlete-medals-card.jpg" width="542" height="640" loading="lazy" decoding="async" alt="Chandan Mettu on the track wearing medals"><span class="persona-label"><strong>Athlete</strong><span>Sprint · Jump · Lead</span></span></button>
-      <button class="persona" style="--card:#ffc857" type="button" data-mode="educator" data-slot="2" aria-pressed="false"><img src="assets/social-card-alt.png?v=2" width="620" height="620" loading="lazy" decoding="async" fetchpriority="low" alt=""><span class="persona-label"><strong>Educator</strong><span>Proof · Intuition · Clarity</span></span></button>
+      <button class="persona" style="--card:#ffc857;--position:center 42%" type="button" data-mode="educator" data-slot="2" aria-pressed="false"><img src="assets/personas/educator-profile-smiling.png" width="1448" height="1086" loading="lazy" decoding="async" fetchpriority="low" alt="Chandan Mettu smiling in a Vedantu Master Teacher T-shirt"><span class="persona-label"><strong>Educator</strong><span>Proof · Intuition · Clarity</span></span></button>
     </div>
     <p class="mode-hint" id="modeHint">Scroll sideways, swipe, or use arrow keys to change lanes</p>
   </header>
@@ -1051,11 +1527,32 @@ body[data-mode="overview"] .item {
     <section class="panel" id="experience" aria-live="polite" aria-labelledby="panelTitle">
       <div class="inner" id="panelInner">
         <div class="profile-grid">
-          <figure class="profile-visual apple-bento-card" id="profileVisual"><div class="bento-spotlight" aria-hidden="true"></div><img id="profileImage" src="assets/social-card-alt.png?v=2" loading="lazy" decoding="async" alt="Portrait of Chandan Mettu"><figcaption class="profile-caption"><strong id="profileBadge">Chandan</strong></figcaption></figure>
+          <figure class="profile-visual apple-bento-card" id="profileVisual">
+            <div class="bento-spotlight" aria-hidden="true"></div>
+            <div class="profile-media-track" id="profileMediaTrack">
+              <img id="profileImage" src="assets/social-card-alt.png?v=2" loading="lazy" decoding="async" alt="Portrait of Chandan Mettu">
+              <img id="educatorMemoryImage" src="assets/personas/educator-whiteboard-memory.jpg" loading="lazy" decoding="async" alt="A younger Chandan Mettu explaining a geometry problem on a whiteboard" style="--profile-position:center" hidden>
+              <img id="educatorLessonImage" src="assets/personas/educator-online-lesson.png" loading="lazy" decoding="async" alt="Chandan Mettu explaining a parabola problem in an online mathematics lesson" style="--profile-position:right center" hidden>
+            </div>
+            <figcaption class="profile-caption"><strong id="profileBadge">Chandan</strong></figcaption>
+            <div class="profile-carousel-controls" id="profileCarouselControls" aria-label="Educator photographs" hidden>
+              <button class="profile-carousel-arrow" type="button" data-profile-direction="-1" aria-label="Previous photograph">←</button>
+              <div class="profile-carousel-dots" role="group" aria-label="Choose photograph">
+                <button class="profile-carousel-dot" type="button" data-profile-slide="0" aria-label="Photograph 1 of 3" aria-current="true"></button>
+                <button class="profile-carousel-dot" type="button" data-profile-slide="1" aria-label="Photograph 2 of 3" aria-current="false"></button>
+                <button class="profile-carousel-dot" type="button" data-profile-slide="2" aria-label="Photograph 3 of 3" aria-current="false"></button>
+              </div>
+              <button class="profile-carousel-arrow" type="button" data-profile-direction="1" aria-label="Next photograph">→</button>
+            </div>
+          </figure>
           <div class="profile-story apple-bento-card"><div class="bento-spotlight" aria-hidden="true"></div><p class="kicker" id="panelKicker">The work</p><h2 id="panelTitle" tabindex="-1">Different disciplines. Same discipline.</h2><p class="panel-summary" id="panelSummary">Software, sport, storytelling, and mathematics—each with something real to show.</p><div class="links" id="modeLinks"></div></div>
         </div>
         <div class="stats" id="stats"></div>
-        <div class="collection-head"><h3 id="collectionTitle">Choose a lane</h3><p id="collectionCopy" hidden></p></div>
+        <div class="collection-head">
+          <div class="collection-heading"><h3 id="collectionTitle">Choose a lane</h3><p id="collectionCopy" hidden></p></div>
+          <div class="project-view-switch" id="projectViewSwitch" role="group" aria-label="Project view" hidden></div>
+          <div class="project-filters" id="projectFilters" role="group" aria-label="Filter projects" hidden></div>
+        </div>
         <div class="collection" id="collection"></div>
       </div>
     </section>
@@ -1177,7 +1674,7 @@ body[data-mode="overview"] .item {
 <script src="assets/js/medal-cabinet.js?v=2"></script>
 <script src="assets/js/athlete-gallery.js?v=3"></script>
 <script src="assets/js/athlete-focus.js?v=2"></script>
-<script src="assets/js/certificate-loop.js?v=2"></script>
+<script src="assets/js/certificate-loop.js?v=3"></script>
 <script>
 const lineIcon=paths=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 const brandIcon=path=>`<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
@@ -1208,47 +1705,259 @@ const modeMedia={
   builder:{image:'assets/personas/builder-profile.jpg?v=2',alt:'Chandan Mettu presenting CampusLoom on a laptop',position:'center'},
   creator:{image:'assets/social-card-alt.png?v=2',alt:'Chandan Mettu, creator profile',position:'center 12%'},
   athlete:{image:'assets/personas/athlete-medals-display.jpg',alt:'Chandan Mettu on the track wearing medals',position:'center 22%'},
-  educator:{image:'assets/social-card-alt.png?v=2',alt:'Chandan Mettu, educator profile',position:'center 12%'}
+  educator:{image:'assets/personas/educator-profile-smiling.png',alt:'Chandan Mettu smiling in a Vedantu Master Teacher T-shirt',position:'center 42%'}
 };
 const modes={
 overview:{wipe:'#afe0f3',label:'Chandan',kicker:'Chandan Mettu · IIT Hyderabad',title:'Four lanes.<br>One standard.',hero:'I build products, race the clock, make videos, and teach mathematics.',panelKicker:'The work',panelTitle:'Different disciplines. Same discipline.',summary:'Software, sport, storytelling, and mathematics—each with something real to show.',stats:[['100K+','Students reached','CL'],['11.46 s','4th-fastest at Inter-IIT','100'],['400K+','Views across platforms','C'],['INMO','National qualifier','∑']],collectionTitle:'Choose a lane',collectionCopy:'',items:[{mode:'builder',name:'Builder',copy:'Products for students and campus life.',meta:'Explore products',icon:'B'},{mode:'creator',name:'Creator',copy:'Films about tools, projects, and student life.',meta:'Watch and follow',icon:'C'},{mode:'athlete',name:'Athlete',copy:'Sprints, long jump, and team leadership.',meta:'See the track',icon:'A'},{mode:'educator',name:'Educator',copy:'Olympiad mathematics from first principles.',meta:'Follow the path',icon:'E'}],links:[]},
-builder:{wipe:'#dfff63',label:'Builder',kicker:'Builder',title:'I turn everyday friction<br>into useful products.',hero:'From design to deployment, I enjoy making ideas useful.',panelKicker:'Built beyond the brief',panelTitle:'I learn by shipping.',summary:'Every launch puts the work in real hands. I listen, improve, and keep going until the product earns its place in someone’s day.',stats:[['8','Products for IIT Hyderabad','IITH'],['10K+','College decisions mapped','CP'],['50K+','Students reached','↗'],['100+','Websites built','WWW']],collectionTitle:'Built for real use',collectionCopy:'Live products, public betas, and work in progress.',items:[{name:'CampusLoom',copy:'Compare colleges with the detail a life-changing decision deserves.',meta:'24K+ visitors',photo:'assets/projects/campusloom-dashboard.jpg',alt:'Chandan Mettu reviewing the CampusLoom JEE Advanced dashboard',position:'center',href:'https://campusloom.in'},{name:'CampusKit',copy:'College essentials, laptop guidance, and student perks.',meta:'30K+ visitors',icon:'KIT',href:'https://kit.campusloom.in'},{name:'Abhyas',copy:'Find past papers and course notes.',meta:'Live',image:'assets/campus-icons/abhyas.png',href:'https://abhyas.iith.online'},{name:'Nivas',copy:'Understand hostels. Find room swaps.',meta:'Live',image:'assets/campus-icons/nivas.jpg',href:'https://nivas.iith.online'},{name:'Sanchari',copy:'See campus transport without the guesswork.',meta:'Beta',image:'assets/campus-icons/sanchari.png',href:'https://sanchari.iith.online'},{name:'IITH Athletics',copy:'Records, results, and athlete profiles.',meta:'Live',image:'assets/campus-icons/athletics.png',href:'https://athletics.iith.online'},{name:'Ruchi',copy:'Mess registration and menus.',meta:'Public beta',image:'assets/campus-icons/ruchi.jpg',href:'https://ruchi.iith.online'},{name:'IITH Aquatics',copy:'Pool access, timings, fees, and rules.',meta:'Live',image:'assets/campus-icons/aquatics.jpg',href:'https://aquatics.iith.online'},{name:'IITH Merch Store',copy:'Official merchandise, easier to find.',meta:'Live',image:'assets/campus-icons/store.png',href:'https://store.iith.online'},{name:'IITH Garage',copy:'One index for every campus product.',meta:'Product index',image:'assets/campus-icons/garage.jpg',href:'https://iith.online'}],links:[['Explore the work','#collection']]},
+builder:{
+  wipe:'#dfff63',label:'Builder',kicker:'Builder',
+  title:'I turn everyday friction<br>into useful products.',
+  hero:'From design to deployment, I enjoy making ideas useful.',
+  panelKicker:'Built beyond the brief',panelTitle:'I learn by shipping.',
+  summary:'Every launch puts the work in real hands. I listen, improve, and keep going until the product earns its place in someone’s day.',
+  stats:[['8','Products for IIT Hyderabad','IITH'],['10K+','College decisions mapped','CP'],['50K+','Students reached','↗'],['100+','Websites built','WWW']],
+  collectionTitle:'Built for real use',collectionCopy:'',
+  items:[
+    {category:'personal',name:'CampusLoom',copy:'Compare colleges with the detail a life-changing decision deserves.',meta:'My product · Live',status:'live',projectIcon:'assets/project-icons/campusloom.svg',preview:'assets/project-previews/campusloom-home.png',previewAlt:'CampusLoom homepage',href:'https://campusloom.in'},
+    {category:'personal',name:'CampusKit',copy:'College essentials, laptop guidance, and student perks.',meta:'My product · Live',status:'live',projectMark:'KIT',preview:'assets/project-previews/campuskit-home.png',previewAlt:'CampusKit homepage',href:'https://kit.campusloom.in'},
+    {category:'iith',name:'IITH Garage',copy:'One index for every campus product.',meta:'Product index',status:'live',image:'assets/campus-icons/garage.jpg',preview:'assets/project-previews/garage-home.png',previewAlt:'IITH Garage product index homepage',href:'https://iith.online'},
+    {category:'iith',name:'IITH Athletics',copy:'Records, results, events, and athlete profiles for IIT Hyderabad.',meta:'IIT Hyderabad · Live',status:'live',projectMark:'ATH',preview:'assets/project-previews/athletics-home.png',previewAlt:'IIT Hyderabad Athletics homepage',href:'https://athletics.iith.online'},
+    {category:'client',name:'Tharun Speaks',copy:'A custom course platform for video-editing lessons, enrolment, and progress.',meta:'Client work · Course platform',projectMark:'TS',preview:'assets/project-previews/tharun-speaks.png',previewAlt:'Tharun Speaks video-editing course platform'},
+    {category:'client',name:'Neha Agarwal Mathematics',copy:'A course library that organised JEE mathematics playlists and learning paths.',meta:'First client website · 2024',projectMark:'NAM',preview:'assets/project-previews/neha-agarwal-mathematics.png',previewAlt:'Neha Agarwal Mathematics video playlist website'},
+    {category:'client',name:'Dynamic Listing',copy:'A structured directory for discovering student profiles across Indian institutes.',meta:'Client work · Previous project',projectMark:'DL',preview:'assets/project-previews/dynamic-listing.png',previewAlt:'Dynamic student profile listing interface'},
+    {category:'client',name:'Online Exam Management',copy:'A browser-based assessment experience with question navigation and answer review.',meta:'Client work · Previous project',projectMark:'EXAM',preview:'assets/project-previews/online-exam-management.png',previewAlt:'Online examination management interface'},
+    {category:'iith',name:'Abhyas',copy:'Find past papers and course notes.',meta:'Live',status:'live',image:'assets/campus-icons/abhyas.png',preview:'assets/project-previews/abhyas-home.png',previewAlt:'Abhyas archive homepage',href:'https://abhyas.iith.online'},
+    {category:'iith',name:'Nivas',copy:'Understand hostels. Find room swaps.',meta:'Live',status:'live',image:'assets/campus-icons/nivas.jpg',preview:'assets/project-previews/nivas-home.png',previewAlt:'Nivas room swap homepage with a 3D hostel model',href:'https://nivas.iith.online'},
+    {category:'iith',name:'Sanchari',copy:'See campus transport without the guesswork.',meta:'Beta',status:'beta',image:'assets/campus-icons/sanchari.png',preview:'assets/project-previews/sanchari-home.png',previewAlt:'Sanchari campus transport homepage',href:'https://sanchari.iith.online'},
+    {category:'iith',name:'Ruchi',copy:'Mess registration and menus.',meta:'Public beta',status:'beta',muted:true,image:'assets/campus-icons/ruchi.jpg',preview:'assets/project-previews/ruchi-home.png',previewAlt:'Ruchi mess registration homepage',href:'https://ruchi.iith.online'},
+    {category:'iith',name:'IITH Aquatics',copy:'Pool access, timings, fees, and rules.',meta:'Live',status:'live',image:'assets/campus-icons/aquatics.jpg',preview:'assets/project-previews/aquatics-home.png',previewAlt:'IITH Aquatics registration homepage',href:'https://aquatics.iith.online'},
+    {category:'iith',name:'IITH Merch Store',copy:'Browse official IIT Hyderabad merchandise and collections.',meta:'IIT Hyderabad · Public beta',status:'beta',projectMark:'IITH',preview:'assets/project-previews/iith-merch-store.png',previewAlt:'IIT Hyderabad merchandise store homepage',href:'https://store.iith.online'}
+  ],
+  links:[['Explore the work','#collection']]
+},
 creator:{wipe:'#ff7a62',label:'Creator',kicker:'Creator · Learning in public',title:'Make. Learn.<br>Share.',hero:'I make videos about products, tools, and student life—from what I’m actually doing.',panelKicker:'The channel',panelTitle:'The useful parts, left in.',summary:'YouTube holds the full story. The other platforms carry the notes between releases.',stats:[['2.5K+','YouTube subscribers',ytIcon],['290K+','YouTube views',ytIcon],['2K+','Instagram followers','IG'],['1K+','LinkedIn followers','in']],collectionTitle:'Watch. Read. Follow.',collectionCopy:'Choose the format that fits.',items:[{name:'YouTube',copy:'Complete builds, useful tools, and student life.',meta:'Long-form video',icon:ytIcon,href:'https://youtube.com/@ChandanMettu'},{name:'Instagram',copy:'Training, campus, and the moments between.',meta:'@chandanmettu',icon:'IG',href:'https://instagram.com/chandanmettu'},{name:'LinkedIn',copy:'Products, milestones, and lessons from the work.',meta:'saichandanmettu',icon:'in',href:'https://linkedin.com/in/saichandanmettu'},{name:'X',copy:'Ideas while they’re still becoming.',meta:'@ChandanMettu',icon:'X',href:'https://x.com/ChandanMettu'},{name:'Threads',copy:'Loose notes and open conversations.',meta:'@chandanmettu',icon:'@',href:'https://www.threads.com/@chandanmettu'},{name:'GitHub',copy:'Source code and experiments.',meta:'saichandanmettu',icon:'GH',href:'https://github.com/saichandanmettu'}],links:[['Watch on YouTube','https://youtube.com/@ChandanMettu'],['Follow on Instagram','https://instagram.com/chandanmettu']]},
 athlete:{wipe:'#5d74ff',label:'Athlete',kicker:'Athlete · IIT Hyderabad',title:'The clock<br>doesn’t care.',hero:'I sprint, jump, and lead the IIT Hyderabad athletics team. Progress only counts when it shows up.',panelKicker:'Beyond race day',panelTitle:'The result is public. The work is private.',summary:'Starts, mechanics, strength, relay handoffs, recovery—and the patience to repeat them.',stats:[['11.46 s','100 m institute record','100'],['5.6 m','Long jump','LJ'],['2024–25','Inter-IIT representative','IIT'],['Captain','IIT Hyderabad athletics','C']],collectionTitle:'Measured on the track',collectionCopy:'The marks I can stand behind.',items:[{name:'Meet night',copy:'The moment the work becomes visible.',meta:'Competition',slides:[{src:'assets/personas/athlete-medals.jpg',alt:'Chandan Mettu on the track after competition',position:'center 22%'}],wide:true},{name:'Between meets',copy:'Strength, mechanics, recovery. Repeat.',meta:'Training',slides:[{src:'assets/personas/athlete-training.jpg',alt:'Chandan Mettu doing pull-ups during training',position:'center 44%'}]},{name:'100 metres',copy:'The standing IIT Hyderabad men’s institute record.',meta:'Record event',icon:'100'},{name:'Long jump',copy:'Speed meets rhythm at the board.',meta:'Second event',icon:'LJ'},{name:'Captaincy',copy:'Set the standard. Carry the team.',meta:'Team leadership',icon:'C'},{name:'Inter-IIT',copy:'Competed for IIT Hyderabad on the national stage.',meta:'Institute representative',icon:'IIT',full:true}],links:[['Open IITH Athletics','https://athletics.iith.online']]},
-educator:{wipe:'#ffc857',label:'Educator',kicker:'Educator · Olympiad mathematics',title:'Don’t memorize.<br>See why.',hero:'I teach difficult mathematics through intuition, first principles, and the step that makes everything click.',panelKicker:'The method',panelTitle:'A proof should feel inevitable.',summary:'Start with the idea. Stay with the hard step. Let the solution follow.',stats:[['INMO','National qualifier','∑'],['99.77','JEE mathematics percentile','calculator'],['98.5%','Class 12 board','school'],['10/10','Class 10 CGPA','book']],collectionTitle:'A path through problem-solving',collectionCopy:'Early contests built the habit. IOQM opened the national pathway; INMO was the national stage.',items:[{name:'AMTI',copy:'The Association of Mathematics Teachers of India runs the National Mathematics Talent Contest to find and encourage young mathematical talent.',meta:'Early competition',icon:'01'},{name:'SOF IMO',copy:'A separate school-level mathematics contest where formal competition first became familiar.',meta:'School competition',icon:'02'},{name:'IOQM',copy:'The Indian Olympiad Qualifier in Mathematics begins India’s official Mathematical Olympiad pathway.',meta:'First national stage',icon:'03'},{name:'IOQM',copy:'A return to the same national pathway with stronger problem-solving foundations.',meta:'Returned',icon:'04'},{name:'INMO',copy:'The Indian National Mathematical Olympiad is the national proof-based stage the earlier rounds lead towards.',meta:'National stage',icon:'05'},{name:'Vedantu',copy:'Worked with younger problem solvers through Olympiad mathematics and teaching material.',meta:'Teaching at 17',icon:'V'}],links:[]}
+educator:{
+  wipe:'#ffc857',label:'Educator',kicker:'Educator · Olympiad mathematics',
+  title:'Teaching changes<br>how an idea is seen.',hero:'From Olympiad problems to teaching at 17.',
+  panelKicker:'How I teach',panelTitle:'Teaching keeps me learning.',
+  summary:'Every concept can be explained in more than one way. I look for the one that makes it click.',
+  stats:[['INMO','National qualifier','∑'],['99.77','JEE mathematics percentile','calculator'],['98.5%','Class 12 board','school'],['10/10','Class 10 CGPA','book']],
+  collectionTitle:'From solving problems to teaching them',
+  collectionCopy:'School competitions began the habit. Three IOQM cycles sharpened it; INMO took it to the national stage. At 17, I began sharing it through Vedantu.',
+  items:[
+    {name:'AMTI NMTC',copy:'Placed in the top 10% at my institution in the 2018 Sub-Junior screening test.',meta:'Top 10% · 2018',icon:'01'},
+    {name:'SOF IMO',copy:'Received a gold medal for performance excellence at the school level in December 2018.',meta:'School-level gold medal',icon:'02'},
+    {name:'IOQM 2020',copy:'Placed within the top 300 ranks among Classes VIII–XI participants from Telangana.',meta:'Certificate of merit',icon:'03'},
+    {name:'IOQM 2021–22',copy:'Scored 20% or more of the total marks in Part A.',meta:'Certificate of merit',icon:'04'},
+    {name:'IOQM 2022–23',copy:'Scored 20% or more of the total marks in the qualifier.',meta:'Certificate of merit',icon:'05'},
+    {name:'INMO',copy:'Reached the Indian National Mathematical Olympiad—the national proof-based stage of the official pathway.',meta:'National qualifier',icon:'∑'},
+    {name:'Vedantu',copy:'Worked with younger problem-solvers through Olympiad mathematics and teaching material.',meta:'Teaching at 17',icon:'V',full:true}
+  ],
+  links:[]
+}
 };
 
 const order=['builder','creator','overview','athlete','educator'];
 const body=document.body,stage=document.getElementById('stage'),wipe=document.getElementById('wipe'),wipeLabel=document.getElementById('wipeLabel');
-const heroKicker=document.getElementById('heroKicker'),heroTitle=document.getElementById('heroTitle'),heroCopy=document.getElementById('heroCopy'),panel=document.getElementById('experience'),panelKicker=document.getElementById('panelKicker'),panelTitle=document.getElementById('panelTitle'),panelSummary=document.getElementById('panelSummary'),profileVisual=document.getElementById('profileVisual'),profileImage=document.getElementById('profileImage'),profileBadge=document.getElementById('profileBadge'),stats=document.getElementById('stats'),collectionTitle=document.getElementById('collectionTitle'),collectionCopy=document.getElementById('collectionCopy'),collection=document.getElementById('collection'),modeLinks=document.getElementById('modeLinks');
+const heroKicker=document.getElementById('heroKicker'),heroTitle=document.getElementById('heroTitle'),heroCopy=document.getElementById('heroCopy'),panel=document.getElementById('experience'),panelKicker=document.getElementById('panelKicker'),panelTitle=document.getElementById('panelTitle'),panelSummary=document.getElementById('panelSummary'),profileVisual=document.getElementById('profileVisual'),profileMediaTrack=document.getElementById('profileMediaTrack'),profileImage=document.getElementById('profileImage'),educatorMemoryImage=document.getElementById('educatorMemoryImage'),educatorLessonImage=document.getElementById('educatorLessonImage'),profileCarouselControls=document.getElementById('profileCarouselControls'),profileBadge=document.getElementById('profileBadge'),stats=document.getElementById('stats'),collectionTitle=document.getElementById('collectionTitle'),collectionCopy=document.getElementById('collectionCopy'),collection=document.getElementById('collection'),projectFilters=document.getElementById('projectFilters'),projectViewSwitch=document.getElementById('projectViewSwitch'),modeLinks=document.getElementById('modeLinks');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cards=[...stage.querySelectorAll('.persona')],count=cards.length;
-const iconAliases={CL:'users','100':'timer','↗':'grid',BR:'branch',IITH:'building',B:'code',C:'video',A:'medal',E:'book',IG:'instagram',in:'linkedin',X:'x','@':'chat',GH:'github',LJ:'jump',IIT:'school','∑':'calculator','17':'school',V:'school','01':'route','02':'route','03':'route','04':'route','05':'route'};
+const iconAliases={CL:'users','100':'timer','↗':'grid',BR:'branch',IITH:'building',B:'code',C:'video',A:'medal',E:'book',IG:'instagram',in:'linkedin',X:'x','@':'chat',GH:'github',LJ:'jump',IIT:'school','∑':'calculator','17':'school',V:'school','01':'route','02':'route','03':'route','04':'route','05':'route','06':'route'};
 let current='overview',wheelPosition=2,wheelTarget=2,wheelFrame=0,wheelLastTime=0,wheelDirection=1,wheelSnapTimer=0,countFrames=[],dragStartX=0,dragStartTarget=0,dragDistance=0,didDrag=false,transitionLock=false,kineticToken=0,kineticTimers=[],bentoObserver=null,scrollEffectFrame=0;
 let medalCabinetCleanup=()=>{};
 let athleteGalleryCleanup=()=>{};
 let athleteFocusCleanup=()=>{};
 let certificateLoopCleanup=()=>{};
+let activeProjectFilter='all';
+let activeProjectView='preview';
+let profileSlide=0,profileSlideFrame=0;
 
 const mod=(value,length)=>((value%length)+length)%length;
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
+const profileCarouselDots=[...profileCarouselControls.querySelectorAll('[data-profile-slide]')];
+function updateProfileSlide(index){
+  profileSlide=clamp(index,0,profileCarouselDots.length-1);
+  profileCarouselDots.forEach((dot,dotIndex)=>dot.setAttribute('aria-current',String(dotIndex===profileSlide)));
+}
+function showProfileSlide(index,smooth=true){
+  const next=mod(index,profileCarouselDots.length);
+  profileMediaTrack.scrollTo({left:profileMediaTrack.clientWidth*next,behavior:smooth&&!reduced?'smooth':'auto'});
+  updateProfileSlide(next);
+}
+function configureProfileCarousel(mode){
+  const enabled=mode==='educator';
+  profileVisual.classList.toggle('has-profile-carousel',enabled);
+  profileCarouselControls.hidden=!enabled;
+  educatorMemoryImage.hidden=!enabled;
+  educatorLessonImage.hidden=!enabled;
+  updateProfileSlide(0);
+  requestAnimationFrame(()=>profileMediaTrack.scrollTo({left:0,behavior:'auto'}));
+}
+profileCarouselControls.querySelectorAll('[data-profile-direction]').forEach(button=>button.addEventListener('click',()=>showProfileSlide(profileSlide+Number(button.dataset.profileDirection))));
+profileCarouselDots.forEach(dot=>dot.addEventListener('click',()=>showProfileSlide(Number(dot.dataset.profileSlide))));
+profileCarouselControls.addEventListener('keydown',event=>{
+  if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
+  event.preventDefault();showProfileSlide(profileSlide+(event.key==='ArrowRight'?1:-1));
+});
+profileMediaTrack.addEventListener('scroll',()=>{
+  if(!profileVisual.classList.contains('has-profile-carousel')||profileSlideFrame)return;
+  profileSlideFrame=requestAnimationFrame(()=>{
+    profileSlideFrame=0;
+    if(profileMediaTrack.clientWidth)updateProfileSlide(Math.round(profileMediaTrack.scrollLeft/profileMediaTrack.clientWidth));
+  });
+},{passive:true});
 const iconMarkup=value=>{
   if(value&&value.startsWith('<svg'))return value;
   return icons[iconAliases[value]||value]||icons.grid;
 };
 
+// Add future tools here. The wall wraps automatically, so no layout or category
+// changes are needed when the full stack arrives.
+const builderToolkitTools=[
+  {name:'WordPress',icon:'assets/tool-icons/wordpress.svg'},
+  {name:'ProFreeHost',icon:'assets/tool-icons/profreehost.png'},
+  {name:'Cloudflare',icon:'assets/tool-icons/cloudflare.svg'},
+  {name:'Hostinger',icon:'assets/tool-icons/hostinger.svg'},
+  {name:'Elementor',icon:'assets/tool-icons/elementor.svg'},
+  {name:'Divi',icon:'assets/tool-icons/divi.png'},
+  {name:'Bricks Builder',icon:'assets/tool-icons/bricks.svg'},
+  {name:'Advanced Custom Fields (ACF)',icon:'assets/tool-icons/advanced-custom-fields.svg'},
+  {name:'Site Kit by Google',icon:'assets/tool-icons/site-kit.png'},
+  {name:'Blocksy',icon:'assets/tool-icons/blocksy.jpg'},
+  {name:'Admin and Site Enhancements (ASE)',icon:'assets/tool-icons/ase.png'},
+  {name:'Big File Uploads',icon:'assets/tool-icons/big-file-uploads.png'},
+  {name:'Admin Menu Editor',icon:'assets/tool-icons/admin-menu-editor.png'},
+  {name:'Unlimited Elements for Elementor',icon:'assets/tool-icons/unlimited-elements.png'},
+  {name:'Code Snippets',icon:'assets/tool-icons/code-snippets.svg'},
+  {name:'DearFlip 3D Flipbook',icon:'assets/tool-icons/dearflip.png'},
+  {name:'UpdraftPlus',icon:'assets/tool-icons/updraftplus.jpg'},
+  {name:'WPForms',icon:'assets/tool-icons/wpforms.png'},
+  {name:'Figma',icon:'assets/tool-icons/figma.svg'},
+  {name:'Canva',icon:'assets/tool-icons/canva.svg'},
+  {name:'Dribbble',icon:'assets/tool-icons/dribbble.svg'},
+  {name:'Designstripe',icon:'assets/tool-icons/designstripe.svg'},
+  {name:'Icons8',icon:'assets/tool-icons/icons8.svg'},
+  {name:'unDraw',icon:'assets/tool-icons/undraw.png'},
+  {name:'Claude',icon:'assets/tool-icons/claude.svg'},
+  {name:'ChatGPT',icon:'assets/tool-icons/chatgpt.png'},
+  {name:'Google Antigravity',icon:'assets/tool-icons/antigravity.png'},
+  {name:'Mailchimp',icon:'assets/tool-icons/mailchimp.svg'},
+  {name:'ConvertKit',icon:'assets/tool-icons/convertkit.svg'},
+  {name:'AmbitionHost',icon:'assets/tool-icons/ambitionhost.jpg'},
+  {name:'Namecheap',icon:'assets/tool-icons/namecheap.svg'},
+  {name:'Independent Analytics',icon:'assets/tool-icons/independent-analytics.png'}
+];
+
+const projectFilterOptions=[['all','All work'],['iith','IIT Hyderabad'],['personal','My products'],['client','Client work']];
+const projectViewOptions=[
+  ['icons','Icons',icons.grid],
+  ['preview','Previews',lineIcon('<rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7 15 3-3 3 3 2-2 3 3M8 9h.01"/>')]
+];
+
+function applyProjectView(view){
+  activeProjectView=projectViewOptions.some(([value])=>value===view)?view:'preview';
+  collection.dataset.projectView=activeProjectView;
+  projectViewSwitch.querySelectorAll('[data-project-view]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.projectView===activeProjectView)));
+}
+
+function applyProjectFilter(filter){
+  activeProjectFilter=projectFilterOptions.some(([value])=>value===filter)?filter:'all';
+  projectFilters.querySelectorAll('[data-project-filter]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.projectFilter===activeProjectFilter)));
+  const cards=[...collection.querySelectorAll('[data-project-category]')];
+  let visible=0;
+  cards.forEach(card=>{
+    const show=activeProjectFilter==='all'||card.dataset.projectCategory===activeProjectFilter;
+    card.classList.toggle('project-card-filtered',!show);
+    if(show)visible+=1;
+  });
+  const empty=collection.querySelector('[data-project-empty]');
+  if(empty){
+    empty.hidden=visible!==0;
+    empty.textContent=activeProjectFilter==='client'?'Client work will appear here as it is added.':'No projects have been added to this group yet.';
+  }
+}
+
+function renderProjectFilters(mode){
+  const isBuilder=mode==='builder';
+  projectFilters.hidden=!isBuilder;
+  projectViewSwitch.hidden=!isBuilder;
+  if(!isBuilder){
+    projectFilters.replaceChildren();
+    projectViewSwitch.replaceChildren();
+    return;
+  }
+  projectFilters.innerHTML=projectFilterOptions.map(([value,label])=>`<button class="project-filter" type="button" data-project-filter="${value}" aria-pressed="${activeProjectFilter===value}">${label}</button>`).join('');
+  projectViewSwitch.innerHTML=projectViewOptions.map(([value,label,icon])=>`<button class="project-view-button" type="button" data-project-view="${value}" aria-pressed="${activeProjectView===value}">${icon}<span>${label}</span></button>`).join('');
+}
+
+function builderToolkitMarkup(){
+  const logos=builderToolkitTools.map(tool=>`<li><button class="toolkit-logo" type="button" data-tool-name="${tool.name}" aria-label="${tool.name}" aria-pressed="false"><img src="${tool.icon}" alt="" loading="lazy" decoding="async"></button></li>`).join('');
+  return `<section class="builder-toolkit apple-bento-card" data-builder-toolkit aria-labelledby="builderToolkitTitle"><div class="bento-spotlight" aria-hidden="true"></div><header class="toolkit-head"><h3 id="builderToolkitTitle">The tools behind the work.</h3></header><ul class="toolkit-icon-wall" aria-label="Tools I use">${logos}</ul><div class="toolkit-namebar" data-toolkit-namebar role="status" aria-live="polite" hidden><span data-toolkit-name></span></div></section>`;
+}
+
+function bindBuilderToolkit(){
+  const root=collection.querySelector('[data-builder-toolkit]');
+  if(!root)return;
+  const namebar=root.querySelector('[data-toolkit-namebar]');
+  const label=root.querySelector('[data-toolkit-name]');
+  const tools=[...root.querySelectorAll('[data-tool-name]')];
+  let selected='';
+  tools.forEach(tool=>{
+    const name=tool.dataset.toolName;
+    tool.addEventListener('click',()=>{
+      selected=selected===name?'':name;
+      tools.forEach(item=>item.setAttribute('aria-pressed',String(Boolean(selected)&&item===tool)));
+      label.textContent=selected;
+      namebar.hidden=!selected;
+    });
+  });
+}
+
+function projectIconMarkup(item){
+  if(item.projectIcon)return `<img class="contain" src="${item.projectIcon}" alt="">`;
+  if(item.image)return `<img class="${item.contain?'contain':''}" src="${item.image}" alt="">`;
+  if(item.projectMark)return `<span class="project-symbol" aria-hidden="true">${item.projectMark}</span>`;
+  return iconMarkup(item.icon||'grid');
+}
+
+function projectItemMarkup(item){
+  const tag=item.href?'a':'article';
+  const status=item.href?(item.status||(item.meta.toLowerCase().includes('beta')?'beta':item.meta.toLowerCase().includes('live')?'live':'')):'';
+  const destinationLabel=status==='beta'?'Public beta':status==='live'?'Live project':'Project';
+  const attrs=item.href?`href="${item.href}" target="_blank" rel="noopener noreferrer" aria-label="Open ${item.name} — ${destinationLabel}"`:'';
+  const icon=projectIconMarkup(item);
+  const compact=`<div class="project-card-compact"><span class="item-icon">${icon}</span><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href?' ↗':''}</p></div>`;
+  const openButton=item.href?`<span class="project-card-open ${status?`project-card-open-${status}`:''}" aria-hidden="true">↗</span>`:'';
+  const preview=item.preview?`<div class="project-card-preview"><figure class="project-preview-media"><div class="project-preview-fallback" aria-hidden="true">Preview unavailable</div><img src="${item.preview}" alt="${item.previewAlt||''}" loading="lazy" decoding="async"></figure><div class="project-preview-body"><div class="project-preview-title-row"><h3>${item.name}</h3>${openButton}</div><p>${item.copy}</p></div></div>`:'';
+  return `<${tag} class="item project-card apple-bento-card ${item.preview?'has-project-preview':''} ${item.muted?'project-card-muted':''}" ${attrs} data-project-category="${item.category}" style="--preview-position:${item.previewPosition||'center top'}"><div class="bento-spotlight" aria-hidden="true"></div>${compact}${preview}</${tag}>`;
+}
+
+function bindProjectPreviewFallbacks(){
+  collection.querySelectorAll('.project-preview-media img').forEach(image=>{
+    const fail=()=>{
+      image.hidden=true;
+      image.closest('.project-preview-media')?.classList.add('is-missing');
+    };
+    if(image.complete&&!image.naturalWidth)fail();
+    else image.addEventListener('error',fail,{once:true});
+  });
+}
+
 function itemMarkup(item){
   if(item.slides&&window.AthleteGallery)return window.AthleteGallery.markup(item);
+  if(item.category)return projectItemMarkup(item);
+  const categoryAttr=item.category?`data-project-category="${item.category}"`:'';
   if(item.photo){
     const tag=item.href?'a':'article';
     const attrs=item.href?`href="${item.href}" target="_blank" rel="noopener noreferrer"`:'';
-    return `<${tag} class="item photo-item apple-bento-card ${item.wide?'wide':''}" ${attrs} style="--photo-position:${item.position||'center'}"><div class="bento-spotlight" aria-hidden="true"></div><img class="item-photo" src="${item.photo}" alt="${item.alt||''}" loading="lazy"><div class="photo-copy"><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href?' ↗':''}</p></div></${tag}>`;
+    return `<${tag} class="item photo-item apple-bento-card ${item.wide?'wide':''}" ${attrs} ${categoryAttr} style="--photo-position:${item.position||'center'}"><div class="bento-spotlight" aria-hidden="true"></div><img class="item-photo" src="${item.photo}" alt="${item.alt||''}" loading="lazy"><div class="photo-copy"><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href?' ↗':''}</p></div></${tag}>`;
   }
-  const icon=item.image?`<img src="${item.image}" alt="">`:iconMarkup(item.icon);
+  const icon=item.image?`<img class="${item.contain?'contain':''}" src="${item.image}" alt="">`:iconMarkup(item.icon);
   let tag='article',attrs='';
   if(item.href){tag='a';attrs=`href="${item.href}" target="_blank" rel="noopener noreferrer"`}
   else if(item.mode){tag='button';attrs=`type="button" data-mode="${item.mode}"`}
-  return `<${tag} class="item apple-bento-card ${item.full?'full':''}" ${attrs}><div class="bento-spotlight" aria-hidden="true"></div><span class="item-icon">${icon}</span><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href||item.mode?' ↗':''}</p></${tag}>`;
+  return `<${tag} class="item apple-bento-card ${item.full?'full':''}" ${attrs} ${categoryAttr}><div class="bento-spotlight" aria-hidden="true"></div><span class="item-icon">${icon}</span><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href||item.mode?' ↗':''}</p></${tag}>`;
 }
 function animateCounts(){
   countFrames.forEach(cancelAnimationFrame);countFrames=[];
@@ -1266,7 +1975,7 @@ function animateCounts(){
   });
 }
 function revealBentos(){
-  const elements=[...document.querySelectorAll('.profile-grid > *,.stat,.item')];
+  const elements=[...document.querySelectorAll('.profile-grid > *,.stat,.item,.builder-toolkit')];
   bentoObserver?.disconnect();
   elements.forEach((element,index)=>{
     element.classList.remove('bento-in','bento-ready');
@@ -1359,15 +2068,24 @@ function render(mode,animateText=true,direction=1){
   certificateLoopCleanup();certificateLoopCleanup=()=>{};
   body.dataset.mode=mode;document.querySelector('meta[name="theme-color"]').content=data.wipe;
   if(animateText&&!reduced)transitionText(data,direction);else applyText(data);
-  profileImage.src=media.image;profileImage.alt=media.alt;profileVisual.style.setProperty('--profile-position',media.position);
+  profileImage.src=media.image;profileImage.alt=media.alt;profileVisual.style.setProperty('--profile-position',media.position);configureProfileCarousel(mode);
   stats.innerHTML=data.stats.map(([value,label,icon],index)=>`<article class="stat apple-bento-card ${index===0?'stat-flagship':''}"><div class="bento-spotlight" aria-hidden="true"></div><span class="stat-icon">${value==='Captain'?icons.medal:iconMarkup(icon)}</span><strong data-value="${value}">${value}</strong><span>${label}</span></article>`).join('');
   collectionTitle.textContent=data.collectionTitle;
   collectionCopy.textContent=data.collectionCopy||'';
   collectionCopy.hidden=!data.collectionCopy;
+  renderProjectFilters(mode);
   const athleteFocus=mode==='athlete'&&window.AthleteFocus?window.AthleteFocus.markup():'';
   const cabinet=mode==='athlete'&&window.MedalCabinet?window.MedalCabinet.markup():'';
   const certificateArchive=mode==='educator'&&window.CertificateLoop?window.CertificateLoop.markup():'';
-  collection.innerHTML=data.items.map(itemMarkup).join('')+athleteFocus+cabinet+certificateArchive;
+  const builderToolkit=mode==='builder'?builderToolkitMarkup():'';
+  const projectEmpty=mode==='builder'?'<p class="project-empty" data-project-empty hidden></p>':'';
+  collection.innerHTML=data.items.map(itemMarkup).join('')+projectEmpty+builderToolkit+athleteFocus+cabinet+certificateArchive;
+  if(mode==='builder'){
+    applyProjectFilter(activeProjectFilter);
+    applyProjectView(activeProjectView);
+    bindProjectPreviewFallbacks();
+    bindBuilderToolkit();
+  }else collection.removeAttribute('data-project-view');
   if(mode==='athlete'&&window.AthleteGallery)athleteGalleryCleanup=window.AthleteGallery.mountAll(collection);
   if(athleteFocus){
     const athleteFocusRoot=collection.querySelector('[data-athlete-focus]');
@@ -1460,6 +2178,18 @@ stage.addEventListener('pointerup',event=>{
 stage.addEventListener('pointercancel',()=>{wheelTarget=Math.round(wheelTarget);requestWheel()});
 stage.addEventListener('keydown',event=>{if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;event.preventDefault();moveWheel(event.key==='ArrowRight'?1:-1,false);wheelTarget=Math.round(wheelTarget);requestWheel()});
 document.addEventListener('click',event=>{
+  const projectView=event.target.closest('[data-project-view]');
+  if(projectView){
+    applyProjectView(projectView.dataset.projectView);
+    window.__lenis?.resize?.();
+    return;
+  }
+  const projectFilter=event.target.closest('[data-project-filter]');
+  if(projectFilter){
+    applyProjectFilter(projectFilter.dataset.projectFilter);
+    window.__lenis?.resize?.();
+    return;
+  }
   const trigger=event.target.closest('[data-mode]');if(!trigger)return;
   event.preventDefault();
   if(trigger.classList.contains('persona')){if(didDrag){didDrag=false;return}openProfile(trigger.dataset.mode)}else choose(trigger.dataset.mode);

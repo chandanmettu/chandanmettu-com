@@ -56,9 +56,9 @@
   line-height: 0.9;
 }
 
-.certificate-loop-intro {
+.certificate-loop .certificate-loop-intro {
   margin: 0;
-  color: rgba(255, 255, 255, 0.66);
+  color: rgba(255, 255, 255, 0.8);
   font-size: clamp(0.95rem, 1.25vw, 1.08rem);
   line-height: 1.65;
 }
@@ -103,6 +103,22 @@
   margin: 0;
 }
 
+.certificate-card.has-certificate-image {
+  flex: 0 0 auto;
+}
+
+.certificate-card-standard {
+  width: clamp(360px, 39vw, 510px);
+}
+
+.certificate-card-square {
+  width: clamp(310px, 34vw, 430px);
+}
+
+.certificate-card-landscape {
+  width: clamp(390px, 43vw, 550px);
+}
+
 .certificate-paper {
   position: relative;
   display: flex;
@@ -118,6 +134,23 @@
   box-shadow:
     0 26px 46px -28px rgba(0, 0, 0, 0.72),
     inset 0 1px 1px #fff;
+}
+
+.has-certificate-image .certificate-paper {
+  min-height: 0;
+  padding: 0;
+}
+
+.certificate-card-standard .certificate-paper {
+  aspect-ratio: 1.36 / 1;
+}
+
+.certificate-card-square .certificate-paper {
+  aspect-ratio: 1.04 / 1;
+}
+
+.certificate-card-landscape .certificate-paper {
+  aspect-ratio: 1.414 / 1;
 }
 
 .certificate-paper::before {
@@ -219,7 +252,7 @@
 
 .certificate-kind {
   max-width: 180px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.68);
   letter-spacing: 0.06em;
   text-align: right;
 }
@@ -325,6 +358,23 @@
 
   .certificate-paper {
     min-height: 390px;
+  }
+
+  .certificate-card.has-certificate-image {
+    flex-basis: auto;
+  }
+
+  .certificate-card-standard,
+  .certificate-card-landscape {
+    width: min(86vw, 500px);
+  }
+
+  .certificate-card-square {
+    width: min(78vw, 390px);
+  }
+
+  .has-certificate-image .certificate-paper {
+    min-height: 0;
   }
 
   .certificate-loop-foot {
