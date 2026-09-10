@@ -38,6 +38,11 @@ body[data-mode="builder"]{--outer:#afce4d;--hero:#dfff63;--surface:#f6ffdb;--ink
 body[data-mode="creator"]{--outer:#db5b47;--hero:#ff7a62;--surface:#fff1ec;--ink:#2b1512;--muted:#745149;--deep:#301713;--accent:#ffd265;--hero-ink:#2b1512;--hero-muted:#633c35;--portrait:#ee684f;--shadow:0 28px 90px rgba(83,31,22,.18)}
 body[data-mode="athlete"]{--outer:#3e54d2;--hero:#5d74ff;--surface:#edf0ff;--ink:#10163d;--muted:#4d578d;--deep:#111943;--accent:#68e7ff;--hero-ink:#fff;--hero-muted:#dce2ff;--portrait:#354ccb;--shadow:0 28px 90px rgba(18,27,93,.25)}
 body[data-mode="educator"]{--outer:#dfa02f;--hero:#ffc857;--surface:#fff7d9;--ink:#392313;--muted:#765b42;--deep:#3b2515;--accent:#ff7768;--hero-ink:#392313;--hero-muted:#715439;--portrait:#e3a62e;--shadow:0 28px 90px rgba(90,58,20,.18)}
+body[data-preview-mode="overview"]{background:#79acd1}body[data-preview-mode="overview"] :is(.nav,.hero){--hero:#afe0f3;--hero-ink:#071d2b;--hero-muted:#405c6b;--deep:#092638;--accent:#dfff63;--portrait:#7db9d9}
+body[data-preview-mode="builder"]{background:#afce4d}body[data-preview-mode="builder"] :is(.nav,.hero){--hero:#dfff63;--hero-ink:#102316;--hero-muted:#3e563d;--deep:#113b2b;--accent:#8ce6b2;--portrait:#9bc95a}
+body[data-preview-mode="creator"]{background:#db5b47}body[data-preview-mode="creator"] :is(.nav,.hero){--hero:#ff7a62;--hero-ink:#2b1512;--hero-muted:#633c35;--deep:#301713;--accent:#ffd265;--portrait:#ee684f}
+body[data-preview-mode="athlete"]{background:#3e54d2}body[data-preview-mode="athlete"] :is(.nav,.hero){--hero:#5d74ff;--hero-ink:#fff;--hero-muted:#dce2ff;--deep:#111943;--accent:#68e7ff;--portrait:#354ccb}
+body[data-preview-mode="educator"]{background:#dfa02f}body[data-preview-mode="educator"] :is(.nav,.hero){--hero:#ffc857;--hero-ink:#392313;--hero-muted:#715439;--deep:#3b2515;--accent:#ff7768;--portrait:#e3a62e}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:110px}html.lenis,html.lenis body{height:auto}html.lenis{scroll-behavior:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}body{margin:0;background:var(--outer);color:var(--ink);font:16px/1.5 var(--font);-webkit-font-smoothing:antialiased;transition:background .55s,color .55s}img{display:block;max-width:100%}a{color:inherit}button{font:inherit}.skip{position:fixed;z-index:999;left:18px;top:-80px;padding:12px 18px;border-radius:0 0 12px 12px;background:var(--deep);color:#fff;text-decoration:none}.skip:focus{top:0}:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 .wipe{position:fixed;z-index:900;inset:0;display:grid;place-items:center;background:var(--wipe,#afe0f3);transform:translate3d(0,101%,0);pointer-events:none;contain:strict;transition:transform .62s cubic-bezier(.76,0,.24,1)}.wipe.active{transform:translate3d(0,0,0)}.wipe.reset{transition:none}.wipe span{font-size:clamp(3rem,10vw,9rem);font-weight:600;letter-spacing:-.07em;text-transform:uppercase;opacity:0;transform:translate3d(0,18px,0) scale(.94);transition:opacity .3s ease,transform .52s cubic-bezier(.16,1,.3,1)}.wipe.active span{opacity:.18;transform:translate3d(0,0,0) scale(1)}
 .shell{padding:clamp(10px,2.6vw,34px)}.site{position:relative;overflow:clip;min-height:100vh;border:1px solid rgba(255,255,255,.55);border-radius:24px;background:var(--surface);box-shadow:var(--shadow);transition:background .55s,box-shadow .55s}.inner{width:min(1160px,calc(100% - 48px));margin:auto}
@@ -65,7 +70,7 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-weight:600;letter-spacing:-.025em;transition:opacity .2s,transform .2s}
 .brand:hover{opacity:.85;transform:translateY(-1px)}
 .brand-name{font-size:15px;font-weight:600}
-.brand-portrait{display:grid;place-items:end center;width:40px;height:40px;flex:0 0 40px;overflow:hidden;border:1px solid rgba(255,255,255,.56);border-radius:12px;background:color-mix(in srgb,#fff 34%,transparent);box-shadow:0 8px 20px color-mix(in srgb,var(--deep) 18%,transparent)}
+.brand-portrait{display:grid;place-items:end center;width:40px;height:40px;flex:0 0 40px;overflow:hidden;border:1px solid rgba(255,255,255,.56);border-radius:12px;background:var(--portrait);box-shadow:0 8px 20px color-mix(in srgb,var(--deep) 18%,transparent);transition:background .55s,border-color .55s,box-shadow .55s}
 .brand-portrait img{width:100%;height:100%;object-fit:contain;object-position:center bottom;transform:scale(1.04);transform-origin:center bottom}
 .nav-contact{display:inline-flex;align-items:center;gap:6px;padding:11px 20px;border-radius:999px;background:var(--deep);color:#fff;font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap;box-shadow:0 8px 22px color-mix(in srgb,var(--deep) 22%,transparent);transition:transform .2s,box-shadow .2s}
 .nav-contact:hover{transform:translateY(-2px);box-shadow:0 12px 28px color-mix(in srgb,var(--deep) 32%,transparent)}
@@ -177,6 +182,8 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 .profile-visual {
   position: relative;
   grid-column: span 6;
+  width: 100%;
+  max-width: 100%;
   min-height: 480px;
   aspect-ratio: 1.2 / 1;
   margin: 0;
@@ -513,6 +520,27 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
   gap: clamp(16px, 2vw, 24px);
 }
 
+.athlete-proof-head {
+  margin-top: 88px;
+}
+
+.athlete-proof-head[hidden] {
+  display: none;
+}
+
+.athlete-proof-head .kicker {
+  margin-bottom: 14px;
+}
+
+.athlete-proof-head h3 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(2.35rem, 4vw, 4.4rem);
+  font-weight: 500;
+  letter-spacing: -.06em;
+  line-height: .98;
+}
+
 .project-filters {
   order: 3;
   display: flex;
@@ -695,6 +723,66 @@ body[data-mode="overview"] .item {
 }
 .photo-item.wide {
   grid-column: span 2;
+}
+
+.photo-item.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Full-width editorial card for a portrait source: compact crop over a filled backdrop. */
+.photo-item.full-image {
+  min-height: clamp(440px, 46vw, 560px);
+  background: #101010;
+}
+
+.photo-item.full-image:after {
+  display: block;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(16,10,10,.48) 0%, rgba(16,10,10,.2) 50%, rgba(16,10,10,.3) 100%);
+}
+
+.photo-item.full-image .item-photo-backdrop {
+  position: absolute;
+  z-index: 0;
+  inset: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  object-fit: cover;
+  object-position: center 38%;
+  filter: blur(18px) brightness(.7) saturate(.86);
+}
+
+.photo-item.full-image .item-photo {
+  position: absolute;
+  z-index: 1;
+  inset: 0 auto auto 62%;
+  width: auto;
+  height: 108%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center top;
+  background: transparent;
+}
+
+.photo-item.full-image .photo-copy {
+  position: absolute;
+  z-index: 3;
+  inset: clamp(22px, 3vw, 34px) auto auto clamp(22px, 3vw, 34px);
+  width: min(38%, 430px);
+  height: auto;
+  min-height: 0;
+  padding: clamp(20px, 2.3vw, 28px);
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 20px;
+  background: rgba(18,11,10,.72);
+  box-shadow: 0 18px 50px rgba(0,0,0,.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.photo-item.full-image .photo-copy .item-meta {
+  margin-top: 22px !important;
 }
 
 .photo-item:after {
@@ -1085,6 +1173,11 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   }
   body[data-mode="builder"] .collection[data-project-view="icons"]{grid-template-columns:1fr}
   .photo-item.wide{grid-column:span 1}
+  .photo-item.full-width{grid-column:1 / -1}
+  .photo-item.full-image{min-height:500px}
+  .photo-item.full-image:after{background:linear-gradient(180deg,rgba(16,10,10,.08) 20%,rgba(16,10,10,.82) 76%,rgba(16,10,10,.92) 100%)}
+  .photo-item.full-image .item-photo{inset:0 auto auto 50%;transform:translateX(-50%);height:108%}
+  .photo-item.full-image .photo-copy{inset:auto 18px 18px;width:auto;padding:20px;border-radius:18px}
   .stat{min-height:190px;border-radius:24px}
   .item{min-height:200px}
   .photo-item{min-height:240px}
@@ -1492,12 +1585,12 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   }
 }
 </style>
-<link rel="stylesheet" href="assets/css/medal-cabinet.css">
-<link rel="stylesheet" href="assets/css/athlete-gallery.css">
-<link rel="stylesheet" href="assets/css/athlete-focus.css">
+<link rel="stylesheet" href="assets/css/medal-cabinet.css?v=3">
+<link rel="stylesheet" href="assets/css/athlete-gallery.css?v=3">
+<link rel="stylesheet" href="assets/css/athlete-focus.css?v=4">
 <link rel="stylesheet" href="assets/css/certificate-loop.css?v=3">
 </head>
-<body data-mode="overview">
+<body data-mode="overview" data-preview-mode="overview">
 <a class="skip" href="#experience">Skip to the selected profile</a>
 <div class="wipe" id="wipe" aria-hidden="true"><span id="wipeLabel"></span></div>
 <div class="shell"><div class="site">
@@ -1509,18 +1602,18 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   <header class="hero" id="top">
     <div class="hero-copy">
       <p class="kicker" id="heroKicker">Chandan Mettu · IIT Hyderabad</p>
-      <h1 id="heroTitle">Four lanes.<br>One standard.</h1>
-      <p id="heroCopy">I build products, race the clock, make videos, and teach mathematics.</p>
+      <h1 id="heroTitle">Products. Seconds.<br>Stories. Proofs.</h1>
+      <p id="heroCopy">Products built for students. Races measured in hundredths. Stories shaped from the journey. Mathematics taught from first principles.</p>
     </div>
     <svg class="wheel-thread" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M15 305 Q500 -80 985 305"/></svg>
     <div class="stage" id="stage" tabindex="0" aria-label="Scrollable versions of Chandan Mettu" aria-describedby="modeHint">
       <button class="persona" style="--card:#dfff63;--position:center" type="button" data-mode="builder" data-slot="-2" aria-pressed="false"><img src="assets/personas/builder-card-real.jpg" width="1088" height="1400" loading="lazy" decoding="async" fetchpriority="low" alt="Chandan Mettu building a product on his laptop"><span class="persona-label"><strong>Builder</strong><span>Founder · Designer · Developer</span></span></button>
-      <button class="persona" style="--card:#ff7a62" type="button" data-mode="creator" data-slot="-1" aria-pressed="false"><img src="assets/social-card-alt.png?v=2" width="620" height="620" loading="lazy" decoding="async" alt=""><span class="persona-label"><strong>Creator</strong><span>YouTube · Behind the work</span></span></button>
+      <button class="persona" style="--card:#ff7a62;--position:center" type="button" data-mode="creator" data-slot="-1" aria-pressed="false"><img src="assets/personas/creator-filming.jpg" width="2200" height="1650" loading="lazy" decoding="async" alt="Chandan Mettu recording a video on his phone outdoors"><span class="persona-label"><strong>Creator</strong><span>Learn · Build · Share</span></span></button>
       <button class="persona" style="--card:#79b4d5;--position:center 24%" type="button" data-mode="overview" data-slot="0" aria-pressed="true"><img src="assets/social-card-alt.png?v=2" width="1012" height="1800" decoding="async" fetchpriority="high" alt="Portrait of Chandan Mettu"><span class="persona-label"><strong>Chandan Mettu</strong><span>Start here</span></span></button>
-      <button class="persona" style="--card:#5d74ff;--position:center 17%" type="button" data-mode="athlete" data-slot="1" aria-pressed="false"><img src="assets/personas/athlete-medals-card.jpg" width="542" height="640" loading="lazy" decoding="async" alt="Chandan Mettu on the track wearing medals"><span class="persona-label"><strong>Athlete</strong><span>Sprint · Jump · Lead</span></span></button>
+      <button class="persona" style="--card:#5d74ff;--position:center 17%" type="button" data-mode="athlete" data-slot="1" aria-pressed="false"><img src="assets/personas/athlete-medals-card.jpg" width="542" height="640" loading="lazy" decoding="async" alt="Chandan Mettu on the track wearing medals"><span class="persona-label"><strong>Athlete</strong><span>Play · Train · Compete</span></span></button>
       <button class="persona" style="--card:#ffc857;--position:center 42%" type="button" data-mode="educator" data-slot="2" aria-pressed="false"><img src="assets/personas/educator-profile-smiling.png" width="1448" height="1086" loading="lazy" decoding="async" fetchpriority="low" alt="Chandan Mettu smiling in a Vedantu Master Teacher T-shirt"><span class="persona-label"><strong>Educator</strong><span>Proof · Intuition · Clarity</span></span></button>
     </div>
-    <p class="mode-hint" id="modeHint">Scroll sideways, swipe, or use arrow keys to change lanes</p>
+    <p class="mode-hint" id="modeHint">The cards rotate automatically. Select one to explore.</p>
   </header>
 
   <main class="main-content">
@@ -1545,15 +1638,16 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
               <button class="profile-carousel-arrow" type="button" data-profile-direction="1" aria-label="Next photograph">→</button>
             </div>
           </figure>
-          <div class="profile-story apple-bento-card"><div class="bento-spotlight" aria-hidden="true"></div><p class="kicker" id="panelKicker">The work</p><h2 id="panelTitle" tabindex="-1">Different disciplines. Same discipline.</h2><p class="panel-summary" id="panelSummary">Software, sport, storytelling, and mathematics—each with something real to show.</p><div class="links" id="modeLinks"></div></div>
+          <div class="profile-story apple-bento-card"><div class="bento-spotlight" aria-hidden="true"></div><p class="kicker" id="panelKicker">Four disciplines</p><h2 id="panelTitle" tabindex="-1">Curiosity, put to work.</h2><p class="panel-summary" id="panelSummary">Building turns friction into products. Sport tests consistency. Creating makes the journey worth sharing. Teaching turns hard ideas into something clearer.</p><div class="links" id="modeLinks"></div></div>
         </div>
         <div class="stats" id="stats"></div>
         <div class="collection-head">
-          <div class="collection-heading"><h3 id="collectionTitle">Choose a lane</h3><p id="collectionCopy" hidden></p></div>
+          <div class="collection-heading"><h3 id="collectionTitle">Choose where to begin.</h3><p id="collectionCopy" hidden></p></div>
           <div class="project-view-switch" id="projectViewSwitch" role="group" aria-label="Project view" hidden></div>
           <div class="project-filters" id="projectFilters" role="group" aria-label="Filter projects" hidden></div>
         </div>
         <div class="collection" id="collection"></div>
+        <div class="athlete-proof-head" id="athleteProofHead" hidden><p class="kicker">On the record</p><h3>The numbers belong here. They are not the whole story.</h3></div>
       </div>
     </section>
   <footer class="personal-footer" id="contact">
@@ -1671,9 +1765,9 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
 
 <script src="assets/js/lenis.min.js?v=1"></script>
 <script src="assets/js/smooth.js?v=1"></script>
-<script src="assets/js/medal-cabinet.js?v=2"></script>
-<script src="assets/js/athlete-gallery.js?v=3"></script>
-<script src="assets/js/athlete-focus.js?v=2"></script>
+<script src="assets/js/medal-cabinet.js?v=3"></script>
+<script src="assets/js/athlete-gallery.js?v=5"></script>
+<script src="assets/js/athlete-focus.js?v=6"></script>
 <script src="assets/js/certificate-loop.js?v=3"></script>
 <script>
 const lineIcon=paths=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
@@ -1703,12 +1797,12 @@ const ytIcon=icons.youtube;
 const modeMedia={
   overview:{image:'assets/social-card-alt.png?v=2',alt:'Portrait of Chandan Mettu',position:'center 12%'},
   builder:{image:'assets/personas/builder-profile.jpg?v=2',alt:'Chandan Mettu presenting CampusLoom on a laptop',position:'center'},
-  creator:{image:'assets/social-card-alt.png?v=2',alt:'Chandan Mettu, creator profile',position:'center 12%'},
-  athlete:{image:'assets/personas/athlete-medals-display.jpg',alt:'Chandan Mettu on the track wearing medals',position:'center 22%'},
+  creator:{image:'assets/personas/creator-filming.jpg',alt:'Chandan Mettu recording a video on his phone outdoors',position:'center'},
+  athlete:{image:'assets/personas/athlete-training.jpg?v=2',alt:'Chandan Mettu training with pull-ups in the gym',position:'center 17%'},
   educator:{image:'assets/personas/educator-profile-smiling.png',alt:'Chandan Mettu smiling in a Vedantu Master Teacher T-shirt',position:'center 42%'}
 };
 const modes={
-overview:{wipe:'#afe0f3',label:'Chandan',kicker:'Chandan Mettu · IIT Hyderabad',title:'Four lanes.<br>One standard.',hero:'I build products, race the clock, make videos, and teach mathematics.',panelKicker:'The work',panelTitle:'Different disciplines. Same discipline.',summary:'Software, sport, storytelling, and mathematics—each with something real to show.',stats:[['100K+','Students reached','CL'],['11.46 s','4th-fastest at Inter-IIT','100'],['400K+','Views across platforms','C'],['INMO','National qualifier','∑']],collectionTitle:'Choose a lane',collectionCopy:'',items:[{mode:'builder',name:'Builder',copy:'Products for students and campus life.',meta:'Explore products',icon:'B'},{mode:'creator',name:'Creator',copy:'Films about tools, projects, and student life.',meta:'Watch and follow',icon:'C'},{mode:'athlete',name:'Athlete',copy:'Sprints, long jump, and team leadership.',meta:'See the track',icon:'A'},{mode:'educator',name:'Educator',copy:'Olympiad mathematics from first principles.',meta:'Follow the path',icon:'E'}],links:[]},
+overview:{wipe:'#afe0f3',label:'Chandan',kicker:'Chandan Mettu · IIT Hyderabad',title:'Products. Seconds.<br>Stories. Proofs.',hero:'Products built for students. Races measured in hundredths. Stories shaped from the journey. Mathematics taught from first principles.',panelKicker:'Four disciplines',panelTitle:'Curiosity, put to work.',summary:'Building turns friction into products. Sport tests consistency. Creating makes the journey worth sharing. Teaching turns hard ideas into something clearer.',stats:[['30K+','CampusKit visitors','CL'],['11.46 s','100 m institute record','100'],['400K+','Views across platforms','C'],['INMO','National qualifier','∑']],collectionTitle:'Choose where to begin.',collectionCopy:'',items:[{mode:'builder',name:'Builder',copy:'CampusLoom, CampusKit, and tools built around student life.',meta:'Products',icon:'B'},{mode:'creator',name:'Creator',copy:'Stories from building, learning, sport, and the moments in between.',meta:'Stories · videos',icon:'C'},{mode:'athlete',name:'Athlete',copy:'Sprint, long jump, cricket, football, and any game worth joining.',meta:'Track · field · court',icon:'A'},{mode:'educator',name:'Educator',copy:'Olympiad mathematics explained from first principles.',meta:'Mathematics',icon:'E'}],links:[]},
 builder:{
   wipe:'#dfff63',label:'Builder',kicker:'Builder',
   title:'I turn everyday friction<br>into useful products.',
@@ -1735,8 +1829,52 @@ builder:{
   ],
   links:[['Explore the work','#collection']]
 },
-creator:{wipe:'#ff7a62',label:'Creator',kicker:'Creator · Learning in public',title:'Make. Learn.<br>Share.',hero:'I make videos about products, tools, and student life—from what I’m actually doing.',panelKicker:'The channel',panelTitle:'The useful parts, left in.',summary:'YouTube holds the full story. The other platforms carry the notes between releases.',stats:[['2.5K+','YouTube subscribers',ytIcon],['290K+','YouTube views',ytIcon],['2K+','Instagram followers','IG'],['1K+','LinkedIn followers','in']],collectionTitle:'Watch. Read. Follow.',collectionCopy:'Choose the format that fits.',items:[{name:'YouTube',copy:'Complete builds, useful tools, and student life.',meta:'Long-form video',icon:ytIcon,href:'https://youtube.com/@ChandanMettu'},{name:'Instagram',copy:'Training, campus, and the moments between.',meta:'@chandanmettu',icon:'IG',href:'https://instagram.com/chandanmettu'},{name:'LinkedIn',copy:'Products, milestones, and lessons from the work.',meta:'saichandanmettu',icon:'in',href:'https://linkedin.com/in/saichandanmettu'},{name:'X',copy:'Ideas while they’re still becoming.',meta:'@ChandanMettu',icon:'X',href:'https://x.com/ChandanMettu'},{name:'Threads',copy:'Loose notes and open conversations.',meta:'@chandanmettu',icon:'@',href:'https://www.threads.com/@chandanmettu'},{name:'GitHub',copy:'Source code and experiments.',meta:'saichandanmettu',icon:'GH',href:'https://github.com/saichandanmettu'}],links:[['Watch on YouTube','https://youtube.com/@ChandanMettu'],['Follow on Instagram','https://instagram.com/chandanmettu']]},
-athlete:{wipe:'#5d74ff',label:'Athlete',kicker:'Athlete · IIT Hyderabad',title:'The clock<br>doesn’t care.',hero:'I sprint, jump, and lead the IIT Hyderabad athletics team. Progress only counts when it shows up.',panelKicker:'Beyond race day',panelTitle:'The result is public. The work is private.',summary:'Starts, mechanics, strength, relay handoffs, recovery—and the patience to repeat them.',stats:[['11.46 s','100 m institute record','100'],['5.6 m','Long jump','LJ'],['2024–25','Inter-IIT representative','IIT'],['Captain','IIT Hyderabad athletics','C']],collectionTitle:'Measured on the track',collectionCopy:'The marks I can stand behind.',items:[{name:'Meet night',copy:'The moment the work becomes visible.',meta:'Competition',slides:[{src:'assets/personas/athlete-medals.jpg',alt:'Chandan Mettu on the track after competition',position:'center 22%'}],wide:true},{name:'Between meets',copy:'Strength, mechanics, recovery. Repeat.',meta:'Training',slides:[{src:'assets/personas/athlete-training.jpg',alt:'Chandan Mettu doing pull-ups during training',position:'center 44%'}]},{name:'100 metres',copy:'The standing IIT Hyderabad men’s institute record.',meta:'Record event',icon:'100'},{name:'Long jump',copy:'Speed meets rhythm at the board.',meta:'Second event',icon:'LJ'},{name:'Captaincy',copy:'Set the standard. Carry the team.',meta:'Team leadership',icon:'C'},{name:'Inter-IIT',copy:'Competed for IIT Hyderabad on the national stage.',meta:'Institute representative',icon:'IIT',full:true}],links:[['Open IITH Athletics','https://athletics.iith.online']]},
+creator:{
+  wipe:'#ff7a62',label:'Creator',kicker:'Creator · Learning and building in public',
+  title:'Learning. Building.<br>Sharing the journey.',
+  hero:'Content creation has always been a joy—a way to share the journey of building, learning, and figuring things out in public.',
+  panelKicker:'Why share',panelTitle:'Leave something useful behind.',
+  summary:'Speaking to people has always brought me joy. When someone leaves with even one lesson that would have helped me earlier, sharing the story feels worthwhile.',
+  stats:[['2.5K+','YouTube subscribers',ytIcon],['290K+','YouTube views',ytIcon],['2K+','Instagram followers','IG'],['1K+','LinkedIn followers','in']],
+  collectionTitle:'Stories from the journey',collectionCopy:'Products, student life, athletics, mistakes, and lessons—shared as they happen.',
+  items:[
+    {name:'Behind every story',copy:'The quiet work of turning an experience into something clear, honest, and useful.',meta:'Content creation',photo:'assets/personas/creator-editing-workflow.jpg',alt:'A Final Cut Pro timeline open on Chandan Mettu’s laptop',full:true,contain:true},
+    {name:'YouTube',copy:'Longer stories from building, learning, campus life, and everything in between.',meta:'@ChandanMettu',icon:ytIcon,href:'https://youtube.com/@ChandanMettu'},
+    {name:'Instagram',copy:'Training, campus life, and the moments between milestones.',meta:'@chandanmettu',icon:'IG',href:'https://instagram.com/chandanmettu'},
+    {name:'LinkedIn',copy:'Projects, progress, and lessons shared as the work unfolds.',meta:'saichandanmettu',icon:'in',href:'https://linkedin.com/in/saichandanmettu'},
+    {name:'X',copy:'Thoughts, questions, and lessons in real time.',meta:'@ChandanMettu',icon:'X',href:'https://x.com/ChandanMettu'},
+    {name:'Threads',copy:'The lighter side of the journey and open conversations.',meta:'@chandanmettu',icon:'@',href:'https://www.threads.com/@chandanmettu'},
+    {name:'GitHub',copy:'Source code and experiments.',meta:'saichandanmettu',icon:'GH',href:'https://github.com/saichandanmettu'}
+  ],
+  links:[['Watch on YouTube','https://youtube.com/@ChandanMettu'],['Follow on Instagram','https://instagram.com/chandanmettu']]
+},
+athlete:{
+  wipe:'#5d74ff',label:'Athlete',kicker:'Athlete · IIT Hyderabad',
+  title:'The clock is only<br>one way to keep score.',
+  hero:'Some days begin in the blocks. Others with a bat, a ball, a racket, or a team waiting on the other side. The game changes. The reason to play doesn’t.',
+  panelKicker:'Beyond the track',panelTitle:'Sport was never just one lane.',
+  summary:'The track is where the numbers live: 11.46 seconds, 5.6 metres, Inter-IIT. But the larger story moves through cricket, football, badminton, volleyball, the gym, and every opportunity to play with a team.',
+  stats:[['11.46 s','100 m institute record','100'],['5.6 m','Long jump','LJ'],['Inter-IIT','IIT Hyderabad representative','IIT'],['Captain','IIT Hyderabad athletics','C']],
+  collectionTitle:'Wherever there’s a game.',
+  collectionCopy:'Track. Pitch. Field. Court. Gym. Different settings, same instinct: step in and play.',
+  items:[
+    {name:'From the blocks',copy:'',meta:'Sprint training',slides:[{src:'assets/personas/athlete-sprinters-start.jpg',alt:'Sprinters accelerating out of starting blocks on the IIT Hyderabad track',position:'68% center'}],wide:true},
+    {name:'ICL 2026',copy:'',meta:'Cricket',slides:[{src:'assets/personas/athlete-cricket-icl-2026.jpg',alt:'Chandan Mettu with his bat, medal, and the ICL 2026 runner-up trophy',position:'center 44%'}]},
+    {name:'On the track',copy:'',meta:'Sprint',slides:[{src:'assets/personas/athlete-sprint-action.jpg',alt:'Chandan Mettu sprinting toward the camera on the track',position:'center 42%'}]},
+    {name:'On court',copy:'',meta:'Badminton',slides:[{src:'assets/personas/athlete-badminton.jpg',alt:'Chandan Mettu holding a badminton racket on an indoor court',position:'center 34%'}]},
+    {name:'At the net',copy:'',meta:'Volleyball',slides:[{src:'assets/personas/athlete-volleyball.jpg',alt:'Chandan Mettu jumping to play the ball during indoor volleyball',position:'center'}]},
+    {name:'Between games',copy:'',meta:'Training',slides:[{src:'assets/personas/athlete-training.jpg',alt:'Chandan Mettu doing pull-ups during training',position:'center 44%'}]},
+    {name:'Milan',copy:'',meta:'Cricket',slides:[{src:'assets/personas/athlete-cricket-milan.jpg',alt:'Chandan Mettu walking onto the cricket field in batting gear during Milan',position:'center 43%'}]},
+    {name:'Long jump',copy:'',meta:'Training',slides:[{src:'assets/personas/athlete-long-jump-training.jpg',alt:'Chandan Mettu practising long jump on the IIT Hyderabad track',position:'center 36%'}]},
+    {name:'Bat and ball',copy:'',meta:'Practice',slides:[{type:'video',src:'assets/personas/athlete-cricket-practice.mp4',poster:'assets/personas/athlete-cricket-practice.jpg',alt:'Chandan Mettu batting and bowling during cricket practice',position:'center'}]},
+    {name:'The trophy',copy:'',meta:'Football',slides:[{src:'assets/personas/athlete-football-trophy.jpg',alt:'Chandan Mettu holding a football championship trophy with a football at his feet',position:'center 42%'}]},
+    {name:'Kho Kho',copy:'',meta:'Team sport',slides:[{src:'assets/personas/athlete-kho-kho.jpg',alt:'Chandan Mettu playing Kho Kho on the field',position:'center'}],wide:true},
+    {name:'Long jump',copy:'',meta:'Competition',slides:[{src:'assets/personas/athlete-long-jump-meet.jpg',alt:'Chandan Mettu landing a long jump during competition',position:'68% center'}]},
+    {name:'The shadow',copy:'',meta:'Track',slides:[{src:'assets/personas/athlete-track-shadow.jpg',alt:'Chandan Mettu’s shadow falling across the marked athletics track',position:'center 54%'}]},
+    {name:'The medals',copy:'',meta:'Across meets',slides:[{src:'assets/personas/athlete-medal-wall.jpg',alt:'A wall displaying Chandan Mettu’s medals from athletics competitions',position:'center'}],wide:true}
+  ],
+  links:[['Open IITH Athletics','https://athletics.iith.online']]
+},
 educator:{
   wipe:'#ffc857',label:'Educator',kicker:'Educator · Olympiad mathematics',
   title:'Teaching changes<br>how an idea is seen.',hero:'From Olympiad problems to teaching at 17.',
@@ -1759,12 +1897,14 @@ educator:{
 };
 
 const order=['builder','creator','overview','athlete','educator'];
-const body=document.body,stage=document.getElementById('stage'),wipe=document.getElementById('wipe'),wipeLabel=document.getElementById('wipeLabel');
-const heroKicker=document.getElementById('heroKicker'),heroTitle=document.getElementById('heroTitle'),heroCopy=document.getElementById('heroCopy'),panel=document.getElementById('experience'),panelKicker=document.getElementById('panelKicker'),panelTitle=document.getElementById('panelTitle'),panelSummary=document.getElementById('panelSummary'),profileVisual=document.getElementById('profileVisual'),profileMediaTrack=document.getElementById('profileMediaTrack'),profileImage=document.getElementById('profileImage'),educatorMemoryImage=document.getElementById('educatorMemoryImage'),educatorLessonImage=document.getElementById('educatorLessonImage'),profileCarouselControls=document.getElementById('profileCarouselControls'),profileBadge=document.getElementById('profileBadge'),stats=document.getElementById('stats'),collectionTitle=document.getElementById('collectionTitle'),collectionCopy=document.getElementById('collectionCopy'),collection=document.getElementById('collection'),projectFilters=document.getElementById('projectFilters'),projectViewSwitch=document.getElementById('projectViewSwitch'),modeLinks=document.getElementById('modeLinks');
+const body=document.body,hero=document.getElementById('top'),stage=document.getElementById('stage'),wipe=document.getElementById('wipe'),wipeLabel=document.getElementById('wipeLabel');
+const heroKicker=document.getElementById('heroKicker'),heroTitle=document.getElementById('heroTitle'),heroCopy=document.getElementById('heroCopy'),modeHint=document.getElementById('modeHint'),panel=document.getElementById('experience'),panelInner=document.getElementById('panelInner'),panelKicker=document.getElementById('panelKicker'),panelTitle=document.getElementById('panelTitle'),panelSummary=document.getElementById('panelSummary'),profileVisual=document.getElementById('profileVisual'),profileMediaTrack=document.getElementById('profileMediaTrack'),profileImage=document.getElementById('profileImage'),educatorMemoryImage=document.getElementById('educatorMemoryImage'),educatorLessonImage=document.getElementById('educatorLessonImage'),profileCarouselControls=document.getElementById('profileCarouselControls'),profileBadge=document.getElementById('profileBadge'),stats=document.getElementById('stats'),athleteProofHead=document.getElementById('athleteProofHead'),collectionTitle=document.getElementById('collectionTitle'),collectionCopy=document.getElementById('collectionCopy'),collection=document.getElementById('collection'),projectFilters=document.getElementById('projectFilters'),projectViewSwitch=document.getElementById('projectViewSwitch'),modeLinks=document.getElementById('modeLinks');
+const collectionHead=collectionTitle.closest('.collection-head');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cards=[...stage.querySelectorAll('.persona')],count=cards.length;
 const iconAliases={CL:'users','100':'timer','↗':'grid',BR:'branch',IITH:'building',B:'code',C:'video',A:'medal',E:'book',IG:'instagram',in:'linkedin',X:'x','@':'chat',GH:'github',LJ:'jump',IIT:'school','∑':'calculator','17':'school',V:'school','01':'route','02':'route','03':'route','04':'route','05':'route','06':'route'};
-let current='overview',wheelPosition=2,wheelTarget=2,wheelFrame=0,wheelLastTime=0,wheelDirection=1,wheelSnapTimer=0,countFrames=[],dragStartX=0,dragStartTarget=0,dragDistance=0,didDrag=false,transitionLock=false,kineticToken=0,kineticTimers=[],bentoObserver=null,scrollEffectFrame=0;
+let current='overview',previewMode='overview',wheelPosition=2,wheelTarget=2,wheelFrame=0,wheelLastTime=0,wheelDirection=1,wheelMotion='manual',wheelSnapTimer=0,countFrames=[],dragStartX=0,dragStartTarget=0,dragDistance=0,didDrag=false,transitionLock=false,kineticToken=0,kineticTimers=[],bentoObserver=null,scrollEffectFrame=0;
+let autoShowcaseTimer=0,autoShowcaseStopped=false,showcaseInView=true,stageHovered=false,stageFocused=false,stageInteracting=false;
 let medalCabinetCleanup=()=>{};
 let athleteGalleryCleanup=()=>{};
 let athleteFocusCleanup=()=>{};
@@ -1945,13 +2085,14 @@ function bindProjectPreviewFallbacks(){
 }
 
 function itemMarkup(item){
-  if(item.slides&&window.AthleteGallery)return window.AthleteGallery.markup(item);
+  if(item.slides&&window.AthleteGallery?.markup)return window.AthleteGallery.markup(item);
   if(item.category)return projectItemMarkup(item);
   const categoryAttr=item.category?`data-project-category="${item.category}"`:'';
   if(item.photo){
     const tag=item.href?'a':'article';
     const attrs=item.href?`href="${item.href}" target="_blank" rel="noopener noreferrer"`:'';
-    return `<${tag} class="item photo-item apple-bento-card ${item.wide?'wide':''}" ${attrs} ${categoryAttr} style="--photo-position:${item.position||'center'}"><div class="bento-spotlight" aria-hidden="true"></div><img class="item-photo" src="${item.photo}" alt="${item.alt||''}" loading="lazy"><div class="photo-copy"><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href?' ↗':''}</p></div></${tag}>`;
+    const backdrop=item.contain?`<img class="item-photo-backdrop" src="${item.photo}" alt="" aria-hidden="true" loading="lazy" decoding="async">`:'';
+    return `<${tag} class="item photo-item apple-bento-card ${item.wide?'wide':''} ${item.full?'full-width':''} ${item.contain?'full-image':''}" ${attrs} ${categoryAttr} style="--photo-position:${item.position||'center'}"><div class="bento-spotlight" aria-hidden="true"></div>${backdrop}<img class="item-photo" src="${item.photo}" alt="${item.alt||''}" loading="lazy" decoding="async"><div class="photo-copy"><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href?' ↗':''}</p></div></${tag}>`;
   }
   const icon=item.image?`<img class="${item.contain?'contain':''}" src="${item.image}" alt="">`:iconMarkup(item.icon);
   let tag='article',attrs='';
@@ -2034,14 +2175,29 @@ function mountWhenNear(root,mount){
   }
   return()=>{observer?.disconnect();cleanup()};
 }
-function applyText(data){
+function applyHeroText(data){
   heroKicker.textContent=data.kicker;heroTitle.innerHTML=data.title;heroCopy.textContent=data.hero;
+}
+function applyDetailText(data){
   panelKicker.textContent=data.panelKicker;panelTitle.textContent=data.panelTitle;panelSummary.textContent=data.summary;profileBadge.textContent=data.label;
 }
-function transitionText(data,direction){
+function applyText(data){applyHeroText(data);applyDetailText(data)}
+function applyPreviewTheme(mode){
+  const data=modes[mode];
+  body.dataset.previewMode=mode;
+  document.querySelector('meta[name="theme-color"]').content=data.wipe;
+  cards.forEach(card=>card.dataset.active=String(card.dataset.mode===mode));
+  previewMode=mode;
+}
+function preview(mode,animateText=true,direction=1){
+  if(!modes[mode])return;
+  applyPreviewTheme(mode);
+  if(animateText&&!reduced)transitionText(modes[mode],direction,false);else applyHeroText(modes[mode]);
+}
+function transitionText(data,direction,includeDetails=true){
   kineticToken+=1;const token=kineticToken,flow=direction>=0?'forward':'backward';
   kineticTimers.forEach(clearTimeout);kineticTimers=[];
-  const nodes=[heroKicker,heroTitle,heroCopy,panelKicker,panelTitle,panelSummary,profileBadge];
+  const nodes=includeDetails?[heroKicker,heroTitle,heroCopy,panelKicker,panelTitle,panelSummary,profileBadge]:[heroKicker,heroTitle,heroCopy];
   nodes.forEach((node,index)=>{
     node.classList.remove('kinetic-in','kinetic-out');node.dataset.kinetic=flow;
     node.style.animationDelay=`${Math.min(index%3,2)*24}ms`;
@@ -2050,7 +2206,7 @@ function transitionText(data,direction){
   nodes.forEach(node=>node.classList.add('kinetic-out'));
   kineticTimers.push(setTimeout(()=>{
     if(token!==kineticToken)return;
-    applyText(data);
+    if(includeDetails)applyText(data);else applyHeroText(data);
     nodes.forEach((node,index)=>{
       node.classList.remove('kinetic-out');node.style.animationDelay=`${Math.min(index%3,2)*45}ms`;node.classList.add('kinetic-in');
     });
@@ -2066,7 +2222,10 @@ function render(mode,animateText=true,direction=1){
   athleteGalleryCleanup();athleteGalleryCleanup=()=>{};
   athleteFocusCleanup();athleteFocusCleanup=()=>{};
   certificateLoopCleanup();certificateLoopCleanup=()=>{};
-  body.dataset.mode=mode;document.querySelector('meta[name="theme-color"]').content=data.wipe;
+  body.dataset.mode=mode;applyPreviewTheme(mode);
+  athleteProofHead.hidden=mode!=='athlete';
+  if(mode==='athlete')panelInner.append(collectionHead,collection,athleteProofHead,stats);
+  else panelInner.append(stats,collectionHead,collection,athleteProofHead);
   if(animateText&&!reduced)transitionText(data,direction);else applyText(data);
   profileImage.src=media.image;profileImage.alt=media.alt;profileVisual.style.setProperty('--profile-position',media.position);configureProfileCarousel(mode);
   stats.innerHTML=data.stats.map(([value,label,icon],index)=>`<article class="stat apple-bento-card ${index===0?'stat-flagship':''}"><div class="bento-spotlight" aria-hidden="true"></div><span class="stat-icon">${value==='Captain'?icons.medal:iconMarkup(icon)}</span><strong data-value="${value}">${value}</strong><span>${label}</span></article>`).join('');
@@ -2079,14 +2238,19 @@ function render(mode,animateText=true,direction=1){
   const certificateArchive=mode==='educator'&&window.CertificateLoop?window.CertificateLoop.markup():'';
   const builderToolkit=mode==='builder'?builderToolkitMarkup():'';
   const projectEmpty=mode==='builder'?'<p class="project-empty" data-project-empty hidden></p>':'';
-  collection.innerHTML=data.items.map(itemMarkup).join('')+projectEmpty+builderToolkit+athleteFocus+cabinet+certificateArchive;
+  const athleteGallery=mode==='athlete'&&window.AthleteGallery?window.AthleteGallery.loopMarkup(data.items):'';
+  const collectionItems=athleteGallery||data.items.map(itemMarkup).join('');
+  collection.innerHTML=collectionItems+projectEmpty+builderToolkit+athleteFocus+cabinet+certificateArchive;
   if(mode==='builder'){
     applyProjectFilter(activeProjectFilter);
     applyProjectView(activeProjectView);
     bindProjectPreviewFallbacks();
     bindBuilderToolkit();
   }else collection.removeAttribute('data-project-view');
-  if(mode==='athlete'&&window.AthleteGallery)athleteGalleryCleanup=window.AthleteGallery.mountAll(collection);
+  if(athleteGallery){
+    const athleteGalleryRoot=collection.querySelector('[data-athlete-gallery-loop]');
+    if(athleteGalleryRoot)athleteGalleryCleanup=mountWhenNear(athleteGalleryRoot,window.AthleteGallery.mount);
+  }
   if(athleteFocus){
     const athleteFocusRoot=collection.querySelector('[data-athlete-focus]');
     if(athleteFocusRoot)athleteFocusCleanup=mountWhenNear(athleteFocusRoot,window.AthleteFocus.mount);
@@ -2099,7 +2263,7 @@ function render(mode,animateText=true,direction=1){
     const internal=href.startsWith('#');
     return `<a class="mode-link ${index?'secondary':''}" href="${href}"${internal?'':' target="_blank" rel="noopener noreferrer"'}>${label} ${internal?'↓':'↗'}</a>`;
   }).join('');
-  cards.forEach(card=>{const active=card.dataset.mode===mode;card.dataset.active=String(active);card.setAttribute('aria-pressed',String(active))});
+  cards.forEach(card=>card.setAttribute('aria-pressed',String(card.dataset.mode===mode)));
   current=mode;animateCounts();revealBentos();attachSpotlightListeners();
   if(cabinet)requestAnimationFrame(()=>{
     const root=collection.querySelector('[data-medal-cabinet]');
@@ -2112,7 +2276,7 @@ function paintWheel(now){
   const difference=wheelTarget-wheelPosition;
   const elapsed=wheelLastTime?Math.min(34,now-wheelLastTime):16.7;
   wheelLastTime=now;
-  const response=reduced?1:1-Math.exp(-elapsed/34);
+  const response=reduced?1:1-Math.exp(-elapsed/(wheelMotion==='auto'?175:34));
   wheelPosition+=difference*response;
   if(Math.abs(wheelTarget-wheelPosition)<.001)wheelPosition=wheelTarget;
   const gap=clamp(innerWidth*.17,158,224);
@@ -2128,55 +2292,105 @@ function paintWheel(now){
   if(wheelPosition!==wheelTarget){requestWheel();return}
   wheelLastTime=0;
   const mode=order[mod(Math.round(wheelTarget),count)];
-  if(mode!==current&&!transitionLock)render(mode,true,wheelDirection);
+  if(mode!==previewMode&&!transitionLock)preview(mode,true,wheelDirection);
+  if(wheelMotion==='auto'){wheelMotion='manual';scheduleAutoShowcase()}
 }
 function targetForMode(mode){
   const index=order.indexOf(mode);
   return index+Math.round((wheelTarget-index)/count)*count;
 }
-function moveWheel(amount,snap=true){
+function moveWheel(amount,snap=true,motion='manual'){
   wheelDirection=amount>=0?1:-1;
+  wheelMotion=motion;
   wheelTarget+=amount;requestWheel();
   clearTimeout(wheelSnapTimer);
   if(snap)wheelSnapTimer=setTimeout(()=>{wheelTarget=Math.round(wheelTarget);requestWheel()},90);
 }
 function openProfile(mode){
-  choose(mode);
+  stopAutoShowcase();
+  choose(mode,true);
 }
-function choose(mode){
+function revealSelectedDetails(){
+  if(window.__lenis?.scrollTo)window.__lenis.scrollTo(panel,{offset:-24,duration:1.05});
+  else panel.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
+}
+function choose(mode,revealDetails=false){
   if(!modes[mode]||transitionLock)return;
+  stopAutoShowcase();
+  modeHint.textContent=`${modes[mode].label} selected. Explore the story below.`;
   const savedScroll=window.scrollY;
   const destination=targetForMode(mode),direction=destination>=wheelPosition?1:-1;
   wheelDirection=direction;
+  wheelMotion='manual';
   wheelTarget=destination;requestWheel();
-  if(mode===current)return;
+  if(mode===current){
+    preview(mode,true,direction);
+    if(revealDetails)setTimeout(revealSelectedDetails,reduced?0:380);
+    return;
+  }
   const restoreScroll=()=>requestAnimationFrame(()=>{
     const maximum=Math.max(0,document.documentElement.scrollHeight-innerHeight);
     window.scrollTo(0,Math.min(savedScroll,maximum));
     window.__lenis?.resize?.();
   });
-  if(reduced){render(mode,false,direction);restoreScroll();return}
+  if(reduced){render(mode,false,direction);restoreScroll();if(revealDetails)revealSelectedDetails();return}
   transitionLock=true;
   wipe.style.setProperty('--wipe',modes[mode].wipe);wipeLabel.textContent=modes[mode].label;wipe.classList.add('active');
   setTimeout(()=>{render(mode,true,direction);restoreScroll()},280);
   setTimeout(()=>{wipe.classList.add('reset');wipe.classList.remove('active');transitionLock=false;requestAnimationFrame(()=>requestAnimationFrame(()=>wipe.classList.remove('reset')))},680);
+  if(revealDetails)setTimeout(revealSelectedDetails,760);
 }
+function cancelAutoShowcase(){
+  clearTimeout(autoShowcaseTimer);autoShowcaseTimer=0;
+}
+function canAutoShowcase(){
+  return !reduced&&!autoShowcaseStopped&&showcaseInView&&!stageHovered&&!stageFocused&&!stageInteracting&&!document.hidden&&!transitionLock;
+}
+function scheduleAutoShowcase(delay=4200){
+  cancelAutoShowcase();
+  if(!canAutoShowcase())return;
+  autoShowcaseTimer=setTimeout(()=>{
+    autoShowcaseTimer=0;
+    if(!canAutoShowcase())return;
+    wheelDirection=1;wheelMotion='auto';wheelTarget=Math.round(wheelTarget)+1;requestWheel();
+  },delay);
+}
+function stopAutoShowcase(){
+  autoShowcaseStopped=true;cancelAutoShowcase();
+}
+function syncShowcaseViewport(){
+  const next=window.scrollY<Math.min(window.innerHeight*.52,520);
+  if(next===showcaseInView)return;
+  showcaseInView=next;
+  if(showcaseInView)scheduleAutoShowcase(1800);else cancelAutoShowcase();
+}
+stage.addEventListener('pointerenter',()=>{stageHovered=true;cancelAutoShowcase()});
+stage.addEventListener('pointerleave',()=>{stageHovered=false;scheduleAutoShowcase(1800)});
+stage.addEventListener('focusin',()=>{stageFocused=true;cancelAutoShowcase()});
+stage.addEventListener('focusout',event=>{
+  if(stage.contains(event.relatedTarget))return;
+  stageFocused=false;scheduleAutoShowcase(2400);
+});
 stage.addEventListener('wheel',event=>{
   if(event.ctrlKey||Math.abs(event.deltaX)<=Math.abs(event.deltaY))return;
-  event.preventDefault();moveWheel(clamp(event.deltaX,-120,120)/180);
+  event.preventDefault();cancelAutoShowcase();moveWheel(clamp(event.deltaX,-120,120)/180,true,'manual');
 },{passive:false});
 stage.addEventListener('pointerdown',event=>{
   if(event.pointerType==='mouse'&&event.button!==0)return;
+  stageInteracting=true;cancelAutoShowcase();wheelMotion='manual';
   dragStartX=event.clientX;dragStartTarget=wheelTarget;dragDistance=0;didDrag=false;
   stage.setPointerCapture(event.pointerId);
 });
 stage.addEventListener('pointermove',event=>{if(!stage.hasPointerCapture(event.pointerId))return;dragDistance=event.clientX-dragStartX;if(Math.abs(dragDistance)>7)didDrag=true;const nextTarget=dragStartTarget-dragDistance/clamp(innerWidth*.17,158,224);wheelDirection=nextTarget>=wheelTarget?1:-1;wheelTarget=nextTarget;requestWheel()});
 stage.addEventListener('pointerup',event=>{
   if(stage.hasPointerCapture(event.pointerId))stage.releasePointerCapture(event.pointerId);
+  stageInteracting=false;
   wheelTarget=Math.round(wheelTarget);requestWheel();
+  scheduleAutoShowcase(3800);
 });
-stage.addEventListener('pointercancel',()=>{wheelTarget=Math.round(wheelTarget);requestWheel()});
-stage.addEventListener('keydown',event=>{if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;event.preventDefault();moveWheel(event.key==='ArrowRight'?1:-1,false);wheelTarget=Math.round(wheelTarget);requestWheel()});
+stage.addEventListener('pointercancel',()=>{stageInteracting=false;wheelTarget=Math.round(wheelTarget);requestWheel();scheduleAutoShowcase(3800)});
+stage.addEventListener('keydown',event=>{if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;event.preventDefault();cancelAutoShowcase();moveWheel(event.key==='ArrowRight'?1:-1,false,'manual');wheelTarget=Math.round(wheelTarget);requestWheel()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAutoShowcase();else scheduleAutoShowcase(2200)});
 document.addEventListener('click',event=>{
   const projectView=event.target.closest('[data-project-view]');
   if(projectView){
@@ -2203,7 +2417,8 @@ function updateScrollEffects(){
   });
 }
 addEventListener('scroll',updateScrollEffects,{passive:true});
-addEventListener('resize',()=>{requestWheel();updateScrollEffects()},{passive:true});
+addEventListener('scroll',syncShowcaseViewport,{passive:true});
+addEventListener('resize',()=>{requestWheel();updateScrollEffects();syncShowcaseViewport()},{passive:true});
 // Live IST Clock
 function updateClocks() {
   const now = new Date();
@@ -2239,8 +2454,12 @@ function showToast(msg) {
 
 const initialMode=(location.hash&&['builder','creator','athlete','educator'].includes(location.hash.replace('#','')))?location.hash.replace('#',''):'overview';
 render(initialMode,false);
-if(initialMode!=='overview'){wheelTarget=targetForMode(initialMode)}
-requestWheel();updateScrollEffects();
+if(reduced)modeHint.textContent='Select a card to explore a discipline.';
+if(initialMode!=='overview'){
+  wheelTarget=targetForMode(initialMode);stopAutoShowcase();
+  modeHint.textContent=`${modes[initialMode].label} selected. Explore the story below.`;
+}else scheduleAutoShowcase(2600);
+requestWheel();updateScrollEffects();syncShowcaseViewport();
 </script>
 
 <div class="toast-notice" id="toastNotice" role="status" aria-live="polite">

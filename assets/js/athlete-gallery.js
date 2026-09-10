@@ -1,147 +1,187 @@
 (() => {
   'use strict';
 
-  const AUTOPLAY_DELAY = 6500;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const escapeHtml = value => String(value ?? '')
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
-  const twoDigits = value => String(value).padStart(2, '0');
 
-  function markup(item) {
-    const slides = Array.isArray(item.slides) ? item.slides.filter(slide => slide && slide.src) : [];
-    if (!slides.length) return '';
-
-    const name = escapeHtml(item.name);
-    const single = slides.length === 1;
-    const slideMarkup = slides.map((slide, index) => {
-      const src = escapeHtml(slide.src);
-      const alt = escapeHtml(slide.alt || `${item.name} image ${index + 1}`);
-      const position = escapeHtml(slide.position || 'center');
-      return `<div class="athlete-gallery-slide ${index === 0 ? 'is-active' : ''}" data-gallery-slide aria-hidden="${index === 0 ? 'false' : 'true'}" style="--slide-position:${position}"><img class="athlete-gallery-backdrop" data-src="${src}" alt="" loading="lazy" decoding="async" aria-hidden="true"><img class="athlete-gallery-image" data-src="${src}" alt="${alt}" loading="lazy" decoding="async"></div>`;
-    }).join('');
-    const dots = slides.map((_, index) => `<button class="athlete-gallery-dot" type="button" data-gallery-dot="${index}" aria-label="Show ${name} image ${index + 1}" aria-pressed="${index === 0 ? 'true' : 'false'}"></button>`).join('');
-
-    return `<article class="item photo-item athlete-gallery-card apple-bento-card ${item.wide ? 'wide' : ''}" data-athlete-gallery data-gallery-single="${single}" tabindex="0" aria-label="${name} image gallery"><div class="athlete-gallery-stage">${slideMarkup}</div><div class="bento-spotlight" aria-hidden="true"></div><div class="athlete-gallery-controls"><button class="athlete-gallery-arrow" type="button" data-gallery-prev aria-label="Previous ${name} image">←</button><span class="athlete-gallery-count" data-gallery-count aria-live="polite">01 / ${twoDigits(slides.length)}</span><button class="athlete-gallery-arrow" type="button" data-gallery-next aria-label="Next ${name} image">→</button></div><div class="athlete-gallery-dots" aria-label="Choose ${name} image">${dots}</div><div class="photo-copy"><h3>${name}</h3><p>${escapeHtml(item.copy)}</p><p class="item-meta">${escapeHtml(item.meta)}</p></div></article>`;
+  function recordsFromItems(items) {
+    return (Array.isArray(items) ? items : []).flatMap(item => {
+      const slides = Array.isArray(item.slides) ? item.slides.filter(slide => slide?.src) : [];
+      return slides.map(slide => ({
+        title: item.name,
+        label: item.meta,
+        src: slide.src,
+        alt: slide.alt || `${item.name} photograph`,
+        kind: slide.type === 'video' || /\.(?:mp4|webm)(?:\?|$)/i.test(slide.src) ? 'video' : 'image',
+        poster: slide.poster || '',
+        position: slide.position || 'center',
+        wide: Boolean(item.wide)
+      }));
+    });
   }
 
-  function mount(card) {
-    const slides = [...card.querySelectorAll('[data-gallery-slide]')];
-    const dots = [...card.querySelectorAll('[data-gallery-dot]')];
-    const count = card.querySelector('[data-gallery-count]');
-    const previous = card.querySelector('[data-gallery-prev]');
-    const next = card.querySelector('[data-gallery-next]');
-    if (!slides.length) return () => {};
+  function card(record, duplicate = false) {
+    const media = record.kind === 'video'
+      ? `<video src="${escapeHtml(record.src)}"${record.poster ? ` poster="${escapeHtml(record.poster)}"` : ''} muted loop playsinline preload="metadata" disablepictureinpicture ${duplicate ? 'aria-hidden="true" tabindex="-1"' : `aria-label="${escapeHtml(record.alt)}"`}></video>`
+      : `<img src="${escapeHtml(record.src)}" alt="${duplicate ? '' : escapeHtml(record.alt)}" loading="lazy" decoding="async">`;
+    return `<figure class="athlete-loop-card ${record.wide ? 'is-wide' : ''}" ${duplicate ? 'aria-hidden="true"' : ''} style="--athlete-position:${escapeHtml(record.position)}">${media}<figcaption><span>${escapeHtml(record.label)}</span><h3>${escapeHtml(record.title)}</h3></figcaption></figure>`;
+  }
 
-    let index = 0;
-    let timer = 0;
+  function loopMarkup(items) {
+    const records = recordsFromItems(items);
+    if (!records.length) return '';
+    const primary = records.map(record => card(record)).join('');
+    const duplicate = records.map(record => card(record, true)).join('');
+    return `<article class="item athlete-gallery-loop apple-bento-card" data-athlete-gallery-loop><div class="bento-spotlight" aria-hidden="true"></div><div class="athlete-loop-viewport" data-athlete-loop-viewport tabindex="0" aria-label="Scrollable photographs from sports and training"><div class="athlete-loop-track" data-athlete-loop-track><div class="athlete-loop-set">${primary}</div><div class="athlete-loop-set" aria-hidden="true">${duplicate}</div></div></div><div class="athlete-loop-controls"><button type="button" data-athlete-loop-previous aria-label="Previous photograph">←</button><button type="button" data-athlete-loop-toggle aria-pressed="false">Pause</button><button type="button" data-athlete-loop-next aria-label="Next photograph">→</button></div></article>`;
+  }
+
+  function mount(root) {
+    if (!root) return () => {};
+    const viewport = root.querySelector('[data-athlete-loop-viewport]');
+    const track = root.querySelector('[data-athlete-loop-track]');
+    const previous = root.querySelector('[data-athlete-loop-previous]');
+    const next = root.querySelector('[data-athlete-loop-next]');
+    const toggle = root.querySelector('[data-athlete-loop-toggle]');
+    const videos = [...root.querySelectorAll('video')];
+    if (!viewport || !track) return () => {};
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let frame = 0;
+    let lastTime = 0;
+    let manualPause = reduced;
+    let interactionPause = false;
     let visible = true;
-    let pointerStart = null;
+    let resumeTimer = 0;
 
-    const stop = () => {
-      window.clearInterval(timer);
-      timer = 0;
-    };
-    const start = () => {
-      stop();
-      if (slides.length < 2 || reducedMotion.matches || !visible || document.hidden || card.matches(':hover') || card.contains(document.activeElement)) return;
-      timer = window.setInterval(() => show(index + 1), AUTOPLAY_DELAY);
-    };
-    const show = requested => {
-      index = (requested + slides.length) % slides.length;
-      slides.forEach((slide, slideIndex) => {
-        const active = slideIndex === index;
-        slide.classList.toggle('is-active', active);
-        slide.setAttribute('aria-hidden', String(!active));
+    const syncVideos = () => {
+      videos.forEach(video => {
+        const shouldPlay = !reduced && !manualPause && visible && !document.hidden && video.dataset.inView === 'true';
+        if (shouldPlay) video.play().catch(() => {});
+        else video.pause();
       });
-      dots.forEach((dot, dotIndex) => dot.setAttribute('aria-pressed', String(dotIndex === index)));
-      if (count) count.textContent = `${twoDigits(index + 1)} / ${twoDigits(slides.length)}`;
-    };
-    const choose = requested => {
-      show(requested);
-      start();
-    };
-    const onVisibility = () => start();
-    const onMotionChange = () => start();
-    const onKeydown = event => {
-      if (slides.length < 2 || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return;
-      event.preventDefault();
-      choose(index + (event.key === 'ArrowRight' ? 1 : -1));
-    };
-    const onPointerDown = event => {
-      if (slides.length > 1) pointerStart = { id: event.pointerId, x: event.clientX };
-    };
-    const onPointerUp = event => {
-      if (!pointerStart || pointerStart.id !== event.pointerId) return;
-      const distance = event.clientX - pointerStart.x;
-      pointerStart = null;
-      if (Math.abs(distance) >= 44) choose(index + (distance < 0 ? 1 : -1));
     };
 
-    previous?.addEventListener('click', () => choose(index - 1));
-    next?.addEventListener('click', () => choose(index + 1));
-    dots.forEach((dot, dotIndex) => dot.addEventListener('click', () => choose(dotIndex)));
-    card.addEventListener('keydown', onKeydown);
-    card.addEventListener('pointerdown', onPointerDown, { passive: true });
-    card.addEventListener('pointerup', onPointerUp, { passive: true });
-    card.addEventListener('pointercancel', () => { pointerStart = null; }, { passive: true });
-    card.addEventListener('mouseenter', stop);
-    card.addEventListener('mouseleave', start);
-    card.addEventListener('focusin', stop);
-    card.addEventListener('focusout', start);
+    const halfWidth = () => track.scrollWidth / 2;
+    const normalize = () => {
+      const half = halfWidth();
+      if (!half) return;
+      if (viewport.scrollLeft >= half) viewport.scrollLeft -= half;
+      else if (viewport.scrollLeft < 0) viewport.scrollLeft += half;
+    };
+    const tick = time => {
+      const elapsed = Math.min(48, time - (lastTime || time));
+      lastTime = time;
+      if (!manualPause && !interactionPause && visible && !document.hidden) {
+        viewport.scrollLeft += elapsed * 0.038;
+        normalize();
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    const cardStep = () => {
+      const card = track.querySelector('.athlete-loop-card');
+      const set = track.querySelector('.athlete-loop-set');
+      const gap = parseFloat(getComputedStyle(set).gap) || 18;
+      return (card?.getBoundingClientRect().width || 520) + gap;
+    };
+    const setInteraction = value => {
+      interactionPause = value;
+      lastTime = performance.now();
+    };
+    const resumeSoon = () => {
+      window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => setInteraction(false), reduced ? 0 : 560);
+    };
+    const move = direction => {
+      setInteraction(true);
+      const half = halfWidth();
+      if (direction < 0 && viewport.scrollLeft < cardStep() && half) viewport.scrollLeft += half;
+      viewport.scrollBy({ left: cardStep() * direction, behavior: reduced ? 'auto' : 'smooth' });
+      resumeSoon();
+    };
+    const onPrevious = () => move(-1);
+    const onNext = () => move(1);
+    const onToggle = () => {
+      manualPause = !manualPause;
+      toggle.textContent = manualPause ? 'Play' : 'Pause';
+      toggle.setAttribute('aria-pressed', String(manualPause));
+      lastTime = performance.now();
+      syncVideos();
+    };
+    const onKeydown = event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      move(event.key === 'ArrowRight' ? 1 : -1);
+    };
+    const onVisibility = () => {
+      lastTime = performance.now();
+      syncVideos();
+    };
+    const onPointerDown = () => setInteraction(true);
+    const onPointerUp = () => resumeSoon();
+    const onMouseEnter = () => setInteraction(true);
+    const onMouseLeave = () => setInteraction(false);
+    const onFocusIn = () => setInteraction(true);
+    const onFocusOut = () => setInteraction(false);
+
+    previous?.addEventListener('click', onPrevious);
+    next?.addEventListener('click', onNext);
+    toggle?.addEventListener('click', onToggle);
+    viewport.addEventListener('keydown', onKeydown);
+    viewport.addEventListener('pointerdown', onPointerDown, { passive: true });
+    viewport.addEventListener('pointerup', onPointerUp, { passive: true });
+    viewport.addEventListener('pointercancel', onPointerUp, { passive: true });
+    viewport.addEventListener('mouseenter', onMouseEnter, { passive: true });
+    viewport.addEventListener('mouseleave', onMouseLeave, { passive: true });
+    viewport.addEventListener('focusin', onFocusIn);
+    viewport.addEventListener('focusout', onFocusOut);
+    viewport.addEventListener('scroll', normalize, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
-    reducedMotion.addEventListener?.('change', onMotionChange);
 
     const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
       visible = entries[0]?.isIntersecting ?? true;
-      start();
-    }, { threshold: 0.35 }) : null;
-    observer?.observe(card);
-    start();
+      lastTime = performance.now();
+      syncVideos();
+    }, { threshold: 0.2 }) : null;
+    observer?.observe(root);
 
-    return () => {
-      stop();
-      observer?.disconnect();
-      document.removeEventListener('visibilitychange', onVisibility);
-      reducedMotion.removeEventListener?.('change', onMotionChange);
-    };
-  }
+    const videoObserver = videos.length && 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+      entries.forEach(entry => { entry.target.dataset.inView = String(entry.isIntersecting); });
+      syncVideos();
+    }, { root: viewport, threshold: 0.35 }) : null;
+    videos.forEach(video => videoObserver?.observe(video));
 
-  function mountAll(root) {
-    const cards = [...root.querySelectorAll('[data-athlete-gallery]')];
-    const cleanups = new Map();
-    let observer = null;
-
-    const hydrate = card => {
-      if (cleanups.has(card)) return;
-      card.querySelectorAll('img[data-src]').forEach(image => {
-        image.src = image.dataset.src;
-        image.removeAttribute('data-src');
-      });
-      cleanups.set(card, mount(card));
-      observer?.unobserve(card);
-    };
-
-    if ('IntersectionObserver' in window) {
-      observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) hydrate(entry.target);
-        });
-      }, { rootMargin: '480px 0px', threshold: 0.01 });
-      cards.forEach(card => observer.observe(card));
-    } else {
-      cards.forEach(hydrate);
+    if (reduced && toggle) {
+      toggle.textContent = 'Motion off';
+      toggle.disabled = true;
+      toggle.setAttribute('aria-pressed', 'true');
     }
+    frame = requestAnimationFrame(tick);
 
     return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(resumeTimer);
       observer?.disconnect();
-      cleanups.forEach(cleanup => cleanup());
-      cleanups.clear();
+      videoObserver?.disconnect();
+      videos.forEach(video => video.pause());
+      previous?.removeEventListener('click', onPrevious);
+      next?.removeEventListener('click', onNext);
+      toggle?.removeEventListener('click', onToggle);
+      viewport.removeEventListener('keydown', onKeydown);
+      viewport.removeEventListener('pointerdown', onPointerDown);
+      viewport.removeEventListener('pointerup', onPointerUp);
+      viewport.removeEventListener('pointercancel', onPointerUp);
+      viewport.removeEventListener('mouseenter', onMouseEnter);
+      viewport.removeEventListener('mouseleave', onMouseLeave);
+      viewport.removeEventListener('focusin', onFocusIn);
+      viewport.removeEventListener('focusout', onFocusOut);
+      viewport.removeEventListener('scroll', normalize);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }
 
-  window.AthleteGallery = { markup, mountAll };
+  window.AthleteGallery = { loopMarkup, mount };
 })();
