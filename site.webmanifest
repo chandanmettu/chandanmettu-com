@@ -4,8 +4,8 @@
   "description": "Chandan Mettu is a creator and IIT Hyderabad student who builds products, experiments with technology, and shares stories from student life and beyond.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f2f9fc",
-  "theme_color": "#79acd1",
+  "background_color": "#f7f5fe",
+  "theme_color": "#9882e7",
   "icons": [
     {
       "src": "/assets/brand/chandan-mettu-icon-512.png",
