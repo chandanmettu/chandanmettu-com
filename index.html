@@ -1904,7 +1904,7 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const cards=[...stage.querySelectorAll('.persona')],count=cards.length;
 const iconAliases={CL:'users','100':'timer','↗':'grid',BR:'branch',IITH:'building',B:'code',C:'video',A:'medal',E:'book',IG:'instagram',in:'linkedin',X:'x','@':'chat',GH:'github',LJ:'jump',IIT:'school','∑':'calculator','17':'school',V:'school','01':'route','02':'route','03':'route','04':'route','05':'route','06':'route'};
 let current='overview',previewMode='overview',wheelPosition=2,wheelTarget=2,wheelFrame=0,wheelLastTime=0,wheelDirection=1,wheelMotion='manual',wheelSnapTimer=0,countFrames=[],dragStartX=0,dragStartTarget=0,dragDistance=0,didDrag=false,transitionLock=false,kineticToken=0,kineticTimers=[],bentoObserver=null,scrollEffectFrame=0;
-let autoShowcaseTimer=0,autoShowcaseStopped=false,showcaseInView=true,stageHovered=false,stageFocused=false,stageInteracting=false;
+let dragPointerId=null,autoShowcaseTimer=0,autoShowcaseStopped=false,showcaseInView=true,stageHovered=false,stageFocused=false,stageInteracting=false;
 let medalCabinetCleanup=()=>{};
 let athleteGalleryCleanup=()=>{};
 let athleteFocusCleanup=()=>{};
@@ -2293,7 +2293,13 @@ function paintWheel(now){
   wheelLastTime=0;
   const mode=order[mod(Math.round(wheelTarget),count)];
   if(mode!==previewMode&&!transitionLock)preview(mode,true,wheelDirection);
+  if(wheelMotion==='manual'&&!stageInteracting)commitSettledMode(mode);
   if(wheelMotion==='auto'){wheelMotion='manual';scheduleAutoShowcase()}
+}
+function commitSettledMode(mode){
+  if(mode===current)return;
+  if(transitionLock){setTimeout(()=>{if(order[mod(Math.round(wheelTarget),count)]===mode)commitSettledMode(mode)},720);return}
+  choose(mode,false);
 }
 function targetForMode(mode){
   const index=order.indexOf(mode);
@@ -2362,6 +2368,7 @@ function syncShowcaseViewport(){
   const next=window.scrollY<Math.min(window.innerHeight*.52,520);
   if(next===showcaseInView)return;
   showcaseInView=next;
+  if(!showcaseInView&&previewMode!==current&&!transitionLock){render(previewMode,false);modeHint.textContent=`${modes[previewMode].label} selected. Explore the story below.`;window.__lenis?.resize?.()}
   if(showcaseInView)scheduleAutoShowcase(1800);else cancelAutoShowcase();
 }
 stage.addEventListener('pointerenter',()=>{stageHovered=true;cancelAutoShowcase()});
@@ -2379,16 +2386,17 @@ stage.addEventListener('pointerdown',event=>{
   if(event.pointerType==='mouse'&&event.button!==0)return;
   stageInteracting=true;cancelAutoShowcase();wheelMotion='manual';
   dragStartX=event.clientX;dragStartTarget=wheelTarget;dragDistance=0;didDrag=false;
-  stage.setPointerCapture(event.pointerId);
+  dragPointerId=event.pointerId;
 });
-stage.addEventListener('pointermove',event=>{if(!stage.hasPointerCapture(event.pointerId))return;dragDistance=event.clientX-dragStartX;if(Math.abs(dragDistance)>7)didDrag=true;const nextTarget=dragStartTarget-dragDistance/clamp(innerWidth*.17,158,224);wheelDirection=nextTarget>=wheelTarget?1:-1;wheelTarget=nextTarget;requestWheel()});
+stage.addEventListener('pointermove',event=>{if(event.pointerId!==dragPointerId)return;dragDistance=event.clientX-dragStartX;if(Math.abs(dragDistance)>7&&!didDrag){didDrag=true;try{stage.setPointerCapture(event.pointerId)}catch(error){}}if(!didDrag)return;const nextTarget=dragStartTarget-dragDistance/clamp(innerWidth*.17,158,224);wheelDirection=nextTarget>=wheelTarget?1:-1;wheelTarget=nextTarget;requestWheel()});
 stage.addEventListener('pointerup',event=>{
+  dragPointerId=null;
   if(stage.hasPointerCapture(event.pointerId))stage.releasePointerCapture(event.pointerId);
   stageInteracting=false;
   wheelTarget=Math.round(wheelTarget);requestWheel();
   scheduleAutoShowcase(3800);
 });
-stage.addEventListener('pointercancel',()=>{stageInteracting=false;wheelTarget=Math.round(wheelTarget);requestWheel();scheduleAutoShowcase(3800)});
+stage.addEventListener('pointercancel',()=>{dragPointerId=null;stageInteracting=false;wheelTarget=Math.round(wheelTarget);requestWheel();scheduleAutoShowcase(3800)});
 stage.addEventListener('keydown',event=>{if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;event.preventDefault();cancelAutoShowcase();moveWheel(event.key==='ArrowRight'?1:-1,false,'manual');wheelTarget=Math.round(wheelTarget);requestWheel()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAutoShowcase();else scheduleAutoShowcase(2200)});
 document.addEventListener('click',event=>{
