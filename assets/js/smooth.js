@@ -57,21 +57,39 @@
   });
 
   // The hero uses a custom curved profile wheel instead of native overflow.
-  // Preserve normal page scrolling in empty hero space, but let a standard
-  // vertical mouse wheel move the profiles when the pointer is over a card.
+  // Auto-rotation is only for the untouched landing state. As soon as the user
+  // deliberately interacts with the wheel, their selected position becomes
+  // authoritative for the rest of the page visit.
   const stage = document.getElementById('stage');
   if (stage) {
+    const stopHeroAutoShowcase = () => window.stopAutoShowcase?.();
+
     stage.addEventListener('wheel', event => {
-      if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
-      if (!event.target.closest?.('.persona') || !event.deltaY) return;
+      if (event.ctrlKey || (!event.deltaX && !event.deltaY)) return;
+
+      const horizontalIntent = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+      const overPersona = Boolean(event.target.closest?.('.persona'));
+      if (horizontalIntent || overPersona) stopHeroAutoShowcase();
+
+      // Horizontal trackpad gestures are handled by the wheel code in index.html.
+      if (horizontalIntent) return;
+      if (!overPersona || !event.deltaY) return;
       if (typeof window.moveWheel !== 'function') return;
 
       event.preventDefault();
       event.stopPropagation();
-      window.cancelAutoShowcase?.();
       const delta = Math.max(-120, Math.min(120, event.deltaY));
       window.moveWheel(delta / 180, true, 'manual');
     }, { passive: false });
+
+    stage.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      stopHeroAutoShowcase();
+    }, { passive: true });
+
+    stage.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') stopHeroAutoShowcase();
+    });
 
     const modeHint = document.getElementById('modeHint');
     if (modeHint && !reducedMotion.matches) {
