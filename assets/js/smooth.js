@@ -56,6 +56,29 @@
     history.replaceState(null, '', href);
   });
 
+  // The hero uses a custom curved profile wheel instead of native overflow.
+  // Preserve normal page scrolling in empty hero space, but let a standard
+  // vertical mouse wheel move the profiles when the pointer is over a card.
+  const stage = document.getElementById('stage');
+  if (stage) {
+    stage.addEventListener('wheel', event => {
+      if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      if (!event.target.closest?.('.persona') || !event.deltaY) return;
+      if (typeof window.moveWheel !== 'function') return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      window.cancelAutoShowcase?.();
+      const delta = Math.max(-120, Math.min(120, event.deltaY));
+      window.moveWheel(delta / 180, true, 'manual');
+    }, { passive: false });
+
+    const modeHint = document.getElementById('modeHint');
+    if (modeHint && !reducedMotion.matches) {
+      modeHint.textContent = 'Scroll or drag the cards. Select one to explore.';
+    }
+  }
+
   reducedMotion.addEventListener?.('change', startEngine);
   precisePointer.addEventListener?.('change', startEngine);
   startEngine();
