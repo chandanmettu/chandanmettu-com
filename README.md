@@ -11,15 +11,28 @@ The live source for Chandan Mettu's personal website.
 
 | URL | Source | Purpose |
 |---|---|---|
-| `/` | `index.html` | Interactive overview of Builder, Creator, Athlete and Educator |
+| `/` | `index.html` | Personal introduction with work, stories, athletics and teaching |
 | `/links/` | `links/index.html` | Mobile-first directory of channels, products and contact routes |
 | `/profile/` | `profile/index.html` | Extended profile and resume-style record |
 | `/v1/` | `v1/index.html` | Compatibility redirect to the homepage |
 | `/404.html` | `404.html` | Not-found page |
 
-The homepage uses a circular identity selector, palette transitions, profile-specific
+The homepage uses a circular selector for work and interests, palette transitions, profile-specific
 proof cards and responsive content collections. Athlete results, galleries and the
 Educator certificate loop use the shared files under `assets/css/` and `assets/js/`.
+
+## Public identity
+
+Use **Chandan Mettu** and **@chandanmettu** across every public page, social link,
+metadata field, and generated card. The homepage introduces Chandan as a creator
+and IIT Hyderabad student; products, athletics, and teaching support that story.
+Each profile keeps its own handcrafted title, introduction, chip, palette, and
+text transitions as visitors explore the rotating cards.
+
+Canonical profiles use `chandanmettu` on YouTube, Instagram, X, LinkedIn, GitHub,
+and Threads. All three indexed pages include the same Person identity and social
+profiles in structured data. The current portrait and browser icons are the
+`assets/brand/chandan-mettu-*` assets.
 
 ## Local preview
 
