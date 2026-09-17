@@ -3,9 +3,9 @@
 The live source for Chandan Mettu's personal website.
 
 - **Live:** [chandanmettu.com](https://chandanmettu.com)
-- **Repository:** `saichandanmettu/chandanmettu-com` (public)
+- **Repository:** `chandanmettu/chandanmettu-com` (public)
 - **Stack:** static HTML, CSS, JavaScript and image assets
-- **Delivery:** Git push to `main`, followed by Hostinger deployment
+- **Delivery:** Git push to `main`; Hostinger auto-deploys the connected repository
 
 ## Public pages
 
