@@ -524,8 +524,17 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 }
 
 .athlete-proof-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px 28px;
   margin-top: 88px;
 }
+
+.athlete-proof-copy { min-width: 0; }
+
+.athlete-profile-link { flex: none; }
 
 .athlete-proof-head[hidden] {
   display: none;
@@ -1584,9 +1593,9 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   }
 }
 </style>
-<link rel="stylesheet" href="assets/css/medal-cabinet.css?v=3">
+<link rel="stylesheet" href="assets/css/medal-cabinet.css?v=4">
 <link rel="stylesheet" href="assets/css/athlete-gallery.css?v=3">
-<link rel="stylesheet" href="assets/css/athlete-focus.css?v=4">
+<link rel="stylesheet" href="assets/css/athlete-focus.css?v=6">
 <link rel="stylesheet" href="assets/css/certificate-loop.css?v=3">
 </head>
 <body data-mode="overview" data-preview-mode="overview">
@@ -1646,7 +1655,7 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
           <div class="project-filters" id="projectFilters" role="group" aria-label="Filter projects" hidden></div>
         </div>
         <div class="collection" id="collection"></div>
-        <div class="athlete-proof-head" id="athleteProofHead" hidden><p class="kicker">On the record</p><h3>The numbers belong here. They are not the whole story.</h3></div>
+        <div class="athlete-proof-head" id="athleteProofHead" hidden><div class="athlete-proof-copy"><p class="kicker">The receipts</p><h3>Every medal, and the meet it came from.</h3></div><a class="mode-link athlete-profile-link" href="https://athletics.iith.online/profile.html?athlete=saichandan-mettu" target="_blank" rel="noopener noreferrer">My IITH Athletics profile ↗</a></div>
       </div>
     </section>
   <footer class="personal-footer" id="contact">
@@ -1760,7 +1769,7 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
 <script src="assets/js/smooth.js?v=3"></script>
 <script src="assets/js/medal-cabinet.js?v=3"></script>
 <script src="assets/js/athlete-gallery.js?v=6"></script>
-<script src="assets/js/athlete-focus.js?v=6"></script>
+<script src="assets/js/athlete-focus.js?v=7"></script>
 <script src="assets/js/certificate-loop.js?v=5"></script>
 <script>
 const lineIcon=paths=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
@@ -1795,14 +1804,14 @@ const modeMedia={
   educator:{image:'assets/personas/educator-profile-smiling.jpg',alt:'Chandan Mettu smiling in a Vedantu Master Teacher T-shirt',position:'center 42%'}
 };
 const modes={
-overview:{wipe:'#afe0f3',label:'Chandan Mettu',kicker:'Chandan Mettu · IIT Hyderabad',title:'Products. Seconds.<br>Stories. Proofs.',hero:'Products built for students. Races measured in hundredths. Stories shaped from the journey. Mathematics taught from first principles.',panelKicker:'Four disciplines',panelTitle:'Curiosity, put to work.',summary:'Building turns friction into products. Sport tests consistency. Creating makes the journey worth sharing. Teaching turns hard ideas into something clearer.',stats:[['30K+','CampusKit visitors','CL'],['11.46 s','100 m institute record','100'],['400K+','Views across platforms','C'],['INMO','National qualifier','∑']],collectionTitle:'Choose where to begin.',collectionCopy:'',items:[{mode:'builder',name:'Builder',copy:'CampusLoom, CampusKit, and tools built around student life.',meta:'Products',icon:'B'},{mode:'creator',name:'Creator',copy:'Stories from building, learning, sport, and the moments in between.',meta:'Stories · videos',icon:'C'},{mode:'athlete',name:'Athlete',copy:'Sprint, long jump, cricket, football, and any game worth joining.',meta:'Track · field · court',icon:'A'},{mode:'educator',name:'Educator',copy:'Olympiad mathematics explained from first principles.',meta:'Mathematics',icon:'E'}],links:[]},
+overview:{wipe:'#afe0f3',label:'Chandan Mettu',kicker:'Chandan Mettu · IIT Hyderabad',title:'Products. Seconds.<br>Stories. Proofs.',hero:'Products built for students. Races measured in hundredths. Stories shaped from the journey. Mathematics taught from first principles.',panelKicker:'Four disciplines',panelTitle:'Curiosity, put to work.',summary:'Building turns friction into products. Sport tests consistency. Creating makes the journey worth sharing. Teaching turns hard ideas into something clearer.',stats:[['100K+','Students reached','CL'],['11.46 s','100 m institute record','100'],['500K+','Views across socials','C'],['INMO','National qualifier','∑']],collectionTitle:'Choose where to begin.',collectionCopy:'',items:[{mode:'builder',name:'Builder',copy:'CampusLoom, CampusKit, and tools built around student life.',meta:'Products',icon:'B'},{mode:'creator',name:'Creator',copy:'Stories from building, learning, sport, and the moments in between.',meta:'Stories · videos',icon:'C'},{mode:'athlete',name:'Athlete',copy:'Sprint, long jump, cricket, football, and any game worth joining.',meta:'Track · field · court',icon:'A'},{mode:'educator',name:'Educator',copy:'Olympiad mathematics explained from first principles.',meta:'Mathematics',icon:'E'}],links:[]},
 builder:{
   wipe:'#dfff63',label:'Builder',kicker:'Builder',
   title:'I turn everyday friction<br>into useful products.',
   hero:'From design to deployment, I enjoy making ideas useful.',
   panelKicker:'Built beyond the brief',panelTitle:'I learn by shipping.',
   summary:'Every launch puts the work in real hands. I listen, improve, and keep going until the product earns its place in someone’s day.',
-  stats:[['8','Products for IIT Hyderabad','IITH'],['10K+','College decisions mapped','CP'],['50K+','Students reached','↗'],['100+','Websites built','WWW']],
+  stats:[['8','Products for IIT Hyderabad','IITH'],['10K+','College decisions mapped','CP'],['100K+','Students reached','↗'],['100+','Websites built','WWW']],
   collectionTitle:'Built for real use',collectionCopy:'',
   items:[
     {category:'personal',name:'CampusLoom',copy:'Compare colleges with the detail a life-changing decision deserves.',meta:'My product · Live',status:'live',projectIcon:'assets/project-icons/campusloom.svg',preview:'assets/project-previews/campusloom-home.jpg',previewAlt:'CampusLoom homepage',href:'https://campusloom.in'},
@@ -1823,12 +1832,12 @@ builder:{
   links:[['Explore the work','#collection']]
 },
 creator:{
-  wipe:'#ff7a62',label:'Creator',kicker:'Creator · Learning and building in public',
+  wipe:'#ff7a62',label:'Creator',kicker:'Creator',
   title:'Learning. Building.<br>Sharing the journey.',
   hero:'Content creation has always been a joy—a way to share the journey of building, learning, and figuring things out in public.',
   panelKicker:'Why share',panelTitle:'Leave something useful behind.',
   summary:'Speaking to people has always brought me joy. When someone leaves with even one lesson that would have helped me earlier, sharing the story feels worthwhile.',
-  stats:[['2.5K+','YouTube subscribers',ytIcon],['290K+','YouTube views',ytIcon],['2K+','Instagram followers','IG'],['1K+','LinkedIn followers','in']],
+  stats:[['2.5K+','YouTube subscribers',ytIcon],['500K+','Views across socials','C'],['2K+','Instagram followers','IG'],['1K+','LinkedIn followers','in']],
   collectionTitle:'Stories from the journey',collectionCopy:'Products, student life, athletics, mistakes, and lessons—shared as they happen.',
   items:[
     {name:'Behind every story',copy:'The quiet work of turning an experience into something clear, honest, and useful.',meta:'Content creation',photo:'assets/personas/creator-editing-workflow.jpg',alt:'A Final Cut Pro timeline open on Chandan Mettu’s laptop',full:true,contain:true},
@@ -1843,13 +1852,13 @@ creator:{
 },
 athlete:{
   wipe:'#5d74ff',label:'Athlete',kicker:'Athlete · IIT Hyderabad',
-  title:'The clock is only<br>one way to keep score.',
-  hero:'Some days begin in the blocks. Others with a bat, a ball, a racket, or a team waiting on the other side. The game changes. The reason to play doesn’t.',
-  panelKicker:'Beyond the track',panelTitle:'Sport was never just one lane.',
-  summary:'The track is where the numbers live: 11.46 seconds, 5.6 metres, Inter-IIT. But the larger story moves through cricket, football, badminton, volleyball, the gym, and every opportunity to play with a team.',
+  title:'If there’s a game,<br>count me in.',
+  hero:'Some days it’s the track. Other days it’s a bat, a racket, or a team that’s one player short. I’ve never been good at sitting on the sidelines.',
+  panelKicker:'Beyond the track',panelTitle:'I play for the feeling before the start.',
+  summary:'That quiet second before the whistle, when nothing else matters. Sport taught me to show up on days I didn’t feel like it, to lose without making excuses, and to be just as loud for my team as for myself. Results come and go. That feeling is why I keep coming back.',
   stats:[['11.46 s','100 m institute record','100'],['5.6 m','Long jump','LJ'],['Inter-IIT','IIT Hyderabad representative','IIT'],['Captain','IIT Hyderabad athletics','C']],
-  collectionTitle:'Wherever there’s a game.',
-  collectionCopy:'Track. Pitch. Field. Court. Gym. Different settings, same instinct: step in and play.',
+  collectionTitle:'Wherever the game is.',
+  collectionCopy:'Track, pitch, court or gym. Doesn’t matter much where, as long as someone’s keeping score.',
   items:[
     {name:'From the blocks',copy:'',meta:'Sprint training',slides:[{src:'assets/personas/athlete-sprinters-start.jpg',alt:'Sprinters accelerating out of starting blocks on the IIT Hyderabad track',position:'68% center'}],wide:true},
     {name:'ICL 2026',copy:'',meta:'Cricket',slides:[{src:'assets/personas/athlete-cricket-icl-2026.jpg',alt:'Chandan Mettu with his bat, medal, and the ICL 2026 runner-up trophy',position:'center 44%'}]},
@@ -1866,7 +1875,7 @@ athlete:{
     {name:'The shadow',copy:'',meta:'Track',slides:[{src:'assets/personas/athlete-track-shadow.jpg',alt:'Chandan Mettu’s shadow falling across the marked athletics track',position:'center 54%'}]},
     {name:'The medals',copy:'',meta:'Across meets',slides:[{src:'assets/personas/athlete-medal-wall.jpg',alt:'A wall displaying Chandan Mettu’s medals from athletics competitions',position:'center'}],wide:true}
   ],
-  links:[['Open IITH Athletics','https://athletics.iith.online']]
+  links:[]
 },
 educator:{
   wipe:'#ffc857',label:'Educator',kicker:'Educator · Olympiad mathematics',

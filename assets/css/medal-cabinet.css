@@ -71,7 +71,12 @@
   font-size: 12px;
 }
 
+.medal-cabinet > * { min-width: 0; }
+
 .medal-rack-shell {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .17);
   border-radius: 27px;
