@@ -6,7 +6,7 @@
     { year: '2018', short: 'SOF IMO', title: 'Gold medal for performance excellence at the school level', kind: 'School-level gold medal', image: 'assets/certificates/sof-imo-2018-school-gold-medal.jpg', shape: 'square' },
     { year: '2020', short: 'IOQM', title: 'Certificate of merit for placing within the top 300 ranks in Telangana', kind: 'Top 300 · Telangana', image: 'assets/certificates/ioqm-2020-top-300-telangana.png', shape: 'landscape' },
     { year: '2021–22', short: 'IOQM', title: 'Certificate of merit for scoring 20% or more in Part A', kind: 'Certificate of merit', image: 'assets/certificates/ioqm-2021-22-certificate-of-merit.png', shape: 'landscape' },
-    { year: '2022–23', short: 'IOQM', title: 'Certificate of merit for scoring 20% or more of the total marks', kind: 'Certificate of merit', image: 'assets/certificates/ioqm-2022-23-certificate-of-merit.png', shape: 'landscape' }
+    { year: '2022–23', short: 'IOQM', title: 'Certificate of merit for scoring 20% or more of the total marks', kind: 'Certificate of merit', image: 'assets/certificates/ioqm-2022-23-certificate-of-merit.jpg', shape: 'landscape' }
   ]);
 
   const escapeHtml = value => String(value ?? '')
