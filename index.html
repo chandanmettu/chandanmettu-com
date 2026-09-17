@@ -124,8 +124,6 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
     0 18px 42px -12px color-mix(in srgb, var(--deep) 12%, transparent),
     inset 0 1px 1.5px rgba(255, 255, 255, 0.88),
     inset 0 -1px 1px rgba(7, 29, 43, 0.03);
-  backdrop-filter: blur(20px) saturate(135%);
-  -webkit-backdrop-filter: blur(20px) saturate(135%);
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.35s ease;
@@ -1222,8 +1220,6 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
     linear-gradient(145deg, color-mix(in srgb, var(--hero) 86%, #ffffff), var(--hero));
   border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow: 0 4px 14px rgba(7, 29, 43, 0.04), 0 24px 60px -10px color-mix(in srgb, var(--deep) 15%, transparent), inset 0 1px 2px rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: blur(28px) saturate(160%);
   color: var(--hero-ink);
   overflow: hidden;
   transition: background 0.55s ease, color 0.55s ease, border-color 0.35s ease, box-shadow 0.4s ease;
@@ -1396,8 +1392,6 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   text-decoration: none;
   color: var(--ink);
   box-shadow: 0 4px 18px color-mix(in srgb, var(--deep) 5%, transparent), inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, background 0.22s ease, border-color 0.22s ease;
 }
 .channel-bento-tile:hover {
@@ -1763,12 +1757,11 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   </main>
 </div></div>
 
-<script src="assets/js/lenis.min.js?v=1"></script>
-<script src="assets/js/smooth.js?v=2"></script>
+<script src="assets/js/smooth.js?v=3"></script>
 <script src="assets/js/medal-cabinet.js?v=3"></script>
-<script src="assets/js/athlete-gallery.js?v=5"></script>
+<script src="assets/js/athlete-gallery.js?v=6"></script>
 <script src="assets/js/athlete-focus.js?v=6"></script>
-<script src="assets/js/certificate-loop.js?v=4"></script>
+<script src="assets/js/certificate-loop.js?v=5"></script>
 <script>
 const lineIcon=paths=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 const brandIcon=path=>`<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
@@ -2339,12 +2332,8 @@ function choose(mode,revealDetails=false){
     window.scrollTo(0,Math.min(savedScroll,maximum));
     window.__lenis?.resize?.();
   });
-  if(reduced){render(mode,false,direction);restoreScroll();if(revealDetails)revealSelectedDetails();return}
-  transitionLock=true;
-  wipe.style.setProperty('--wipe',modes[mode].wipe);wipeLabel.textContent=modes[mode].label;wipe.classList.add('active');
-  setTimeout(()=>{render(mode,true,direction);restoreScroll()},280);
-  setTimeout(()=>{wipe.classList.add('reset');wipe.classList.remove('active');transitionLock=false;requestAnimationFrame(()=>requestAnimationFrame(()=>wipe.classList.remove('reset')))},680);
-  if(revealDetails)setTimeout(revealSelectedDetails,760);
+  render(mode,!reduced,direction);restoreScroll();
+  if(revealDetails)setTimeout(revealSelectedDetails,reduced?0:60);
 }
 function cancelAutoShowcase(){
   clearTimeout(autoShowcaseTimer);autoShowcaseTimer=0;

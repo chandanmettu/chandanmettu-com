@@ -65,19 +65,26 @@
       });
     };
 
-    const halfWidth = () => track.scrollWidth / 2;
+    // Measure the loop width once (and on resize) instead of every frame, and keep a
+    // sub-pixel position so the auto-scroll glides instead of stepping.
+    let half = track.scrollWidth / 2;
+    let position = viewport.scrollLeft;
+    const halfWidth = () => half;
+    if ('ResizeObserver' in window) new ResizeObserver(() => { half = track.scrollWidth / 2; }).observe(track);
     const normalize = () => {
-      const half = halfWidth();
       if (!half) return;
-      if (viewport.scrollLeft >= half) viewport.scrollLeft -= half;
-      else if (viewport.scrollLeft < 0) viewport.scrollLeft += half;
+      if (Math.abs(viewport.scrollLeft - position) > 1.5) position = viewport.scrollLeft;
+      if (position >= half) { position -= half; viewport.scrollLeft = position; }
+      else if (position < 0) { position += half; viewport.scrollLeft = position; }
     };
     const tick = time => {
       const elapsed = Math.min(48, time - (lastTime || time));
       lastTime = time;
       if (!manualPause && !interactionPause && visible && !document.hidden) {
-        viewport.scrollLeft += elapsed * 0.038;
-        normalize();
+        if (Math.abs(viewport.scrollLeft - position) > 1.5) position = viewport.scrollLeft;
+        position += elapsed * 0.038;
+        if (half && position >= half) position -= half;
+        viewport.scrollLeft = position;
       }
       frame = requestAnimationFrame(tick);
     };

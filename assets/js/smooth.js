@@ -97,7 +97,5 @@
     }
   }
 
-  reducedMotion.addEventListener?.('change', startEngine);
-  precisePointer.addEventListener?.('change', startEngine);
-  startEngine();
+  // Native scrolling: the Lenis engine above is intentionally not started (it lagged behind input).
 })();
