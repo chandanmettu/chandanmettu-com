@@ -182,6 +182,27 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
   border-radius: var(--radius-xl);
 }
 
+/* Safari / iPadOS drops border-radius clipping for transformed, filtered or scrolling
+   media inside overflow:hidden cards. Give each card its own layer and round the media too. */
+.profile-visual,
+.photo-item,
+.athlete-loop-card,
+.brand-portrait {
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.profile-media-track,
+.photo-item > img,
+.photo-item > video,
+.athlete-loop-card > img,
+.athlete-loop-card > video,
+.persona > img,
+.brand-portrait > img {
+  border-radius: inherit;
+}
+
 .profile-visual {
   position: relative;
   grid-column: span 6;
