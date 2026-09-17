@@ -1,5 +1,15 @@
+ErrorDocument 404 /404.html
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # One canonical host: www -> apex
+  RewriteCond %{HTTP_HOST} ^www\.chandanmettu\.com$ [NC]
+  RewriteRule ^(.*)$ https://chandanmettu.com/$1 [R=301,L]
+
+  # Repository housekeeping files are not part of the public site
+  RewriteRule ^(README\.md|CNAME|\.nojekyll|\.gitignore)$ - [R=404,L]
+
   RewriteRule ^assets/account-insights-jun-aug-2026\.pdf$ - [G,L,NC]
 </IfModule>
 
