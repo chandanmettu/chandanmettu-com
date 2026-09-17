@@ -16,10 +16,10 @@
       {src:'assets/personas/athlete-airo-2025-team.jpg',alt:'Chandan Mettu with the IIT Hyderabad athletics team after AIRO 2025',position:'center 48%'}
     ],
     Diesta: [
-      {src:'assets/personas/athlete-diesta-2025.jpg',alt:'Chandan Mettu wearing five medals from Diesta 2025',position:'center',fit:'contain'}
+      {src:'assets/personas/athlete-diesta-2025.jpg',alt:'Chandan Mettu wearing five medals from Diesta 2025',position:'center 30%'}
     ],
     Milan: [
-      {src:'assets/personas/athlete-milan-2024.jpg',alt:'Chandan Mettu holding two medals from Milan 2024',position:'center',fit:'contain'}
+      {src:'assets/personas/athlete-milan-2024.jpg',alt:'Chandan Mettu holding two medals from Milan 2024',position:'center 28%'}
     ]
   });
 
@@ -49,13 +49,13 @@
           media: eventMedia[result.meet] || []
         });
       }
-      grouped.get(result.meet).results.push(`${readableEvent(result.event)} ${finishLabel(result.finish)}`);
+      grouped.get(result.meet).results.push({event: readableEvent(result.event), finish: String(result.finish || '').toLowerCase()});
     });
 
     return [...grouped.values()].map(event => ({
       ...event,
       count: `${event.results.length} ${event.results.length === 1 ? 'medal' : 'medals'}`,
-      resultLine: event.results.join(' · ')
+      resultLine: event.results.map(result => `${result.event} ${finishLabel(result.finish)}`).join(' · ')
     }));
   }
 
@@ -102,7 +102,7 @@
             <span class="athlete-focus-photo-note" data-athlete-photo-note hidden>Photography coming next</span>
             <div class="athlete-focus-topline"><span data-athlete-focus-venue></span><span data-athlete-focus-count></span></div>
             <h4 data-athlete-focus-name></h4>
-            <p data-athlete-focus-results></p>
+            <ul class="athlete-focus-results" data-athlete-focus-results></ul>
           </div>
         </article>
       </section>
@@ -140,7 +140,8 @@
       name.textContent = event.name;
       venue.textContent = event.venue;
       count.textContent = event.count;
-      results.textContent = event.resultLine;
+      results.innerHTML = event.results.map(result => `<li data-finish="${escapeHtml(result.finish)}"><span>${escapeHtml(result.event)}</span><b>${escapeHtml(finishLabel(result.finish))}</b></li>`).join('');
+      results.setAttribute('aria-label', event.resultLine);
       stage.classList.toggle('is-photo-pending', !photoTotal);
       note.hidden = Boolean(photoTotal);
       photoControls.hidden = photoTotal <= 1;
