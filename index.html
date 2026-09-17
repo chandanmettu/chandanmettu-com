@@ -15,17 +15,17 @@
 <meta property="og:url" content="https://chandanmettu.com/">
 <meta property="og:title" content="Chandan Mettu — Creator, Builder &amp; IIT Hyderabad Student">
 <meta property="og:description" content="Chandan Mettu is a creator and IIT Hyderabad student who builds products, experiments with technology, and shares stories from student life and beyond.">
-<meta property="og:image" content="https://chandanmettu.com/assets/social-card.jpg?v=1">
+<meta property="og:image" content="https://chandanmettu.com/assets/social-card.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Chandan Mettu — Products. Seconds. Stories. Proofs.">
+<meta property="og:image:alt" content="Chandan Mettu — Products. Seconds. Stories.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@chandanmettu">
 <meta name="twitter:creator" content="@chandanmettu">
 <meta name="twitter:title" content="Chandan Mettu — Creator, Builder &amp; IIT Hyderabad Student">
 <meta name="twitter:description" content="Chandan Mettu is a creator and IIT Hyderabad student who builds products, experiments with technology, and shares stories from student life and beyond.">
-<meta name="twitter:image" content="https://chandanmettu.com/assets/social-card.jpg?v=1">
-<meta name="twitter:image:alt" content="Chandan Mettu — Products. Seconds. Stories. Proofs.">
+<meta name="twitter:image" content="https://chandanmettu.com/assets/social-card.jpg?v=2">
+<meta name="twitter:image:alt" content="Chandan Mettu — Products. Seconds. Stories.">
 <link rel="icon" href="assets/brand/chandan-mettu-icon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/brand/chandan-mettu-icon-512.png" sizes="512x512" type="image/png">
 <link rel="apple-touch-icon" href="assets/brand/chandan-mettu-icon-180.png">
@@ -104,6 +104,8 @@ body{overflow-x:hidden;background:var(--outer);letter-spacing:-.012em}
 .wheel-thread{position:absolute;z-index:2;left:50%;bottom:-38px;width:min(1080px,94%);height:320px;transform:translateX(-50%);overflow:visible;pointer-events:none;opacity:.6}
 .wheel-thread path{fill:none;stroke:color-mix(in srgb,var(--hero-ink) 42%,transparent);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:.55 1.75;vector-effect:non-scaling-stroke}
 .mode-hint{bottom:16px;font-size:12px;letter-spacing:.02em;opacity:.72}
+.stage{transform:scale(var(--stage-scale,1));transform-origin:50% 100%}
+.wheel-thread{transform:translateX(-50%) scale(var(--stage-scale,1));transform-origin:50% 100%}
 @media (max-height:780px){.hero{padding-top:clamp(78px,10vh,90px)}.hero h1{font-size:clamp(2.8rem,5.4vw,4.4rem)}.stage{height:340px;bottom:36px}.persona{top:36px}.wheel-thread{bottom:-24px;height:290px}}
 .main-content{position:relative;z-index:8;margin-top:-60px;border-radius:52px 52px 0 0;background:var(--surface);box-shadow:0 -30px 90px rgba(8,26,40,.16);padding-bottom:clamp(16px,2.5vw,28px);transition:background .55s;overflow-anchor:none}
 .panel{position:relative;z-index:1;margin-top:0;padding:72px 0 54px;border-radius:52px 52px 0 0;background:linear-gradient(180deg,color-mix(in srgb,#fff 52%,var(--surface)),var(--surface) 34%);transition:background .55s}
@@ -1631,7 +1633,7 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   <header class="hero" id="top">
     <div class="hero-copy">
       <p class="kicker" id="heroKicker">Chandan Mettu · IIT Hyderabad</p>
-      <h1 id="heroTitle">Products. Seconds.<br>Stories. Proofs.</h1>
+      <h1 id="heroTitle">Products. Seconds.<br>Stories.</h1>
       <p id="heroCopy">Products built for students. Races measured in hundredths. Stories shaped from the journey. Mathematics taught from first principles.</p>
     </div>
     <svg class="wheel-thread" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden="true"><path pathLength="100" d="M15 305 Q500 -80 985 305"/></svg>
@@ -1825,7 +1827,7 @@ const modeMedia={
   educator:{image:'assets/personas/educator-profile-smiling.jpg',alt:'Chandan Mettu smiling in a Vedantu Master Teacher T-shirt',position:'center 42%'}
 };
 const modes={
-overview:{wipe:'#afe0f3',label:'Chandan Mettu',kicker:'Chandan Mettu · IIT Hyderabad',title:'Products. Seconds.<br>Stories. Proofs.',hero:'Products built for students. Races measured in hundredths. Stories shaped from the journey. Mathematics taught from first principles.',panelKicker:'Four disciplines',panelTitle:'Curiosity, put to work.',summary:'Building turns friction into products. Sport tests consistency. Creating makes the journey worth sharing. Teaching turns hard ideas into something clearer.',stats:[['100K+','Students reached','CL'],['11.46 s','100 m institute record','100'],['500K+','Views across socials','C'],['INMO','National qualifier','∑']],collectionTitle:'Choose where to begin.',collectionCopy:'',items:[{mode:'builder',name:'Builder',copy:'CampusLoom, CampusKit, and tools built around student life.',meta:'Products',icon:'B'},{mode:'creator',name:'Creator',copy:'Stories from building, learning, sport, and the moments in between.',meta:'Stories · videos',icon:'C'},{mode:'athlete',name:'Athlete',copy:'Sprint, long jump, cricket, football, and any game worth joining.',meta:'Track · field · court',icon:'A'},{mode:'educator',name:'Educator',copy:'Olympiad mathematics explained from first principles.',meta:'Mathematics',icon:'E'}],links:[]},
+overview:{wipe:'#afe0f3',label:'Chandan Mettu',kicker:'Chandan Mettu',title:'Products. Seconds.<br>Stories.',hero:'Products built for students. Races measured in hundredths. Stories shaped from the journey. Mathematics taught from first principles.',panelKicker:'Four disciplines',panelTitle:'Curiosity, put to work.',summary:'Building turns friction into products. Sport tests consistency. Creating makes the journey worth sharing. Teaching turns hard ideas into something clearer.',stats:[['100K+','Students reached','CL'],['11.46 s','100 m institute record','100'],['500K+','Views across socials','C'],['INMO','National qualifier','∑']],collectionTitle:'Choose where to begin.',collectionCopy:'',items:[{mode:'builder',name:'Builder',copy:'CampusLoom, CampusKit, and tools built around student life.',meta:'Products',icon:'B'},{mode:'creator',name:'Creator',copy:'Stories from building, learning, sport, and the moments in between.',meta:'Stories · videos',icon:'C'},{mode:'athlete',name:'Athlete',copy:'Sprint, long jump, cricket, football, and any game worth joining.',meta:'Track · field · court',icon:'A'},{mode:'educator',name:'Educator',copy:'Olympiad mathematics explained from first principles.',meta:'Mathematics',icon:'E'}],links:[]},
 builder:{
   wipe:'#dfff63',label:'Builder',kicker:'Builder',
   title:'I turn everyday friction<br>into useful products.',
@@ -2487,6 +2489,29 @@ if(initialMode!=='overview'){
   modeHint.textContent=`${modes[initialMode].label} selected. Explore the story below.`;
 }else scheduleAutoShowcase(2600);
 requestWheel();updateScrollEffects();syncShowcaseViewport();
+// Keep the card wheel clear of the hero text. The hero is sticky, so it cannot just grow
+// past the viewport; instead the wheel scales down (sized for the longest persona copy).
+const heroCopyBlock=hero.querySelector('.hero-copy');
+function fitHeroStage(){
+  hero.style.setProperty('--stage-scale','1');
+  const probe=heroCopyBlock.cloneNode(true);
+  probe.querySelectorAll('[id]').forEach(node=>node.removeAttribute('id'));
+  Object.assign(probe.style,{position:'absolute',visibility:'hidden',pointerEvents:'none',left:`${heroCopyBlock.offsetLeft}px`,top:`${heroCopyBlock.offsetTop}px`,width:`${heroCopyBlock.offsetWidth}px`});
+  hero.append(probe);
+  const [kicker,title,copy]=[probe.children[0],probe.querySelector('h1'),probe.querySelector('p:last-child')];
+  let tallest=0;
+  order.forEach(mode=>{kicker.textContent=modes[mode].kicker;title.innerHTML=modes[mode].title;copy.textContent=modes[mode].hero;tallest=Math.max(tallest,probe.offsetHeight)});
+  probe.remove();
+  const heroRect=hero.getBoundingClientRect(),stageRect=stage.getBoundingClientRect();
+  const textBottom=heroCopyBlock.offsetTop+tallest+22;
+  const cardsTop=Math.min(...cards.map(card=>card.getBoundingClientRect().top))-heroRect.top;
+  const overlap=textBottom-cardsTop;
+  if(overlap<=0)return;
+  const pivot=stageRect.bottom-heroRect.top,rise=pivot-cardsTop;
+  hero.style.setProperty('--stage-scale',String(clamp((rise-overlap)/rise,.62,1).toFixed(3)));
+}
+let fitTimer=0;const scheduleFit=()=>{clearTimeout(fitTimer);fitTimer=setTimeout(fitHeroStage,80)};
+scheduleFit();addEventListener('resize',scheduleFit,{passive:true});addEventListener('orientationchange',scheduleFit);addEventListener('load',scheduleFit);document.fonts?.ready.then(scheduleFit);document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleFit()});
 </script>
 
 <div class="toast-notice" id="toastNotice" role="status" aria-live="polite">
