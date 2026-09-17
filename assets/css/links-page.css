@@ -81,7 +81,7 @@ img { display: block; max-width: 100%; }
 @keyframes float { to { translate: 0 -7px; } }
 
 .profile-copy { margin: 5px auto 26px; text-align: center; }
-.eyebrow { margin: 0 0 10px; color: var(--muted); font-size: 11px; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+.eyebrow { margin: 0 0 10px; color: var(--muted); font-size: 11px; font-weight: 750; letter-spacing: .03em; }
 .profile-copy h1 { margin: 0; font-size: clamp(2.3rem, 10vw, 3.4rem); font-weight: 560; letter-spacing: -.06em; line-height: .95; }
 .profile-copy p { max-width: 380px; margin: 15px auto 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
 .profile-copy p strong { color: var(--ink); font-weight: 650; }

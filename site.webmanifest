@@ -1,14 +1,14 @@
 {
   "name": "Chandan Mettu",
-  "short_name": "Chandan",
-  "description": "The personal website of Chandan Mettu.",
+  "short_name": "Chandan Mettu",
+  "description": "Chandan Mettu is a creator and IIT Hyderabad student who builds products, experiments with technology, and shares stories from student life and beyond.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f2f9fc",
   "theme_color": "#79acd1",
   "icons": [
     {
-      "src": "/assets/brand/portrait-icon-512.png",
+      "src": "/assets/brand/chandan-mettu-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
