@@ -2,10 +2,13 @@
 
 The live source for Chandan Mettu's personal website.
 
-- **Live:** [chandanmettu.com](https://chandanmettu.com)
-- **Repository:** `chandanmettu/chandanmettu-com` (public)
-- **Stack:** static HTML, CSS, JavaScript and image assets
-- **Delivery:** Git push to `main`; Hostinger auto-deploys the connected repository
+| | |
+|---|---|
+| **Live** | [chandanmettu.com](https://chandanmettu.com) (www redirects to the apex with a 301) |
+| **Repository** | `github.com/chandanmettu/chandanmettu-com` (public) |
+| **Push via** | SSH host alias `github-chandanmettu` (deploy key `~/.ssh/chandanmettu-deploy`) |
+| **Deploy** | Hostinger Git auto-deploy from `main`, about 1–2 minutes. **A push is a production release.** It is *not* GitHub Pages, and `CNAME` / `.nojekyll` are vestigial. |
+| **Stack** | Static HTML, CSS, JS and images. No build step, no packages. |
 
 ## Public pages
 
@@ -34,6 +37,18 @@ and Threads. All three indexed pages include the same Person identity and social
 profiles in structured data. The current portrait and browser icons are the
 `assets/brand/chandan-mettu-*` assets.
 
+## Colour system (locked 2026-09-17)
+
+Warm hues mean people and cool hues mean performance. Creator is coral
+`#fe8167`, Educator marigold `#ffc75a`, Builder go-green `#89f35f`, and
+Athlete race-day blue `#325bda` with **white** hero text. Overview, links,
+profile and 404 use violet `#bcadff`. The tokens live in `index.html`
+(`:root`, `body[data-mode]`, `[data-preview-mode]`). Each accent uses only its
+own hue, and focus rings use `--deep`.
+
+Confirmed public numbers (don't change them without him): 100K+ students
+reached and 500K+ views across socials.
+
 ## Local preview
 
 ```sh
@@ -46,9 +61,9 @@ Open `http://127.0.0.1:8050/`. The site has no build step or package dependencie
 
 The repository root maps to the public website. Never commit private documents,
 analytics exports, credentials, raw photographs, archives or internal handoff files.
-Older versions are recoverable through Git and the dated local backup outside this
-repository.
+Older versions are recoverable through Git history.
 
-Before a release, check all three public routes on mobile and desktop, validate local
+**Cache-buster:** bump `?v=` on any changed file under `assets/css` or `assets/js`,
+because pages cache for 7 days. Before a release, check all three public routes on mobile and desktop, validate local
 assets and external destinations, review the complete diff, push `main`, then verify
 the cache-busted public URL.
