@@ -4,7 +4,7 @@ For any AI coding tool (Codex, Gemini/Antigravity, Cursor, Claude, …). Read th
 
 1. `README.md`. Its handover table gives the live URL, repo, SSH alias, deploy path and **whether you may push without asking**.
 2. `KNOWN_ISSUES.md` and `docs/PROGRESS.md` where present.
-3. **Workspace context outside this repo** (local only, when this folder sits in `~/My Projects/`): `../../AGENTS.md` for workspace rules, and `../../NOTES/` for the owner's working style, design taste, decisions and this project's history (`NOTES/projects/`).
+3. **Workspace context outside this repo** (local only, when this folder sits in `~/My Projects/`): `../../AGENTS.md` for workspace rules, `../../MASTER-CONTEXT.md` for the owner, how he works and every project, and `../../_drafts/portfolio.md` for this project's context and history.
 
 Personal site. Bump `?v=` on changed `assets/css` / `assets/js`. Keep the persona colour system described in `README.md`.
 
