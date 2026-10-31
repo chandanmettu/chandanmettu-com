@@ -13,6 +13,13 @@
       "short": "Tensors",
       "tone": "educator",
       "blurb": "Tensors in transport: when a property depends on direction."
+    },
+    {
+      "id": "characterisation",
+      "name": "Materials Characterisation",
+      "short": "Imaging",
+      "tone": "builder",
+      "blurb": "Imaging techniques: seeing how a material is built, down to its atoms."
     }
   ],
   "builds": [
@@ -25,7 +32,7 @@
       "summary": "The same experiment as an isometric drawing, with a friction chart that jumps from 64/Re to Blasius the moment the dye breaks.",
       "tags": [
         "Isometric",
-        "Friction factor"
+        "Present mode"
       ],
       "href": "./reynolds-figure/",
       "image": "thumbs/reynolds-figure.jpg",
@@ -40,7 +47,7 @@
       "summary": "Wax melts as an ellipse on a quartz crystal: Sénarmont’s 1847 sight of conductivity as a tensor.",
       "tags": [
         "Anisotropy",
-        "Heat conduction"
+        "Present mode"
       ],
       "href": "./senarmont-plate/",
       "image": "thumbs/senarmont-plate.jpg",
@@ -70,14 +77,29 @@
       "summary": "Reynolds’ 1883 experiment as a pop-up book page. Open the valve and watch the dye thread tear into turbulence.",
       "tags": [
         "3D",
-        "Fluid mechanics",
-        "Predict, then test"
+        "Guided tour",
+        "Fluid mechanics"
       ],
       "status": "open",
       "featured": true,
       "image": "thumbs/reynolds-pipe-3d.jpg",
       "wide": "thumbs/reynolds-pipe-3d-wide.jpg",
       "href": "./reynolds-pipe/"
+    },
+    {
+      "slug": "tem-anatomy",
+      "title": "TEM Anatomy",
+      "kind": "Interactive figure",
+      "course": "characterisation",
+      "date": "2026-10-13",
+      "summary": "A 200 kV transmission electron microscope cut in half: trace the electrons, switch bright field, dark field and diffraction, then explode the column.",
+      "tags": [
+        "Electron optics",
+        "Present mode"
+      ],
+      "href": "./tem-anatomy/",
+      "image": "thumbs/tem-anatomy.jpg",
+      "status": "open"
     }
   ]
 }
