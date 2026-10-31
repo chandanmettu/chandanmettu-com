@@ -1840,7 +1840,7 @@ builder:{
   items:[
     {category:'personal',name:'CampusLoom',copy:'Compare colleges with the detail a life-changing decision deserves.',meta:'My product · Live',status:'live',projectIcon:'assets/project-icons/campusloom.svg',preview:'assets/project-previews/campusloom-home.jpg',previewAlt:'CampusLoom homepage',href:'https://campusloom.in'},
     {category:'personal',name:'CampusKit',copy:'College essentials, laptop guidance, and student perks.',meta:'My product · Live',status:'live',projectMark:'KIT',preview:'assets/project-previews/campuskit-home.jpg',previewAlt:'CampusKit homepage',href:'https://kit.campusloom.in'},
-    {category:'iith',name:'IITH Garage',copy:'One index for every campus product.',meta:'Product index',status:'live',image:'assets/campus-icons/garage.jpg',preview:'assets/project-previews/garage-home.jpg',previewAlt:'IITH Garage product index homepage',href:'https://iith.online'},
+    {category:'iith',name:'IITH Garage',copy:'One index for every campus product.',meta:'Product index',status:'live',image:'assets/campus-icons/garage.jpg',preview:'assets/project-previews/garage-home.jpg',previewAlt:'IITH Garage product index homepage',href:'https://iith.online'}, {category:'iith',name:'Coursework Lab',copy:'IIT Hyderabad coursework, rebuilt as experiments you can open and play with.',meta:'IIT Hyderabad · Live',status:'live',projectMark:'LAB',preview:'lab/thumbs/reynolds-pipe-3d.jpg',previewAlt:'Reynolds’ Pipe, a 3D lesson from the Coursework Lab',previewPosition:'center',href:'lab/',internal:true},
     {category:'iith',name:'IITH Athletics',copy:'Records, results, events, and athlete profiles for IIT Hyderabad.',meta:'IIT Hyderabad · Live',status:'live',projectMark:'ATH',preview:'assets/project-previews/athletics-home.jpg',previewAlt:'IIT Hyderabad Athletics homepage',href:'https://athletics.iith.online'},
     {category:'client',name:'Tharun Speaks',copy:'A custom course platform for video-editing lessons, enrolment, and progress.',meta:'Client work · Course platform',projectMark:'TS',preview:'assets/project-previews/tharun-speaks.jpg',previewAlt:'Tharun Speaks video-editing course platform'},
     {category:'client',name:'Neha Agarwal Mathematics',copy:'A course library that organised JEE mathematics playlists and learning paths.',meta:'First client website · 2024',projectMark:'NAM',preview:'assets/project-previews/neha-agarwal-mathematics.jpg',previewAlt:'Neha Agarwal Mathematics video playlist website'},
@@ -2091,7 +2091,7 @@ function projectItemMarkup(item){
   const tag=item.href?'a':'article';
   const status=item.href?(item.status||(item.meta.toLowerCase().includes('beta')?'beta':item.meta.toLowerCase().includes('live')?'live':'')):'';
   const destinationLabel=status==='beta'?'Public beta':status==='live'?'Live project':'Project';
-  const attrs=item.href?`href="${item.href}" target="_blank" rel="noopener noreferrer" aria-label="Open ${item.name} — ${destinationLabel}"`:'';
+  const attrs=item.href?`href="${item.href}"${item.internal?'':' target="_blank" rel="noopener noreferrer"'} aria-label="Open ${item.name} — ${destinationLabel}"`:'';
   const icon=projectIconMarkup(item);
   const compact=`<div class="project-card-compact"><span class="item-icon">${icon}</span><h3>${item.name}</h3><p>${item.copy}</p><p class="item-meta">${item.meta}${item.href?' ↗':''}</p></div>`;
   const openButton=item.href?`<span class="project-card-open ${status?`project-card-open-${status}`:''}" aria-hidden="true">↗</span>`:'';

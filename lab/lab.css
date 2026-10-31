@@ -41,58 +41,61 @@ body { --font: "Satoshi", -apple-system, BlinkMacSystemFont, "Helvetica Neue", A
 .specimen:hover { box-shadow: 0 34px 60px -24px rgba(35,27,60,.55), 0 0 0 1px rgba(25,19,45,.08); }
 .sticker { position: absolute; z-index: 4; top: -14px; right: -10px; padding: 9px 13px; border-radius: 999px; background: var(--educator); color: #221601; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 10px 20px -10px rgba(35,27,60,.5); transform: rotate(9deg); }
 
-/* ---------- shelves: one folder per course (after Abhyas) ----------
-   Three real layers: .f-back (the folder, with the signature oversized top-right corner), the
-   builds as sheets peeking out, and .f-front, a frosted-glass pocket that blurs the sheets behind
-   it. On hover the sheets spring up and fan while the pocket sinks: opposing motion sells it. */
-.shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 76px 24px; padding-top: 58px; }
-.folder { --pop: cubic-bezier(.34, 1.56, .64, 1); position: relative; display: block; height: 236px; padding: 0; border: 0; border-radius: 28px 48px 28px 28px; background: none; color: var(--t-ink); text-align: left; cursor: pointer; font: inherit; transition: transform .38s cubic-bezier(.16, 1, .3, 1), box-shadow .38s cubic-bezier(.16, 1, .3, 1); }
-.folder:hover, .folder:focus-visible, .folder[aria-pressed="true"] { transform: translateY(-6px) scale(1.015); }
+/* ---------- shelves: one folder per course ----------
+   Abhyas's "Notes" folder (abhyas.iith.online), at its 272 x 220 size: the front panel is cut with
+   a diagonal notch at the top right, the builds sit in the notch as sheets of paper, and on hover
+   they slide out diagonally while the panel sinks. Here the panel is frosted glass, so what is
+   inside the notch is sharp and the rest of each sheet blurs through the front. The back is kept
+   much darker than the front: the notch shows the inside of the folder. */
+.shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 64px 24px; padding-top: 34px; }
+.folder { --pop: cubic-bezier(.34, 1.5, .64, 1); position: relative; display: block; height: 220px; padding: 0; border: 0; border-radius: 28px; background: none; color: var(--t-ink); text-align: left; cursor: pointer; font: inherit; box-shadow: 0 18px 34px -18px color-mix(in srgb, var(--t) 70%, #000 20%); transition: transform .38s cubic-bezier(.16, 1, .3, 1), box-shadow .38s cubic-bezier(.16, 1, .3, 1); }
+.folder:hover, .folder:focus-visible, .folder[aria-pressed="true"] { transform: translateY(-6px) scale(1.018); box-shadow: 0 26px 44px -16px color-mix(in srgb, var(--t) 70%, #000 25%); }
 .folder:focus-visible { outline: 3px solid var(--deep); outline-offset: 6px; }
-.f-back { position: absolute; inset: 0; z-index: 0; border-radius: 28px 48px 28px 28px; background: linear-gradient(160deg, color-mix(in srgb, var(--t) 86%, #000 10%), color-mix(in srgb, var(--t) 70%, #000 28%)); box-shadow: 0 22px 40px -22px color-mix(in srgb, var(--t) 70%, #000 30%); }
-.f-back::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(120% 70% at 20% 0%, rgba(255,255,255,.22), transparent 60%); }
+.f-back { position: absolute; inset: 0; z-index: 0; border-radius: 28px; background: linear-gradient(135deg, color-mix(in srgb, var(--t) 58%, #000 42%) 0%, color-mix(in srgb, var(--t) 40%, #000 60%) 100%); }
+.f-back::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(90% 60% at 80% 0%, rgba(255,255,255,.16), transparent 60%); }
 
-/* the builds, as sheets of paper with their picture on */
-.f-sheet { position: absolute; z-index: 1; left: 20px; right: 20px; top: 22px; height: 150px; overflow: hidden; display: flex; flex-direction: column; gap: 5px; padding: 10px 12px 12px; border-radius: 14px; background: #fff; color: var(--ink); box-shadow: 0 6px 16px rgba(0,0,0,.12); transition: transform .45s var(--pop); }
-.f-sheet-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.f-sheet-top i { width: 22px; height: 4px; border-radius: 2px; background: var(--t); }
-.f-sheet small { color: var(--muted); font: 500 10.5px/1 var(--mono); letter-spacing: .02em; }
-.f-sheet b { overflow: hidden; font-size: 13.5px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; text-overflow: ellipsis; }
-.f-sheet img, .f-blank { flex: 1; width: 100%; min-height: 0; height: auto; border-radius: 8px; object-fit: cover; background: var(--t-soft); }
-.f-blank { display: block; background: repeating-linear-gradient(-45deg, #fff 0 8px, var(--t-soft) 8px 16px); }
-.f-sheet.s2 { z-index: 0; top: 15px; left: 30px; right: 30px; opacity: .9; transform: rotate(2deg); }
-.f-sheet.s3 { z-index: 0; top: 8px; left: 40px; right: 40px; opacity: .75; transform: rotate(-2.5deg); }
-.folder:hover .f-sheet.s1, .folder:focus-visible .f-sheet.s1, .folder[aria-pressed="true"] .f-sheet.s1 { transform: translateY(-30px) rotate(-1deg); }
-.folder:hover .f-sheet.s2, .folder:focus-visible .f-sheet.s2, .folder[aria-pressed="true"] .f-sheet.s2 { transform: translate(20px, -42px) rotate(5deg); }
-.folder:hover .f-sheet.s3, .folder:focus-visible .f-sheet.s3, .folder[aria-pressed="true"] .f-sheet.s3 { transform: translate(-20px, -52px) rotate(-5deg); }
-.folder.one:hover .f-sheet.s1, .folder.one[aria-pressed="true"] .f-sheet.s1 { transform: translateY(-40px) rotate(-2deg); }
+/* the builds, tucked into the notch */
+.f-sheet { position: absolute; z-index: 3; top: 13px; right: 13px; width: 52%; height: 108px; display: flex; flex-direction: column; gap: 4px; padding: 10px 11px 11px 12px; overflow: hidden; border-radius: 13px; background: #fff; color: var(--ink); box-shadow: 0 5px 13px -6px rgba(0,0,0,.45); transition: transform .42s var(--pop); }
+.f-sheet-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.f-sheet-top i { width: 18px; height: 3.5px; border-radius: 2px; background: var(--t); }
+.f-sheet small { color: var(--muted); font: 500 10px/1 var(--mono); letter-spacing: .02em; }
+.f-sheet b { overflow: hidden; font-size: 12.5px; font-weight: 700; line-height: 1.2; letter-spacing: -.01em; white-space: nowrap; text-overflow: ellipsis; }
+.f-sheet img, .f-blank { flex: 1; width: 100%; min-height: 0; height: auto; border-radius: 7px; object-fit: cover; background: var(--t-soft); }
+.f-blank { display: block; background: repeating-linear-gradient(-45deg, #fff 0 7px, var(--t-soft) 7px 14px); }
+.f-sheet.s2 { z-index: 2; top: 23px; right: 27px; width: 49%; opacity: .82; }
+.f-sheet.s3 { display: none; }
+.folder.one .f-sheet.s1 { top: 16px; right: 18px; }
+.folder:hover .f-sheet.s1, .folder:focus-visible .f-sheet.s1, .folder[aria-pressed="true"] .f-sheet.s1 { transform: translate(7px, -31px) rotate(4.5deg); }
+.folder:hover .f-sheet.s2, .folder:focus-visible .f-sheet.s2, .folder[aria-pressed="true"] .f-sheet.s2 { transform: translate(-11px, -39px) rotate(-6.5deg); }
 
-/* the frosted pocket */
-.f-front { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; height: 132px; padding: 20px 22px; overflow: hidden; border: 1px solid rgba(255,255,255,.5); border-radius: 26px; background: linear-gradient(180deg, color-mix(in srgb, var(--t) 48%, transparent) 0%, color-mix(in srgb, var(--t) 82%, transparent) 100%); -webkit-backdrop-filter: blur(16px) saturate(170%); backdrop-filter: blur(16px) saturate(170%); box-shadow: inset 0 1px 0 rgba(255,255,255,.65), inset 0 -18px 30px -18px rgba(0,0,0,.18), 0 14px 28px -10px color-mix(in srgb, var(--t) 60%, transparent); transition: transform .38s ease; }
-.f-front::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, rgba(255,255,255,.46) 0%, rgba(255,255,255,.1) 34%, transparent 58%); pointer-events: none; }
-.f-front::after { content: ""; position: absolute; left: 18px; right: 18px; top: 9px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); pointer-events: none; }
-.folder:hover .f-front, .folder[aria-pressed="true"] .f-front { transform: translateY(5px); }
+/* the front: frosted glass with the notch cut out of it. The notch is cut with an SVG mask, not
+   clip-path: inside the page frame (rounded, overflow: clip) Chrome lets a clip-path'd backdrop blur
+   spill into the notch, while a mask clips the blur too. */
+.f-front { position: absolute; inset: 0; z-index: 4; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 22px; border-radius: 28px; background: linear-gradient(180deg, color-mix(in srgb, var(--t) 72%, transparent) 0%, color-mix(in srgb, var(--t) 90%, transparent) 100%); -webkit-backdrop-filter: blur(14px) saturate(165%); backdrop-filter: blur(14px) saturate(165%); --cut: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='0,0 33,0 46,38 100,38 100,100 0,100'/%3E%3C/svg%3E"); -webkit-mask: var(--cut) 0 0 / 100% 100% no-repeat; mask: var(--cut) 0 0 / 100% 100% no-repeat; box-shadow: inset 0 0 0 1px rgba(255,255,255,.34), inset 0 -22px 34px -24px rgba(0,0,0,.28); transition: transform .35s ease; }
+.f-front::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(118deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.12) 30%, transparent 52%), radial-gradient(70% 50% at 15% 100%, rgba(255,255,255,.14), transparent 70%); pointer-events: none; }
+.f-front::after { content: ""; position: absolute; top: 38%; left: 46%; right: 0; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.8), rgba(255,255,255,.3)); pointer-events: none; }
+.folder:hover .f-front, .folder[aria-pressed="true"] .f-front { transform: translateY(3px); }
 .f-id, .f-stat { position: relative; z-index: 1; }
 .f-id { min-width: 0; }
-.f-code { display: block; margin-bottom: 6px; font: 600 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; opacity: .82; }
-.f-title { display: block; font-size: 22px; font-weight: 700; letter-spacing: -.03em; line-height: 1.08; }
-.f-open { display: block; margin-top: 10px; font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; opacity: .85; }
+.f-code { display: block; margin-bottom: 5px; font: 500 11px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+.f-title { display: -webkit-box; overflow: hidden; font-size: 17px; font-weight: 700; letter-spacing: -.02em; line-height: 1.22; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.f-open { display: block; margin-top: 9px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
 .f-open span { display: inline-block; transition: transform .3s var(--pop); }
-.folder:hover .f-open span { transform: translateX(4px); }
-.f-stat { flex: none; text-align: right; }
-.f-stat b { display: block; font-size: 34px; font-weight: 800; letter-spacing: -.04em; line-height: .9; }
-.f-stat span { display: block; margin-top: 4px; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
+.folder:hover .f-open span { transform: translateX(3px); }
+.f-stat { flex: none; padding-left: 12px; text-align: right; }
+.f-stat b { display: block; font-size: 28px; font-weight: 800; line-height: 1; }
+.f-stat span { display: block; margin-top: 3px; font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; opacity: .8; }
 
-/* a stuck-on note for the shelf with the newest build */
-.f-sticky { position: absolute; z-index: 5; top: -12px; right: 18px; padding: 8px 12px 7px; border-radius: 4px 4px 7px 7px; background: linear-gradient(158deg, #ffe873 0%, #ffd43b 62%, #f5c518 100%); color: #4d3a00; font-size: 11px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 6px 14px -5px rgba(80, 60, 0, .5); transform: rotate(5deg); transition: transform .35s var(--pop); }
-.f-sticky::before { content: ""; position: absolute; top: -5px; left: 50%; width: 24px; height: 10px; border-radius: 2px; background: rgba(255,255,255,.6); transform: translateX(-50%) rotate(-3deg); }
-.folder:hover .f-sticky { transform: rotate(-3deg) scale(1.08); }
+/* a stuck-on note for the shelf with the newest build, on the solid top-left of the panel */
+.f-sticky { position: absolute; z-index: 5; top: -11px; left: 18px; padding: 7px 11px 6px; border-radius: 4px 4px 6px 6px; background: linear-gradient(158deg, #ffe873 0%, #ffd43b 62%, #f5c518 100%); color: #4d3a00; font-size: 10.5px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 5px 12px -4px rgba(80, 60, 0, .45); transform: rotate(-4deg); transition: transform .35s var(--pop); }
+.f-sticky::before { content: ""; position: absolute; top: -5px; left: 50%; width: 22px; height: 10px; border-radius: 2px; background: rgba(255,255,255,.55); transform: translateX(-50%); }
+.folder:hover .f-sticky { transform: rotate(3deg) scale(1.06); }
 
-/* the empty shelf: the same folder, drawn as glass outlines */
-.folder.is-sample .f-back { background: color-mix(in srgb, var(--t) 14%, #fff); border: 2px dashed color-mix(in srgb, var(--t) 65%, #000 8%); box-shadow: none; }
+/* an empty shelf: the same folder drawn as dashed glass */
+.folder.is-sample { box-shadow: none; }
+.folder.is-sample .f-back { background: color-mix(in srgb, var(--t) 14%, #fff); border: 2px dashed color-mix(in srgb, var(--t) 65%, #000 8%); }
 .folder.is-sample .f-back::after { display: none; }
-.folder.is-sample .f-front { color: var(--ink); background: linear-gradient(180deg, rgba(255,255,255,.35), color-mix(in srgb, var(--t) 30%, rgba(255,255,255,.5))); border: 2px dashed color-mix(in srgb, var(--t) 65%, #000 8%); box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
-.folder.is-sample .f-sheet { box-shadow: 0 4px 10px rgba(0,0,0,.06); }
+.folder.is-sample .f-front { color: var(--ink); background: linear-gradient(180deg, rgba(255,255,255,.45), color-mix(in srgb, var(--t) 28%, rgba(255,255,255,.6))); }
 
 /* ---------- filters ---------- */
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
@@ -179,10 +182,9 @@ a.build:hover .build-go { transform: rotate(45deg) scale(1.06); }
   .footer-wordmark { margin-top: 40px; }
   .page-footer .footer-bottom { flex-direction: column; gap: 6px; border-radius: 20px; text-align: center; }
   .build.is-featured .build-media { aspect-ratio: 16 / 10; }
-  .shelf { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 78px 6px 22px; margin: -48px -6px 0; scrollbar-width: none; }
+  .shelf { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 56px 6px 26px; margin: -30px -6px 0; scrollbar-width: none; }
   .shelf::-webkit-scrollbar { display: none; }
-  .folder { flex: 0 0 82%; scroll-snap-align: center; border-radius: 24px 38px 24px 24px; }
-  .f-back { border-radius: 24px 38px 24px 24px; }
+  .folder { flex: 0 0 min(78%, 290px); scroll-snap-align: center; }
   .steps { grid-template-columns: 1fr; }
   .steps li { min-height: 0; }
 }
