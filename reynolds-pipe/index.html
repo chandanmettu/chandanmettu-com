@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reynolds' Pipe · a 3D lesson</title>
+<meta name="description" content="Osborne Reynolds' 1883 pipe experiment as a 3D book page: the printed drawing lifts off the page, and the dye thread runs straight, wavers and tears into turbulence as you open the valve.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23243a63'/%3E%3Cpath d='M5 17h22' stroke='%23f6efe0' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M5 17c4 0 5-1 8 0s5 3 8-1 4-3 6-2' stroke='%237a3cff' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reynolds' Pipe · a 3D lesson">
+<meta property="og:description" content="Osborne Reynolds' 1883 experiment as a 3D book page: open the valve and watch the dye thread tear into turbulence.">
+<meta property="og:image" content="https://chandanmettu.com/reynolds-pipe/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="./style.css?v=e37bd423">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<script type="module" src="./src/main.js?v=e37bd423"></script>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="An open book with Reynolds' apparatus on the right page. Use the text version, or the arrow keys to turn the valve."></canvas>
+
+<div id="ui">
+  <div class="capsule glass" role="toolbar" aria-label="Lesson controls">
+    <button id="bText" class="ic" title="Text version (T)" aria-label="Text version">≡</button>
+    <button id="bPrev" class="ic" title="Previous shot" aria-label="Previous">‹</button>
+    <div class="cap"><span id="caption" aria-live="polite">Opening the book…</span><span class="dots" id="dots" aria-hidden="true"></span></div>
+    <button id="bPlay" class="pill" title="Play">Lift the drawing</button>
+    <button id="bNext" class="ic" title="Next shot" aria-label="Next">›</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button id="bView" class="ic" title="Read the page / look at the figure (V)" aria-label="Switch view">⧉</button>
+    <button id="bFold" class="ic" title="Fold the drawing back into print" aria-label="Fold into print">⤓</button>
+    <button id="bSound" class="ic" title="Sound on" aria-label="Sound" aria-pressed="false">♪</button>
+    <button id="bStill" class="ic" title="Still mode" aria-label="Still mode" aria-pressed="false">◐</button>
+    <button id="bFull" class="ic" title="Full screen" aria-label="Full screen">⛶</button>
+  </div>
+  <p id="credit">Chandan Mettu · built with Claude · after “Every Joule” by Techartist</p>
+
+  <aside id="bench" class="bench glass" aria-label="Bench controls and readings">
+    <button id="benchToggle" class="grip" aria-expanded="true"><span>Bench</span><span class="chev" aria-hidden="true">▾</span></button>
+    <div class="body">
+      <div class="big"><b id="r-re">–</b><span id="r-regime">–</span></div>
+      <label class="slider"><span>Outlet valve</span><output id="valve-out"></output><input id="valve" type="range" min="0" max="100" step="1" value="40"></label>
+      <label class="slider"><span>Water temperature</span><output id="temp-out"></output><input id="temp" type="range" min="5" max="60" step="1" value="20"></label>
+      <label class="slider"><span>Tank left to settle for</span><output id="still-out"></output><input id="still" type="range" min="0" max="100" step="1" value="50"></label>
+      <div class="actions">
+        <button type="button" id="stir">Stir the tank</button>
+        <button type="button" id="dye" aria-pressed="true">Dye on</button>
+        <button type="button" id="flush">Flush</button>
+        <button type="button" id="restart" title="Clear the prediction, flap and stamp and open the book again">Start over</button>
+      </div>
+      <dl class="readings">
+        <dt>Mean velocity, V</dt><dd id="r-v">–</dd>
+        <dt>Discharge, Q</dt><dd id="r-q">–</dd>
+        <dt>Kinematic viscosity, ν</dt><dd id="r-nu">–</dd>
+        <dt>Head drop between taps</dt><dd id="r-dh">–</dd>
+        <dt>f measured / 64/Re / Blasius</dt><dd id="r-f">–</dd>
+        <dt class="key">Re where this tank trips</dt><dd id="r-onset" class="key">–</dd>
+        <dt>Tube that is turbulent</dt><dd id="r-gamma">–</dd>
+      </dl>
+    </div>
+  </aside>
+</div>
+
+<main id="a11y" class="sr" aria-label="Text version of the lesson" tabindex="-1">
+  <h1>Reynolds' pipe</h1>
+  <p>When does a smooth flow turn chaotic? In 1883 Osborne Reynolds let water run from a still tank through a glass tube and fed a fine thread of dye into its mouth. While the water ran slowly the thread stayed straight. Opened past a certain speed, it flashed into eddies and filled the tube. What decides it is one number, Re = ρVD/μ: the water's inertia over its viscosity.</p>
+  <h2>1. Predict</h2>
+  <p>Before you open the valve, what will the dye do?</p>
+  <div id="a11yPredict"></div>
+  <h2>2. Try</h2>
+  <p>Use the bench controls: the outlet valve, the water temperature and how long the tank has settled. The live readings are below.</p>
+  <p id="a11yLive" aria-live="polite"></p>
+  <h2>Why</h2>
+  <p>Below about Re 2,000 any disturbance dies away and the thread stays straight. Above it a disturbance can grow into a puff of eddies, and the puffs join up as the speed rises. How far above depends on how still the water is: stirred, the tank trips near 2,000; left for hours, Reynolds kept the thread straight to about 13,000.</p>
+  <h2>3. Challenge</h2>
+  <p>Make the dye thread break up while Re is still below 3,000. Hint: a still tank holds out a long time.</p>
+  <h2>The model</h2>
+  <p>Tube: ½ inch bore, 1.5 m long, 0.5 m of head, piezometer taps at 0.3 m and 1.2 m. The flow comes from one energy balance, H = (1 + K_in + fL/D + K_valve) V²/2g, with f = (1 − γ)·64/Re + γ·0.316 Re^−¼ and viscosity from the Vogel equation. Transition is a one-dimensional intermittency field carried with the flow. A teaching model of transition, not a turbulence simulation.</p>
+  <p>Made by Chandan Mettu with Claude. The book-page style follows “Every Joule” by Techartist.</p>
+  <p>Source: O. Reynolds (1883), An experimental investigation of the circumstances which determine whether the motion of water shall be direct or sinuous, Phil. Trans. R. Soc. 174, 935–982. Companion to the Transport Laboratory of the transport phenomena course.</p>
+</main>
+
+<div id="loader" role="status" aria-live="polite">
+  <div class="mark">
+    <div class="ta" aria-label="Reynolds' pipe"><i>R</i><i>e</i><i>y</i><i>n</i><i>o</i><i>l</i><i>d</i><i>s</i><i>’</i><i>&nbsp;</i><i>p</i><i class="ii"><b>ı</b><span class="drop"></span></i><i>p</i><i>e</i></div>
+    <svg class="thread" viewBox="0 0 260 16" aria-hidden="true"><path d="M4 8 H120 C 140 8, 146 3, 158 8 S 176 14, 186 6 S 210 2, 220 10 S 244 12, 256 7"/></svg>
+    <span class="sub">A 3D lesson · after Osborne Reynolds, 1883</span>
+  </div>
+</div>
+<div id="nogl" role="alert"><div><h1>This lesson needs WebGL</h1><p>Your browser could not start 3D graphics. Try a recent Chrome, Edge, Firefox or Safari, or turn on hardware acceleration. The text version of the lesson still works: press Tab.</p></div></div>
+<noscript><p class="noscript">This lesson needs JavaScript to open the book.</p></noscript>
+</body>
+</html>

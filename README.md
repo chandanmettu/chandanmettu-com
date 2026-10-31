@@ -19,6 +19,7 @@ The live source for Chandan Mettu's personal website.
 | `/profile/` | `profile/index.html` | Extended profile and resume-style record |
 | `/v1/` | `v1/index.html` | Compatibility redirect to the homepage |
 | `/404.html` | `404.html` | Not-found page |
+| `/reynolds-pipe/` | `reynolds-pipe/` | Reynolds' 1883 pipe experiment as a 3D lesson (a class demo for the transport phenomena course). Exported from `Under Development/Reynolds Pipe 3D` with its `tools/export.py`: edit there, re-export, never hand-edit here |
 
 The homepage uses a circular selector for work and interests, palette transitions, profile-specific
 proof cards and responsive content collections. Athlete results, galleries and the
