@@ -7,6 +7,9 @@ ErrorDocument 404 /404.html
   RewriteCond %{HTTP_HOST} ^www\.chandanmettu\.com$ [NC]
   RewriteRule ^(.*)$ https://chandanmettu.com/$1 [R=301,L]
 
+  # Shareable persona links: /builder, /creator, /athlete, /educator open the homepage on that persona
+  RewriteRule ^(builder|creator|athlete|educator)/?$ /#$1 [NE,R=302,L]
+
   # Repository housekeeping files are not part of the public site
   RewriteRule ^(README\.md|CNAME|\.nojekyll|\.gitignore)$ - [R=404,L]
 

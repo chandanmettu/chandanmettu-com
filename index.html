@@ -2248,6 +2248,8 @@ function render(mode,animateText=true,direction=1){
   athleteFocusCleanup();athleteFocusCleanup=()=>{};
   certificateLoopCleanup();certificateLoopCleanup=()=>{};
   body.dataset.mode=mode;applyPreviewTheme(mode);
+ // keep the address bar on the chosen persona, so a copied link opens straight to it
+ try{history.replaceState(null,'',mode==='overview'?location.pathname+location.search:'#'+mode)}catch{}
   athleteProofHead.hidden=mode!=='athlete';
   if(mode==='athlete')panelInner.append(collectionHead,collection,athleteProofHead,stats);
   else panelInner.append(stats,collectionHead,collection,athleteProofHead);
@@ -2489,6 +2491,8 @@ if(initialMode!=='overview'){
   modeHint.textContent=`${modes[initialMode].label} selected. Explore the story below.`;
 }else scheduleAutoShowcase(2600);
 requestWheel();updateScrollEffects();syncShowcaseViewport();
+// a shared link like /#educator (or /educator) opens that persona and stays on it
+addEventListener('hashchange',()=>{const m=location.hash.replace('#','');if(!['builder','creator','athlete','educator'].includes(m)||m===body.dataset.mode)return;stopAutoShowcase();wheelTarget=targetForMode(m);render(m,!reduced);requestWheel();modeHint.textContent=`${modes[m].label} selected. Explore the story below.`});
 // Keep the card wheel clear of the hero text. The hero is sticky, so it cannot just grow
 // past the viewport; instead the wheel scales down (sized for the longest persona copy).
 const heroCopyBlock=hero.querySelector('.hero-copy');
