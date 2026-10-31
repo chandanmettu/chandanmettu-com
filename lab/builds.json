@@ -62,11 +62,12 @@
       "summary": "The course lab’s solver beside an exponential-scheme Crank–Nicolson upgrade, both checked against the exact solution.",
       "tags": [
         "Numerics",
-        "Advection–diffusion"
+        "Advection–diffusion",
+        "Present mode"
       ],
-      "href": "#",
+      "href": "./transport-lab-upgrade/",
       "image": "thumbs/transport-lab-upgrade.jpg",
-      "status": "soon"
+      "status": "open"
     },
     {
       "slug": "reynolds-pipe",
