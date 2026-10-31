@@ -1,0 +1,673 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="canonical" href="https://chandanmettu.com/lab/transport-lab-upgrade/">
+<meta name="description" content="The Transport Laboratory's explicit upwind solver beside an exponential-scheme Crank-Nicolson upgrade, run live on the same grid and checked against the exact solution.">
+<meta name="author" content="Chandan Mettu">
+<link rel="icon" href="../../assets/brand/chandan-mettu-icon-32.png" sizes="32x32" type="image/png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://chandanmettu.com/lab/transport-lab-upgrade/">
+<meta property="og:image" content="https://chandanmettu.com/lab/thumbs/transport-lab-upgrade.jpg">
+</head><body>
+<title>Transport Lab Upgrade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: full-screen bench. Verdict and two plots fill the left; every control and reading sits in the right column. */
+:root{
+  --page:#f2f2ef;--surface:#fcfcfb;--ink:#1c1c1e;--ink-soft:#5a5a5e;--ink-faint:#8b8b90;--rule:#dcdbd6;--grid:#ebeae6;
+  --his:#eb6834;--up:#6250d6;--truth:#1c1c1e;--machine:#eef3ea;--win:#2f7d55;--bad:#b4232c;--btn:#ffffff;
+  --serif:"Spectral",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --page:#0b0b0b;--surface:#141413;--ink:#e8e8e6;--ink-soft:#a4a4a6;--ink-faint:#727275;--rule:#2c2c2e;--grid:#222221;
+  --his:#d95926;--up:#9085e9;--truth:#f0efec;--machine:#18231b;--win:#6bd09a;--bad:#f07a7a;--btn:#1b1b1a;color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --page:#0b0b0b;--surface:#141413;--ink:#e8e8e6;--ink-soft:#a4a4a6;--ink-faint:#727275;--rule:#2c2c2e;--grid:#222221;
+  --his:#d95926;--up:#9085e9;--truth:#f0efec;--machine:#18231b;--win:#6bd09a;--bad:#f07a7a;--btn:#1b1b1a;color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;background:var(--page);color:var(--ink)}
+body{margin:0;font:15px/1.5 var(--serif);-webkit-font-smoothing:antialiased}
+@media (min-width:901px){body{overflow:hidden}}
+.app{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr)}
+.bar{display:flex;align-items:center;gap:28px;padding:12px 20px;border-bottom:1px solid var(--rule)}
+.bar .eyebrow{font:500 10px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 2px}
+.bar h1{font:500 28px/1.1 var(--serif);margin:0;white-space:nowrap}
+.bar h1 em{font-style:italic;font-weight:400;color:var(--up)}
+.bar p.lede{margin:0;font-size:14px;line-height:1.45;color:var(--ink-soft);max-width:84ch}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 380px;min-height:0}
+.main{display:grid;grid-template-rows:auto minmax(0,1.25fr) minmax(0,1fr);gap:10px;padding:14px 16px;min-height:0;min-width:0;position:relative}
+.verdict{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tile{background:var(--surface);box-shadow:0 0 0 1px var(--rule);padding:10px 14px;min-width:0}
+.tile .k{font:500 10.5px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+.tile .v{font:500 26px/1.15 var(--mono);font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .s{font-size:13px;color:var(--ink-soft)}
+#verdict .v{font:500 17px/1.3 var(--serif);white-space:normal}
+#verdict[data-state="win"] .v{color:var(--win)}
+#verdict[data-state="bad"] .v{color:var(--bad)}
+.card{background:var(--surface);box-shadow:0 0 0 1px var(--rule);min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr)}
+.card h2{font:500 10.5px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:0;padding:10px 14px 0;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.legend{display:flex;gap:14px;flex-wrap:wrap;text-transform:none;letter-spacing:0;font:400 12.5px/1.3 var(--serif);color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{display:inline-block;width:18px;height:10px;flex:none}
+.truth-sw{border-top:2px solid var(--truth);height:0}
+.his-sw{background:radial-gradient(circle,transparent 2.4px,var(--his) 2.6px,var(--his) 3.8px,transparent 4px)}
+.up-sw{background:radial-gradient(circle,var(--up) 3px,transparent 3.3px)}
+.card svg{width:100%;height:100%;display:block;min-height:0;touch-action:pan-y}
+.grid line{stroke:var(--grid);stroke-width:1}
+.grid line.minor{stroke:var(--grid)}
+.axes .base{stroke:var(--ink-faint);stroke-width:1}
+.tick{font:400 10.5px var(--mono);fill:var(--ink-faint)}
+.axis{font:400 12px var(--serif);fill:var(--ink-soft)}
+.truth{fill:none;stroke:var(--truth);stroke-width:2}
+.his-line{fill:none;stroke:var(--his);stroke-width:2;stroke-dasharray:5 4}
+.up-line{fill:none;stroke:var(--up);stroke-width:2}
+.his-dot{fill:var(--surface);stroke:var(--his);stroke-width:1.6}
+.up-dot{fill:var(--up);stroke:var(--surface);stroke-width:1}
+.machine{fill:var(--machine)}
+.band-label{font:400 10.5px var(--mono);fill:var(--ink-faint)}
+.cross{stroke:var(--ink-faint);stroke-width:1;stroke-dasharray:2 3}
+.tip[hidden]{display:none!important}
+.tip{position:absolute;z-index:3;width:220px;background:var(--surface);box-shadow:0 0 0 1px var(--rule),0 6px 18px #0000001f;padding:9px 11px;display:grid;gap:3px;font-size:12.5px;pointer-events:none}
+.tip b{font:500 11px var(--mono);color:var(--ink-faint);font-weight:500}
+.tip span{display:flex;align-items:center;gap:6px}
+.tip em{margin-left:auto;font:500 12px var(--mono);font-style:normal;font-variant-numeric:tabular-nums}
+.tip .tip-err{color:var(--ink-soft);padding-left:24px}
+.side{overflow-y:auto;border-left:1px solid var(--rule);padding:14px;display:grid;gap:12px;align-content:start;min-height:0}
+.panel{background:var(--surface);box-shadow:0 0 0 1px var(--rule);padding:14px}
+.panel h3{font:500 10.5px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button,.seg button,.actions button{font:500 12px/1.2 var(--mono);padding:7px 9px;border:1px solid var(--rule);background:var(--btn);color:var(--ink);cursor:pointer}
+.chips button[aria-pressed="true"],.seg button[aria-pressed="true"]{border-color:var(--up);box-shadow:inset 0 0 0 1px var(--up)}
+.seg{display:inline-flex}
+.seg button+button{border-left:0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.row label,.row .lab{font-size:14px}
+.slider{display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:2px 10px;margin-top:10px}
+.slider label{font-size:14px}
+.slider output{justify-self:end;font:500 12px/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.slider input{grid-column:1/-1;width:100%;accent-color:var(--up);margin:3px 0 0}
+.slider input:disabled{opacity:.4}
+select{font:500 12px var(--mono);padding:5px 6px;background:var(--btn);color:var(--ink);border:1px solid var(--rule)}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions button[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--up);outline-offset:2px}
+.readings{display:grid;grid-template-columns:1fr auto;gap:5px 12px;margin:0;font-size:13.5px}
+.readings dt{color:var(--ink-soft)}
+.readings dd{margin:0;font:500 12.5px/1.5 var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+details.panel summary{cursor:pointer;font:500 10.5px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+details.panel p,details.panel li{font-size:14px;line-height:1.5}
+details.panel h4{font:500 15px/1.3 var(--serif);margin:14px 0 4px}
+.eq{font:400 12.5px/1.6 var(--mono);background:var(--page);padding:8px 10px;overflow-x:auto}
+a{color:var(--up);text-underline-offset:2px}
+@media (max-width:900px){
+  .app{height:auto;display:block}
+  .bar{display:block;padding:12px 16px}
+  .bar p.lede{margin-top:6px}
+  .workspace{display:block}
+  .main{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--page);grid-template-rows:auto 220px 150px;padding:8px 10px}
+  .verdict{grid-template-columns:1fr 1fr}
+  #verdict{grid-column:1/-1}
+  .tile .v{font-size:19px}
+  .side{border-left:0;padding:12px 16px 40px;overflow:visible}
+}
+</style>
+
+<div class="app">
+  <header class="bar">
+    <div><p class="eyebrow">Transport Laboratory · solver upgrade</p><h1>Same lab, <em>exact fluxes</em></h1></div>
+    <p class="lede">The Transport Laboratory's explicit upwind scheme and an exponential-scheme Crank–Nicolson upgrade run side by side on the same grid, each checked against the exact solution. Change anything on the right and both re-solve live.</p>
+  </header>
+  <main class="workspace">
+    <section class="main" id="plots" aria-label="Solutions and errors">
+      <div class="verdict">
+        <div class="tile"><div class="k"><i class="sw his-sw"></i>His solver · max error</div><div class="v" id="v-his">–</div><div class="s">explicit Euler, first-order upwind</div></div>
+        <div class="tile"><div class="k"><i class="sw up-sw"></i>Upgraded · max error</div><div class="v" id="v-up">–</div><div class="s">exponential scheme, Crank–Nicolson</div></div>
+        <div class="tile" id="verdict"><div class="k">Verdict</div><div class="v" id="v-ratio">–</div><div class="s" id="v-truth"></div></div>
+      </div>
+      <div class="card">
+        <h2>Field across the slab <span class="legend"><span><i class="sw truth-sw"></i><span id="legend-truth">exact solution</span></span><span><i class="sw his-sw"></i>his solver</span><span><i class="sw up-sw"></i>upgraded</span></span></h2>
+        <svg id="profile" role="img" aria-label="Field across the slab: the exact or reference solution as a line, his solver as hollow orange rings, the upgraded solver as filled violet dots."></svg>
+      </div>
+      <div class="card">
+        <h2>Error at each cell, log scale <span class="legend"><span><i class="sw" style="border-top:2px dashed var(--his);height:0"></i>his solver</span><span><i class="sw" style="border-top:2px solid var(--up);height:0"></i>upgraded</span></span></h2>
+        <svg id="errors" role="img" aria-label="Absolute error at each cell on a logarithmic scale for both solvers."></svg>
+      </div>
+      <div class="tip" id="tip" hidden></div>
+    </section>
+    <aside class="side" aria-label="Controls and readings">
+      <div class="panel">
+        <h3>Cases</h3>
+        <div class="chips">
+          <button type="button" data-case="default">His default: conduction</button>
+          <button type="button" data-case="flow10">Heat with flow 10 %</button>
+          <button type="button" data-case="flow30">Heat with flow 30 %</button>
+          <button type="button" data-case="steadyAD">Steady advection–diffusion</button>
+          <button type="button" data-case="source">Heat source</button>
+          <button type="button" data-case="mass">Species with flow</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Problem</h3>
+        <div class="row"><span class="lab">Quantity</span><span class="seg"><button type="button" data-mode="heat">Heat</button><button type="button" data-mode="mass">Species</button></span></div>
+        <div class="row"><span class="lab">Solution</span><span class="seg"><button type="button" data-sol="transient">Transient</button><button type="button" data-sol="steady">Steady</button></span></div>
+        <div class="slider"><label for="property" id="property-label">Conductivity, k</label><output id="property-out" for="property"></output><input id="property" type="range" min="0" max="100" step="1"></div>
+        <div class="slider"><label for="flow">Flow velocity, u</label><output id="flow-out" for="flow"></output><input id="flow" type="range" min="0" max="100" step="1"></div>
+        <div class="slider"><label for="left">Left face value</label><output id="left-out" for="left"></output><input id="left" type="range" min="0" max="100" step="1"></div>
+        <div class="row"><span class="lab">Right face</span><span class="seg"><button type="button" data-right="open">Zero gradient</button><button type="button" data-right="fixed">Fixed</button></span></div>
+        <div class="slider"><label for="right">Right face value</label><output id="right-out" for="right"></output><input id="right" type="range" min="0" max="100" step="1"></div>
+        <div class="slider"><label for="source">Volumetric source</label><output id="source-out" for="source"></output><input id="source" type="range" min="0" max="100" step="1"></div>
+      </div>
+      <div class="panel">
+        <h3>Numerics</h3>
+        <div class="row"><label for="cells">Cells, N</label><select id="cells"><option>16</option><option>32</option><option>64</option><option>128</option><option>256</option></select></div>
+        <div class="row"><label for="dtmult">Upgraded step, × his step</label><select id="dtmult"><option value="1">1×</option><option value="4">4×</option><option value="16">16×</option><option value="64">64×</option></select></div>
+        <div class="row"><label for="speed">Playback, simulated s per s</label><select id="speed"><option value="0.25">0.25</option><option value="1">1</option><option value="4">4</option><option value="16">16</option></select></div>
+        <div class="actions"><button type="button" id="run" aria-pressed="true">Pause</button><button type="button" id="reset">Restart</button></div>
+      </div>
+      <div class="panel">
+        <h3>Readings</h3>
+        <dl class="readings">
+          <dt>Time</dt><dd id="r-time">–</dd>
+          <dt>His time step (his stability rule)</dt><dd id="r-dt">–</dd>
+          <dt>Upgraded time step</dt><dd id="r-dtu">–</dd>
+          <dt>Steps taken, his · upgraded</dt><dd id="r-steps">–</dd>
+          <dt>Fourier number, αt/L²</dt><dd id="r-fo">–</dd>
+          <dt>Péclet number, uL/α</dt><dd id="r-pe">–</dd>
+          <dt>Cell Péclet number, uΔx/α</dt><dd id="r-cpe">–</dd>
+          <dt>His step: C + 2r (must be ≤ 1)</dt><dd id="r-c">–</dd>
+        </dl>
+      </div>
+      <details class="panel" open>
+        <summary>What changed, and why it matters</summary>
+        <h4>1. A stability bug in the explicit step</h4>
+        <p>The lab takes Δt = min(0.42 ρc<sub>p</sub>Δx²/k, 0.7 Δx/u). Explicit upwind advection–diffusion needs the two together, C + 2r ≤ 1 (and less at the half-cell boundary faces). With the default conductivity and the flow slider at 30 %, C + 2r ≈ 1.09, and the field reaches 10¹⁸⁰ K while the balance panel still reads BALANCED: the scheme is conservative, so the ledger closes even as the solution explodes.</p>
+        <h4>2. First-order upwind smears the field</h4>
+        <p>Upwind face values add numerical diffusion of about uΔx/2. On the lab's 64 cells that is a 20 K error at Pe ≈ 38 that converges only at first order. The exponential scheme (Patankar 1980) uses the exact 1D advection–diffusion profile between neighbouring cells, so for constant properties without a source the steady cell values are exact at any Péclet number, on any grid.</p>
+        <div class="eq">flux across a face = F·T<sub>up</sub> − A·(T<sub>down</sub> − T<sub>up</sub>), F = ρc<sub>p</sub>u, A = F/(e<sup>F·d/k</sup> − 1)</div>
+        <h4>3. Crank–Nicolson in time</h4>
+        <p>One tridiagonal solve per step, using the lab's own solver, second order in time and stable at any step (two backward-Euler steps first, after Rannacher, to damp the jump at the left face). Try “Upgraded step 16×”.</p>
+        <h4>Where it does not win</h4>
+        <p>For pure conduction the lab's explicit scheme is already accurate (about 0.03 K at 10 s); at the same step the upgrade matches it within a few hundredths of a kelvin. The gain is in advection, stability and step size, not in conduction.</p>
+        <h4>Measured on the lab's 64 cells</h4>
+        <ul>
+          <li>Steady, flow 10 / 30 / 100 %: his 8.3 / 19.9 / 33.7 K, upgraded 2×10⁻¹¹ / 7×10⁻¹² / 5×10⁻¹³ K.</li>
+          <li>Transient, flow 10 %, t = 3 s, against a 2048-cell reference: his 5.6 K, upgraded 0.34 K.</li>
+          <li>Transient, flow 30 %: his diverges; upgraded within 1.5 K.</li>
+        </ul>
+        <h4>Sources</h4>
+        <ul>
+          <li>S. V. Patankar, <em>Numerical Heat Transfer and Fluid Flow</em> (1980), §5.2, the exponential scheme.</li>
+          <li>J. Crank and P. Nicolson (1947), Proc. Camb. Phil. Soc. 43, 50–67.</li>
+          <li>R. Rannacher (1984), Numer. Math. 43, 309–327, smoothing start-up steps.</li>
+          <li>The original: <a href="https://saswataiith.github.io/transport-phenomena-course/" target="_blank" rel="noopener">Transport Laboratory</a> by S. Bhattacharyya; its time-step rule, upwind fluxes and parameter scales are ported unchanged. Built with Claude.</li>
+        </ul>
+      </details>
+    </aside>
+  </main>
+</div>
+<script type="module">
+// Two solvers for the Transport Laboratory's 1D slab, on the same finite-volume grid
+// (N cells, Dirichlet left face, right face fixed or zero-gradient, advection u ≥ 0, uniform source):
+//
+//   original  — a line-for-line port of saswataiith/transport-phenomena-course app.js (6 Oct 2026):
+//               explicit Euler, first-order upwind advection, dt = min(0.42 C dx²/Γ, 0.7 dx/u) with the
+//               per-mode caps, and the upwind tridiagonal steady solve.
+//   upgraded  — Patankar's exponential scheme for the face fluxes (exact at cell centres for steady 1D
+//               advection–diffusion at any Péclet number, central differencing as Pe → 0) with
+//               Crank–Nicolson time stepping (two backward-Euler start-up steps, Rannacher).
+//               Unconditionally stable; one tridiagonal solve per step.
+//
+// exact     — closed-form solutions for the cases the lab can set up.
+
+function setup({ N = 64, L = 0.02, gamma, capacity, u = 0, source = 0, left, right = null, initial }) {
+  return { N, L, dx: L / N, gamma, capacity, u, source, left, right, initial };
+}
+const xs = (s) => Array.from({ length: s.N }, (_, i) => (i + 0.5) * s.dx);
+
+// ---------------------------------------------------------------- tridiagonal (Thomas)
+function thomas(lower, diag, upper, rhs) {
+  const n = diag.length, c = upper.slice(), d = rhs.slice(), b = diag.slice();
+  for (let i = 1; i < n; i++) { const w = lower[i] / b[i - 1]; b[i] -= w * c[i - 1]; d[i] -= w * d[i - 1]; }
+  const x = new Array(n);
+  x[n - 1] = d[n - 1] / b[n - 1];
+  for (let i = n - 2; i >= 0; i--) x[i] = (d[i] - c[i] * x[i + 1]) / b[i];
+  return x;
+}
+
+// ---------------------------------------------------------------- original (port)
+function originalDt(s, caps = { heat: 1 }) {
+  const dtDiff = (0.42 * s.capacity * s.dx * s.dx) / (s.gamma || 1);
+  const dtAdv = s.u > 0 ? (0.7 * s.dx) / s.u : Infinity;
+  let dt = Math.min(dtDiff, dtAdv);
+  if (caps.heat) dt = Math.min(dt, caps.heat);
+  return dt;
+}
+function originalStep(s, field, dt) {
+  const { N, dx, gamma: g, capacity: C, u } = s;
+  const flux = new Array(N + 1).fill(0);
+  flux[0] = (-g * (field[0] - s.left)) / (dx / 2) + (u > 0 ? u * C * s.left : 0);
+  for (let j = 1; j < N; j++) flux[j] = (-g * (field[j] - field[j - 1])) / dx + (u >= 0 ? u * C * field[j - 1] : u * C * field[j]);
+  if (s.right !== null) flux[N] = (-g * (s.right - field[N - 1])) / (dx / 2) + (u > 0 ? u * C * field[N - 1] : 0);
+  else flux[N] = u > 0 ? u * C * field[N - 1] : 0;
+  return field.map((v, i) => v + (dt * ((flux[i] - flux[i + 1]) / dx + s.source)) / C);
+}
+function originalSteady(s) {
+  const { N, dx, gamma: g, capacity: C, u } = s;
+  const ac = u * C;
+  const lo = new Array(N).fill(0), di = new Array(N).fill(0), up = new Array(N).fill(0), rhs = new Array(N).fill(-s.source * dx);
+  for (let i = 0; i < N; i++) {
+    if (i === 0) { di[i] += (-2 * g) / dx; rhs[i] -= ((2 * g) / dx + ac) * s.left; }
+    else { lo[i] += g / dx + ac; di[i] += -g / dx; }
+    if (i === N - 1) { if (s.right !== null) { di[i] -= (2 * g) / dx + ac; rhs[i] -= (2 * g * s.right) / dx; } else di[i] -= ac; }
+    else { di[i] -= g / dx + ac; up[i] += g / dx; }
+  }
+  return thomas(lo, di, up, rhs);
+}
+
+// ---------------------------------------------------------------- upgraded
+// Exponential-scheme face coefficients (Patankar 1980, §5.2): for a face of length d between upstream
+// value a and downstream value b, the exact steady 1D advection–diffusion flux is F·a − A·(b − a)
+// with F = C·u, D = Γ/d, A = F/(e^(F/D) − 1) (→ D as F → 0). Exact at the cell centres for any Péclet number.
+const faceA = (F, D) => (Math.abs(F / D) < 1e-9 ? D - F / 2 : F / Math.expm1(F / D));
+function operator(s) {
+  const { N, dx, gamma: g, capacity: C, u } = s;
+  const F = u * C;
+  const lo = new Array(N).fill(0), di = new Array(N).fill(0), up = new Array(N).fill(0), b = new Array(N).fill(s.source * dx);
+  const Ai = faceA(F, g / dx), Ab = faceA(F, (2 * g) / dx);
+  for (let i = 0; i < N; i++) {
+    // west face: inflow F·T_W + A·(T_W − T_i)
+    if (i === 0) { di[i] -= Ab; b[i] += (F + Ab) * s.left; }
+    else { lo[i] += F + Ai; di[i] -= Ai; }
+    // east face: outflow F·T_i + A·(T_i − T_E)
+    if (i === N - 1) {
+      if (s.right !== null) { di[i] -= F + Ab; b[i] += Ab * s.right; }
+      else di[i] -= F;
+    } else { di[i] -= F + Ai; up[i] += Ai; }
+  }
+  return { lo, di, up, b };
+}
+const apply = (op, T) => T.map((t, i) => op.di[i] * t + (i > 0 ? op.lo[i] * T[i - 1] : 0) + (i < T.length - 1 ? op.up[i] * T[i + 1] : 0) + op.b[i]);
+function upgradedStep(s, field, dt, theta = 0.5) {
+  const op = operator(s), M = (s.capacity * s.dx) / dt;
+  const ex = apply(op, field);
+  const lo = op.lo.map((v) => -theta * v), up = op.up.map((v) => -theta * v), di = op.di.map((v) => M - theta * v);
+  const rhs = field.map((t, i) => M * t + (1 - theta) * ex[i] + theta * op.b[i]);
+  return thomas(lo, di, up, rhs);
+}
+function upgradedSteady(s) {
+  const op = operator(s);
+  return thomas(op.lo, op.di, op.up, op.b.map((v) => -v));
+}
+// run the upgraded scheme from t to t+span with steps dt (first two backward Euler)
+function upgradedRun(s, field, span, dt, stepsDone = 0) {
+  let T = field, t = 0, k = stepsDone;
+  while (t < span - 1e-12) {
+    const h = Math.min(dt, span - t);
+    T = upgradedStep(s, T, h, k < 2 ? 1 : 0.5);
+    t += h; k++;
+  }
+  return { T, steps: k };
+}
+
+// ---------------------------------------------------------------- exact solutions
+// Steady, constant properties. Left T(0)=TL; right fixed T(L)=TR or zero diffusive flux.
+function exactSteady(s) {
+  const { L, gamma: g, capacity: C, u, source: S, left: TL, right: TR } = s;
+  const alpha = g / C;
+  return xs(s).map((x) => {
+    if (u > 0 && S === 0 && TR !== null) {
+      const Pe = (u * L) / alpha;
+      if (Pe > 700) return x < L ? TL : TR;
+      return TL + ((TR - TL) * Math.expm1((Pe * x) / L)) / Math.expm1(Pe);
+    }
+    if (u > 0 && S === 0 && TR === null) return TL;
+    if (u === 0 && TR !== null) return TL + ((TR - TL) * x) / L + (S * x * (L - x)) / (2 * g);
+    if (u === 0 && TR === null) return TL + (S / g) * (L * x - (x * x) / 2);
+    return NaN;
+  });
+}
+// Transient conduction (u = 0, S = 0) from a uniform initial value, left face held at TL.
+function exactTransient(s, t, terms = 400) {
+  const { L, gamma: g, capacity: C, left: TL, right: TR, initial: T0 } = s;
+  const alpha = g / C;
+  return xs(s).map((x) => {
+    if (TR === null) {
+      let sum = 0;
+      for (let n = 0; n < terms; n++) {
+        const m = ((2 * n + 1) * Math.PI) / (2 * L);
+        sum += (4 / ((2 * n + 1) * Math.PI)) * Math.sin(m * x) * Math.exp(-m * m * alpha * t);
+      }
+      return TL + (T0 - TL) * sum;
+    }
+    // both faces fixed: steady line plus decaying sine series
+    let sum = 0;
+    for (let n = 1; n <= terms; n++) {
+      const m = (n * Math.PI) / L;
+      const bn = (2 / (n * Math.PI)) * ((T0 - TL) * (1 - Math.cos(n * Math.PI)) - (TR - TL) * -Math.cos(n * Math.PI) * 1 + 0);
+      sum += bn * Math.sin(m * x) * Math.exp(-m * m * alpha * t);
+    }
+    return TL + ((TR - TL) * x) / L + sum;
+  });
+}
+const errors = (a, b) => {
+  let max = 0, sq = 0;
+  for (let i = 0; i < a.length; i++) { const d = a[i] - b[i]; max = Math.max(max, Math.abs(d)); sq += d * d; }
+  return { max, rms: Math.sqrt(sq / a.length) };
+};
+
+// Solver bench: his explicit-upwind Transport Laboratory scheme vs the exponential-scheme Crank–Nicolson
+// upgrade, both on the same grid, both against the exact solution (or a 1024-cell reference when no
+// closed form exists).
+const $ = (id) => document.getElementById(id);
+const logMap = (v, a, b) => 10 ** (Math.log10(a) + (v / 100) * (Math.log10(b) - Math.log10(a)));
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const DIVERGED = 1e6;
+
+// his parameter mapping, verbatim (heat and mass modes)
+const MODES = {
+  heat: { L: 0.02, sym: "T", unit: "K", prop: "Conductivity, k", propUnit: "W m⁻¹ K⁻¹", map: (c) => ({ gamma: logMap(c.property, 0.2, 200), capacity: 3e6, u: (c.flow / 100) * 0.02, left: 300 + (c.left / 100) * 500, right: 300 + (c.right / 100) * 500, initial: 300 + (c.initial / 100) * 500, source: (c.source / 100) * 2e7 }), cap: 1, field: [300, 800] },
+  mass: { L: 0.002, sym: "c", unit: "mol m⁻³", prop: "Diffusivity, D", propUnit: "m² s⁻¹", map: (c) => ({ gamma: logMap(c.property, 1e-12, 1e-8), capacity: 1, u: (c.flow / 100) * 0.003, left: (c.left / 100) * 1000, right: (c.right / 100) * 1000, initial: (c.initial / 100) * 1000, source: (c.source / 100) * 2 }), cap: 120, field: [0, 1000] },
+};
+const CASES = {
+  default: { label: "His default: conduction", mode: "heat", property: 56, flow: 0, left: 72, right: 0, rightFixed: false, source: 0, initial: 0, steady: false },
+  flow10: { label: "Heat with flow 10 %", mode: "heat", property: 56, flow: 10, left: 72, right: 20, rightFixed: true, source: 0, initial: 0, steady: false },
+  flow30: { label: "Heat with flow 30 %", mode: "heat", property: 56, flow: 30, left: 72, right: 20, rightFixed: true, source: 0, initial: 0, steady: false },
+  steadyAD: { label: "Steady advection–diffusion", mode: "heat", property: 56, flow: 60, left: 72, right: 20, rightFixed: true, source: 0, initial: 0, steady: true },
+  source: { label: "Heat source, both faces fixed", mode: "heat", property: 56, flow: 0, left: 72, right: 20, rightFixed: true, source: 40, initial: 0, steady: true },
+  mass: { label: "Species: diffusion with flow", mode: "mass", property: 70, flow: 20, left: 80, right: 0, rightFixed: true, source: 0, initial: 0, steady: false },
+};
+
+const ctl = { ...CASES.flow10, N: 64, dtMult: 1, speed: 1 };
+let caseKey = "flow10";
+let st = null; // run state
+
+function problem(N = ctl.N) {
+  const m = MODES[ctl.mode], p = m.map(ctl);
+  return setup({ N, L: m.L, gamma: p.gamma, capacity: p.capacity, u: p.u, source: p.source, left: p.left, right: ctl.rightFixed ? p.right : null, initial: p.initial });
+}
+function hisDt(s) { return originalDt(s, { heat: MODES[ctl.mode].cap }); }
+const closedTransient = (s) => s.u === 0 && s.source === 0;
+const closedSteady = (s) => (s.u > 0 && s.source === 0) || s.u === 0;
+
+function reset() {
+  const s = problem();
+  const ref = problem(1024);
+  st = {
+    s, ref, t: 0,
+    his: Array(s.N).fill(s.initial), up: Array(s.N).fill(s.initial), refT: Array(1024).fill(s.initial),
+    hisSteps: 0, upSteps: 0, refSteps: 0, hisDiverged: null,
+    dtH: hisDt(s),
+  };
+  st.dtU = st.dtH * ctl.dtMult;
+  st.dtR = Math.min(st.dtH / 4, hisDt(ref));
+  if (ctl.steady) solveSteady();
+  draw(true);
+}
+function solveSteady() {
+  st.his = originalSteady(st.s);
+  st.up = upgradedSteady(st.s);
+  st.refT = upgradedSteady(st.ref);
+  st.t = Infinity;
+}
+function advance(span) {
+  // His scheme always takes its own full step, as the lab does: the clock moves in whole steps of dtH
+  // (the remainder waits for the next frame), so a frame boundary never hands it a shorter, stabler step.
+  st.acc = (st.acc || 0) + span;
+  const n = Math.floor(st.acc / st.dtH + 1e-9);
+  if (!n) return;
+  st.acc -= n * st.dtH;
+  const end = st.t + n * st.dtH;
+  const stepTo = (key, dt, stepper, stepsKey, tKey) => {
+    let t = st[tKey] ?? 0;
+    while (t < end - 1e-12) { const h = Math.min(dt, end - t); st[key] = stepper(st[key], h, st[stepsKey]); st[stepsKey]++; t += h; }
+    st[tKey] = t;
+  };
+  if (st.hisDiverged === null) {
+    for (let k = 0; k < n; k++) { st.his = originalStep(st.s, st.his, st.dtH); st.hisSteps++; }
+    st.tH = end;
+    const worst = Math.max(...st.his.map(Math.abs));
+    if (!Number.isFinite(worst) || worst > DIVERGED) st.hisDiverged = st.tH;
+  }
+  stepTo("up", st.dtU, (T, h, k) => upgradedStep(st.s, T, h, k < 2 ? 1 : 0.5), "upSteps", "tU");
+  if (!closedTransient(st.s)) stepTo("refT", st.dtR, (T, h, k) => upgradedStep(st.ref, T, h, k < 2 ? 1 : 0.5), "refSteps", "tR");
+  st.t = end;
+}
+function truth() {
+  const s = st.s;
+  if (ctl.steady) {
+    if (closedSteady(s)) return { T: exactSteady(s), kind: "exact" };
+    return { T: sampleRef(), kind: "reference" };
+  }
+  if (closedTransient(s)) return { T: exactTransient(s, st.t), kind: "exact" };
+  return { T: sampleRef(), kind: "reference" };
+}
+function sampleRef() {
+  const r = st.refT, n = r.length, N = st.s.N;
+  return Array.from({ length: N }, (_, i) => {
+    const j = ((i + 0.5) / N) * n - 0.5, j0 = clamp(Math.floor(j), 0, n - 2), w = j - j0;
+    return r[j0] * (1 - w) + r[j0 + 1] * w;
+  });
+}
+
+// ---------------------------------------------------------------- plots
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (parent) parent.appendChild(e); return e; };
+function makePlot(svg) {
+  svg.innerHTML = "";
+  const g = { svg, grid: el("g", { class: "grid" }, svg), axes: el("g", { class: "axes" }, svg), band: el("g", {}, svg), lines: el("g", {}, svg), marks: el("g", {}, svg), labels: el("g", {}, svg), hover: el("g", { class: "hover" }, svg) };
+  return g;
+}
+const prof = makePlot($("profile"));
+const errp = makePlot($("errors"));
+const PAD = { l: 64, r: 18, t: 14, b: 36 };
+function size(svg) { const r = svg.getBoundingClientRect(); return { w: Math.max(260, r.width), h: Math.max(140, r.height) }; }
+const fmtNum = (v, d = 2) => {
+  if (!Number.isFinite(v)) return "–";
+  const a = Math.abs(v);
+  if (a !== 0 && (a < 1e-3 || a >= 1e5)) { const [m, e] = v.toExponential(1).split("e"); return `${m}×10${sup(Number(e))}`; }
+  return v.toFixed(d);
+};
+const sup = (n) => String(n).replace(/-/g, "⁻").replace(/\d/g, (d) => "⁰¹²³⁴⁵⁶⁷⁸⁹"[d]);
+function niceTicks(lo, hi, n = 5) {
+  const span = hi - lo || 1, step0 = span / n, mag = 10 ** Math.floor(Math.log10(step0)), err = step0 / mag;
+  const step = (err >= 7.5 ? 10 : err >= 3.5 ? 5 : err >= 1.5 ? 2 : 1) * mag;
+  const out = [];
+  for (let v = Math.ceil(lo / step) * step; v <= hi + step * 1e-9; v += step) out.push(+v.toFixed(12));
+  return out;
+}
+function frame(P, { w, h }, xTicks, yTicks, sx, sy, xLabel, yLabel, yFmt) {
+  P.svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  P.grid.innerHTML = ""; P.axes.innerHTML = "";
+  for (const v of yTicks) { el("line", { x1: PAD.l, x2: w - PAD.r, y1: sy(v), y2: sy(v) }, P.grid); el("text", { x: PAD.l - 8, y: sy(v) + 4, "text-anchor": "end", class: "tick" }, P.axes).textContent = yFmt(v); }
+  for (const v of xTicks) { el("line", { x1: sx(v), x2: sx(v), y1: PAD.t, y2: h - PAD.b, class: "minor" }, P.grid); el("text", { x: sx(v), y: h - PAD.b + 16, "text-anchor": "middle", class: "tick" }, P.axes).textContent = v; }
+  el("line", { x1: PAD.l, x2: w - PAD.r, y1: h - PAD.b, y2: h - PAD.b, class: "base" }, P.axes);
+  el("text", { x: (PAD.l + w - PAD.r) / 2, y: h - 4, "text-anchor": "middle", class: "axis" }, P.axes).textContent = xLabel;
+  el("text", { x: 14, y: (PAD.t + h - PAD.b) / 2, transform: `rotate(-90 14 ${(PAD.t + h - PAD.b) / 2})`, "text-anchor": "middle", class: "axis" }, P.axes).textContent = yLabel;
+}
+const pathOf = (pts) => pts.filter(([, y]) => Number.isFinite(y)).map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("");
+let hoverX = null;
+let last = null;
+
+function draw() {
+  const s = st.s, m = MODES[ctl.mode];
+  const truthNow = truth();
+  const xsMM = xs(s).map((x) => x * 1000);
+  const hisOK = st.hisDiverged === null;
+  const errH = st.his.map((v, i) => Math.abs(v - truthNow.T[i]));
+  const errU = st.up.map((v, i) => Math.abs(v - truthNow.T[i]));
+  const maxH = hisOK ? Math.max(...errH) : Infinity, maxU = Math.max(...errU);
+  last = { truthNow, errH, errU, xsMM, hisOK };
+
+  // profile plot
+  {
+    const box = size(prof.svg), w = box.w, h = box.h;
+    const vals = [...truthNow.T, ...st.up, ...(hisOK ? st.his : [])].filter(Number.isFinite);
+    let lo = Math.min(...vals, s.left, s.right ?? s.left), hi = Math.max(...vals, s.left, s.right ?? s.left);
+    const padv = (hi - lo || 1) * 0.08; lo -= padv; hi += padv;
+    const L = m.L * 1000;
+    const sx = (x) => PAD.l + (x / L) * (w - PAD.l - PAD.r);
+    const sy = (v) => h - PAD.b - ((v - lo) / (hi - lo)) * (h - PAD.t - PAD.b);
+    frame(prof, box, niceTicks(0, L, 8), niceTicks(lo, hi, 5), sx, sy, "Position, x (mm)", `${m.sym} (${m.unit})`, (v) => fmtNum(v, Math.abs(hi - lo) < 5 ? 2 : 0));
+    prof.lines.innerHTML = ""; prof.marks.innerHTML = ""; prof.labels.innerHTML = "";
+    // exact or reference as a smooth line (exact steady/transient evaluated on a fine grid when available)
+    const fine = fineTruth(truthNow.kind, 400);
+    el("path", { d: pathOf(fine.map(([x, v]) => [sx(x * 1000), sy(v)])), class: "truth" }, prof.lines);
+    if (hisOK) el("path", { d: pathOf(xsMM.map((x, i) => [sx(x), sy(st.his[i])])), class: "his-line" }, prof.lines);
+    const every = s.N > 96 ? Math.ceil(s.N / 64) : 1;
+    xsMM.forEach((x, i) => {
+      if (i % every) return;
+      if (hisOK && Number.isFinite(st.his[i])) el("circle", { cx: sx(x), cy: sy(clamp(st.his[i], lo, hi)), r: 3.6, class: "his-dot" }, prof.marks);
+      el("circle", { cx: sx(x), cy: sy(st.up[i]), r: 2.6, class: "up-dot" }, prof.marks);
+    });
+    prof.geom = { sx, sy, w, h, L, lo, hi };
+  }
+  // error plot (log)
+  {
+    const box = size(errp.svg), w = box.w, h = box.h;
+    const FLOOR = 1e-14;
+    const all = [...errU, ...(hisOK ? errH : [])].filter((v) => v > 0);
+    const top = Math.max(1, ...all) * 3;
+    const decades = [Math.floor(Math.log10(FLOOR)), Math.ceil(Math.log10(top))];
+    const L = m.L * 1000;
+    const sx = (x) => PAD.l + (x / L) * (w - PAD.r - PAD.l);
+    const sy = (v) => { const lv = Math.log10(Math.max(v, FLOOR)); return h - PAD.b - ((lv - decades[0]) / (decades[1] - decades[0])) * (h - PAD.t - PAD.b); };
+    const yt = []; const stepD = Math.max(1, Math.ceil((decades[1] - decades[0]) / 6));
+    for (let d = decades[0]; d <= decades[1]; d += stepD) yt.push(10 ** d);
+    frame(errp, box, niceTicks(0, L, 8), yt, sx, sy, "Position, x (mm)", `|error| (${m.unit})`, (v) => `10${sup(Math.round(Math.log10(v)))}`);
+    errp.band.innerHTML = "";
+    const yMach = sy(1e-11);
+    el("rect", { x: PAD.l, y: yMach, width: w - PAD.l - PAD.r, height: h - PAD.b - yMach, class: "machine" }, errp.band);
+    el("text", { x: w - PAD.r - 6, y: h - PAD.b - 6, "text-anchor": "end", class: "band-label" }, errp.band).textContent = "round-off level";
+    errp.lines.innerHTML = ""; errp.marks.innerHTML = "";
+    if (hisOK) el("path", { d: pathOf(xsMM.map((x, i) => [sx(x), sy(errH[i])])), class: "his-line" }, errp.lines);
+    el("path", { d: pathOf(xsMM.map((x, i) => [sx(x), sy(errU[i])])), class: "up-line" }, errp.lines);
+    errp.geom = { sx, sy };
+  }
+  drawHover();
+  readouts(maxH, maxU, truthNow.kind);
+}
+function fineTruth(kind, n) {
+  const s = st.s;
+  if (kind === "exact") {
+    const fs = { ...s, N: n, dx: s.L / n };
+    const T = ctl.steady ? exactSteady(fs) : exactTransient(fs, st.t);
+    return xs(fs).map((x, i) => [x, T[i]]);
+  }
+  return xs(st.ref).map((x, i) => [x, st.refT[i]]);
+}
+function drawHover() {
+  prof.hover.innerHTML = ""; errp.hover.innerHTML = "";
+  const tip = $("tip");
+  if (hoverX === null || !last) { tip.hidden = true; return; }
+  const s = st.s, i = clamp(Math.round((hoverX / (MODES[ctl.mode].L * 1000)) * s.N - 0.5), 0, s.N - 1);
+  const x = last.xsMM[i];
+  const { sx, h } = prof.geom;
+  el("line", { x1: sx(x), x2: sx(x), y1: PAD.t, y2: h - PAD.b, class: "cross" }, prof.hover);
+  el("line", { x1: errp.geom.sx(x), x2: errp.geom.sx(x), y1: PAD.t, y2: size(errp.svg).h - PAD.b, class: "cross" }, errp.hover);
+  const u = MODES[ctl.mode].unit;
+  tip.hidden = false;
+  tip.innerHTML = `<b>x = ${x.toFixed(3)} mm · cell ${i + 1}</b>
+    <span><i class="sw truth-sw"></i>${last.truthNow.kind}<em>${fmtNum(last.truthNow.T[i], 3)} ${u}</em></span>
+    <span><i class="sw his-sw"></i>his solver<em>${last.hisOK ? fmtNum(st.his[i], 3) + " " + u : "diverged"}</em></span>
+    <span><i class="sw up-sw"></i>upgraded<em>${fmtNum(st.up[i], 3)} ${u}</em></span>
+    <span class="tip-err">error, his<em>${last.hisOK ? fmtNum(last.errH[i], 3) : "–"}</em></span>
+    <span class="tip-err">error, upgraded<em>${fmtNum(last.errU[i], 3)}</em></span>`;
+  const r = prof.svg.getBoundingClientRect(), host = $("plots").getBoundingClientRect();
+  const left = r.left - host.left + (sx(x) / prof.geom.w) * r.width;
+  tip.style.left = `${clamp(left + 14, 8, host.width - 230)}px`;
+  tip.style.top = `${r.top - host.top + 12}px`;
+}
+for (const svg of [prof.svg, errp.svg]) {
+  svg.addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect(), w = size(svg).w;
+    const px = ((e.clientX - r.left) / r.width) * w;
+    const L = MODES[ctl.mode].L * 1000;
+    hoverX = clamp(((px - PAD.l) / (w - PAD.l - PAD.r)) * L, 0, L);
+    drawHover();
+  });
+  svg.addEventListener("pointerleave", () => { hoverX = null; drawHover(); });
+}
+
+// ---------------------------------------------------------------- readouts
+function readouts(maxH, maxU, kind) {
+  const s = st.s, m = MODES[ctl.mode], alpha = s.gamma / s.capacity;
+  const set = (id, v) => { const e = $(id); if (e && e.textContent !== v) e.textContent = v; };
+  set("v-his", st.hisDiverged !== null ? "diverged" : `${fmtNum(maxH, 3)} ${m.unit}`);
+  set("v-up", `${fmtNum(maxU, 3)} ${m.unit}`);
+  const ratio = maxH / maxU;
+  set("v-ratio", st.hisDiverged !== null ? `his solver blew up at t = ${st.hisDiverged.toFixed(1)} s` : !Number.isFinite(ratio) ? "" : ratio >= 1.05 ? `upgraded is ${fmtNum(ratio, ratio < 100 ? 1 : 0)}× more accurate` : ratio <= 0.95 ? `his is ${fmtNum(1 / ratio, 1)}× more accurate here` : "the two agree here");
+  set("v-truth", kind === "exact" ? "against the exact solution" : "against a 1024-cell reference");
+  $("verdict").dataset.state = st.hisDiverged !== null ? "bad" : ratio >= 1.05 ? "win" : "even";
+  set("r-time", ctl.steady ? "steady" : `${st.t.toFixed(2)} s`);
+  set("r-dt", `${fmtNum(st.dtH, 4)} s`);
+  set("r-dtu", ctl.steady ? "–" : `${fmtNum(st.dtU, 4)} s`);
+  set("r-steps", ctl.steady ? "one solve each" : `${st.hisSteps} · ${st.upSteps}`);
+  set("r-fo", ctl.steady ? "∞" : fmtNum((alpha * st.t) / (s.L * s.L), 3));
+  set("r-pe", fmtNum((s.u * s.L) / alpha, 2));
+  set("r-cpe", fmtNum((s.u * s.dx) / alpha, 3));
+  set("r-c", fmtNum((s.u * st.dtH) / s.dx + (2 * s.gamma * st.dtH) / (s.capacity * s.dx * s.dx) , 3));
+}
+
+// ---------------------------------------------------------------- loop and controls
+let running = true, lastT = 0, frameId = 0;
+const still = matchMedia("(prefers-reduced-motion: reduce)");
+function tick(now) {
+  const dt = lastT ? Math.min((now - lastT) / 1000, 1 / 20) : 1 / 60;
+  lastT = now;
+  if (running && !ctl.steady) { advance(dt * ctl.speed); draw(); }
+  frameId = running && !ctl.steady ? requestAnimationFrame(tick) : 0;
+}
+function play(on) {
+  running = on && !ctl.steady;
+  $("run").textContent = ctl.steady ? "Solve steady" : running ? "Pause" : "Run";
+  $("run").setAttribute("aria-pressed", running ? "true" : "false");
+  if (running && !frameId) { lastT = 0; frameId = requestAnimationFrame(tick); }
+}
+function sync() {
+  const m = MODES[ctl.mode], p = m.map(ctl);
+  const out = (id, v) => { $(id).textContent = v; };
+  $("property").value = ctl.property; $("flow").value = ctl.flow; $("left").value = ctl.left; $("right").value = ctl.right; $("source").value = ctl.source;
+  out("property-out", `${fmtNum(p.gamma, 3)} ${m.propUnit}`);
+  $("property-label").textContent = m.prop;
+  out("flow-out", `${fmtNum(p.u, 4)} m s⁻¹`);
+  out("left-out", `${fmtNum(p.left, 0)} ${m.unit}`);
+  out("right-out", ctl.rightFixed ? `${fmtNum(p.right, 0)} ${m.unit}` : "insulated");
+  $("right").disabled = !ctl.rightFixed;
+  out("source-out", `${fmtNum(p.source, 0)} ${ctl.mode === "heat" ? "W m⁻³" : "mol m⁻³ s⁻¹"}`);
+  document.querySelectorAll("[data-case]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.case === caseKey ? "true" : "false"));
+  document.querySelectorAll("[data-mode]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.mode === ctl.mode ? "true" : "false"));
+  document.querySelectorAll("[data-right]").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.right === "fixed") === ctl.rightFixed ? "true" : "false"));
+  document.querySelectorAll("[data-sol]").forEach((b) => b.setAttribute("aria-pressed", (b.dataset.sol === "steady") === ctl.steady ? "true" : "false"));
+  $("cells").value = String(ctl.N); $("dtmult").value = String(ctl.dtMult); $("speed").value = String(ctl.speed);
+  $("legend-truth").textContent = closedTransient(problem()) || (ctl.steady && closedSteady(problem())) ? "exact solution" : "reference, 1024 cells";
+}
+function changed() { caseKey = null; sync(); reset(); play(!ctl.steady); }
+document.querySelectorAll("[data-case]").forEach((b) => b.addEventListener("click", () => { Object.assign(ctl, CASES[b.dataset.case]); caseKey = b.dataset.case; sync(); reset(); play(!ctl.steady); }));
+document.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => { ctl.mode = b.dataset.mode; changed(); }));
+document.querySelectorAll("[data-right]").forEach((b) => b.addEventListener("click", () => { ctl.rightFixed = b.dataset.right === "fixed"; changed(); }));
+document.querySelectorAll("[data-sol]").forEach((b) => b.addEventListener("click", () => { ctl.steady = b.dataset.sol === "steady"; changed(); }));
+for (const id of ["property", "flow", "left", "right", "source"]) $(id).addEventListener("input", (e) => { ctl[id] = Number(e.target.value); changed(); });
+$("cells").addEventListener("change", (e) => { ctl.N = Number(e.target.value); changed(); });
+$("dtmult").addEventListener("change", (e) => { ctl.dtMult = Number(e.target.value); reset(); play(!ctl.steady); });
+$("speed").addEventListener("change", (e) => { ctl.speed = Number(e.target.value); });
+$("run").addEventListener("click", () => { if (ctl.steady) { reset(); return; } play(!running); });
+$("reset").addEventListener("click", () => { reset(); play(!ctl.steady); });
+new ResizeObserver(() => draw()).observe($("plots"));
+sync();
+reset();
+play(!still.matches);
+
+</script>
+
+<!-- the way back to The Lab gallery on chandanmettu.com -->
+<a class="lab-back" href="../" aria-label="Back to The Lab">← The Lab</a>
+<style>
+.lab-back{position:fixed;z-index:9999;right:14px;top:max(12px,env(safe-area-inset-top));display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border:1px solid rgba(255,255,255,.7);border-radius:999px;background:rgba(251,250,248,.72);-webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%);box-shadow:0 8px 22px -10px rgba(25,19,45,.45);color:#19132d;font:600 13px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-decoration:none;transition:transform .2s}
+.lab-back:hover{transform:translateY(-2px)}
+@media (max-width:720px){.lab-back{top:auto;right:auto;left:14px;bottom:max(16px,env(safe-area-inset-bottom))}}
+@media (prefers-color-scheme:dark){.lab-back{background:rgba(30,30,32,.72);border-color:rgba(255,255,255,.18);color:#eee}}
+@media (min-width:901px){.bar{padding-right:132px}}
+</style>
+<!-- lab:guide --><script type="application/json" id="lab-guide">{"intro":"The course's Transport Laboratory solver and an upgraded one, on the same grid, both checked against the exact answer. Press Start.","big":"Same grid, same physics: how a scheme writes its face fluxes and its time step decides whether the answer is smeared, exact, or blows up.","css":"@media (min-width:901px){html.lab-present .app{height:calc(100% - 172px)}}","reset":[{"set":"#dtmult","to":1},{"set":"#speed","to":1},{"click":"[data-case=default]"}],"steps":[{"title":"Pure conduction","hint":"With no flow the lab's explicit scheme is already accurate: both sit on the exact solution, a few hundredths of a kelvin off, and the lab's can even edge ahead.","do":[{"set":"#dtmult","to":1},{"click":"[data-case=default]"}],"hold":8000},{"title":"Add a flow","hint":"Turn on a 10 % flow. First-order upwind adds numerical diffusion of about uΔx/2, so the orange rings smear away from the line while the violet dots stay on it.","do":[{"set":"#dtmult","to":1},{"click":"[data-case=flow10]"}],"hold":9000},{"title":"Past the limit","hint":"At 30 % flow the explicit step breaks its own stability limit: C + 2r ≈ 1.09, above 1, and the field blows up within a second. The upgraded scheme stays within 2 K and settles to a few hundredths.","do":[{"set":"#dtmult","to":1},{"click":"[data-case=flow30]"}],"hold":9000},{"title":"Exact at steady state","hint":"The exponential scheme uses the exact 1D profile between cells, so the steady answer is exact at any Péclet number: its error sits at round-off, around 10⁻¹² K.","do":[{"set":"#dtmult","to":1},{"click":"[data-case=steadyAD]"}],"hold":9000},{"title":"Bigger steps","hint":"Crank–Nicolson is stable at any step. Back at 10 % flow, the upgrade now takes steps 16 times longer and is still the more accurate of the two.","do":[{"click":"[data-case=flow10]"},{"set":"#dtmult","to":16}],"hold":9000}]}</script><script src="../guide.js?v=ebd97e77" defer></script><!-- /lab:guide -->
+</body></html>

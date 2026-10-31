@@ -57,5 +57,22 @@
       { "title": "Amorphous", "hint": "Amorphous carbon has no long-range order: only diffuse halos are left.", "do": [{ "click": "[data-sample=c]" }], "hold": 9000 },
       { "title": "Take it apart", "hint": "Explode the column to see every lens, aperture and coil that shaped the beam.", "do": [{ "click": "#tool-explode", "when": ["aria-pressed", "false"] }], "hold": 8000 }
     ]
+  },
+  "transport-lab-upgrade": {
+    "intro": "The course's Transport Laboratory solver and an upgraded one, on the same grid, both checked against the exact answer. Press Start.",
+    "big": "Same grid, same physics: how a scheme writes its face fluxes and its time step decides whether the answer is smeared, exact, or blows up.",
+    "css": "@media (min-width:901px){html.lab-present .app{height:calc(100% - 172px)}}",
+    "reset": [
+      { "set": "#dtmult", "to": 1 },
+      { "set": "#speed", "to": 1 },
+      { "click": "[data-case=default]" }
+    ],
+    "steps": [
+      { "title": "Pure conduction", "hint": "With no flow the lab's explicit scheme is already accurate: both sit on the exact solution, a few hundredths of a kelvin off, and the lab's can even edge ahead.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=default]" }], "hold": 8000 },
+      { "title": "Add a flow", "hint": "Turn on a 10 % flow. First-order upwind adds numerical diffusion of about uΔx/2, so the orange rings smear away from the line while the violet dots stay on it.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=flow10]" }], "hold": 9000 },
+      { "title": "Past the limit", "hint": "At 30 % flow the explicit step breaks its own stability limit: C + 2r ≈ 1.09, above 1, and the field blows up within a second. The upgraded scheme stays within 2 K and settles to a few hundredths.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=flow30]" }], "hold": 9000 },
+      { "title": "Exact at steady state", "hint": "The exponential scheme uses the exact 1D profile between cells, so the steady answer is exact at any Péclet number: its error sits at round-off, around 10⁻¹² K.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=steadyAD]" }], "hold": 9000 },
+      { "title": "Bigger steps", "hint": "Crank–Nicolson is stable at any step. Back at 10 % flow, the upgrade now takes steps 16 times longer and is still the more accurate of the two.", "do": [{ "click": "[data-case=flow10]" }, { "set": "#dtmult", "to": 16 }], "hold": 9000 }
+    ]
   }
 }
