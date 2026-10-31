@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Lab — Chandan Mettu</title>
+  <meta name="description" content="Experiments and ideas from Chandan Mettu's IIT Hyderabad courses, rebuilt as interactive lessons, figures and tools you can play with.">
+  <meta name="theme-color" content="#9882e7">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://chandanmettu.com/lab/">
+  <meta name="author" content="Chandan Mettu">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Chandan Mettu">
+  <meta property="og:url" content="https://chandanmettu.com/lab/">
+  <meta property="og:title" content="The Lab — Chandan Mettu">
+  <meta property="og:description" content="Coursework you can play with: experiments from IIT Hyderabad courses, rebuilt as interactive lessons.">
+  <meta property="og:image" content="https://chandanmettu.com/lab/thumbs/reynolds-pipe-3d-wide.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/brand/chandan-mettu-icon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../assets/brand/chandan-mettu-icon-180.png">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700,900&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/subpages.css">
+  <link rel="stylesheet" href="./lab.css?v=6754e741">
+  <script type="module" src="./lab.js?v=6754e741"></script>
+</head>
+<body>
+  <a class="skip-link" href="#lab-main">Skip to the lab</a>
+  <div class="page-shell">
+    <div class="page-frame">
+      <header class="topbar" aria-label="Primary navigation">
+        <a class="brand" href="../" aria-label="Chandan Mettu — home"><span class="brand-portrait" aria-hidden="true"><img src="../assets/brand/chandan-mettu-icon-512.png" width="512" height="512" alt=""></span><span>Chandan Mettu</span></a>
+        <nav class="topnav" aria-label="Lab navigation">
+          <a href="#courses">Courses</a>
+          <a href="#builds">All builds</a>
+          <a href="./" aria-current="page">The Lab</a>
+          <a class="nav-cta" href="../profile/">Profile ↗</a>
+        </nav>
+      </header>
+
+      <main id="lab-main">
+        <section class="subhero lab-hero page-inner" aria-labelledby="lab-title">
+          <div>
+            <p class="kicker">The Lab · IIT Hyderabad</p>
+            <h1 id="lab-title">Coursework you can <span class="hl">play with.</span></h1>
+            <p class="lead">Experiments and ideas from my IIT Hyderabad courses, rebuilt as things you can open. Turn a valve, change a number, and see what the textbook meant.</p>
+            <div class="hero-actions">
+              <a class="button" id="heroOpen" href="./reynolds-pipe/">Open the newest ↗</a>
+              <a class="button secondary" href="#courses">Browse by course</a>
+            </div>
+            <ul class="lab-stats" id="stats" aria-label="The lab in numbers"><!-- lab:stats --><li><strong>4</strong> builds</li><li><strong>2</strong> courses</li><li>last added <strong>31 Oct</strong></li><!-- /lab:stats --></ul>
+          </div>
+          <div class="specimens" id="specimens" aria-label="Latest builds"><!-- lab:stack --><a class="specimen" data-tone="educator" href="./senarmont-plate/" aria-label="Sénarmont’s Plate"><figure><img src="thumbs/senarmont-plate.jpg" alt="" width="960" height="600"><figcaption><strong>Sénarmont’s Plate</strong><span>Interactive figure</span></figcaption></figure></a><a class="specimen" data-tone="athlete" href="./reynolds-figure/" aria-label="Reynolds’ Pipe, the figure"><figure><img src="thumbs/reynolds-figure.jpg" alt="" width="960" height="600"><figcaption><strong>Reynolds’ Pipe, the figure</strong><span>Interactive figure</span></figcaption></figure></a><a class="specimen" data-tone="athlete" href="./reynolds-pipe/" aria-label="Reynolds’ Pipe"><span class="sticker">New</span><figure><img src="thumbs/reynolds-pipe-3d.jpg" alt="" width="960" height="600"><figcaption><strong>Reynolds’ Pipe</strong><span>3D lesson</span></figcaption></figure></a><!-- /lab:stack --></div>
+        </section>
+
+        <section class="content-section page-inner" id="courses" aria-labelledby="courses-title">
+          <div class="section-heading">
+            <p class="section-index">Shelves</p>
+            <div>
+              <h2 id="courses-title">One folder<br>per course.</h2>
+              <p>Every course gets a folder. Open one to see what I built for it.</p>
+            </div>
+          </div>
+          <div class="shelf" id="shelf" role="list"><!-- lab:shelf --><button type="button" class="folder" role="listitem" data-tone="athlete" data-course="transport" aria-pressed="false" aria-label="Transport Phenomena: 3 builds"><span class="f-back"></span><span class="f-sheet s1"><span class="f-sheet-top"><i></i><small>2026 · 10</small></span><b>Reynolds’ Pipe</b><img src="thumbs/reynolds-pipe-3d.jpg" alt="" loading="lazy" width="960" height="600"></span><span class="f-sheet s2"><span class="f-sheet-top"><i></i><small>2026 · 10</small></span><b>Reynolds’ Pipe, the figure</b><img src="thumbs/reynolds-figure.jpg" alt="" loading="lazy" width="960" height="600"></span><span class="f-sheet s3"><span class="f-sheet-top"><i></i><small>2026 · 10</small></span><b>Transport Lab Upgrade</b><img src="thumbs/transport-lab-upgrade.jpg" alt="" loading="lazy" width="960" height="600"></span><span class="f-front"><span class="f-id"><span class="f-code">Transport · 2026</span><strong class="f-title">Transport Phenomena</strong><span class="f-open">Open shelf <span>→</span></span></span><span class="f-stat"><b>3</b><span>builds</span></span></span><span class="f-sticky">new</span></button><button type="button" class="folder one" role="listitem" data-tone="educator" data-course="tensors" aria-pressed="false" aria-label="TensorLab: 1 build"><span class="f-back"></span><span class="f-sheet s1"><span class="f-sheet-top"><i></i><small>2026 · 10</small></span><b>Sénarmont’s Plate</b><img src="thumbs/senarmont-plate.jpg" alt="" loading="lazy" width="960" height="600"></span><span class="f-front"><span class="f-id"><span class="f-code">Tensors · 2026</span><strong class="f-title">TensorLab</strong><span class="f-open">Open shelf <span>→</span></span></span><span class="f-stat"><b>1</b><span>build</span></span></span></button><!-- /lab:shelf --></div>
+        </section>
+
+        <section class="content-section page-inner" id="builds" aria-labelledby="builds-title">
+          <div class="section-heading">
+            <p class="section-index">Builds</p>
+            <div>
+              <h2 id="builds-title">Everything<br>in the lab.</h2>
+              <p>Newest first. Each one opens on its own page and works on a phone or a projector.</p>
+            </div>
+          </div>
+          <div class="filters" id="filters" role="toolbar" aria-label="Filter by course"><!-- lab:chips --><button type="button" class="chip" data-course="all" aria-pressed="true">All <em>4</em></button><button type="button" class="chip" data-tone="athlete" data-course="transport" aria-pressed="false"><i class="dot"></i>Transport Phenomena <em>3</em></button><button type="button" class="chip" data-tone="educator" data-course="tensors" aria-pressed="false"><i class="dot"></i>TensorLab <em>1</em></button><!-- /lab:chips --></div>
+          <div class="lab-grid" id="grid" aria-live="polite"><!-- lab:grid --><a class="build is-featured reveal" style="--d:0ms" data-tone="athlete" href="./reynolds-pipe/"><span class="build-media"><img src="thumbs/reynolds-pipe-3d-wide.jpg" alt="" loading="eager" fetchpriority="high" width="960" height="600"><span class="kind">3D lesson</span><span class="status open">Open</span></span><span class="build-body"><span class="build-meta"><i class="dot"></i>Transport Phenomena · Oct 2026</span><strong class="build-title">Reynolds’ Pipe</strong><span class="build-summary">Reynolds’ 1883 experiment as a pop-up book page. Open the valve and watch the dye thread tear into turbulence.</span><span class="build-tags"><span>3D</span><span>Fluid mechanics</span><span>Predict, then test</span></span><span class="build-go" aria-hidden="true">↗</span></span></a><a class="build reveal" style="--d:60ms" data-tone="athlete" href="./reynolds-figure/"><span class="build-media"><img src="thumbs/reynolds-figure.jpg" alt="" loading="lazy" width="960" height="600"><span class="kind">Interactive figure</span><span class="status open">Open</span></span><span class="build-body"><span class="build-meta"><i class="dot"></i>Transport Phenomena · Oct 2026</span><strong class="build-title">Reynolds’ Pipe, the figure</strong><span class="build-summary">The same experiment as an isometric drawing, with a friction chart that jumps from 64/Re to Blasius the moment the dye breaks.</span><span class="build-tags"><span>Isometric</span><span>Friction factor</span></span><span class="build-go" aria-hidden="true">↗</span></span></a><a class="build reveal" style="--d:120ms" data-tone="educator" href="./senarmont-plate/"><span class="build-media"><img src="thumbs/senarmont-plate.jpg" alt="" loading="lazy" width="960" height="600"><span class="kind">Interactive figure</span><span class="status open">Open</span></span><span class="build-body"><span class="build-meta"><i class="dot"></i>TensorLab · Oct 2026</span><strong class="build-title">Sénarmont’s Plate</strong><span class="build-summary">Wax melts as an ellipse on a quartz crystal: Sénarmont’s 1847 sight of conductivity as a tensor.</span><span class="build-tags"><span>Anisotropy</span><span>Heat conduction</span></span><span class="build-go" aria-hidden="true">↗</span></span></a><div class="build is-soon reveal" style="--d:180ms" data-tone="athlete" aria-disabled="true" title="Coming to the site soon"><span class="build-media"><img src="thumbs/transport-lab-upgrade.jpg" alt="" loading="lazy" width="960" height="600"><span class="kind">Solver</span><span class="status soon">On the way</span></span><span class="build-body"><span class="build-meta"><i class="dot"></i>Transport Phenomena · Oct 2026</span><strong class="build-title">Transport Lab Upgrade</strong><span class="build-summary">The course lab’s solver beside an exponential-scheme Crank–Nicolson upgrade, both checked against the exact solution.</span><span class="build-tags"><span>Numerics</span><span>Advection–diffusion</span></span><span class="build-go" aria-hidden="true">↗</span></span></div><!-- /lab:grid --></div>
+        </section>
+
+        <section class="content-section page-inner method" aria-labelledby="method-title">
+          <div class="section-heading">
+            <p class="section-index">Method</p>
+            <div><h2 id="method-title">How a build<br>gets made.</h2></div>
+          </div>
+          <ol class="steps">
+            <li class="tone-overview"><span class="step-n">01</span><strong>Start from the course</strong><span>An experiment, a derivation or a lab exercise that reads flat on paper.</span></li>
+            <li class="tone-builder"><span class="step-n">02</span><strong>Build the real thing</strong><span>The actual apparatus or object, made interactive, with Claude as my build partner.</span></li>
+            <li class="tone-educator"><span class="step-n">03</span><strong>Keep the numbers honest</strong><span>Every reading comes from the physics, with the model and its sources on the page.</span></li>
+          </ol>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <div class="footer-top"><h2>Got an experiment that deserves a demo?</h2><a class="button" href="mailto:hello@chandanmettu.com">hello@chandanmettu.com ↗</a></div>
+        <p class="footer-wordmark" aria-hidden="true">The Lab</p>
+        <div class="footer-bottom"><span>© 2026 Chandan Mettu · @chandanmettu</span><span><a href="../">Home</a> · <a href="../profile/">Profile</a> · <a href="../links/">Links</a></span></div>
+      </footer>
+    </div>
+  </div>
+  <a class="back-top" href="#lab-main" aria-label="Back to the top">↑</a>
+  <!-- lab:data --><script type="application/json" id="lab-data">{"courses":[{"id":"transport","name":"Transport Phenomena","short":"Transport","tone":"athlete","blurb":"Heat, mass and momentum: how things flow, spread and mix."},{"id":"tensors","name":"TensorLab","short":"Tensors","tone":"educator","blurb":"Tensors in transport: when a property depends on direction."}],"builds":[{"slug":"reynolds-figure","title":"Reynolds’ Pipe, the figure","kind":"Interactive figure","course":"transport","date":"2026-10-13","summary":"The same experiment as an isometric drawing, with a friction chart that jumps from 64/Re to Blasius the moment the dye breaks.","tags":["Isometric","Friction factor"],"href":"./reynolds-figure/","image":"thumbs/reynolds-figure.jpg","status":"open"},{"slug":"senarmont-plate","title":"Sénarmont’s Plate","kind":"Interactive figure","course":"tensors","date":"2026-10-13","summary":"Wax melts as an ellipse on a quartz crystal: Sénarmont’s 1847 sight of conductivity as a tensor.","tags":["Anisotropy","Heat conduction"],"href":"./senarmont-plate/","image":"thumbs/senarmont-plate.jpg","status":"open"},{"slug":"transport-lab-upgrade","title":"Transport Lab Upgrade","kind":"Solver","course":"transport","date":"2026-10-13","summary":"The course lab’s solver beside an exponential-scheme Crank–Nicolson upgrade, both checked against the exact solution.","tags":["Numerics","Advection–diffusion"],"href":"#","image":"thumbs/transport-lab-upgrade.jpg","status":"soon"},{"slug":"reynolds-pipe","title":"Reynolds’ Pipe","kind":"3D lesson","course":"transport","date":"2026-10-31","summary":"Reynolds’ 1883 experiment as a pop-up book page. Open the valve and watch the dye thread tear into turbulence.","tags":["3D","Fluid mechanics","Predict, then test"],"status":"open","featured":true,"image":"thumbs/reynolds-pipe-3d.jpg","wide":"thumbs/reynolds-pipe-3d-wide.jpg","href":"./reynolds-pipe/"}]}</script><!-- /lab:data -->
+</body>
+</html>

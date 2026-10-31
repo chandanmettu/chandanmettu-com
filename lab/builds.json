@@ -1,0 +1,83 @@
+{
+  "courses": [
+    {
+      "id": "transport",
+      "name": "Transport Phenomena",
+      "short": "Transport",
+      "tone": "athlete",
+      "blurb": "Heat, mass and momentum: how things flow, spread and mix."
+    },
+    {
+      "id": "tensors",
+      "name": "TensorLab",
+      "short": "Tensors",
+      "tone": "educator",
+      "blurb": "Tensors in transport: when a property depends on direction."
+    }
+  ],
+  "builds": [
+    {
+      "slug": "reynolds-figure",
+      "title": "Reynolds’ Pipe, the figure",
+      "kind": "Interactive figure",
+      "course": "transport",
+      "date": "2026-10-13",
+      "summary": "The same experiment as an isometric drawing, with a friction chart that jumps from 64/Re to Blasius the moment the dye breaks.",
+      "tags": [
+        "Isometric",
+        "Friction factor"
+      ],
+      "href": "./reynolds-figure/",
+      "image": "thumbs/reynolds-figure.jpg",
+      "status": "open"
+    },
+    {
+      "slug": "senarmont-plate",
+      "title": "Sénarmont’s Plate",
+      "kind": "Interactive figure",
+      "course": "tensors",
+      "date": "2026-10-13",
+      "summary": "Wax melts as an ellipse on a quartz crystal: Sénarmont’s 1847 sight of conductivity as a tensor.",
+      "tags": [
+        "Anisotropy",
+        "Heat conduction"
+      ],
+      "href": "./senarmont-plate/",
+      "image": "thumbs/senarmont-plate.jpg",
+      "status": "open"
+    },
+    {
+      "slug": "transport-lab-upgrade",
+      "title": "Transport Lab Upgrade",
+      "kind": "Solver",
+      "course": "transport",
+      "date": "2026-10-13",
+      "summary": "The course lab’s solver beside an exponential-scheme Crank–Nicolson upgrade, both checked against the exact solution.",
+      "tags": [
+        "Numerics",
+        "Advection–diffusion"
+      ],
+      "href": "#",
+      "image": "thumbs/transport-lab-upgrade.jpg",
+      "status": "soon"
+    },
+    {
+      "slug": "reynolds-pipe",
+      "title": "Reynolds’ Pipe",
+      "kind": "3D lesson",
+      "course": "transport",
+      "date": "2026-10-31",
+      "summary": "Reynolds’ 1883 experiment as a pop-up book page. Open the valve and watch the dye thread tear into turbulence.",
+      "tags": [
+        "3D",
+        "Fluid mechanics",
+        "Predict, then test"
+      ],
+      "status": "open",
+      "featured": true,
+      "image": "thumbs/reynolds-pipe-3d.jpg",
+      "wide": "thumbs/reynolds-pipe-3d-wide.jpg",
+      "href": "./reynolds-pipe/"
+    }
+  ]
+}
