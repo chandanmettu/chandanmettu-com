@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { LIFT_GLSL } from "./lift.js?v=aeed9ff6";
-import { INK } from "./ink.js?v=aeed9ff6";
+import { LIFT_GLSL } from "./lift.js?v=560622f2";
+import { INK } from "./ink.js?v=560622f2";
 
 // Surfaces of the figure: near-white paper whose form comes from pen hatching computed on the GPU.
 // Three's lights still run (so shadows land), but the colour is paper mixed toward ink.

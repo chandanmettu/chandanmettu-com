@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { LIFT_GLSL } from "./lift.js?v=aeed9ff6";
+import { LIFT_GLSL } from "./lift.js?v=560622f2";
 
 // Ink lines: screen-space ribbons with a pen that draws them along their length. Flat on the page
 // a line is printed in millimetres; standing it is a pen of constant pixel weight. Each set has a

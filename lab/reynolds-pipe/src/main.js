@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { Book, BOOK, LEFT, OPTIONS, ANSWER, SERIF, HAND, pageToWorld } from "./book.js?v=aeed9ff6";
-import { Rig, SCALE, DYE_COLOR } from "./rig.js?v=aeed9ff6";
-import { Post, Spill, GLOW_LAYER } from "./post.js?v=aeed9ff6";
-import { createFlow, U_MAX, stillnessAfter, settledFor, RIG } from "./model.js?v=aeed9ff6";
-import { Sound } from "./sound.js?v=aeed9ff6";
+import { Book, BOOK, LEFT, OPTIONS, ANSWER, SERIF, HAND, pageToWorld } from "./book.js?v=560622f2";
+import { Rig, SCALE, DYE_COLOR } from "./rig.js?v=560622f2";
+import { Post, Spill, GLOW_LAYER } from "./post.js?v=560622f2";
+import { createFlow, U_MAX, stillnessAfter, settledFor, RIG } from "./model.js?v=560622f2";
+import { Sound } from "./sound.js?v=560622f2";
 
 const $ = (id) => document.getElementById(id);
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -562,7 +562,7 @@ function tick(dt) {
     tagClock = 0;
     const word = R.regime === "turbulent" ? "turbulent" : R.regime === "transitional" ? "tearing" : "laminar";
     drawTag(rig.tags.re, { title: "Reynolds number", big: fmt(Math.round(R.Re / 10) * 10), word, wordColor: R.gamma > 0.04 ? DYE_COLOR : "#1c2433", note: `ρVD/μ · water at ${S.T} °C`, icon: Math.min(1, R.gamma * 1.6) });
-    drawTag(rig.tags.dh, { title: "Head drop Δh", big: `${fmt(R.dh * 1000, 1)} mm`, note: `taps 0.9 m apart · f ${fmt(R.fMeasured, 3)}` });
+    drawTag(rig.tags.dh, { title: "Head drop between taps", big: `${fmt(R.dh * 1000, 1)} mm`, note: `taps 0.9 m apart · f ${fmt(R.fMeasured, 3)}` });
   }
   if (captionHold > 0) { captionHold -= dt; if (captionHold <= 0) setCaption(S.tour.on ? SHOTS[S.tour.i].cap : lessonCaption()); }
   S.spillDue = (S.spillDue || 0) + 1;
