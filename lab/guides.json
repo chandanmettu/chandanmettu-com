@@ -1,0 +1,61 @@
+{
+  "reynolds-figure": {
+    "scrollTo": ".figure-pane",
+    "keepalive": "#temp",
+    "intro": "Reynolds, 1883. Press Start, then open the valve one step at a time and watch the dye.",
+    "big": "Smooth or chaotic is decided by one number, Re = ρVD/μ: the water’s inertia against its viscosity.",
+    "reset": [
+      { "click": "#dye", "when": ["aria-pressed", "false"] },
+      { "set": "#temp", "to": 20 },
+      { "set": "#still", "to": 80 },
+      { "set": "#valve", "to": 35 },
+      { "click": "#flush" }
+    ],
+    "steps": [
+      { "title": "Still tank", "hint": "Valve nearly shut, and the tank has settled for hours. The dye leaves the needle as one straight thread.", "do": [{ "set": "#valve", "to": 35, "ms": 1200 }], "hold": 6000 },
+      { "title": "Open slowly", "hint": "Re climbs past 2,000. In a still tank small disturbances die out, so the thread mostly holds.", "do": [{ "set": "#valve", "to": 62, "ms": 4000 }], "hold": 8000 },
+      { "title": "Past the onset", "hint": "Push Re past what this tank can hold. The thread wavers, bursts into eddies and fills the tube, and the friction dot jumps from 64/Re up to Blasius.", "do": [{ "set": "#valve", "to": 86, "ms": 3000 }], "hold": 9000 },
+      { "title": "Stir the tank", "hint": "Back to about Re 3,000 with a clean tube, then stir. Disturbed water trips the tube near 2,000 to 3,000 instead of holding on.", "do": [{ "set": "#valve", "to": 52, "ms": 1500 }, { "click": "#flush" }, { "wait": 1800 }, { "click": "#stir" }], "hold": 10000 },
+      { "title": "Warm the water", "hint": "Viscosity halves between 20 and 50 °C, so the same valve opening gives about twice the Re.", "do": [{ "click": "#flush" }, { "set": "#valve", "to": 40, "ms": 1200 }, { "set": "#temp", "to": 50, "ms": 3000 }], "hold": 8000 }
+    ]
+  },
+  "senarmont-plate": {
+    "scrollTo": ".iso-figure",
+    "keepalive": "#ts",
+    "intro": "Sénarmont, 1847: a hot needle on a waxed crystal plate. Press Start and watch the shape of the melt.",
+    "big": "In a crystal, heat can prefer a direction: thermal conductivity is a tensor, not a single number.",
+    "css": "html.lab-present .page .iso-figure{width:min(100%,calc((100vh - 230px) * 1.333 + 48px));margin:8px auto}",
+    "reset": [
+      { "click": "#lift", "when": ["aria-pressed", "true"] },
+      { "set": "#theta", "to": 30 },
+      { "click": "#plate-fused" }
+    ],
+    "steps": [
+      { "title": "Glass", "hint": "Fused silica is glass, with no crystal lattice. Heat spreads equally in every direction, so the wax melts in a circle.", "do": [{ "click": "#plate-fused" }], "hold": 9000 },
+      { "title": "Quartz, across c", "hint": "A Z-cut quartz plate looks straight down the c axis. Both directions in the plate are a axes, so the melt is still a circle.", "do": [{ "click": "#plate-zcut" }], "hold": 9000 },
+      { "title": "Quartz, along c", "hint": "A Y-cut plate contains the c axis. Quartz conducts 10.4 W/m·K along c and 6.2 across it, so the melt stretches into an ellipse.", "do": [{ "click": "#plate-ycut" }], "hold": 10000 },
+      { "title": "Turn the crystal", "hint": "Turn the stage: the ellipse turns with the plate, not with you. The preferred direction belongs to the crystal.", "do": [{ "set": "#theta", "to": 120, "ms": 4500 }], "hold": 7000 },
+      { "title": "Read the ratio", "hint": "The axes settle near a/b = √(10.4 ÷ 6.2) ≈ 1.30: the shape is set by the two conductivities alone.", "do": [{ "wait": 200 }], "hold": 7000 }
+    ]
+  },
+  "tem-anatomy": {
+    "scrollTo": ".tem-grid",
+    "intro": "A 200 kV electron microscope, cut in half. Press Start and follow the electrons down the column.",
+    "big": "One column, two pictures: the lenses decide whether the screen shows the specimen or its diffraction pattern.",
+    "css": "@media (min-width:901px){.tem-root .tem-grid .iso-figure{width:min(100%,calc((100vh - 232px) * .865 + 48px));margin:10px auto}}",
+    "reset": [
+      { "click": "#tool-explode", "when": ["aria-pressed", "true"] },
+      { "click": "[data-sample=al]", "when": ["aria-pressed", "false"] },
+      { "click": "[data-mode=bf]" }
+    ],
+    "steps": [
+      { "title": "The beam", "hint": "Electrons leave a tungsten filament at 200 kV, moving at 0.695 c with a wavelength of 2.5 pm. Two condenser lenses shape them into a parallel beam.", "do": [{ "click": "[data-mode=bf]" }], "hold": 7000 },
+      { "title": "Bright field", "hint": "The objective aperture passes only the direct beam. Grains that diffract strongly send their electrons elsewhere and look dark.", "do": [{ "click": "[data-mode=bf]" }], "hold": 7000 },
+      { "title": "Dark field", "hint": "Centre the aperture on a diffracted beam instead: now only the grains that diffract light up.", "do": [{ "click": "[data-mode=df]" }], "hold": 7000 },
+      { "title": "Diffraction", "hint": "Change the intermediate lens and the screen shows the back focal plane: aluminium’s spot pattern, one pair of spots per set of planes.", "do": [{ "click": "[data-mode=sad]" }], "hold": 8000 },
+      { "title": "Nanoparticles", "hint": "Gold nanoparticles lie at every angle, so the spots smear into rings.", "do": [{ "click": "[data-sample=au]" }], "hold": 9000 },
+      { "title": "Amorphous", "hint": "Amorphous carbon has no long-range order: only diffuse halos are left.", "do": [{ "click": "[data-sample=c]" }], "hold": 9000 },
+      { "title": "Take it apart", "hint": "Explode the column to see every lens, aperture and coil that shaped the beam.", "do": [{ "click": "#tool-explode", "when": ["aria-pressed", "false"] }], "hold": 8000 }
+    ]
+  }
+}

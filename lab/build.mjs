@@ -7,7 +7,7 @@
 // It also inlines the list as JSON for lab.js and re-stamps the ?v= cache keys, because
 // Hostinger's CDN keeps old CSS and JS for days.
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -39,4 +39,20 @@ const v = createHash("sha1").update(read("lab.css") + read("lab.js") + read("ren
 html = html.replace(/(\.\/lab\.css)(\?v=[\w]+)?/, `$1?v=${v}`).replace(/(\.\/lab\.js)(\?v=[\w]+)?/, `$1?v=${v}`);
 
 writeFileSync(join(here, "index.html"), html);
+
+// Present mode: write each figure's steps (guides.json) and the stamped guide.js into its page
+if (existsSync(join(here, "guides.json"))) {
+  const guides = JSON.parse(read("guides.json"));
+  const gv = createHash("sha1").update(read("guide.js")).digest("hex").slice(0, 8);
+  for (const [slug, cfg] of Object.entries(guides)) {
+    const file = join(here, slug, "index.html");
+    if (!existsSync(file)) { console.warn(`guide: no page for ${slug}`); continue; }
+    let page = readFileSync(file, "utf8");
+    const block = `<!-- lab:guide --><script type="application/json" id="lab-guide">${JSON.stringify(cfg).replace(/</g, "\\u003c")}</script><script src="../guide.js?v=${gv}" defer></script><!-- /lab:guide -->`;
+    if (page.includes("<!-- lab:guide -->")) page = page.replace(/<!-- lab:guide -->[\s\S]*?<!-- \/lab:guide -->/, block);
+    else { const i = page.lastIndexOf("</body>"); page = page.slice(0, i) + block + "\n" + page.slice(i); }
+    writeFileSync(file, page);
+  }
+  console.log(`guide: ${Object.keys(guides).length} figures, stamp v=${gv}`);
+}
 console.log(`lab: ${m.real.length} builds in ${data.courses.length} courses, stamp v=${v}`);
