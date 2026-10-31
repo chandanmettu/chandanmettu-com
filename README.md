@@ -19,7 +19,7 @@ The live source for Chandan Mettu's personal website.
 | `/profile/` | `profile/index.html` | Extended profile and resume-style record |
 | `/v1/` | `v1/index.html` | Compatibility redirect to the homepage |
 | `/404.html` | `404.html` | Not-found page |
-| `/reynolds-pipe/` | `reynolds-pipe/` | Reynolds' 1883 pipe experiment as a 3D lesson (a class demo for the transport phenomena course). Exported from `Under Development/Reynolds Pipe 3D` with its `tools/export.py`: edit there, re-export, never hand-edit here |
+| `/lab/` | `lab/` | The Lab: a gallery of coursework builds. Cards are written into `lab/index.html` from `lab/builds.json` by `node lab/build.mjs` (run it after editing the list, `lab.css`, `lab.js` or `render.js`; it also re-stamps `?v=`). Each build lives at `/lab/<slug>/`; `reynolds-pipe/` is exported from `Under Development/Reynolds Pipe 3D` with its `tools/export.py`, never hand-edited |
 
 The homepage uses a circular selector for work and interests, palette transitions, profile-specific
 proof cards and responsive content collections. Athlete results, galleries and the

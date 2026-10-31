@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { Book, BOOK, LEFT, OPTIONS, ANSWER, SERIF, HAND, pageToWorld } from "./book.js?v=e37bd423";
-import { Rig, SCALE, DYE_COLOR } from "./rig.js?v=e37bd423";
-import { Post, Spill, GLOW_LAYER } from "./post.js?v=e37bd423";
-import { createFlow, U_MAX, stillnessAfter, settledFor, RIG } from "./model.js?v=e37bd423";
-import { Sound } from "./sound.js?v=e37bd423";
+import { Book, BOOK, LEFT, OPTIONS, ANSWER, SERIF, HAND, pageToWorld } from "./book.js?v=aeed9ff6";
+import { Rig, SCALE, DYE_COLOR } from "./rig.js?v=aeed9ff6";
+import { Post, Spill, GLOW_LAYER } from "./post.js?v=aeed9ff6";
+import { createFlow, U_MAX, stillnessAfter, settledFor, RIG } from "./model.js?v=aeed9ff6";
+import { Sound } from "./sound.js?v=aeed9ff6";
 
 const $ = (id) => document.getElementById(id);
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -351,6 +351,8 @@ $("bFull").addEventListener("click", () => {
   else { const el = d.documentElement; (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el); }
 });
 if (!(document.fullscreenEnabled || document.webkitFullscreenEnabled)) $("bFull").hidden = true;
+// inside the website's lab gallery, offer the way back to it
+if (/\/lab\/[^/]+\/?$/.test(location.pathname)) $("bLab").hidden = false;
 $("benchToggle").addEventListener("click", () => { const b = $("bench"); b.classList.toggle("closed"); $("benchToggle").setAttribute("aria-expanded", String(!b.classList.contains("closed"))); });
 if (innerWidth < 1100) { $("bench").classList.add("closed"); $("benchToggle").setAttribute("aria-expanded", "false"); }
 // with the bench open beside the figure, shift the picture so the figure sits in the free space

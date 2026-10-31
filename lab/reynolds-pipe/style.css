@@ -20,6 +20,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .capsule { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(18px, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 4px; padding: 6px 8px; border-radius: 26px; width: min(760px, calc(100vw - 24px)); }
 .capsule .ic { width: 36px; height: 36px; border: 0; border-radius: 18px; background: transparent; cursor: pointer; font-size: 18px; line-height: 1; display: grid; place-items: center; flex: none; }
 .capsule .ic:hover { background: rgba(28, 36, 51, 0.07); }
+.capsule a.ic { color: inherit; text-decoration: none; }
+.capsule a.ic[hidden] { display: none; }
 .capsule .ic[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .capsule #bSound[aria-pressed="true"] { background: transparent; color: inherit; }
 .capsule #bSound[aria-pressed="false"] { opacity: .4; text-decoration: line-through; }
