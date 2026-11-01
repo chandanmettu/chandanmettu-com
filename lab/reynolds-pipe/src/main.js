@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { Book, BOOK, LEFT, OPTIONS, ANSWER, SERIF, HAND, pageToWorld } from "./book.js?v=560622f2";
-import { Rig, SCALE, DYE_COLOR } from "./rig.js?v=560622f2";
-import { Post, Spill, GLOW_LAYER } from "./post.js?v=560622f2";
-import { createFlow, U_MAX, stillnessAfter, settledFor, RIG } from "./model.js?v=560622f2";
-import { Sound } from "./sound.js?v=560622f2";
+import { Book, BOOK, LEFT, OPTIONS, ANSWER, SERIF, HAND, pageToWorld } from "./book.js?v=39d479d9";
+import { Rig, SCALE, DYE_COLOR } from "./rig.js?v=39d479d9";
+import { Post, Spill, GLOW_LAYER } from "./post.js?v=39d479d9";
+import { createFlow, U_MAX, stillnessAfter, settledFor, RIG } from "./model.js?v=39d479d9";
+import { Sound } from "./sound.js?v=39d479d9";
 
 const $ = (id) => document.getElementById(id);
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
