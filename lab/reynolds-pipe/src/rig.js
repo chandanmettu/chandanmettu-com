@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { InkSet, inkMaterial, penUniforms } from "./ink.js?v=560622f2";
-import { paperMaterial, glassMaterial, glowMaterial, surfaceUniforms, fadingShadowDepth } from "./paper.js?v=560622f2";
-import { pageUniforms, printEye } from "./lift.js?v=560622f2";
-import { dyeVolume } from "./dye.js?v=560622f2";
-import { RIG } from "./model.js?v=560622f2";
+import { InkSet, inkMaterial, penUniforms } from "./ink.js?v=39d479d9";
+import { paperMaterial, glassMaterial, glowMaterial, surfaceUniforms, fadingShadowDepth } from "./paper.js?v=39d479d9";
+import { pageUniforms, printEye } from "./lift.js?v=39d479d9";
+import { dyeVolume } from "./dye.js?v=39d479d9";
+import { RIG } from "./model.js?v=39d479d9";
 
 // Reynolds' apparatus as a pop-up figure. Figure space: millimetres, x along the page, y up from
 // the paper, z toward the reader with the front (hinge) line at z = 0. Real lengths are drawn at

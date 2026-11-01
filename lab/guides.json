@@ -1,8 +1,24 @@
 {
   "reynolds-figure": {
     "scrollTo": ".figure-pane",
+    "wordsIn": ".iso-plate",
     "keepalive": "#temp",
+    "rest": ".side",
+    "restAt": "start",
+    "clock": { "text": "×1 real time", "title": "The flow model runs in real time. The eddy pattern drawn in the dye moves at about half speed so it reads." },
     "intro": "Reynolds, 1883. Press Start, then open the valve one step at a time and watch the dye.",
+    "predict": { "q": "Predict first. In a tank left to settle, you open the valve from about Re 1,300 to Re 4,800. What does the dye thread do?", "options": ["Breaks up as soon as Re passes 2,000", "Stays a straight thread", "Spreads out evenly, like ink in still water"], "answer": 1 },
+    "why": "Below Re 2,000 viscosity damps every disturbance, so no flow stays turbulent. Above it, turbulence still needs a disturbance big enough to start it. A settled tank has none, so the thread holds far past 2,000: Reynolds kept it to about 13,000. Stir the tank and it trips near 2,000 to 3,000. 2,000 is a floor, not a switch.",
+    "challenge": {
+      "task": "Make the dye thread break below Re 3,000.",
+      "arm": [{ "sel": "#r-regime", "text": "laminar" }, { "sel": "#r-re", "num": [0, 3000] }],
+      "keep": [{ "sel": "#r-re", "num": [0, 3000] }],
+      "win": [{ "sel": "#r-regime", "text": ["transitional", "turbulent"] }, { "sel": "#r-re", "num": [0, 3000] }],
+      "wait": "Start from a straight, laminar thread below Re 3,000 (flush the tube if you need to).",
+      "armed": "Clean thread. Now break it, without going past Re 3,000.",
+      "lost": "Re went past 3,000. Bring it back to a clean thread below 3,000 and try again.",
+      "done": "Broken below Re 3,000: a disturbed tank trips between 2,000 and 3,000."
+    },
     "big": "Smooth or chaotic is decided by one number, Re = ρVD/μ: the water’s inertia against its viscosity.",
     "reset": [
       { "click": "#dye", "when": ["aria-pressed", "false"] },
@@ -13,16 +29,29 @@
     ],
     "steps": [
       { "title": "Still tank", "hint": "Valve nearly shut, and the tank has settled for hours. The dye leaves the needle as one straight thread.", "do": [{ "set": "#valve", "to": 35, "ms": 1200 }], "hold": 6000 },
-      { "title": "Open slowly", "hint": "Re climbs past 2,000. In a still tank small disturbances die out, so the thread mostly holds.", "do": [{ "set": "#valve", "to": 62, "ms": 4000 }], "hold": 8000 },
-      { "title": "Past the onset", "hint": "Push Re past what this tank can hold. The thread wavers, bursts into eddies and fills the tube, and the friction dot jumps from 64/Re up to Blasius.", "do": [{ "set": "#valve", "to": 86, "ms": 3000 }], "hold": 9000 },
-      { "title": "Stir the tank", "hint": "Back to about Re 3,000 with a clean tube, then stir. Disturbed water trips the tube near 2,000 to 3,000 instead of holding on.", "do": [{ "set": "#valve", "to": 52, "ms": 1500 }, { "click": "#flush" }, { "wait": 1800 }, { "click": "#stir" }], "hold": 10000 },
+      { "title": "Open slowly", "hint": "Re climbs past 2,000. In a still tank small disturbances die out, so the thread mostly holds.", "do": [{ "set": "#valve", "to": 62, "ms": 4000 }], "word": [{ "text": "squeak", "at": [0.79, 0.6], "r": -6 }, { "text": "glug", "at": [0.86, 0.73], "delay": 2600, "r": 8 }], "hold": 8000 },
+      { "title": "Past the onset", "hint": "Push Re past what this tank can hold. The thread wavers, bursts into eddies and fills the tube, and the friction dot jumps from 64/Re up to Blasius.", "do": [{ "set": "#valve", "to": 86, "ms": 3000 }], "word": { "text": "whoosh!", "at": [0.55, 0.5], "delay": 2400 }, "hold": 9000 },
+      { "title": "Stir the tank", "hint": "Back to about Re 3,000 with a clean tube, then stir. Disturbed water trips the tube near 2,000 to 3,000 instead of holding on.", "do": [{ "set": "#valve", "to": 52, "ms": 1500 }, { "click": "#flush" }, { "wait": 1800 }, { "click": "#stir" }], "word": { "text": "swish swish", "at": [0.17, 0.42], "delay": 3300, "r": -10 }, "hold": 10000 },
       { "title": "Warm the water", "hint": "Viscosity halves between 20 and 50 °C, so the same valve opening gives about twice the Re.", "do": [{ "click": "#flush" }, { "set": "#valve", "to": 40, "ms": 1200 }, { "set": "#temp", "to": 50, "ms": 3000 }], "hold": 8000 }
     ]
   },
   "senarmont-plate": {
     "scrollTo": ".iso-figure",
+    "wordsIn": ".iso-plate",
     "keepalive": "#ts",
+    "rest": ".iso-figure",
+    "clock": { "sel": "#r-speed", "tpl": "{} real time", "title": "Simulated seconds per real second. The melt grows slowly in life, so the plate's clock runs faster." },
     "intro": "Sénarmont, 1847: a hot needle on a waxed crystal plate. Press Start and watch the shape of the melt.",
+    "predict": { "q": "Predict first. A hot needle touches the centre of a waxed quartz plate cut along its c axis. What shape does the melted wax make?", "options": ["A circle", "An ellipse, longest along c", "An ellipse, longest across c"], "answer": 1 },
+    "why": "Quartz carries heat faster along its c axis (10.4 W/m·K) than across it (6.21). In the same time the 62 °C isotherm gets further along c, so the melt is an ellipse with its long axis on c, in the ratio √(10.4 ÷ 6.21) ≈ 1.29. In glass, or looking straight down c, every direction in the plate is the same, so the melt is a circle.",
+    "challenge": {
+      "task": "On the Y-cut plate, turn the stage until the lab-frame tensor K has no off-diagonal terms.",
+      "arm": [{ "sel": "#plate-ycut", "attr": "aria-checked", "value": "true" }],
+      "win": [{ "sel": "#plate-ycut", "attr": "aria-checked", "value": "true" }, { "sel": "#r-kxy", "num": [-0.004, 0.004] }],
+      "wait": "Choose Quartz, Y-cut first.",
+      "armed": "Now turn the stage, with the slider or ← →, and watch K in the readings.",
+      "done": "Diagonal: the lab axes now line up with the crystal axes, so a gradient along x drives heat along x only."
+    },
     "big": "In a crystal, heat can prefer a direction: thermal conductivity is a tensor, not a single number.",
     "css": "html.lab-present .page .iso-figure{width:min(100%,calc((100vh - 230px) * 1.333 + 48px));margin:8px auto}",
     "reset": [
@@ -31,16 +60,25 @@
       { "click": "#plate-fused" }
     ],
     "steps": [
-      { "title": "Glass", "hint": "Fused silica is glass, with no crystal lattice. Heat spreads equally in every direction, so the wax melts in a circle.", "do": [{ "click": "#plate-fused" }], "hold": 9000 },
+      { "title": "Glass", "hint": "Fused silica is glass, with no crystal lattice. Heat spreads equally in every direction, so the wax melts in a circle.", "do": [{ "click": "#plate-fused" }], "word": { "text": "tsss", "at": [0.53, 0.3], "r": -8 }, "hold": 9000 },
       { "title": "Quartz, across c", "hint": "A Z-cut quartz plate looks straight down the c axis. Both directions in the plate are a axes, so the melt is still a circle.", "do": [{ "click": "#plate-zcut" }], "hold": 9000 },
-      { "title": "Quartz, along c", "hint": "A Y-cut plate contains the c axis. Quartz conducts 10.4 W/m·K along c and 6.2 across it, so the melt stretches into an ellipse.", "do": [{ "click": "#plate-ycut" }], "hold": 10000 },
-      { "title": "Turn the crystal", "hint": "Turn the stage: the ellipse turns with the plate, not with you. The preferred direction belongs to the crystal.", "do": [{ "set": "#theta", "to": 120, "ms": 4500 }], "hold": 7000 },
+      { "title": "Quartz, along c", "hint": "A Y-cut plate contains the c axis. Quartz conducts 10.4 W/m·K along c and 6.2 across it, so the melt stretches into an ellipse.", "do": [{ "click": "#plate-ycut" }], "word": { "text": "sizzle", "at": [0.6, 0.62], "delay": 1800, "r": 6 }, "hold": 10000 },
+      { "title": "Turn the crystal", "hint": "Turn the stage: the ellipse turns with the plate, not with you. The preferred direction belongs to the crystal.", "do": [{ "set": "#theta", "to": 120, "ms": 4500 }], "word": { "text": "click click click", "at": [0.6, 0.75], "r": -4 }, "hold": 7000 },
       { "title": "Read the ratio", "hint": "The axes settle near a/b = √(10.4 ÷ 6.2) ≈ 1.30: the shape is set by the two conductivities alone.", "do": [{ "wait": 200 }], "hold": 7000 }
     ]
   },
   "tem-anatomy": {
     "scrollTo": ".tem-grid",
+    "wordsIn": ".tem-grid .iso-plate",
+    "rest": ".tem-grid .iso-figure",
     "intro": "A 200 kV electron microscope, cut in half. Press Start and follow the electrons down the column.",
+    "predict": { "q": "Predict first. You switch from bright field to dark field. The grains that looked dark now look…", "options": ["Bright", "Still dark", "Everything goes black"], "answer": 0 },
+    "why": "In bright field the objective aperture passes only the direct beam. A grain in the Bragg condition sends part of its electrons out at 2θ, outside the hole, so it looks dark. Dark field moves the aperture onto one diffracted beam: now only electrons from those grains get through, so they light up while the rest of the foil goes dark.",
+    "challenge": {
+      "task": "In diffraction, find the specimen whose first spots sit farthest from the centre.",
+      "win": [{ "sel": "[data-mode=sad]", "attr": "aria-pressed", "value": "true" }, { "sel": "[data-sample=si]", "attr": "aria-pressed", "value": "true" }],
+      "done": "Silicon. Its lattice is the widest (5.43 Å), but 200 is forbidden in diamond cubic, so its first spots are 220, from planes 1.92 Å apart: closer than aluminium’s 200 (2.02 Å), so they land farther out."
+    },
     "big": "One column, two pictures: the lenses decide whether the screen shows the specimen or its diffraction pattern.",
     "css": "@media (min-width:901px){.tem-root .tem-grid .iso-figure{width:min(100%,calc((100vh - 232px) * .865 + 48px));margin:10px auto}}",
     "reset": [
@@ -49,17 +87,33 @@
       { "click": "[data-mode=bf]" }
     ],
     "steps": [
-      { "title": "The beam", "hint": "Electrons leave a tungsten filament at 200 kV, moving at 0.695 c with a wavelength of 2.5 pm. Two condenser lenses shape them into a parallel beam.", "do": [{ "click": "[data-mode=bf]" }], "hold": 7000 },
+      { "title": "The beam", "hint": "Electrons leave a tungsten filament at 200 kV, moving at 0.695 c with a wavelength of 2.5 pm. Two condenser lenses shape them into a parallel beam.", "do": [{ "click": "[data-mode=bf]" }], "word": { "text": "bzzzt", "at": [0.5, 0.12], "r": -6 }, "hold": 7000 },
       { "title": "Bright field", "hint": "The objective aperture passes only the direct beam. Grains that diffract strongly send their electrons elsewhere and look dark.", "do": [{ "click": "[data-mode=bf]" }], "hold": 7000 },
-      { "title": "Dark field", "hint": "Centre the aperture on a diffracted beam instead: now only the grains that diffract light up.", "do": [{ "click": "[data-mode=df]" }], "hold": 7000 },
+      { "title": "Dark field", "hint": "Centre the aperture on a diffracted beam instead: now only the grains that diffract light up.", "do": [{ "click": "[data-mode=df]" }], "word": { "text": "click", "at": [0.62, 0.5], "r": 8 }, "hold": 7000 },
       { "title": "Diffraction", "hint": "Change the intermediate lens and the screen shows the back focal plane: aluminium’s spot pattern, one pair of spots per set of planes.", "do": [{ "click": "[data-mode=sad]" }], "hold": 8000 },
-      { "title": "Nanoparticles", "hint": "Gold nanoparticles lie at every angle, so the spots smear into rings.", "do": [{ "click": "[data-sample=au]" }], "hold": 9000 },
+      { "title": "Nanoparticles", "hint": "Gold nanoparticles lie at every angle, so the spots smear into rings.", "do": [{ "click": "[data-sample=au]" }], "word": { "text": "whirr", "at": [0.7, 0.45], "r": -6 }, "hold": 9000 },
       { "title": "Amorphous", "hint": "Amorphous carbon has no long-range order: only diffuse halos are left.", "do": [{ "click": "[data-sample=c]" }], "hold": 9000 },
-      { "title": "Take it apart", "hint": "Explode the column to see every lens, aperture and coil that shaped the beam.", "do": [{ "click": "#tool-explode", "when": ["aria-pressed", "false"] }], "hold": 8000 }
+      { "title": "Take it apart", "hint": "Explode the column to see every lens, aperture and coil that shaped the beam.", "do": [{ "click": "#tool-explode", "when": ["aria-pressed", "false"] }], "word": { "text": "clunk", "at": [0.5, 0.4], "r": -10 }, "hold": 8000 }
     ]
   },
   "transport-lab-upgrade": {
+    "wordsIn": ".main",
+    "rest": ".side",
+    "restAt": "start",
+    "clock": { "sel": "#speed", "tpl": "×{} real time", "title": "Simulated seconds per real second, set by Playback." },
     "intro": "The course's Transport Laboratory solver and an upgraded one, on the same grid, both checked against the exact answer. Press Start.",
+    "predict": { "q": "Predict first. Same grid, same time step, but the flow goes from 10 % to 30 %. The course's explicit solver…", "options": ["gets a little less accurate", "blows up", "gets more accurate"], "answer": 1 },
+    "why": "An explicit upwind step is stable only while C + 2r ≤ 1, where r = αΔt/Δx² is the diffusion part and C = uΔt/Δx the flow part. His step is set by the diffusion limit alone, which leaves little room for C. At 10 % flow the sum is 0.92; at 30 % it is 1.09, so every step amplifies the error until the field blows up.",
+    "challenge": {
+      "task": "Keep the flow at 30 % and make his own solver stable again, changing only the numerics.",
+      "arm": [{ "sel": "#flow", "value": "30" }, { "sel": "#property", "value": "56" }, { "sel": "#r-c", "num": [1.0001, 99] }],
+      "keep": [{ "sel": "#flow", "value": "30" }, { "sel": "#property", "value": "56" }],
+      "win": [{ "sel": "#flow", "value": "30" }, { "sel": "#property", "value": "56" }, { "sel": "#r-c", "num": [0, 0.999] }, { "sel": "#v-his", "not": "diverged" }],
+      "wait": "Start from the Heat with flow 30 % case.",
+      "armed": "30 % flow and C + 2r above 1. Now fix it from the Numerics panel (scroll the right column), without touching the Problem sliders.",
+      "lost": "A Problem slider moved. Go back to the 30 % flow case.",
+      "done": "Stable. His step shrinks with Δx², so on a finer grid C = uΔt/Δx gets smaller and C + 2r drops below 1."
+    },
     "big": "Same grid, same physics: how a scheme writes its face fluxes and its time step decides whether the answer is smeared, exact, or blows up.",
     "css": "@media (min-width:901px){html.lab-present .app{height:calc(100% - 172px)}}",
     "reset": [
@@ -70,7 +124,7 @@
     "steps": [
       { "title": "Pure conduction", "hint": "With no flow the lab's explicit scheme is already accurate: both sit on the exact solution, a few hundredths of a kelvin off, and the lab's can even edge ahead.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=default]" }], "hold": 8000 },
       { "title": "Add a flow", "hint": "Turn on a 10 % flow. First-order upwind adds numerical diffusion of about uΔx/2, so the orange rings smear away from the line while the violet dots stay on it.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=flow10]" }], "hold": 9000 },
-      { "title": "Past the limit", "hint": "At 30 % flow the explicit step breaks its own stability limit: C + 2r ≈ 1.09, above 1, and the field blows up within a second. The upgraded scheme stays within 2 K and settles to a few hundredths.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=flow30]" }], "hold": 9000 },
+      { "title": "Past the limit", "hint": "At 30 % flow the explicit step breaks its own stability limit: C + 2r ≈ 1.09, above 1, and the field blows up within a second. The upgraded scheme stays within 2 K and settles to a few hundredths.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=flow30]" }], "word": { "text": "BOOM!", "at": [0.2, 0.09], "delay": 1000, "r": -8 }, "hold": 9000 },
       { "title": "Exact at steady state", "hint": "The exponential scheme uses the exact 1D profile between cells, so the steady answer is exact at any Péclet number: its error sits at round-off, around 10⁻¹² K.", "do": [{ "set": "#dtmult", "to": 1 }, { "click": "[data-case=steadyAD]" }], "hold": 9000 },
       { "title": "Bigger steps", "hint": "Crank–Nicolson is stable at any step. Back at 10 % flow, the upgrade now takes steps 16 times longer and is still the more accurate of the two.", "do": [{ "click": "[data-case=flow10]" }, { "set": "#dtmult", "to": 16 }], "hold": 9000 }
     ]

@@ -104,6 +104,10 @@ body.still *, body.still *::before, body.still *::after { transition: none !impo
   .capsule .sep, #bFold { display: none; }
 }
 @media (max-width: 520px) {
+  /* the caption gets its own row above the buttons, so it never squeezes to a word per line */
+  .capsule { flex-wrap: wrap; justify-content: center; row-gap: 2px; border-radius: 22px; }
+  .capsule .cap { order: -1; flex: 1 1 100%; padding: 4px 8px 2px; text-align: center; }
+  .capsule .dots { justify-content: center; }
   .capsule .pill { padding: 8px 11px; font-size: 12.5px; }
   .capsule .ic { width: 32px; height: 32px; }
   #bPrev, #bNext { display: none; }

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sénarmont's Plate · a 3D lesson</title>
+<meta name="description" content="Sénarmont's 1847 experiment as a 3D book page: the printed drawing lifts off the page, a hot stylus melts the wax on a crystal plate, and the melt grows as an ellipse because heat prefers a direction in quartz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23243a63'/%3E%3Ccircle cx='16' cy='16' r='11' fill='%23f6efe0'/%3E%3Cellipse cx='16' cy='16' rx='7.5' ry='5' fill='none' stroke='%23ff7a1c' stroke-width='2.4'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sénarmont's Plate · a 3D lesson">
+<meta property="og:description" content="Sénarmont's 1847 experiment as a 3D book page: watch the wax melt as an ellipse on a quartz plate, and turn the crystal.">
+<meta property="og:image" content="https://chandanmettu.com/lab/senarmont-3d/og.jpg">
+<link rel="canonical" href="https://chandanmettu.com/lab/senarmont-3d/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="./style.css?v=325f87e0">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<script type="module" src="./src/main.js?v=325f87e0"></script>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="An open book with Sénarmont's bench on the right page. Use the text version, or the arrow keys to turn the stage."></canvas>
+
+<div id="ui">
+  <div class="capsule glass" role="toolbar" aria-label="Lesson controls">
+    <a id="bLab" class="ic" href="../" title="Back to The Lab" aria-label="Back to The Lab" hidden>←</a>
+    <button id="bText" class="ic" title="Text version (T)" aria-label="Text version">≡</button>
+    <button id="bPrev" class="ic" title="Previous shot" aria-label="Previous">‹</button>
+    <div class="cap"><span id="caption" aria-live="polite">Opening the book…</span><span class="dots" id="dots" aria-hidden="true"></span></div>
+    <button id="bPlay" class="pill" title="Play">Lift the drawing</button>
+    <button id="bNext" class="ic" title="Next shot" aria-label="Next">›</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button id="bView" class="ic" title="Read the page / look at the figure (V)" aria-label="Switch view">⧉</button>
+    <button id="bFold" class="ic" title="Fold the drawing back into print" aria-label="Fold into print">⤓</button>
+    <button id="bSound" class="ic" title="Sound on" aria-label="Sound" aria-pressed="false">♪</button>
+    <button id="bStill" class="ic" title="Still mode" aria-label="Still mode" aria-pressed="false">◐</button>
+    <button id="bFull" class="ic" title="Full screen" aria-label="Full screen">⛶</button>
+  </div>
+  <p id="credit">Chandan Mettu · built with Claude · after “Every Joule” by Techartist</p>
+
+  <aside id="bench" class="bench glass" aria-label="Bench controls and readings">
+    <button id="benchToggle" class="grip" aria-expanded="true"><span>Bench</span><span class="chev" aria-hidden="true">▾</span></button>
+    <div class="body">
+      <div class="big"><b id="r-big">–</b><span id="r-bigsub">–</span></div>
+      <div class="plates" role="radiogroup" aria-label="Plate">
+        <button type="button" role="radio" data-plate="fused" id="plate-fused">Fused silica<small>1.38 W/m·K</small></button>
+        <button type="button" role="radio" data-plate="zcut" id="plate-zcut">Quartz, Z-cut<small>6.21 · 6.21</small></button>
+        <button type="button" role="radio" data-plate="ycut" id="plate-ycut">Quartz, Y-cut<small>10.4 · 6.21</small></button>
+        <button type="button" role="radio" data-plate="custom" id="plate-custom">Custom crystal<small>set k₁, k₂</small></button>
+      </div>
+      <p class="note" id="plate-note" aria-live="polite"></p>
+      <label class="slider"><span>k₁, along the flat</span><output id="k1-out"></output><input id="k1" type="range" min="0.5" max="20" step="0.1" value="12"></label>
+      <label class="slider"><span>k₂, across it</span><output id="k2-out"></output><input id="k2" type="range" min="0.5" max="20" step="0.1" value="3"></label>
+      <label class="slider"><span>Stylus temperature</span><output id="ts-out"></output><input id="ts" type="range" min="120" max="320" step="5" value="220"></label>
+      <label class="slider"><span>Stage angle</span><output id="theta-out"></output><input id="theta" type="range" min="0" max="359" step="1" value="30"></label>
+      <div class="actions">
+        <button type="button" id="lift" aria-pressed="false">Lift the stylus</button>
+        <button type="button" id="fresh">Fresh wax</button>
+        <button type="button" id="restart" title="Clear the prediction, flap and stamp and open the book again">Start over</button>
+      </div>
+      <dl class="readings">
+        <dt>Time on the plate</dt><dd id="r-time">–</dd>
+        <dt>Clock, simulated per real second</dt><dd id="r-speed">–</dd>
+        <dt>Stylus power</dt><dd id="r-power">–</dd>
+        <dt>Plate under the stylus</dt><dd id="r-tip">–</dd>
+        <dt>Melt front, a × b</dt><dd id="r-front">–</dd>
+        <dt>Measured a / b</dt><dd id="r-ratio">–</dd>
+        <dt class="key">√(k₁ / k₂)</dt><dd id="r-sqrt" class="key">–</dd>
+        <dt>K in the bench’s frame, W/m·K<br><small>stage at <span id="r-theta">30°</span></small></dt>
+        <dd><span class="tensor"><span id="r-kxx">–</span><span id="r-kxy">–</span><span id="r-kyx">–</span><span id="r-kyy">–</span></span></dd>
+      </dl>
+    </div>
+  </aside>
+</div>
+
+<main id="a11y" class="sr" aria-label="Text version of the lesson" tabindex="-1">
+  <h1>Sénarmont's plate</h1>
+  <p>Does heat care which way it travels? In 1847 Henri de Sénarmont coated thin crystal plates in wax and touched a hot wire to the centre. Where the plate passed the wax's melting point the wax ran clear, so the edge of the melt traced an isotherm. In glass the melt was a circle. In quartz cut along its c axis it was an ellipse.</p>
+  <h2>1. Predict</h2>
+  <p>A quartz plate cut along its c axis: what shape will the melt take?</p>
+  <div id="a11yPredict"></div>
+  <h2>2. Try</h2>
+  <p>Use the bench controls: choose a plate, set the stylus temperature, turn the stage, lift the stylus or lay fresh wax. The live readings are below.</p>
+  <p id="a11yLive" aria-live="polite"></p>
+  <h2>Why</h2>
+  <p>Quartz carries heat faster along its c axis, 10.4 W/m·K, than across it, 6.21 W/m·K. In the same time the 62 °C isotherm reaches further along c, so the melt is an ellipse with its long axis on c, in the ratio √(10.4 ÷ 6.21) ≈ 1.29. Sénarmont measured 1.31. Fourier's law becomes q = −K∇T with K a tensor: diagonal in the crystal's own axes, with off-diagonal terms in any frame turned against them.</p>
+  <h2>3. Challenge</h2>
+  <p>On the Y-cut plate, turn the stage until the melt's long axis lines up with the arrow on the base, the bench's x axis. Hint: does the ellipse belong to the room or to the crystal?</p>
+  <h2>The model</h2>
+  <p>A 0.3 mm plate, 40 mm across with a reference flat, on three standoffs in still air. The stylus holds a 0.6 mm spot at its set temperature. Finite volumes on a 121 × 121 grid in the crystal's own frame; each face loses heat to air at h = 12 W/m²·K; ambient 22 °C; beeswax melts at 62 °C. The wax film's own heat capacity and latent heat are left out. The same model runs the lab's two-dimensional Sénarmont figure.</p>
+  <p>Made by Chandan Mettu with Claude. The book-page style follows “Every Joule” by Techartist.</p>
+  <p>Sources: quartz conductivity, 10.4 along c and 6.21 along a at 300 K, TPRC recommended values (Touloukian et al.), as cited in arXiv:1612.07049. Sénarmont's 1847 plates and his 1.31 ratio: "Thermal conductivity through the nineteenth century", arXiv:1005.2119.</p>
+</main>
+
+<div id="loader" role="status" aria-live="polite">
+  <div class="mark">
+    <div class="ta" aria-label="Sénarmont's plate"><i>S</i><i class="ii"><b>e</b><span class="drop"></span></i><i>n</i><i>a</i><i>r</i><i>m</i><i>o</i><i>n</i><i>t</i><i>’</i><i>s</i><i>&nbsp;</i><i>p</i><i>l</i><i>a</i><i>t</i><i>e</i></div>
+    <svg class="thread" viewBox="0 0 260 30" aria-hidden="true"><ellipse cx="130" cy="15" rx="58" ry="11"/></svg>
+    <span class="sub">A 3D lesson · after Henri de Sénarmont, 1847</span>
+  </div>
+</div>
+<div id="nogl" role="alert"><div><h1>This lesson needs WebGL</h1><p>Your browser could not start 3D graphics. Try a recent Chrome, Edge, Firefox or Safari, or turn on hardware acceleration. The text version of the lesson still works: press Tab.</p></div></div>
+<noscript><p class="noscript">This lesson needs JavaScript to open the book.</p></noscript>
+</body>
+</html>

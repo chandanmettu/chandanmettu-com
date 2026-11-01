@@ -40,7 +40,7 @@
     },
     {
       "slug": "senarmont-plate",
-      "title": "Sénarmont’s Plate",
+      "title": "Sénarmont’s Plate, the figure",
       "kind": "Interactive figure",
       "course": "tensors",
       "date": "2026-10-13",
@@ -70,24 +70,6 @@
       "status": "open"
     },
     {
-      "slug": "reynolds-pipe",
-      "title": "Reynolds’ Pipe",
-      "kind": "3D lesson",
-      "course": "transport",
-      "date": "2026-10-31",
-      "summary": "Reynolds’ 1883 experiment as a pop-up book page. Open the valve and watch the dye thread tear into turbulence.",
-      "tags": [
-        "3D",
-        "Guided tour",
-        "Fluid mechanics"
-      ],
-      "status": "open",
-      "featured": true,
-      "image": "thumbs/reynolds-pipe-3d.jpg",
-      "wide": "thumbs/reynolds-pipe-3d-wide.jpg",
-      "href": "./reynolds-pipe/"
-    },
-    {
       "slug": "tem-anatomy",
       "title": "TEM Anatomy",
       "kind": "Interactive figure",
@@ -101,6 +83,41 @@
       "href": "./tem-anatomy/",
       "image": "thumbs/tem-anatomy.jpg",
       "status": "open"
+    },
+    {
+      "slug": "senarmont-3d",
+      "title": "Sénarmont’s Plate",
+      "kind": "3D lesson",
+      "course": "tensors",
+      "date": "2026-11-02",
+      "summary": "Sénarmont’s 1847 experiment as a pop-up book page. A hot stylus melts the wax on a quartz plate as an ellipse; turn the crystal and the ellipse turns with it.",
+      "tags": [
+        "3D",
+        "Guided tour",
+        "Anisotropy"
+      ],
+      "status": "open",
+      "image": "thumbs/senarmont-3d.jpg",
+      "wide": "thumbs/senarmont-3d-wide.jpg",
+      "href": "./senarmont-3d/",
+      "featured": true
+    },
+    {
+      "slug": "reynolds-pipe",
+      "title": "Reynolds’ Pipe",
+      "kind": "3D lesson",
+      "course": "transport",
+      "date": "2026-10-31",
+      "summary": "Reynolds’ 1883 experiment as a pop-up book page. Open the valve and watch the dye thread tear into turbulence.",
+      "tags": [
+        "3D",
+        "Guided tour",
+        "Fluid mechanics"
+      ],
+      "status": "open",
+      "image": "thumbs/reynolds-pipe-3d.jpg",
+      "wide": "thumbs/reynolds-pipe-3d-wide.jpg",
+      "href": "./reynolds-pipe/"
     }
   ]
 }
