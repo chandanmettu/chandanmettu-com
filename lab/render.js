@@ -26,14 +26,49 @@ export function stats(m) {
   ].join("");
 }
 
-// The hero, kept to a title and one picture: the newest build's render in a frame under the
-// title (never behind it), with a small tag naming it.
-const lead = (m) => m.newestOpen || m.real[0];
-export function shot(m) {
-  const b = lead(m);
+// a loose stack of the newest builds, newest on top
+export function stack(m) {
+  const top3 = m.real.filter((b) => b.image).slice(0, 3).reverse();
+  return top3.map((b, i) => {
+    const c = m.courses.get(b.course) || {};
+    const tag = b.status === "open" ? "a" : "div";
+    return `<${tag} class="specimen" data-tone="${esc(c.tone)}"${tag === "a" ? ` href="${esc(b.href)}"` : ""} aria-label="${esc(b.title)}">${i === top3.length - 1 ? '<span class="sticker">New</span>' : ""}<figure><img src="${esc(b.image)}" alt="" width="960" height="600"><figcaption><strong>${esc(b.title)}</strong><span>${esc(b.kind)}</span></figcaption></figure></${tag}>`;
+  }).join("");
+}
+
+// The hero wheel: every build on the homepage's persona-wheel arc, the featured (newest) one in the
+// middle. pose() is the homepage's own curve, so the two wheels move alike; lab.js animates it,
+// and build.mjs writes the resting pose into the page so it is complete before any script runs.
+export function pose(distance) {
+  const a = Math.abs(distance), curve = Math.min(a, 2.5);
+  return {
+    x: distance, // in gaps; lab.js multiplies by the gap in pixels
+    y: -10 + Math.pow(curve, 1.55) * 30,
+    r: Math.max(-24, Math.min(24, distance * 9.5)),
+    s: Math.max(0.72, 1.08 - a * 0.13),
+    o: Math.max(0, Math.min(1, 1.1 - a * 0.22)),
+    z: 100 - Math.round(a * 10),
+  };
+}
+export function wheel(m) {
+  const list = m.real.filter((b) => b.image);
+  const n = list.length;
+  return list.map((b, i) => {
+    const c = m.courses.get(b.course) || {};
+    const d = ((i + n / 2) % n) - n / 2;
+    const p = pose(d);
+    const tag = b.status === "open" ? "a" : "div";
+    const style = `--wx:${p.x};--wy:${p.y.toFixed(1)}px;--wr:${p.r.toFixed(1)}deg;--ws:${p.s.toFixed(3)};--wo:${p.o.toFixed(3)};z-index:${p.z}`;
+    return `<${tag} class="wcard" data-i="${i}" data-tone="${esc(c.tone)}" style="${style}"${tag === "a" ? ` href="${esc(b.href)}"` : ""} aria-label="${esc(b.title)}, ${esc(b.kind)}" draggable="false"><img src="${esc(b.wide || b.image)}" alt="" width="1600" height="900"${i < 3 || i > n - 3 ? ' fetchpriority="high"' : ' loading="lazy"'} draggable="false"><span class="wcard-label"><i class="dot"></i><strong>${esc(b.title)}</strong></span>${i === 0 ? '<span class="sticker">New</span>' : ""}</${tag}>`;
+  }).join("");
+}
+// the row under the wheel: the middle card's name, and a way in
+export function now(m, i = 0) {
+  const list = m.real.filter((b) => b.image);
+  const b = list[i] || list[0];
   if (!b) return "";
   const c = m.courses.get(b.course) || {};
-  return `<a class="shot" data-tone="${esc(c.tone)}" href="${esc(b.href)}" aria-label="${esc(b.title)}, the newest build"><img src="${esc(b.wide || b.image)}" alt="" width="1600" height="900" fetchpriority="high"><span class="now-tag"><span class="new">New</span><i class="dot"></i><strong>${esc(b.title)}</strong><span class="go" aria-hidden="true">↗</span></span></a>`;
+  return `<p class="now-title" data-tone="${esc(c.tone)}"><i class="dot"></i>${esc(b.title)}</p>${b.status === "open" ? `<a class="button now-open" href="${esc(b.href)}">Open it ↗</a>` : '<span class="button secondary now-open">On the way</span>'}`;
 }
 
 // Abhyas's folder: a back panel, the builds as sheets peeking out, a frosted pocket in front
