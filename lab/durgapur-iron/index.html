@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Durgapur Iron Zone · a 3D poster</title>
+<meta name="description" content="How SAIL's Durgapur Steel Plant makes iron, as a poster whose figures stand up: raw materials, coke ovens, sinter and a blast furnace you can cut open, with the burden coming down, the gas going up and every number sourced.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231c2433'/%3E%3Cpath d='M11 6h10l2 8-2 4v6h-10v-6l-2-4z' fill='%23f6efe0'/%3E%3Cellipse cx='16' cy='23' rx='4.5' ry='1.8' fill='%23ff7a1c'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Durgapur Iron Zone · a 3D poster">
+<meta property="og:description" content="SAIL Durgapur's ironmaking as a poster whose figures stand up: cut the blast furnace open and ride a lump of sinter down to the hearth.">
+<meta property="og:image" content="https://chandanmettu.com/lab/durgapur-iron/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://chandanmettu.com/lab/durgapur-iron/">
+<link rel="stylesheet" href="./style.css?v=c883ab7a">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<script type="module" src="./src/main.js?v=c883ab7a"></script>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="A poster of Durgapur's iron zone on a desk. Its figures stand up off the paper. Use the text version, or the chapter buttons."></canvas>
+
+<div id="ui">
+  <nav id="chapters" class="glass" aria-label="Chapters"></nav>
+
+  <article id="card" class="card glass" aria-live="polite">
+    <button id="cardToggle" class="grip" aria-expanded="true"><span id="cardKicker">The poster</span><span class="chev" aria-hidden="true">▾</span></button>
+    <div class="body" id="cardBody"></div>
+  </article>
+
+  <aside id="panel" class="card glass" aria-label="Controls and live readings">
+    <button id="panelToggle" class="grip" aria-expanded="true"><span id="panelKicker">Readings</span><span class="chev" aria-hidden="true">▾</span></button>
+    <div class="body" id="panelBody"></div>
+  </aside>
+
+  <div class="capsule glass" role="toolbar" aria-label="Poster controls">
+    <a id="bLab" class="ic" href="../" title="Back to The Lab" aria-label="Back to The Lab" hidden>←</a>
+    <button id="bText" class="ic" title="Read it as text (T)" aria-label="Text version">≡</button>
+    <button id="bPrev" class="ic" title="Previous chapter" aria-label="Previous chapter">‹</button>
+    <div class="cap"><span id="caption" aria-live="polite">Laying out the poster…</span><span class="dots" id="dots" aria-hidden="true"></span></div>
+    <button id="bPlay" class="pill">Stand it up</button>
+    <button id="bNext" class="ic" title="Next chapter" aria-label="Next chapter">›</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button id="bFold" class="ic" title="Fold everything back into print" aria-label="Fold into print">⤓</button>
+    <button id="bSound" class="ic" title="Sound" aria-label="Sound" aria-pressed="true">♪</button>
+    <button id="bStill" class="ic" title="Still mode" aria-label="Still mode" aria-pressed="false">◐</button>
+    <button id="bFull" class="ic" title="Full screen" aria-label="Full screen">⛶</button>
+  </div>
+  <p id="credit">Chandan Mettu · built with Claude · after “Every Joule” by Techartist</p>
+  <div id="stampToast" class="toast" role="status" aria-live="polite"></div>
+</div>
+
+<main id="a11y" class="sr" aria-label="Text version" tabindex="-1"></main>
+
+<div id="loader" role="status" aria-live="polite">
+  <div class="mark">
+    <div class="ta" aria-label="Durgapur"><i>D</i><i>u</i><i>r</i><i>g</i><i>a</i><i>p</i><i>u</i><i>r</i></div>
+    <svg class="pour" viewBox="0 0 260 40" aria-hidden="true"><path d="M8 30 C 70 30, 90 10, 130 10 S 200 30, 252 30"/></svg>
+    <span class="sub">A poster whose figures stand up · SAIL Durgapur's iron zone</span>
+  </div>
+</div>
+<div id="nogl" role="alert"><div><h1>This poster needs WebGL</h1><p>Your browser could not start 3D graphics. Try a recent Chrome, Edge, Firefox or Safari, or turn on hardware acceleration. The text version still works: press Tab.</p></div></div>
+<noscript><p class="noscript">This poster needs JavaScript to stand up.</p></noscript>
+</body>
+</html>
