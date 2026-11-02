@@ -26,14 +26,14 @@ const fill = (name, content) => {
   if (!re.test(html)) throw new Error(`index.html has no lab:${name} markers`);
   html = html.replace(re, (_, a, b) => a + content + b);
 };
-fill("shot", R.shot(m));
+fill("wheel", R.wheel(m));
+fill("now", R.now(m, 0));
 fill("shelf", R.shelf(m, "all"));
 fill("chips", R.chips(m, "all"));
 fill("grid", R.grid(m, "all"));
 const json = JSON.stringify(data).replace(/</g, "\\u003c");
 fill("data", `<script type="application/json" id="lab-data">${json}</script>`);
-if (m.newestOpen) html = html.replace(/(id="heroOpen" href=")[^"]*(")/, `$1${m.newestOpen.href}$2`);
-// the share card shows the newest build too
+// the share card shows the newest build
 const og = m.newestOpen && (m.newestOpen.wide || m.newestOpen.image);
 if (og) html = html.replace(/(property="og:image" content=")[^"]*(")/, `$1https://chandanmettu.com/lab/${og}$2`);
 
