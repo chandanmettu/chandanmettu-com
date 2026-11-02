@@ -78,7 +78,7 @@
     },
     {
       "slug": "tem-anatomy",
-      "title": "TEM Anatomy",
+      "title": "TEM Anatomy, the figure",
       "kind": "Interactive figure",
       "course": "characterisation",
       "date": "2026-10-13",
@@ -138,10 +138,27 @@
         "Blast furnace"
       ],
       "status": "open",
-      "featured": true,
       "image": "thumbs/durgapur-iron.jpg",
       "wide": "thumbs/durgapur-iron-wide.jpg",
       "href": "./durgapur-iron/"
+    },
+    {
+      "slug": "tem-3d",
+      "title": "TEM Anatomy",
+      "kind": "3D teardown",
+      "course": "characterisation",
+      "date": "2026-11-02",
+      "summary": "A 200 kV transmission electron microscope you can take apart. Cut the column open, follow the beam through every lens, and switch the screen from image to diffraction.",
+      "tags": [
+        "3D",
+        "Guided tour",
+        "Electron optics"
+      ],
+      "status": "open",
+      "featured": true,
+      "image": "thumbs/tem-3d.jpg",
+      "wide": "thumbs/tem-3d-wide.jpg",
+      "href": "./tem-3d/"
     }
   ]
 }
