@@ -2,6 +2,8 @@
 node_modules/
 *.log
 *.pdf
+# the one public PDF: the Durgapur A0 poster (public copy, no roll number)
+!lab/durgapur-iron/poster.pdf
 .env
 .env.*
 
