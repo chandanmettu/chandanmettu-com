@@ -26,25 +26,14 @@ export function stats(m) {
   ].join("");
 }
 
-// The hero, kept to a title and pictures: the newest build's render fills the stage, a small tag
-// names it, and the other builds sit in a row of plain pictures that open them.
+// The hero, kept to a title and one picture: the newest build's render in a frame under the
+// title (never behind it), with a small tag naming it.
 const lead = (m) => m.newestOpen || m.real[0];
-export function art(m) {
-  const b = lead(m);
-  return b ? `<img src="${esc(b.wide || b.image)}" alt="" width="1600" height="900" fetchpriority="high">` : "";
-}
-export function nowTag(m) {
+export function shot(m) {
   const b = lead(m);
   if (!b) return "";
   const c = m.courses.get(b.course) || {};
-  return `<a class="now-tag" data-tone="${esc(c.tone)}" href="${esc(b.href)}"><span class="new">New</span><i class="dot"></i><strong>${esc(b.title)}</strong><span class="go" aria-hidden="true">↗</span></a>`;
-}
-export function thumbs(m) {
-  const b0 = lead(m);
-  return m.real.filter((b) => b !== b0 && b.image && b.status === "open").map((b) => {
-    const c = m.courses.get(b.course) || {};
-    return `<a class="thumb" data-tone="${esc(c.tone)}" href="${esc(b.href)}" title="${esc(b.title)}" aria-label="${esc(b.title)}"><img src="${esc(b.image)}" alt="" loading="lazy" width="960" height="600"></a>`;
-  }).join("");
+  return `<a class="shot" data-tone="${esc(c.tone)}" href="${esc(b.href)}" aria-label="${esc(b.title)}, the newest build"><img src="${esc(b.wide || b.image)}" alt="" width="1600" height="900" fetchpriority="high"><span class="now-tag"><span class="new">New</span><i class="dot"></i><strong>${esc(b.title)}</strong><span class="go" aria-hidden="true">↗</span></span></a>`;
 }
 
 // Abhyas's folder: a back panel, the builds as sheets peeking out, a frosted pocket in front

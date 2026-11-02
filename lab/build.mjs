@@ -26,9 +26,7 @@ const fill = (name, content) => {
   if (!re.test(html)) throw new Error(`index.html has no lab:${name} markers`);
   html = html.replace(re, (_, a, b) => a + content + b);
 };
-fill("art", R.art(m));
-fill("now", R.nowTag(m));
-fill("thumbs", R.thumbs(m));
+fill("shot", R.shot(m));
 fill("shelf", R.shelf(m, "all"));
 fill("chips", R.chips(m, "all"));
 fill("grid", R.grid(m, "all"));

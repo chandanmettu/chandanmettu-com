@@ -193,36 +193,44 @@ a.build:hover .build-go { transform: rotate(45deg) scale(1.06); }
   .specimen, .f-sheet, .f-front, .folder, .build, .build-media img { transition: none; }
 }
 
-/* ---------- the hero stage: the newest build's render, a title, two buttons ----------
-   Kept to almost no text on purpose: the render carries the page. Full bleed behind the top bar,
-   darkened toward the middle and the bottom so the centred title and the row of builds read. */
+/* ---------- the hero stage: a title, two buttons, the newest build under them ----------
+   Nothing sits behind the words: the title is on the plain dark stage with its glows, and the newest
+   build's render is a framed picture below it, glowing in its course hue and running under the
+   content panel that slides up over the stage. */
 .lab-stage {
+  --glow: var(--hero);
   position: relative; isolation: isolate; overflow: hidden;
-  display: grid; grid-template-rows: 1fr auto; grid-template-columns: minmax(0, 1fr); justify-items: center;
-  min-height: max(580px, min(100svh - 100px, 780px));
-  margin-top: -92px; padding: 120px 0 84px;
-  background: #120d22; color: #fff;
+  display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center;
+  margin-top: -92px; padding: 150px 0 0;
+  background: radial-gradient(120% 90% at 50% 118%, #2d2350 0%, #19132d 46%, #120d22 100%);
+  color: #fff;
 }
-.stage-art { position: absolute; inset: 0; z-index: -2; }
-.stage-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
-.stage-art::after { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 55% at 50% 46%, rgba(18,13,34,.62), rgba(18,13,34,.18) 70%), linear-gradient(180deg, rgba(18,13,34,.55) 0%, rgba(18,13,34,0) 28%, rgba(18,13,34,0) 58%, rgba(18,13,34,.92) 100%); }
-.stage-copy { align-self: center; width: min(1000px, calc(100% - 56px)); text-align: center; }
-.lab-stage h1 { margin: 0 auto; font-family: var(--font); font-weight: 700; font-size: clamp(3.2rem, 7.2vw, 7rem); letter-spacing: -.05em; line-height: .92; color: #fff; text-wrap: balance; text-shadow: 0 10px 40px rgba(8,4,20,.55); }
+.lab-stage:has(.shot[data-tone="builder"]) { --glow: var(--builder); }
+.lab-stage:has(.shot[data-tone="creator"]) { --glow: var(--creator); }
+.lab-stage:has(.shot[data-tone="educator"]) { --glow: var(--educator); }
+.lab-stage:has(.shot[data-tone="athlete"]) { --glow: var(--athlete); }
+.stage-sky { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.stage-sky .glow { position: absolute; border-radius: 50%; filter: blur(10px); }
+.stage-sky .g1 { left: 50%; top: 78%; width: min(1200px, 130vw); height: 700px; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in srgb, var(--glow) 42%, transparent), color-mix(in srgb, var(--glow) 10%, transparent) 62%, transparent); }
+.stage-sky .g2 { left: -12%; top: -18%; width: 640px; height: 640px; background: radial-gradient(closest-side, color-mix(in srgb, var(--hero) 30%, transparent), transparent); }
+.stage-sky .g3 { right: -14%; top: -10%; width: 520px; height: 520px; background: radial-gradient(closest-side, color-mix(in srgb, var(--athlete) 28%, transparent), transparent); }
+.stage-sky .grid { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.14) 1px, transparent 1.4px); background-size: 26px 26px; -webkit-mask-image: radial-gradient(70% 60% at 50% 30%, #000 30%, transparent 78%); mask-image: radial-gradient(70% 60% at 50% 30%, #000 30%, transparent 78%); }
+.stage-copy { width: min(1000px, calc(100% - 56px)); text-align: center; }
+.lab-stage h1 { margin: 0 auto; font-family: var(--font); font-weight: 700; font-size: clamp(3.2rem, 7vw, 6.8rem); letter-spacing: -.05em; line-height: .92; color: #fff; text-wrap: balance; }
 .stage-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 30px; }
 .stage-open { border-color: #fff; background: #fff; color: var(--ink); }
-.lab-stage .button.secondary { border-color: rgba(255,255,255,.45); background: rgba(18,13,34,.25); color: #fff; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-.stage-foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: min(1160px, calc(100% - 56px)); }
-.now-tag { display: inline-flex; align-items: center; gap: 10px; padding: 7px 8px 7px 7px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(18,13,34,.5); color: #fff; text-decoration: none; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: background .2s, transform .2s; }
-.now-tag:hover { background: rgba(18,13,34,.7); transform: translateY(-2px); }
+.stage-open:hover { box-shadow: 0 14px 30px -10px color-mix(in srgb, var(--glow) 70%, transparent); }
+.lab-stage .button.secondary { border-color: rgba(255,255,255,.4); color: #fff; }
+.stage-shot { width: min(940px, calc(100% - 56px)); margin-top: 56px; }
+.shot { position: relative; display: block; overflow: hidden; border: 1px solid rgba(255,255,255,.35); border-bottom: 0; border-radius: 26px 26px 0 0; aspect-ratio: 16 / 8.2; background: #221a3c; box-shadow: 0 -10px 80px -20px color-mix(in srgb, var(--glow) 55%, transparent), 0 0 0 6px rgba(255,255,255,.05); }
+.shot img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transition: transform .7s cubic-bezier(.2,.9,.2,1); }
+.shot:hover img { transform: scale(1.025); }
+.shot:focus-visible { outline: 3px solid var(--educator); outline-offset: 6px; }
+.now-tag { position: absolute; left: 18px; top: 18px; display: inline-flex; align-items: center; gap: 10px; padding: 7px 8px 7px 7px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(18,13,34,.6); color: #fff; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .now-tag .new { padding: 6px 10px; border-radius: 999px; background: var(--educator); color: #221601; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .now-tag .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--t); box-shadow: 0 0 10px var(--t); }
 .now-tag strong { font-size: 15px; font-weight: 700; letter-spacing: -.02em; }
 .now-tag .go { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #fff; color: var(--ink); font-size: 14px; }
-.thumbs { display: flex; gap: 8px; }
-.thumb { display: block; width: 92px; aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid rgba(255,255,255,.3); border-radius: 12px; box-shadow: 0 14px 26px -16px #000; transition: transform .25s, border-color .25s; }
-.thumb img { width: 100%; height: 100%; object-fit: cover; opacity: .82; transition: opacity .25s; }
-.thumb:hover { transform: translateY(-4px); border-color: #fff; }
-.thumb:hover img { opacity: 1; }
 
 /* the top bar takes the stage's colours while it floats over it (lab.js toggles .on-dark) */
 .page-frame > .topbar { transition: background .35s, border-color .35s, box-shadow .35s; }
@@ -238,16 +246,14 @@ a.build:hover .build-go { transform: rotate(45deg) scale(1.06); }
 .content-section .section-index { margin: 0; }
 
 @media (max-width: 760px) {
-  .lab-stage { min-height: max(520px, 86svh); margin-top: -86px; padding: 110px 0 58px; }
+  .lab-stage { margin-top: -86px; padding-top: 118px; }
   .lab-stage h1 { font-size: clamp(2.8rem, 13vw, 4rem); }
-  .stage-art img { object-position: 52% 40%; }
-  .stage-foot { flex-direction: column; align-items: flex-start; gap: 14px; width: calc(100% - 56px); }
-  .thumbs { width: 100%; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-  .thumbs::-webkit-scrollbar { display: none; }
-  .thumb { flex: none; width: 84px; }
+  .stage-shot { width: calc(100% - 28px); margin-top: 36px; }
+  .shot { aspect-ratio: 4 / 3.2; border-radius: 22px 22px 0 0; }
+  .now-tag { left: 12px; top: 12px; }
 }
-@media (prefers-reduced-motion: reduce) { .thumb, .thumb img, .now-tag, .page-frame > .topbar { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .shot img, .page-frame > .topbar { transition: none; } }
 /* the content slides up over the stage with rounded corners, as the homepage's panel does */
-.lab-stage { padding-bottom: 62px; }
+.lab-stage { padding-bottom: 0; }
 .lab-stage + .content-section { position: relative; z-index: 1; margin-top: -40px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; background: var(--surface); box-shadow: 0 -18px 40px -24px rgba(8, 4, 20, .55); width: 100%; padding-left: max(28px, calc((100% - 1160px) / 2)); padding-right: max(28px, calc((100% - 1160px) / 2)); }
-@media (max-width: 760px) { .lab-stage { padding-bottom: 52px; } .lab-stage + .content-section { margin-top: -30px; border-radius: 28px 28px 0 0; } }
+@media (max-width: 760px) { .lab-stage { padding-bottom: 0; } .lab-stage + .content-section { margin-top: -30px; border-radius: 28px 28px 0 0; } }
