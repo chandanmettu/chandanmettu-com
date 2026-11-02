@@ -27,14 +27,16 @@ const fill = (name, content) => {
   html = html.replace(re, (_, a, b) => a + content + b);
 };
 fill("stats", R.stats(m));
-fill("wheel", R.wheel(m));
-fill("now", R.now(m, 0));
+fill("spot", R.spotlight(m));
 fill("shelf", R.shelf(m, "all"));
 fill("chips", R.chips(m, "all"));
 fill("grid", R.grid(m, "all"));
 const json = JSON.stringify(data).replace(/</g, "\\u003c");
 fill("data", `<script type="application/json" id="lab-data">${json}</script>`);
 if (m.newestOpen) html = html.replace(/(id="heroOpen" href=")[^"]*(")/, `$1${m.newestOpen.href}$2`);
+// the share card shows the newest build too
+const og = m.newestOpen && (m.newestOpen.wide || m.newestOpen.image);
+if (og) html = html.replace(/(property="og:image" content=")[^"]*(")/, `$1https://chandanmettu.com/lab/${og}$2`);
 
 const v = createHash("sha1").update(read("lab.css") + read("lab.js") + read("render.js")).digest("hex").slice(0, 8);
 html = html.replace(/(\.\/lab\.css)(\?v=[\w]+)?/, `$1?v=${v}`).replace(/(\.\/lab\.js)(\?v=[\w]+)?/, `$1?v=${v}`);
