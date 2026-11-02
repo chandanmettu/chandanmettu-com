@@ -27,7 +27,8 @@ const fill = (name, content) => {
   html = html.replace(re, (_, a, b) => a + content + b);
 };
 fill("stats", R.stats(m));
-fill("stack", R.stack(m));
+fill("wheel", R.wheel(m));
+fill("now", R.now(m, 0));
 fill("shelf", R.shelf(m, "all"));
 fill("chips", R.chips(m, "all"));
 fill("grid", R.grid(m, "all"));
