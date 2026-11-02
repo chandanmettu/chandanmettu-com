@@ -5,15 +5,17 @@
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const month = (iso) => `${MONTHS[Number(iso.slice(5, 7)) - 1]} ${iso.slice(0, 4)}`;
-const STATUS = { open: "Open", soon: "On the way", sample: "Sample" };
+const STATUS = { open: "Open", soon: "On the way", sample: "Sample", archived: "Archived" };
 
-// the featured build first, then newest first, placeholders always last
+// the featured build first, then newest first, placeholders always last; archived builds (an
+// earlier version another build replaced) stay out of the gallery, their pages stay online
 export function model(data) {
   const rank = (b) => (b.featured ? 0 : b.status === "sample" ? 2 : 1);
-  const builds = [...data.builds].sort((a, b) => rank(a) - rank(b) || b.date.localeCompare(a.date));
+  const builds = data.builds.filter((b) => b.status !== "archived").sort((a, b) => rank(a) - rank(b) || b.date.localeCompare(a.date));
   const real = builds.filter((b) => b.status !== "sample");
   const byDate = [...real].sort((a, b) => b.date.localeCompare(a.date));
-  return { courses: new Map(data.courses.map((c) => [c.id, c])), list: data.courses, builds, real, newest: byDate[0], newestOpen: builds.find((b) => b.status === "open") };
+  const archived = data.builds.filter((b) => b.status === "archived");
+  return { courses: new Map(data.courses.map((c) => [c.id, c])), list: data.courses, builds, real, archived, newest: byDate[0], newestOpen: builds.find((b) => b.status === "open") };
 }
 
 export function stats(m) {
