@@ -43,7 +43,9 @@
       ],
       "href": "./reynolds-figure/",
       "image": "thumbs/reynolds-figure.jpg",
-      "status": "open"
+      "status": "archived",
+      "archived": "2026-11-02",
+      "replacedBy": "reynolds-pipe"
     },
     {
       "slug": "senarmont-plate",
@@ -58,7 +60,9 @@
       ],
       "href": "./senarmont-plate/",
       "image": "thumbs/senarmont-plate.jpg",
-      "status": "open"
+      "status": "archived",
+      "archived": "2026-11-02",
+      "replacedBy": "senarmont-3d"
     },
     {
       "slug": "transport-lab-upgrade",
@@ -89,7 +93,9 @@
       ],
       "href": "./tem-anatomy/",
       "image": "thumbs/tem-anatomy.jpg",
-      "status": "open"
+      "status": "archived",
+      "archived": "2026-11-02",
+      "replacedBy": "tem-3d"
     },
     {
       "slug": "senarmont-3d",

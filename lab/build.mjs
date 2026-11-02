@@ -57,4 +57,19 @@ if (existsSync(join(here, "guides.json"))) {
   }
   console.log(`guide: ${Object.keys(guides).length} figures, stamp v=${gv}`);
 }
-console.log(`lab: ${m.real.length} builds in ${data.courses.length} courses, stamp v=${v}`);
+// Archived builds leave the gallery but keep their pages, so old links still work: each gets a slim
+// bar pointing to the build that replaced it, and a noindex so search shows the newer one
+for (const b of m.archived) {
+  const file = join(here, b.slug, "index.html");
+  if (!existsSync(file)) { console.warn(`archived: no page for ${b.slug}`); continue; }
+  const next = data.builds.find((x) => x.slug === b.replacedBy);
+  let page = readFileSync(file, "utf8");
+  const meta = `<!-- lab:noindex --><meta name="robots" content="noindex"><!-- /lab:noindex -->`;
+  if (page.includes("<!-- lab:noindex -->")) page = page.replace(/<!-- lab:noindex -->[\s\S]*?<!-- \/lab:noindex -->/, meta);
+  else page = page.replace("<title>", meta + "<title>");
+  const bar = next ? `<!-- lab:archived --><div class="lab-archived" style="position:relative;z-index:60;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 12px;padding:9px 16px;background:#19132d;color:#e6e1fb;font:500 13.5px/1.35 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;text-align:center">An earlier version, kept for the record.<a href="../${next.slug}/" style="color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px">Open ${next.title.replace(/</g, "&lt;")}, the ${next.kind.replace(/^[A-Z](?=[a-z])/, (c) => c.toLowerCase())} ↗</a></div><!-- /lab:archived -->` : "";
+  if (page.includes("<!-- lab:archived -->")) page = page.replace(/<!-- lab:archived -->[\s\S]*?<!-- \/lab:archived -->/, bar);
+  else page = page.replace("<body>", "<body>" + bar);
+  writeFileSync(file, page);
+}
+console.log(`lab: ${m.real.length} builds in ${data.courses.length} courses, ${m.archived.length} archived, stamp v=${v}`);
