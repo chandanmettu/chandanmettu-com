@@ -26,13 +26,25 @@ export function stats(m) {
   ].join("");
 }
 
-// The hero's spotlight: the newest build, upright, in the same card language as the grid below
-// (a tinted card in its course colour, the picture on top, the line under it), never tilted.
-export function spotlight(m) {
-  const b = m.newestOpen || m.real[0];
+// The hero, kept to a title and pictures: the newest build's render fills the stage, a small tag
+// names it, and the other builds sit in a row of plain pictures that open them.
+const lead = (m) => m.newestOpen || m.real[0];
+export function art(m) {
+  const b = lead(m);
+  return b ? `<img src="${esc(b.wide || b.image)}" alt="" width="1600" height="900" fetchpriority="high">` : "";
+}
+export function nowTag(m) {
+  const b = lead(m);
   if (!b) return "";
   const c = m.courses.get(b.course) || {};
-  return `<a class="spot" data-tone="${esc(c.tone)}" href="${esc(b.href)}" aria-label="${esc(b.title)}, ${esc(b.kind)}, the newest build"><span class="spot-media"><img src="${esc(b.wide || b.image)}" alt="" width="1600" height="900" fetchpriority="high"><span class="kind">${esc(b.kind)}</span></span><span class="sticker">New</span><span class="spot-body"><span class="build-meta"><i class="dot"></i>${esc(c.name || "")} · ${month(b.date)}</span><strong class="spot-title">${esc(b.title)}</strong><span class="spot-summary">${esc(b.summary)}</span><span class="build-go" aria-hidden="true">↗</span></span></a>`;
+  return `<a class="now-tag" data-tone="${esc(c.tone)}" href="${esc(b.href)}"><span class="new">New</span><i class="dot"></i><strong>${esc(b.title)}</strong><span class="go" aria-hidden="true">↗</span></a>`;
+}
+export function thumbs(m) {
+  const b0 = lead(m);
+  return m.real.filter((b) => b !== b0 && b.image && b.status === "open").map((b) => {
+    const c = m.courses.get(b.course) || {};
+    return `<a class="thumb" data-tone="${esc(c.tone)}" href="${esc(b.href)}" title="${esc(b.title)}" aria-label="${esc(b.title)}"><img src="${esc(b.image)}" alt="" loading="lazy" width="960" height="600"></a>`;
+  }).join("");
 }
 
 // Abhyas's folder: a back panel, the builds as sheets peeking out, a frosted pocket in front
