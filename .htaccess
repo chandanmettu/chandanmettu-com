@@ -27,3 +27,11 @@ ErrorDocument 404 /404.html
   Header always set X-Permitted-Cross-Domain-Policies "none"
   Header always unset X-Powered-By
 </IfModule>
+
+# Repo notes, scripts and internal folders are not part of the public site
+<FilesMatch "(^\.|\.(sql|md|log|bak|env|gs|py)$)">
+  Require all denied
+</FilesMatch>
+<IfModule mod_alias.c>
+  RedirectMatch 403 ^/(docs|_local|tests|supabase)(/|$)
+</IfModule>
