@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { Figure, HEAT, GAS, V3, UP, circle, smooth } from "../figure.js?v=f9d0af7e";
-import { Flow } from "../flow.js?v=f9d0af7e";
-import { COKE, coking } from "../model.js?v=f9d0af7e";
+import { Figure, HEAT, GAS, V3, UP, circle, smooth } from "../figure.js?v=f251d2ad";
+import { Flow } from "../flow.js?v=f251d2ad";
+import { COKE, coking } from "../model.js?v=f251d2ad";
 
 // A coke oven battery: 78 ovens (Durgapur's count, 4.45 m tall) in a row, with the pusher machine
 // on the far side, the coke guide and quench car on the near side, the coal tower at one end, the

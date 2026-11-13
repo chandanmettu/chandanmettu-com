@@ -208,7 +208,7 @@ body.still *, body.still *::before, body.still *::after { transition: none !impo
 #docs svg, #bDocs svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 #bDocs { display: none; }
 @media (max-width: 1359px) { #docs button span { display: none; } #docs button { padding: 7px 9px; } }
-@media (max-width: 860px) { #docs { display: none; } #bDocs { display: grid; } }
+@media (max-width: 1040px) { #docs { display: none; } #bDocs { display: grid; } }
 .card .row { display: flex; flex-wrap: wrap; gap: 0; margin: 2px 0 6px; }
 
 #reader { position: fixed; inset: 0; z-index: 9; display: flex; flex-direction: column; background: rgba(24, 28, 36, 0.86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transition: opacity .25s; }

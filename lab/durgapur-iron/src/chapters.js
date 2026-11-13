@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { FRAMES } from "./plant.js?v=f9d0af7e";
-import { FX, FZ, S as FS, Y0 } from "./figures/furnace.js?v=f9d0af7e";
+import { FRAMES } from "./plant.js?v=f251d2ad";
+import { FX, FZ, S as FS, Y0 } from "./figures/furnace.js?v=f251d2ad";
 
 // Every chapter: what the card says, what the panel controls and reads, where the camera goes,
 // its tour, its prediction, its flap and its challenge. Site copy has no em dashes (his rule).
@@ -109,10 +109,13 @@ function furnaceLabels(ctx) {
   const L = f.L, cz = f.cz, u = f.secU, M = ctx.M, J = f.journey, mode = ctx.S.fMode || "react";
   const lump = { text: "Your lump", show: J ? `Your lump · ${ctx.fmt(J.T)} °C` : "Your lump", pos: J ? FACE(-J.r, J.y) : null, dx: -70, dy: 36 };
   if (mode === "react") {
+    // all ten where the middle of the screen is wide enough, else only the one in view
+    const roomy = innerWidth - (innerWidth >= 860 ? 680 : 0) >= 600;
     return [...M.STOPS.map((s, i) => {
       const p = stopPoint(ctx, i), on = i === ctx.S.fStop;
+      if (!roomy && !on) return null;
       return { text: `stop:${s.id}`, show: `${i + 1} · ${s.tag}`, pos: FACE(p.r, p.y), dx: p.r < 0 ? -140 : 140, dy: STOP_DY[i], on, gas: on && s.gas, heat: on && !s.gas };
-    }), lump];
+    }).filter(Boolean), lump];
   }
   if (mode === "heat") {
     const iso = (T, rf, dx, dy, text) => { const y = M.heightAtT(L, rf, T); return { text, pos: FACE(rf * M.radiusAt(L, y), y), dx, dy, heat: T >= 800 }; };

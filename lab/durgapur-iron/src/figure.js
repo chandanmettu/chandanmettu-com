@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { InkSet, inkMaterial, penUniforms } from "./ink.js?v=f9d0af7e";
-import { paperMaterial, glowMaterial, surfaceUniforms, fadingShadowDepth } from "./paper.js?v=f9d0af7e";
-import { pageUniforms, printEye } from "./lift.js?v=f9d0af7e";
+import { InkSet, inkMaterial, penUniforms } from "./ink.js?v=f251d2ad";
+import { paperMaterial, glowMaterial, surfaceUniforms, fadingShadowDepth } from "./paper.js?v=f251d2ad";
+import { pageUniforms, printEye } from "./lift.js?v=f251d2ad";
 
 // One plant unit as a pop-up figure printed on the poster. Figure space: millimetres, x along the
 // poster, y up from the paper, z toward the reader with the front (hinge) line at z = 0 and the
