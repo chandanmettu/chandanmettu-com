@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Sheet, SERIF, HAND } from "./sheet.js?v=d8f12ce5";
-import { Post, Spill } from "./post.js?v=d8f12ce5";
-import { Sound } from "./sound.js?v=d8f12ce5";
-import { buildPlant, LAYOUT } from "./plant.js?v=d8f12ce5";
-import { CHAPTERS, finalizeChapters, DOC_ICON } from "./chapters.js?v=d8f12ce5";
-import { Reader } from "./reader.js?v=d8f12ce5";
-import * as M from "./model.js?v=d8f12ce5";
+import { Sheet, SERIF, HAND } from "./sheet.js?v=f9d0af7e";
+import { Post, Spill } from "./post.js?v=f9d0af7e";
+import { Sound } from "./sound.js?v=f9d0af7e";
+import { buildPlant, LAYOUT } from "./plant.js?v=f9d0af7e";
+import { CHAPTERS, finalizeChapters, DOC_ICON } from "./chapters.js?v=f9d0af7e";
+import { Reader } from "./reader.js?v=f9d0af7e";
+import * as M from "./model.js?v=f9d0af7e";
 
 const $ = (id) => document.getElementById(id);
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);

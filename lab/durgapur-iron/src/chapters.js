@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { FRAMES } from "./plant.js?v=d8f12ce5";
-import { FX, FZ, S as FS, Y0 } from "./figures/furnace.js?v=d8f12ce5";
+import { FRAMES } from "./plant.js?v=f9d0af7e";
+import { FX, FZ, S as FS, Y0 } from "./figures/furnace.js?v=f9d0af7e";
 
 // Every chapter: what the card says, what the panel controls and reads, where the camera goes,
 // its tour, its prediction, its flap and its challenge. Site copy has no em dashes (his rule).

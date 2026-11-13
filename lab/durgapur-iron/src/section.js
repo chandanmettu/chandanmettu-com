@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { LIFT_GLSL } from "./lift.js?v=d8f12ce5";
+import { LIFT_GLSL } from "./lift.js?v=f9d0af7e";
 
 // The furnace's cut face, drawn from the model in one shader. Coordinates in the plane are figure
 // millimetres; the shader turns them into metres about the axis (r, y) and decides, pixel by pixel,

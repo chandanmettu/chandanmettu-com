@@ -1,0 +1,184 @@
+{
+ "view": {
+  "w": 2400,
+  "h": 1698,
+  "tiles": [
+   {
+    "src": "./docs/poster/view-0-0.jpg",
+    "x": 0,
+    "y": 0,
+    "w": 1203,
+    "h": 852
+   },
+   {
+    "src": "./docs/poster/view-0-1.jpg",
+    "x": 1200,
+    "y": 0,
+    "w": 1200,
+    "h": 852
+   },
+   {
+    "src": "./docs/poster/view-1-0.jpg",
+    "x": 0,
+    "y": 849,
+    "w": 1203,
+    "h": 849
+   },
+   {
+    "src": "./docs/poster/view-1-1.jpg",
+    "x": 1200,
+    "y": 849,
+    "w": 1200,
+    "h": 849
+   }
+  ],
+  "kb": 524
+ },
+ "zoom": {
+  "w": 6400,
+  "h": 4528,
+  "tiles": [
+   {
+    "src": "./docs/poster/zoom-0-0.jpg",
+    "x": 0,
+    "y": 0,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-0-1.jpg",
+    "x": 1280,
+    "y": 0,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-0-2.jpg",
+    "x": 2560,
+    "y": 0,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-0-3.jpg",
+    "x": 3840,
+    "y": 0,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-0-4.jpg",
+    "x": 5120,
+    "y": 0,
+    "w": 1280,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-1-0.jpg",
+    "x": 0,
+    "y": 1132,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-1-1.jpg",
+    "x": 1280,
+    "y": 1132,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-1-2.jpg",
+    "x": 2560,
+    "y": 1132,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-1-3.jpg",
+    "x": 3840,
+    "y": 1132,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-1-4.jpg",
+    "x": 5120,
+    "y": 1132,
+    "w": 1280,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-2-0.jpg",
+    "x": 0,
+    "y": 2264,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-2-1.jpg",
+    "x": 1280,
+    "y": 2264,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-2-2.jpg",
+    "x": 2560,
+    "y": 2264,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-2-3.jpg",
+    "x": 3840,
+    "y": 2264,
+    "w": 1283,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-2-4.jpg",
+    "x": 5120,
+    "y": 2264,
+    "w": 1280,
+    "h": 1135
+   },
+   {
+    "src": "./docs/poster/zoom-3-0.jpg",
+    "x": 0,
+    "y": 3396,
+    "w": 1283,
+    "h": 1132
+   },
+   {
+    "src": "./docs/poster/zoom-3-1.jpg",
+    "x": 1280,
+    "y": 3396,
+    "w": 1283,
+    "h": 1132
+   },
+   {
+    "src": "./docs/poster/zoom-3-2.jpg",
+    "x": 2560,
+    "y": 3396,
+    "w": 1283,
+    "h": 1132
+   },
+   {
+    "src": "./docs/poster/zoom-3-3.jpg",
+    "x": 3840,
+    "y": 3396,
+    "w": 1283,
+    "h": 1132
+   },
+   {
+    "src": "./docs/poster/zoom-3-4.jpg",
+    "x": 5120,
+    "y": 3396,
+    "w": 1280,
+    "h": 1132
+   }
+  ],
+  "kb": 2400
+ }
+}

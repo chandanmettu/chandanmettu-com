@@ -8,11 +8,9 @@ const DOCS = {
     tab: "Case study", title: "SAIL Durgapur Steel Plant · Ironmaking case study", file: "./docs/case-study.pdf", fit: "width",
     note: "Checked since it was written: BF-2 started in 1961, not 1959 (CAG Report 38 of 2025, Table 2); the March 2025 BF-3 relining comes from one tracker and SAIL has not confirmed it.",
   },
-  // the A0 page is shown as pictures made from its PDF by tools/poster_images.py (pdf.js stalls on it)
-  poster: {
-    tab: "Poster", title: "Durgapur Iron Zone · the A0 poster", file: "./docs/poster.pdf", fit: "page", note: "",
-    images: { view: { src: "./docs/poster/view.jpg", w: 2400, h: 1698 }, zoom: { src: "./docs/poster/zoom.jpg", w: 6400, h: 4528 } },
-  },
+  // the A0 page is shown as tiled pictures made from its PDF by tools/poster_images.py: pdf.js stalls
+  // on it, and the host's CDN shrinks any picture to 1,600 px, so each picture comes in tiles
+  poster: { tab: "Poster", title: "Durgapur Iron Zone · the A0 poster", file: "./docs/poster.pdf", fit: "page", note: "", tiles: "./docs/poster/tiles.json" },
 };
 const MAX_PX = 16e6; // the most pixels one page canvas may hold, so a zoomed A0 page does not run out of memory
 
@@ -117,8 +115,11 @@ export class Reader {
     this.$("rdPage").textContent = "";
     const load = this.$("rdLoad"); load.classList.add("on"); this.$("rdLoadT").textContent = "Opening…";
     try {
-      if (d.images && !this.docs[id]) this.docs[id] = { images: d.images, sized: [{ vp: { width: d.images.view.w, height: d.images.view.h } }] };
-      const pdfjs = d.images ? null : await this.lib();
+      if (d.tiles && !this.docs[id]) {
+        const sets = await (await fetch(d.tiles)).json();
+        this.docs[id] = { images: sets, sized: [{ vp: { width: sets.view.w, height: sets.view.h } }] };
+      }
+      const pdfjs = d.tiles ? null : await this.lib();
       if (!this.docs[id]) {
         // wasmUrl: pdf.js decodes colour-profiled (ICC) JPEGs with qcms; without it the poster's
         // renders never finish drawing
@@ -219,18 +220,30 @@ export class Reader {
     finally { this.tasks.delete(task); if (pg.dataset.busy === String(s)) delete pg.dataset.busy; }
   }
 
-  // a picture page: the screen-sized picture first, the big one once the zoom needs its pixels
+  // a picture page: the screen-sized set of tiles first, the big set once the zoom needs its pixels;
+  // a set replaces the last only when all its tiles have loaded
   drawImage(pg, im) {
     const need = parseFloat(pg.style.width) * Math.min(devicePixelRatio || 1, 2);
-    const pick = need > im.view.w * 1.05 ? im.zoom : im.view;
-    if (pg.dataset.src === pick.src || pg.dataset.busy === pick.src) return;
-    pg.dataset.busy = pick.src;
-    const img = new Image();
-    img.decoding = "async";
-    img.alt = DOCS[this.cur].title;
-    img.onload = () => { if (pg.dataset.busy !== pick.src) return; delete pg.dataset.busy; pg.replaceChildren(img); pg.dataset.src = pick.src; pg.classList.add("drawn"); };
-    img.onerror = () => { delete pg.dataset.busy; };
-    img.src = pick.src;
+    const key = need > im.view.w * 1.05 ? "zoom" : "view";
+    if (pg.dataset.src === key || pg.dataset.busy === key) return;
+    pg.dataset.busy = key;
+    const set = im[key], layer = document.createElement("div");
+    layer.className = "rd-tiles";
+    layer.setAttribute("role", "img"); layer.setAttribute("aria-label", DOCS[this.cur].title);
+    const loads = set.tiles.map((t) => {
+      const img = new Image();
+      img.alt = ""; img.decoding = "async"; img.draggable = false;
+      Object.assign(img.style, { left: `${(100 * t.x) / set.w}%`, top: `${(100 * t.y) / set.h}%`, width: `${(100 * t.w) / set.w}%`, height: `${(100 * t.h) / set.h}%` });
+      layer.appendChild(img);
+      return new Promise((ok) => { img.onload = img.onerror = ok; img.src = t.src; });
+    });
+    Promise.all(loads).then(() => {
+      if (pg.dataset.busy !== key) return;
+      delete pg.dataset.busy;
+      pg.replaceChildren(layer);
+      pg.dataset.src = key;
+      pg.classList.add("drawn");
+    });
   }
 
   cancelAll() { for (const t of this.tasks) { try { t.cancel(); } catch { /* done already */ } } this.tasks.clear(); }

@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { Figure, V3, UP } from "../figure.js?v=d8f12ce5";
-import { LIFT_GLSL } from "../lift.js?v=d8f12ce5";
-import { drawTag } from "./coke.js?v=d8f12ce5";
+import { Figure, V3, UP } from "../figure.js?v=f9d0af7e";
+import { LIFT_GLSL } from "../lift.js?v=f9d0af7e";
+import { drawTag } from "./coke.js?v=f9d0af7e";
 
 // The raw materials handling plant, shortened: a wagon tippler over its pit and hopper, a
 // conveyor to a stacker on rails, a blending bed built in chevron layers, and a bridge reclaimer
