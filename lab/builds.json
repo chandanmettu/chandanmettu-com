@@ -132,23 +132,6 @@
       "href": "./reynolds-pipe/"
     },
     {
-      "slug": "durgapur-iron",
-      "title": "Durgapur Iron Zone",
-      "kind": "3D poster",
-      "course": "ironmaking",
-      "date": "2026-11-02",
-      "summary": "SAIL Durgapur's ironmaking as a poster whose figures stand up. Cut BF-3 open, ride a lump of sinter down to the hearth, and download the printed A0 poster.",
-      "tags": [
-        "3D",
-        "Guided tour",
-        "Blast furnace"
-      ],
-      "status": "open",
-      "image": "thumbs/durgapur-iron.jpg",
-      "wide": "thumbs/durgapur-iron-wide.jpg",
-      "href": "./durgapur-iron/"
-    },
-    {
       "slug": "tem-3d",
       "title": "TEM Anatomy",
       "kind": "3D teardown",
@@ -165,6 +148,23 @@
       "image": "thumbs/tem-3d.jpg",
       "wide": "thumbs/tem-3d-wide.jpg",
       "href": "./tem-3d/"
+    },
+    {
+      "slug": "durgapur-iron",
+      "title": "Durgapur Iron Zone",
+      "kind": "3D poster",
+      "course": "ironmaking",
+      "date": "2026-11-02",
+      "summary": "SAIL Durgapur's ironmaking as a poster whose figures stand up. Cut BF-3 open and watch its ten reactions light up where they run, ride a lump of sinter down to the hearth, and read the case study and the A0 poster right in the page.",
+      "tags": [
+        "3D",
+        "Guided tour",
+        "Blast furnace"
+      ],
+      "status": "open",
+      "image": "thumbs/durgapur-iron.jpg",
+      "wide": "thumbs/durgapur-iron-wide.jpg",
+      "href": "./durgapur-iron/"
     }
   ]
 }

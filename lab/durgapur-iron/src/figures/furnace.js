@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Figure, HEAT, GAS, V3, UP, circle, ring, hArc, smooth } from "../figure.js?v=c883ab7a";
-import { InkSet, inkMaterial } from "../ink.js?v=c883ab7a";
-import { glassMaterial } from "../paper.js?v=c883ab7a";
-import { LIFT_GLSL } from "../lift.js?v=c883ab7a";
-import { sectionUniforms, sectionMaterials } from "../section.js?v=c883ab7a";
-import { linesOf, cohesiveOf, journeyPath, journeyAt, DIP, FURNACES, hearthLevel } from "../model.js?v=c883ab7a";
-import { Flow } from "../flow.js?v=c883ab7a";
+import { Figure, HEAT, GAS, V3, UP, circle, ring, hArc, smooth } from "../figure.js?v=d8f12ce5";
+import { InkSet, inkMaterial } from "../ink.js?v=d8f12ce5";
+import { glassMaterial } from "../paper.js?v=d8f12ce5";
+import { LIFT_GLSL } from "../lift.js?v=d8f12ce5";
+import { sectionUniforms, sectionMaterials } from "../section.js?v=d8f12ce5";
+import { linesOf, cohesiveOf, journeyPath, journeyAt, DIP, FURNACES, hearthLevel, STOPS } from "../model.js?v=d8f12ce5";
+import { Flow } from "../flow.js?v=d8f12ce5";
 
 // The blast furnace complex, drawn at 6 mm to the metre: BF-3 with its published volumes (useful
 // 1,400 m³, working 1,204 m³), its bell-less top, its twin tapholes and rocking runners (PIB 2002),
@@ -554,8 +554,8 @@ export class Furnace extends Figure {
     const z = FZ + 0.8;
     this.gasInside = [];
     for (const sgn of [-1, 1]) {
-      for (let k = 0; k < 7; k++) {
-        const f = (k + 0.5) / 7;
+      for (let k = 0; k < 5; k++) {
+        const f = (k + 0.5) / 5;
         const rTop = (0.08 + 0.86 * f) * L.rT;
         const rCz = (0.05 + 0.9 * f) * L.rB;
         const yCz = this.cz.lower(rCz) + this.cz.thick * 0.5;
@@ -563,7 +563,9 @@ export class Furnace extends Figure {
           [L.rH - 0.9, L.yT + 0.1], [L.rH - 1.6 - 1.2 * (1 - f), L.yT + 1.6], [Math.max(0.3, rCz * 0.7), yCz - 1.6], [rCz, yCz],
           [Math.min(rCz * 1.04 + 0.4, L.rB - 0.3), yCz + 1.6], [rTop * 1.02, L.yBelly + L.hStack * 0.7], [rTop, L.yStock - DIP * (1 - rTop / L.rT) - 0.1],
         ].map(([r, y]) => V3(FX + sgn * r * S, yw(y), z));
-        this.gasInside.push(F.add(pts, { color: GAS, count: 6, speed: 22, size: 2.1, group: "inside" }));
+        // the gas leaves the raceway near white hot and full of CO, and comes out at the top cool and
+        // dull with CO₂: the beads change on the way up (the gas colour stays the gas colour)
+        this.gasInside.push(F.add(pts, { color: GAS, count: 5, speed: 22, size: 2.3, group: "inside", grad: ["#effdff", GAS, "#6f9ea8"], shrink: 0.6 }));
       }
     }
     // round the loop: uptakes to downcomer to dust catcher to scrubber to the stoves
@@ -591,6 +593,20 @@ export class Furnace extends Figure {
     if (now) this.knife.d = d;
   }
 
+  // the chemistry lens on the cut face: mode "ride" (plain), "react" (a reaction stop lit, its specks
+  // on) or "heat" (isotherms strong); stop is an index into STOPS or -1
+  setChem(mode, stop = -1) {
+    const u = this.secU;
+    this.chem = { mode, stop, to: mode === "ride" ? 0 : 1, iso: mode === "heat" ? 1 : 0 };
+    const s = STOPS[stop];
+    if (mode === "react" && s) {
+      const mask = s.regs.reduce((m, r) => m + 2 ** (r - 5), 0);
+      u.uFocus.value.set(s.band[0], s.band[1], mask, u.uFocus.value.w);
+      u.uFocusGas.value = s.gas ? 1 : 0;
+      this.chem.focus = 1;
+    } else this.chem.focus = 0;
+  }
+
   // ---- every frame ----
   update(dt, { hours, castPhase, stovePhase, live, still, clockHours }) {
     const L = this.L;
@@ -611,6 +627,12 @@ export class Furnace extends Figure {
     const vol = J.solid * this.path.total;
     this.secU.uLayer.value = vol / (Math.PI * L.rT * L.rT * this.secU.uPair.value) - this.secU.uOre.value / 2;
     this.secU.uTime.value += dt;
+    // the chemistry lens eases in and out
+    const ch = this.chem || { to: 0, iso: 0, focus: 0 };
+    const ease = still ? 1 : 1 - Math.exp(-dt * 4);
+    this.secU.uChem.value += (ch.to - this.secU.uChem.value) * ease;
+    this.secU.uIsoBoost.value += (ch.iso - this.secU.uIsoBoost.value) * ease;
+    this.secU.uFocus.value.w += (ch.focus - this.secU.uFocus.value.w) * ease;
     const lev = hearthLevel(castPhase);
     this.secU.uIron.value = -SUMP + (L.yT - 0.6 + SUMP) * lev * 0.55;
     this.secU.uSlag.value = this.secU.uIron.value + 0.5 + 0.9 * lev;

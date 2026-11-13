@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import { Figure, HEAT, GAS, V3, UP, circle } from "../figure.js?v=c883ab7a";
-import { InkSet } from "../ink.js?v=c883ab7a";
-import { LIFT_GLSL } from "../lift.js?v=c883ab7a";
-import { Flow } from "../flow.js?v=c883ab7a";
-import { burnThrough } from "../model.js?v=c883ab7a";
-import { drawTag } from "./coke.js?v=c883ab7a";
+import { Figure, HEAT, GAS, V3, UP, circle } from "../figure.js?v=d8f12ce5";
+import { InkSet } from "../ink.js?v=d8f12ce5";
+import { LIFT_GLSL } from "../lift.js?v=d8f12ce5";
+import { Flow } from "../flow.js?v=d8f12ce5";
+import { burnThrough } from "../model.js?v=d8f12ce5";
+import { drawTag } from "./coke.js?v=d8f12ce5";
 
 // A sinter strand, shortened, with its bed drawn three times deeper than life so the flame front
 // reads: feed hopper and drum, ignition hood, the moving pallets over a row of wind boxes, the

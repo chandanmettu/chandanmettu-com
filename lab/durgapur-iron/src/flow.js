@@ -33,13 +33,15 @@ export class Flow {
     this.t = 0;
   }
 
-  add(points, { color, count = 10, speed = 30, size = 3, group = "main", clip = false, tension = 0.3, closed = false } = {}) {
+  // grad: three colours along the path (start, middle, end), so a bead can cool as it travels;
+  // shrink: its size at the end as a share of its size at the start
+  add(points, { color, count = 10, speed = 30, size = 3, group = "main", clip = false, tension = 0.3, closed = false, grad = null, shrink = 1 } = {}) {
     const curve = new THREE.CatmullRomCurve3(points.map((p) => p.clone()), closed, "catmullrom", tension);
     const len = curve.getLength();
     // a table of points so a bead's position is a cheap lookup
     const N = Math.max(16, Math.round(len / 1.5));
     const table = curve.getSpacedPoints(N);
-    const p = { curve, len, table, N, color: new THREE.Color(color), count, speed, size, group, clip, closed, offset: Math.random() };
+    const p = { curve, len, table, N, color: new THREE.Color(color), count, speed, size, group, clip, closed, offset: Math.random(), grad: grad && grad.map((c) => new THREE.Color(c)), shrink };
     this.paths.push(p);
     return p;
   }
@@ -48,17 +50,21 @@ export class Flow {
     const n = this.paths.reduce((s, p) => s + p.count, 0);
     const geo = new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(n * 3), 3).setUsage(THREE.DynamicDrawUsage));
-    geo.setAttribute("aColor", new THREE.BufferAttribute(new Float32Array(n * 3), 3));
+    geo.setAttribute("aColor", new THREE.BufferAttribute(new Float32Array(n * 3), 3).setUsage(THREE.DynamicDrawUsage));
     geo.setAttribute("aAlpha", new THREE.BufferAttribute(new Float32Array(n), 1).setUsage(THREE.DynamicDrawUsage));
-    geo.setAttribute("aSize", new THREE.BufferAttribute(new Float32Array(n), 1));
+    geo.setAttribute("aSize", new THREE.BufferAttribute(new Float32Array(n), 1).setUsage(THREE.DynamicDrawUsage));
     let i = 0;
     for (const p of this.paths) {
       p.first = i;
+      p.base = [];
       for (let k = 0; k < p.count; k++, i++) {
         geo.attributes.aColor.setXYZ(i, p.color.r, p.color.g, p.color.b);
-        geo.attributes.aSize.setX(i, p.size * (0.8 + 0.4 * ((k * 0.618) % 1)));
+        p.base.push(p.size * (0.8 + 0.4 * ((k * 0.618) % 1)));
+        geo.attributes.aSize.setX(i, p.base[k]);
       }
     }
+    this.dyn = this.paths.some((p) => p.grad || p.shrink !== 1);
+    this._c = new THREE.Color();
     const mat = new THREE.ShaderMaterial({
       uniforms: { uRes: this.fig.pen.uRes },
       vertexShader: VERT, fragmentShader: FRAG,
@@ -89,8 +95,15 @@ export class Flow {
         P.setXYZ(i, x, y, z);
         const ends = p.closed ? 1 : Math.min(1, s / 0.06, (1 - s) / 0.06);
         A.setX(i, p.clip && z > clipZ ? 0 : g * ends * 0.95);
+        if (p.grad) {
+          const c = this._c, G = p.grad;
+          if (s < 0.5) c.copy(G[0]).lerp(G[1], s * 2); else c.copy(G[1]).lerp(G[2], (s - 0.5) * 2);
+          this.points.geometry.attributes.aColor.setXYZ(i, c.r, c.g, c.b);
+        }
+        if (p.shrink !== 1) this.points.geometry.attributes.aSize.setX(i, p.base[k] * (1 + (p.shrink - 1) * s));
       }
     }
     P.needsUpdate = true; A.needsUpdate = true;
+    if (this.dyn) { this.points.geometry.attributes.aColor.needsUpdate = true; this.points.geometry.attributes.aSize.needsUpdate = true; }
   }
 }

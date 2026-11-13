@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { Figure, V3, UP, circle } from "../figure.js?v=c883ab7a";
-import { glassMaterial } from "../paper.js?v=c883ab7a";
-import { linesOf, FURNACES, BF5, BHILAI8 } from "../model.js?v=c883ab7a";
+import { Figure, V3, UP, circle } from "../figure.js?v=d8f12ce5";
+import { glassMaterial } from "../paper.js?v=d8f12ce5";
+import { linesOf, FURNACES, BF5, BHILAI8 } from "../model.js?v=d8f12ce5";
 
 // Five furnaces to one scale (2 mm to the metre): Durgapur's three, the planned BF-5, and Bhilai's
 // BF-8 for comparison. Each shell is the same typical profile scaled to that furnace's published

@@ -1,10 +1,11 @@
 import * as THREE from "three";
-import { Sheet, SERIF, HAND } from "./sheet.js?v=c883ab7a";
-import { Post, Spill } from "./post.js?v=c883ab7a";
-import { Sound } from "./sound.js?v=c883ab7a";
-import { buildPlant, LAYOUT } from "./plant.js?v=c883ab7a";
-import { CHAPTERS, finalizeChapters } from "./chapters.js?v=c883ab7a";
-import * as M from "./model.js?v=c883ab7a";
+import { Sheet, SERIF, HAND } from "./sheet.js?v=d8f12ce5";
+import { Post, Spill } from "./post.js?v=d8f12ce5";
+import { Sound } from "./sound.js?v=d8f12ce5";
+import { buildPlant, LAYOUT } from "./plant.js?v=d8f12ce5";
+import { CHAPTERS, finalizeChapters, DOC_ICON } from "./chapters.js?v=d8f12ce5";
+import { Reader } from "./reader.js?v=d8f12ce5";
+import * as M from "./model.js?v=d8f12ce5";
 
 const $ = (id) => document.getElementById(id);
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -96,7 +97,23 @@ const S = {
   castPhase: 0.15, stovePhase: 0.4,
   ui: {},
 };
-const ctx = { S, M, plant, saved, save, sound, fmt, $, earn, setCaption, camera };
+const ctx = { S, M, plant, saved, save, sound, fmt, $, earn, setCaption, camera, renderPanel, openDoc: (id) => reader.open(id) };
+
+// ---------- the documents: the case study and the poster, read in the page ----------
+// While the reader is open the 3D scene stops ticking and drawing (it is hidden behind it anyway).
+const reader = new Reader({ sound, onOpen: () => { S.reading = true; if (S.tour.on) stopTour(false); }, onClose: () => { S.reading = false; last = performance.now(); } });
+{
+  const dock = document.createElement("div");
+  dock.id = "docs"; dock.className = "glass"; dock.setAttribute("role", "group"); dock.setAttribute("aria-label", "Documents");
+  dock.innerHTML = `<button type="button" data-doc="case" title="Read the case study">${DOC_ICON.case}<span>Case study</span></button><button type="button" data-doc="poster" title="See the poster">${DOC_ICON.poster}<span>Poster</span></button>`;
+  dock.querySelectorAll("[data-doc]").forEach((b) => b.addEventListener("click", () => reader.open(b.dataset.doc)));
+  $("ui").appendChild(dock);
+  const cap = document.createElement("button");
+  cap.id = "bDocs"; cap.className = "ic"; cap.type = "button"; cap.title = "The case study and the poster"; cap.setAttribute("aria-label", "Read the case study and the poster");
+  cap.innerHTML = DOC_ICON.case;
+  cap.addEventListener("click", () => reader.open("case"));
+  $("bText").after(cap);
+}
 
 // ---------- camera ----------
 function chapterView() {
@@ -237,12 +254,13 @@ function earn(id, text) {
 function startTour() {
   const ch = CHAPTERS[S.ch];
   if (!ch.shots || !ch.shots.length) return;
-  S.tour.on = true; S.orbit.yaw = S.orbit.pitch = 0; S.zoom = 1; S.pan.set(0, 0, 0);
+  S.tour.on = true; S.viewOverride = null; S.orbit.yaw = S.orbit.pitch = 0; S.zoom = 1; S.pan.set(0, 0, 0);
   gotoShot(0); syncPlay();
 }
 function stopTour(done = true) {
   if (!S.tour.on) return;
   S.tour.on = false; drawDots(); syncPlay();
+  if (CHAPTERS[S.ch].tourEnd) CHAPTERS[S.ch].tourEnd(ctx);
   if (done) { saved.toured ||= {}; saved.toured[CHAPTERS[S.ch].id] = true; save(); }
   setCaption(CHAPTERS[S.ch].caption(ctx));
 }
@@ -381,6 +399,7 @@ canvas.addEventListener("pointerup", (e) => {
 canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 canvas.addEventListener("wheel", (e) => { e.preventDefault(); if (S.tour.on) stopTour(false); S.zoom = Math.max(0.3, Math.min(2.2, S.zoom * Math.exp(e.deltaY * 0.0012))); }, { passive: false });
 addEventListener("keydown", (e) => {
+  if (S.reading) return;
   if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) return;
   if (e.target instanceof HTMLButtonElement && (e.key === " " || e.key === "Enter")) return;
   const k = e.key;
@@ -388,7 +407,7 @@ addEventListener("keydown", (e) => {
   else if (k === "ArrowLeft" || k === "PageUp") { goChapter(S.ch - 1); e.preventDefault(); }
   else if (k === "t" || k === "T") openText();
   else if (k === " ") { e.preventDefault(); $("bPlay").click(); }
-  else if (k === "Escape") { stopTour(false); S.orbit.yaw = S.orbit.pitch = 0; S.zoom = 1; S.pan.set(0, 0, 0); $("a11y").classList.remove("open"); }
+  else if (k === "Escape") { stopTour(false); S.viewOverride = null; S.orbit.yaw = S.orbit.pitch = 0; S.zoom = 1; S.pan.set(0, 0, 0); $("a11y").classList.remove("open"); }
   else if (/^[0-9]$/.test(k) && Number(k) < CHAPTERS.length) goChapter(Number(k));
   else if (CHAPTERS[S.ch].key) CHAPTERS[S.ch].key(ctx, k, e);
 });
@@ -447,6 +466,9 @@ function updateLabels() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
   const seen = new Set();
   let svg = "";
+  // labels keep out from under the card and the panel, where those stand
+  const box = (id) => { const e = $(id); if (!e || innerWidth < 860) return null; const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 ? r : null; };
+  const cr = list.length ? box("card") : null, pr = list.length ? box("panel") : null;
   for (const L of list) {
     if (!L.pos) continue;
     tmp.copy(L.pos).project(camera);
@@ -458,11 +480,17 @@ function updateLabels() {
     let el = labelEls.get(L.text);
     if (!el) { el = document.createElement("span"); el.className = "lbl"; labelLayer.appendChild(el); labelEls.set(L.text, el); }
     if (el.textContent !== (L.show ?? L.text)) el.textContent = L.show ?? L.text;
-    el.classList.toggle("heat", !!L.heat); el.classList.toggle("gas", !!L.gas);
+    el.classList.toggle("heat", !!L.heat); el.classList.toggle("gas", !!L.gas); el.classList.toggle("on", !!L.on);
     // keep the label on screen: slide it along, the leader still finds the part
     const lw = el.offsetWidth || 80;
     let lx = x + dx;
-    if (!L.center) lx = dx < 0 ? Math.max(lx, 6 + lw) : Math.min(lx, w - 6 - lw);
+    if (!L.center) {
+      const ly = y + dy;
+      let lo = 6, hi = w - 6;
+      if (cr && ly > cr.top - 12 && ly < cr.bottom + 12) lo = Math.max(lo, cr.right + 8);
+      if (pr && ly > pr.top - 12 && ly < pr.bottom + 12) hi = Math.min(hi, pr.left - 8);
+      lx = dx < 0 ? Math.max(lx, lo + lw) : Math.min(lx, hi - lw);
+    }
     el.style.transform = L.center ? `translate(${x.toFixed(1)}px, ${(y + dy).toFixed(1)}px) translate(-50%, -100%)` : `translate(${lx.toFixed(1)}px, ${(y + dy).toFixed(1)}px) translate(${dx < 0 ? "-100%" : "0"}, -50%)`;
     el.hidden = false;
     seen.add(L.text);
@@ -519,6 +547,7 @@ function loop(now) {
   const raw = now - last;
   last = now;
   frameNo++;
+  if (S.reading) return;
   if (frameNo > 30) sampleFrame(raw);
   tick(Math.min(0.05, raw / 1000));
   render();
@@ -587,4 +616,4 @@ function grab(type = "image/png") {
 }
 
 start();
-window.__di = { grab, S, plant, camera, renderer, post, scene, sheet, M, CHAPTERS, goChapter, advance, standAll, startTour, stopTour, setTier, earn, hideLoader: () => { $("loader").style.display = "none"; } };
+window.__di = { reader, grab, S, plant, camera, renderer, post, scene, sheet, M, CHAPTERS, goChapter, advance, standAll, startTour, stopTour, setTier, earn, hideLoader: () => { $("loader").style.display = "none"; } };

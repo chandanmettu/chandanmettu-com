@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { LIFT_GLSL } from "./lift.js?v=c883ab7a";
+import { LIFT_GLSL } from "./lift.js?v=d8f12ce5";
 
 // The furnace's cut face, drawn from the model in one shader. Coordinates in the plane are figure
 // millimetres; the shader turns them into metres about the axis (r, y) and decides, pixel by pixel,
@@ -13,7 +13,12 @@ uniform float uRH, uRB, uRT, uYT, uYBosh, uYBelly, uYStack, uYStock;
 uniform float uCzApex, uCzRoot, uCzThick;
 uniform float uLayer, uPair, uOre, uDip;
 uniform float uIron, uSlag, uRace, uTime, uSurfAlpha;
+uniform float uChem, uIsoBoost, uFocusGas;
+uniform vec4 uFocus; // the reaction stop in view: burden temperature band (x..y; y <= x for any), region mask, strength
 varying vec2 vP;
+// region kinds 5..12 as bits 0..7 of the focus mask
+bool hasReg(float mask, float reg) { return mod(floor(mask / exp2(reg - 5.0)), 2.0) > 0.5; }
+bool inFocus(float reg, float T) { return uFocus.w > 0.001 && hasReg(uFocus.z, reg) && (uFocus.y <= uFocus.x || (T >= uFocus.x && T <= uFocus.y)); }
 
 float Rin(float y) {
   if (y <= uYT) return uRH;
@@ -161,6 +166,18 @@ void main() {
   }
   if (reg == 9.0 || reg == 8.0) { float rw = raceway(r, y); float fr = max(fwidth(rw), 1e-4); ink = max(ink, (1.0 - smoothstep(0.6, 1.6, abs(rw - 1.0) / fr)) * 0.8); }
   if (reg >= 10.0) ink = max(ink, (1.0 - smoothstep(0.6, 1.6, abs(y - uSlag) / fwy)) * 0.75);
+  // the reaction stop in view: its band edged in a marching dashed ink line, its region washed warm
+  if (uFocus.w > 0.001 && inside && reg != 4.0) {
+    float T = tempAt(r, y);
+    bool inReg = hasReg(uFocus.z, reg);
+    if (uFocus.y > uFocus.x && inReg) {
+      float fwT = max(fwidth(T), 1e-3);
+      float e = min(abs(T - uFocus.x), abs(T - uFocus.y)) / fwT;
+      float dash = step(0.45, fract((mm.x + mm.y) * 0.32 - uTime * 0.7));
+      ink = max(ink, (1.0 - smoothstep(0.8, 2.2, e)) * 0.95 * dash * uFocus.w);
+    }
+    if (inFocus(reg, T)) base = mix(base, vec3(1.0, 0.95, 0.86), 0.35 * uFocus.w);
+  }
   vec3 col = mix(base, uInk, clamp(ink, 0.0, 1.0));
   gl_FragColor = vec4(col, uSurfAlpha);
   #include <tonemapping_fragment>
@@ -169,8 +186,15 @@ void main() {
 
 const GLOW_FRAG = /* glsl */ `
 ${COMMON}
-uniform vec3 uHeat, uHot;
+uniform vec3 uHeat, uHot, uGasC;
 uniform float uGlowOn;
+// a sparse field of small dots drifting through a grid: the specks of the reactions
+float specks(vec2 g, float keep, float rad) {
+  vec2 cell = floor(g), f = fract(g) - 0.5;
+  float h = hash12(cell);
+  vec2 o = (vec2(h, fract(h * 7.31)) - 0.5) * 0.5;
+  return (1.0 - smoothstep(rad * 0.5, rad, length(f - o))) * step(1.0 - keep, h);
+}
 void main() {
   float dx = (vP.x - uFX) / uS;
   float r = sqrt(dx * dx + uD * uD);
@@ -180,12 +204,33 @@ void main() {
   if (reg < 4.5) discard;
   float T = tempAt(r, y);
   float a = 0.0;
+  float aG = 0.0; // gas-coloured light: the gas at work
   if (reg == 5.0 || reg == 6.0) a = 0.2 * smoothstep(820.0, 1250.0, T);
   if (reg == 7.0) a = 0.5 + 0.08 * sin(uTime * 1.3 + u * 3.0);
   if (reg == 8.0 || reg == 10.0) { a = 0.14 + 0.14 * smoothstep(1450.0, 1800.0, T); }
   if (reg == 9.0) { T = 1500.0 + 600.0 * (1.0 - smoothstep(0.0, 1.0, raceway(r, y))); a = 0.55 + 0.4 * (1.0 - smoothstep(0.1, 1.0, raceway(r, y))); }
   if (reg == 11.0) { T = 1300.0; a = 0.42; }
   if (reg == 12.0) { T = 1650.0; a = 0.72; }
+  // the raceway: coke whirling round the hollow in front of the tuyere, white hot
+  if (reg == 9.0) {
+    float c = uRH - 0.95 * uRace;
+    vec2 q = vec2((r - c) / (1.05 * uRace + 0.01), (y - uYT - 0.1) / (0.72 * uRace + 0.01));
+    float ang = atan(q.y, q.x) / 6.2831853 + 0.5, rad = length(q);
+    float spark = specks(vec2(ang * 16.0 - uTime * (2.4 - 1.4 * rad), rad * 5.0), 0.55, 0.32);
+    a = min(1.0, a + spark * 0.45);
+    T += spark * 500.0;
+  }
+  if (uChem > 0.001) {
+    // near 800 °C: raw flux giving off CO₂, small bubbles rising through the ore layers
+    if (reg == 5.0 && T > 740.0 && T < 910.0) aG = max(aG, specks(vec2(r * 7.0, y * 3.2 - uTime * 1.1), 0.18, 0.22) * 0.8 * uChem);
+    // the thermal reserve zone: CO taking oxygen from wüstite, a fine twinkle in the ore
+    if ((reg == 5.0 || reg == 6.0) && T >= 880.0 && T <= 1000.0) aG = max(aG, specks(vec2(r * 9.0 + 3.1, y * 6.0 - uTime * 2.0), 0.22, 0.2) * (0.55 + 0.45 * sin(uTime * 5.0 + r * 3.0)) * 0.7 * uChem);
+    // above about 1,000 °C: solution loss eats the coke, which flickers and breathes out CO
+    if (reg == 6.0 && T > 1000.0) {
+      a = max(a, (0.12 + 0.1 * sin(uTime * 3.7 + u * 9.0 + r * 2.0)) * uChem);
+      aG = max(aG, specks(vec2(r * 8.0 + 7.7, y * 5.0 - uTime * 1.8), 0.3, 0.22) * 0.75 * uChem);
+    }
+  }
   // droplets of iron and slag falling through the coke below the cohesive zone
   if (reg == 8.0) {
     vec2 g = vec2(r * 2.2, y * 1.1 + uTime * 0.9);
@@ -197,13 +242,20 @@ void main() {
   // isotherms every 200 °C through the burden
   if (reg >= 5.0 && reg <= 8.0) {
     float c = T / 200.0, fw = max(fwidth(c), 1e-4);
-    float iso = (1.0 - smoothstep(0.5, 1.4, abs(fract(c + 0.5) - 0.5) / fw)) * smoothstep(350.0, 500.0, T);
-    a = max(a, iso * 0.5);
+    float iso = (1.0 - smoothstep(0.5, 1.4 + 0.8 * uIsoBoost, abs(fract(c + 0.5) - 0.5) / fw)) * smoothstep(350.0 - 200.0 * uIsoBoost, 500.0 - 200.0 * uIsoBoost, T);
+    a = max(a, iso * (0.5 + 0.4 * uIsoBoost));
+  }
+  // the reaction stop in view breathes, in the gas's colour if the gas does the work, else heat's
+  if (inFocus(reg, T)) {
+    float br = uFocus.w * (0.2 + 0.14 * sin(uTime * 2.6));
+    if (uFocusGas > 0.5) aG = max(aG, br); else a = max(a, br + 0.06);
   }
   a *= uSurfAlpha * uGlowOn;
+  aG *= uSurfAlpha * uGlowOn;
   vec3 col = mix(uHeat, uHot, smoothstep(1150.0, 1900.0, T));
   col = mix(col, vec3(1.0, 0.97, 0.9), smoothstep(1850.0, 2100.0, T) * 0.6);
-  gl_FragColor = vec4(col * a * 1.3, a);
+  vec3 gas = mix(uGasC, vec3(0.85, 0.98, 1.0), 0.25);
+  gl_FragColor = vec4(col * a * 1.3 + gas * aG * 1.3, max(a, aG));
 }`;
 
 export function sectionUniforms(L, { S, FX, Y0 }) {
@@ -214,17 +266,18 @@ export function sectionUniforms(L, { S, FX, Y0 }) {
     uCzApex: { value: 0 }, uCzRoot: { value: 0 }, uCzThick: { value: 1.6 },
     uLayer: { value: 0 }, uPair: { value: 1.25 }, uOre: { value: 0.55 }, uDip: { value: 1.0 },
     uIron: { value: 0.6 }, uSlag: { value: 1.6 }, uRace: { value: 1.0 }, uTime: { value: 0 },
+    uChem: { value: 0 }, uIsoBoost: { value: 0 }, uFocusGas: { value: 0 }, uFocus: { value: new THREE.Vector4(0, 0, 0, 0) },
   };
 }
 
-export function sectionMaterials(uniforms, surf, page, { ink = "#1c2433", paper = "#fbf7ee", heat = "#ff7a1c", hot = "#ffd27a" } = {}) {
+export function sectionMaterials(uniforms, surf, page, { ink = "#1c2433", paper = "#fbf7ee", heat = "#ff7a1c", hot = "#ffd27a", gas = "#18b8d6" } = {}) {
   const paperMat = new THREE.ShaderMaterial({
     uniforms: { ...surf, ...page, ...uniforms, uInk: { value: new THREE.Color(ink) }, uPaper: { value: new THREE.Color(paper) } },
     vertexShader: VERT, fragmentShader: PAPER_FRAG,
     transparent: true, side: THREE.DoubleSide,
   });
   const glowMat = new THREE.ShaderMaterial({
-    uniforms: { ...surf, ...page, ...uniforms, uHeat: { value: new THREE.Color(heat) }, uHot: { value: new THREE.Color(hot) }, uGlowOn: { value: 1 } },
+    uniforms: { ...surf, ...page, ...uniforms, uHeat: { value: new THREE.Color(heat) }, uHot: { value: new THREE.Color(hot) }, uGasC: { value: new THREE.Color(gas) }, uGlowOn: { value: 1 } },
     vertexShader: VERT, fragmentShader: GLOW_FRAG,
     transparent: true, premultipliedAlpha: true, depthWrite: false, side: THREE.DoubleSide,
     polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2,

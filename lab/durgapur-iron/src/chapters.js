@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { FRAMES } from "./plant.js?v=c883ab7a";
-import { FX, FZ, S as FS, Y0 } from "./figures/furnace.js?v=c883ab7a";
+import { FRAMES } from "./plant.js?v=d8f12ce5";
+import { FX, FZ, S as FS, Y0 } from "./figures/furnace.js?v=d8f12ce5";
 
 // Every chapter: what the card says, what the panel controls and reads, where the camera goes,
 // its tour, its prediction, its flap and its challenge. Site copy has no em dashes (his rule).
@@ -25,6 +25,16 @@ function challengeBlock(ctx, id, title, body, stampText) {
   return `<div class="challenge${done ? " done" : ""}"><span class="stamp">${stampText}</span><h3>Challenge${done ? " · done" : ""}</h3><p>${title} ${body}</p></div>`;
 }
 const set = (ctx, id, v) => { const el = ctx.S.ui[id]; if (el && el.textContent !== v) el.textContent = v; };
+// the two documents: the case study the poster grew from, and the poster itself
+const DOC_ICON = {
+  case: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2.8h8.2L18.6 7v14.2H6z"/><path d="M14 2.8V7h4.6M8.8 11h7M8.8 14h7M8.8 17h4.6"/></svg>`,
+  poster: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="5" width="18.8" height="13.6" rx="1"/><path d="M5.6 15.6l3.6-4.4 2.8 3 2.2-2.4 4 3.8M15.6 8.6h2.6"/></svg>`,
+};
+export { DOC_ICON };
+function docButtons() {
+  return `<p>The 20-page case study this poster grew from, and the A0 poster itself, open right here.</p>
+    <button class="go" data-act="read-case">Read the case study</button><button class="go soft" data-act="read-poster">See the poster</button>`;
+}
 
 // ============================================================ 0 · the poster
 const poster = {
@@ -38,9 +48,14 @@ const poster = {
     <p>This poster follows its <b>iron zone</b>: everything up to the liquid iron (hot metal) that leaves the blast furnace. Four units, each feeding the next:</p>
     ${facts([["1", "Raw materials handling blends ore, flux and coal."], ["2", "Coke ovens bake coal into coke."], ["3", "Sinter machines fuse ore fines into lumps."], ["4", "Blast furnaces smelt them into hot metal and slag."]])}
     <button class="go" data-act="stand">Stand it all up</button><button class="go soft" data-go="1">Start with raw materials →</button>
-    <p class="small" style="margin-top:8px"><a href="./poster.pdf" download>Download the printed A0 poster (PDF, 7 MB)</a>, rendered from this model.</p>
+    <h2>The research behind it</h2>
+    ${docButtons()}
     <p class="small" style="margin-top:10px">Drag to look round, right-drag or shift-drag to pan, scroll to zoom. Arrow keys change chapter. ≡ opens the whole poster as text.</p>`,
-  act: (ctx, a) => { if (a === "stand") document.getElementById("bPlay").click(); },
+  act: (ctx, a) => {
+    if (a === "stand") document.getElementById("bPlay").click();
+    if (a === "read-case") ctx.openDoc("case");
+    if (a === "read-poster") ctx.openDoc("poster");
+  },
   panelKicker: "Durgapur in numbers",
   panel: (ctx) => {
     const w = ctx.M.worked();
@@ -64,7 +79,7 @@ const poster = {
     const w = ctx.M.worked();
     return `<h1>How Durgapur makes iron</h1><p>A 3D poster of the iron zone of SAIL's Durgapur Steel Plant, West Bengal: raw materials handling, coke ovens, sinter and the blast furnaces. Its first blast furnace was lit on 29 December 1959; three furnaces work today, BF-2, BF-3 and BF-4, with 4,600 m³ of useful volume between them.</p>
     <h2>Durgapur in numbers</h2><table><tr><th>Furnace</th><th>Useful m³</th><th>Working m³</th><th>t/m³·day</th><th>t/day</th></tr>${w.furnaces.map((f) => `<tr><td>${f.name}</td><td>${ctx.fmt(f.useful)}</td><td>${ctx.fmt(f.working)}</td><td>${f.prod}</td><td>${ctx.fmt(f.daily)}</td></tr>`).join("")}</table>
-    <p>The printed A0 poster made from this model: <a href="./poster.pdf">poster.pdf</a>.</p><p>All three together make about ${ctx.fmt(w.total)} t a day, ${(w.annual / 1e6).toFixed(2)} Mt a year, against a rated 2.40 Mt (CAG gives 2.45 Mt). In July 2026 the plant made ${ctx.fmt(ctx.M.PLANT.julyRecord.hotMetal)} t of hot metal, its best July. From 2017 to 2024 it made 17.05 Mt, 105 % of its MoU target, the best record in SAIL (CAG Report 38 of 2025).</p>`;
+    <p>The case study this poster grew from: <a href="./docs/case-study.pdf">case-study.pdf</a> (20 pages). The A0 poster: <a href="./docs/poster.pdf">poster.pdf</a>.</p><p>All three together make about ${ctx.fmt(w.total)} t a day, ${(w.annual / 1e6).toFixed(2)} Mt a year, against a rated 2.40 Mt (CAG gives 2.45 Mt). In July 2026 the plant made ${ctx.fmt(ctx.M.PLANT.julyRecord.hotMetal)} t of hot metal, its best July. From 2017 to 2024 it made 17.05 Mt, 105 % of its MoU target, the best record in SAIL (CAG Report 38 of 2025).</p>`;
   },
 };
 
@@ -72,61 +87,258 @@ const poster = {
 const FUR = (x, y, z) => W("furnace", x, y, z);
 // a point on the furnace's cut face from model metres (r from the axis, y above the taphole)
 const FACE = (r, y) => FUR(FX + r * FS, Y0 + y * FS, FZ + 1);
+const furnaceFig = (ctx) => ctx.plant.byId.furnace.fig;
+function radiusAtFig(L, y) { return y <= L.yBelly ? L.rB : L.rB + (L.rT - L.rB) * Math.min(1, (y - L.yBelly) / L.hStack); }
+
+// where a reaction stop sits on the cut face, in model metres (r < 0 is the left half)
+function stopPoint(ctx, i) {
+  const f = furnaceFig(ctx), L = f.L, cz = f.cz, M = ctx.M, s = M.STOPS[i], p = s.pos, sg = Math.sign(p.r) || 1;
+  if (p.at === "top") return { r: p.r * L.rT, y: L.yStock - M.DIP * (1 - Math.abs(p.r)) - 0.8 };
+  if (p.at === "cz") return { r: p.r * L.rB, y: cz.lower(Math.abs(p.r) * L.rB) + 0.5 * cz.thick };
+  if (p.at === "drip") return { r: p.r * L.rB, y: L.yBosh + 0.4 };
+  if (p.at === "race") return { r: sg * (L.rH - 1.0), y: L.yT + 0.1 };
+  if (p.at === "hearth") return { r: p.r * L.rH, y: f.secU.uIron.value + 0.05 };
+  const y = M.heightAtT(L, Math.abs(p.r), p.T);
+  return { r: p.r * M.radiusAt(L, y), y };
+}
+const STOP_DY = [-22, -18, -10, 20, -12, 4, -14, 4, 12, 12];
+
 function furnaceLabels(ctx) {
-  const f = ctx.plant.byId.furnace.fig;
+  const f = furnaceFig(ctx);
   if (f.phase !== "live" || f.knife.d > 0.5) return [];
-  const L = f.L, cz = f.cz, u = f.secU;
-  const J = f.journey;
+  const L = f.L, cz = f.cz, u = f.secU, M = ctx.M, J = f.journey, mode = ctx.S.fMode || "react";
+  const lump = { text: "Your lump", show: J ? `Your lump · ${ctx.fmt(J.T)} °C` : "Your lump", pos: J ? FACE(-J.r, J.y) : null, dx: -70, dy: 36 };
+  if (mode === "react") {
+    return [...M.STOPS.map((s, i) => {
+      const p = stopPoint(ctx, i), on = i === ctx.S.fStop;
+      return { text: `stop:${s.id}`, show: `${i + 1} · ${s.tag}`, pos: FACE(p.r, p.y), dx: p.r < 0 ? -140 : 140, dy: STOP_DY[i], on, gas: on && s.gas, heat: on && !s.gas };
+    }), lump];
+  }
+  if (mode === "heat") {
+    const iso = (T, rf, dx, dy, text) => { const y = M.heightAtT(L, rf, T); return { text, pos: FACE(rf * M.radiusAt(L, y), y), dx, dy, heat: T >= 800 }; };
+    const r0 = 0.5 * L.rB;
+    return [
+      { text: "Top gas out, about 120 to 370 °C", pos: FACE(0.3 * L.rT, L.yStock + 1.2), dx: 130, dy: -26, gas: true },
+      iso(400, 0.5, 130, -6, "400 °C"),
+      iso(800, 0.5, 130, 4, "800 °C"),
+      iso(950, -0.62, -130, -4, "Thermal reserve zone: near 950 °C"),
+      { text: "1,200 °C: ore starts to soften", pos: FACE(r0, cz.upper(r0)), dx: 140, dy: -6, heat: true },
+      { text: "1,400 °C: melted", pos: FACE(-r0, cz.lower(r0)), dx: -130, dy: 10, heat: true },
+      { text: "Raceway, about 2,000 °C", pos: FACE(L.rH - 1.0, L.yT + 0.1), dx: 120, dy: 6, heat: true },
+      { text: "Hot blast in: 898 °C (BF-3, 2023-24)", pos: FACE(L.rH + 0.2, L.yT), dx: 120, dy: 34, heat: true },
+      { text: "Hot metal, about 1,450 to 1,500 °C", pos: FACE(-0.45 * L.rH, Math.max(-1.4, u.uIron.value - 0.45)), dx: -110, dy: 20, heat: true },
+      lump,
+    ];
+  }
   const trz = cz.upper(0.75 * L.rB) + 0.38 * (L.yStock - cz.upper(0.75 * L.rB));
   return [
     { text: "Stockline: ore and coke in layers", pos: FACE(0.55 * L.rT, L.yStock - 1.2), dx: 120, dy: -18 },
-    { text: "Thermal reserve zone, 800 to 1,000 °C", pos: FACE(0.78 * radiusAtFig(L, trz), trz), dx: 110, dy: 46, heat: true },
-    { text: "Cohesive zone: ore softens and melts", pos: FACE(0.18 * L.rB, cz.lower(0.18 * L.rB) + 0.5 * cz.thick), dx: 150, dy: -34, heat: true },
+    { text: "Thermal reserve zone, about 900 to 1,000 °C", pos: FACE(0.78 * radiusAtFig(L, trz), trz), dx: 110, dy: -30, heat: true },
+    { text: "Cohesive zone: ore softens and melts", pos: FACE(0.6 * L.rB, cz.lower(0.6 * L.rB) + 0.5 * cz.thick), dx: 130, dy: 22, heat: true },
     { text: "Dripping zone: coke and liquid", pos: FACE(-0.5 * L.rB, L.yBosh + 0.5), dx: -110, dy: 10 },
     { text: "Raceway, about 2,000 °C", pos: FACE(L.rH - 1.0, L.yT + 0.1), dx: 120, dy: 6, heat: true },
     { text: "Deadman: a bed of coke", pos: FACE(-0.2 * L.rH, L.yT + 0.6), dx: -120, dy: -24 },
     { text: "Slag", pos: FACE(-0.62 * L.rH, (u.uIron.value + u.uSlag.value) / 2), dx: -90, dy: 4, heat: true },
     { text: "Hot metal", pos: FACE(-0.45 * L.rH, Math.max(-1.4, u.uIron.value - 0.45)), dx: -90, dy: 22, heat: true },
-    { text: "Your lump", show: J ? `Your lump · ${J.T.toFixed(0)} °C` : "Your lump", pos: J ? FACE(-J.r, J.y) : null, dx: -120, dy: -26 },
+    lump,
   ];
 }
-function radiusAtFig(L, y) { return y <= L.yBelly ? L.rB : L.rB + (L.rT - L.rB) * Math.min(1, (y - L.yBelly) / L.hStack); }
+
+// the three ways to look at the cut, and the reaction stops
+function setMode(ctx, mode, { stop = null, follow = null, zoom = false } = {}) {
+  const S = ctx.S, f = furnaceFig(ctx);
+  S.fMode = mode;
+  if (follow != null) S.fFollow = follow;
+  if (stop != null) S.fStop = stop;
+  S.viewOverride = null;
+  if (mode === "react" && stop != null && !S.fFollow) goStop(ctx, stop, { zoom, render: false });
+  if (mode === "react" && S.fFollow && f.journey) S.fStop = ctx.M.stopOf(f.journey);
+  if (mode === "react" && S.fFollow) S.play = true;
+  f.setChem(mode, mode === "react" ? S.fStop : -1);
+  ctx.renderPanel();
+  if (!S.tour.on) ctx.setCaption(furnace.caption(ctx));
+}
+function goStop(ctx, i, { zoom = true, render = true } = {}) {
+  const S = ctx.S, f = furnaceFig(ctx), M = ctx.M;
+  i = Math.max(0, Math.min(M.STOPS.length - 1, i));
+  S.fStop = i; S.fFollow = false; S.play = false;
+  S.hoursTo = M.hoursOfStop(f.L, f.path, i);
+  f.setChem("react", i);
+  if (zoom) {
+    const p = stopPoint(ctx, i);
+    S.orbit.yaw = S.orbit.pitch = 0; S.zoom = 1; S.pan.set(0, 0, 0);
+    S.viewOverride = { target: FACE(0, p.y), yaw: 8, pitch: 8, dist: 330, width: 175 };
+  }
+  ctx.sound.tick();
+  if (render) { syncF(ctx); updateRx(ctx); }
+  if (!S.tour.on) ctx.setCaption(furnace.caption(ctx));
+}
+function heatText(s) {
+  if (s.dH == null) return "–";
+  return `${s.dH < 0 ? "gives" : "takes"} ${Math.abs(s.dH)} kJ`;
+}
+function updateRx(ctx) {
+  const S = ctx.S, M = ctx.M, ui = S.ui;
+  if (!ui.rxEq) return;
+  const i = S.fStop ?? 0, s = M.STOPS[i];
+  set(ctx, "rxN", `${i + 1} of ${M.STOPS.length}`);
+  set(ctx, "fZone", s.name);
+  set(ctx, "rxEq", s.eq);
+  set(ctx, "rxPlain", s.plain);
+  set(ctx, "rxHeat", heatText(s));
+  set(ctx, "rxT", s.Tshort);
+  set(ctx, "rxWhy", s.why);
+  ui.rxUp.disabled = i === 0; ui.rxDown.disabled = i === M.STOPS.length - 1;
+  ui.rxFollow.setAttribute("aria-pressed", String(!!S.fFollow));
+  ui.rxFollow.textContent = S.fFollow ? "Following your lump" : "Follow my lump";
+}
+
+// the furnace's two temperatures against height (a Reichardt diagram) at 55 % of the radius,
+// the radius the lump rides; zones as bands; typical shapes from the model
+const CH = { x0: 44, x1: 258, y0: 10, y1: 262, tMax: 2200 };
+function chartGeom(ctx) {
+  const f = furnaceFig(ctx), L = f.L, top = L.yStock, bot = -1.6;
+  return { L, top, bot, X: (T) => CH.x0 + (Math.min(T, CH.tMax) / CH.tMax) * (CH.x1 - CH.x0), Y: (y) => CH.y0 + ((top - y) / (top - bot)) * (CH.y1 - CH.y0) };
+}
+function reichardtSVG(ctx) {
+  const M = ctx.M, f = furnaceFig(ctx), { L, top, bot, X, Y } = chartGeom(ctx);
+  const rf = 0.55, solid = [], gas = [];
+  for (let k = 0; k <= 140; k++) {
+    const y = top - (top - L.yT) * (k / 140);
+    solid.push(`${X(M.temperatureAt(L, rf * M.radiusAt(L, y), y)).toFixed(1)},${Y(y).toFixed(1)}`);
+    gas.push(`${X(M.gasAt(L, y, rf).T).toFixed(1)},${Y(y).toFixed(1)}`);
+  }
+  const r0 = rf * L.rB, lo = f.cz.lower(r0), hi = lo + f.cz.thick;
+  const trzTop = M.heightAtT(L, rf, 880), trzBot = M.heightAtT(L, rf, 1000);
+  const band = (y1, y2, cls, text) => `<rect class="${cls}" x="${CH.x0}" y="${Y(y1).toFixed(1)}" width="${CH.x1 - CH.x0}" height="${(Y(y2) - Y(y1)).toFixed(1)}"/>` + (text ? `<text class="zt" x="${CH.x1 - 4}" y="${((Y(y1) + Y(y2)) / 2 + 3).toFixed(1)}">${text}</text>` : "");
+  const ticks = [0, 500, 1000, 1500, 2000].map((t) => `<line class="grid" x1="${X(t)}" y1="${CH.y0}" x2="${X(t)}" y2="${CH.y1}"/><text class="tk" x="${X(t)}" y="${CH.y1 + 13}">${t.toLocaleString("en-IN")}</text>`).join("");
+  const side = [["stockline", top], ["tuyeres", L.yT], ["taphole", 0]].map(([t, y]) => `<text class="sd" x="${CH.x0 - 5}" y="${(Y(y) + 3).toFixed(1)}">${t}</text><line class="sdl" x1="${CH.x0 - 3}" y1="${Y(y).toFixed(1)}" x2="${CH.x0}" y2="${Y(y).toFixed(1)}"/>`).join("");
+  return `<svg class="chart" viewBox="0 0 268 290" role="img" aria-label="Temperature of the burden and of the gas against height in BF-3, typical shapes">
+    ${band(top, trzTop, "z0", "upper stack")}${band(trzTop, trzBot, "z1", "thermal reserve")}${band(trzBot, hi, "z0", "lower stack")}${band(hi, lo, "z2", "cohesive")}${band(lo, L.yT + 0.6, "z0", "dripping")}${band(L.yT + 0.6, L.yT - 0.6, "z3", "raceway")}${band(L.yT - 0.6, bot, "z4", "hearth")}
+    ${ticks}${side}
+    <line class="liq" x1="${X(1450)}" y1="${Y(L.yT - 0.6)}" x2="${X(1450)}" y2="${Y(bot)}"/><line class="liq" x1="${X(1500)}" y1="${Y(L.yT - 0.6)}" x2="${X(1500)}" y2="${Y(bot)}"/>
+    <polyline class="cg" points="${gas.join(" ")}"/>
+    <polyline class="cs" points="${solid.join(" ")}"/>
+    <line id="fLvl" class="lvl" x1="${CH.x0}" x2="${CH.x1}" y1="0" y2="0"/>
+    <circle id="fGdot" class="gd" r="4" cx="0" cy="0"/>
+    <circle id="fDot" class="sdot" r="5" cx="0" cy="0"/>
+    <text class="ax" x="${(CH.x0 + CH.x1) / 2}" y="${CH.y1 + 26}">temperature, °C</text>
+  </svg>`;
+}
+function updateChart(ctx) {
+  const ui = ctx.S.ui, f = furnaceFig(ctx), J = f.journey;
+  if (!ui.fDot || !J) return;
+  const { X, Y, L } = chartGeom(ctx);
+  const y = Y(J.y);
+  ui.fDot.setAttribute("cx", X(J.T).toFixed(1)); ui.fDot.setAttribute("cy", y.toFixed(1));
+  ui.fLvl.setAttribute("y1", y.toFixed(1)); ui.fLvl.setAttribute("y2", y.toFixed(1));
+  const inGas = J.y > L.yT - 0.2;
+  const g = ctx.M.gasAt(L, Math.max(J.y, L.yT), 0.55);
+  ui.fGdot.setAttribute("cx", X(g.T).toFixed(1)); ui.fGdot.setAttribute("cy", y.toFixed(1)); ui.fGdot.style.opacity = inGas ? 1 : 0;
+  set(ctx, "fGasT", inGas ? `${ctx.fmt(g.T)} °C` : "no gas: liquids");
+  set(ctx, "fSolT", `${ctx.fmt(J.T)} °C`);
+  set(ctx, "fEta", inGas ? `${Math.round(g.eta * 100)} %` : "–");
+  const bar = ui.fGas;
+  if (bar) {
+    const parts = inGas ? [g.CO, g.CO2, g.H2, g.N2] : [0, 0, 0, 0];
+    [...bar.children].forEach((c, k) => { c.style.flexBasis = `${parts[k].toFixed(1)}%`; c.textContent = parts[k] >= 6 ? `${Math.round(parts[k])}` : ""; });
+  }
+}
+
+function keyBlock() {
+  return `<h2>How to read the cut</h2><ul class="key">
+    <li><i class="k-ore"></i>Ore and sinter layer</li><li><i class="k-coke"></i>Coke layer</li>
+    <li><i class="k-soft"></i>Ore softening (cohesive zone)</li><li><i class="k-drip"></i>Hot coke, iron dripping</li>
+    <li><i class="k-dead"></i>Deadman: coke that stays</li><li><i class="k-race"></i>Raceway: coke burning</li>
+    <li><i class="k-slag"></i>Slag, floating</li><li><i class="k-iron"></i>Hot metal</li>
+    <li><i class="k-gas"></i>Gas going up (cools on the way)</li><li><i class="k-heat"></i>Heat: the hotter, the brighter</li></ul>`;
+}
+
 const furnace = {
   id: "furnace", short: "Blast furnace", kicker: "4 · The blast furnace", figures: ["furnace"], stamp: true,
   view: () => ({ target: FUR(300, 160, -92), yaw: 16, pitch: 14, dist: 820, width: 380 }),
   labels: furnaceLabels,
-  enter: (ctx) => { ctx.S.wantCut = true; ctx.S.cutOnce = false; ctx.S.play = true; ctx.S.fArmed = false; },
-  leave: (ctx) => { ctx.S.wantCut = false; },
+  enter: (ctx) => {
+    const S = ctx.S;
+    S.wantCut = true; S.cutOnce = false; S.play = true; S.fArmed = false;
+    S.fMode ||= "react"; S.fFollow = true; S.viewOverride = null;
+    const f = furnaceFig(ctx);
+    S.fStop = f.journey ? ctx.M.stopOf(f.journey) : 0;
+    f.setChem(S.fMode, S.fStop);
+  },
+  tourEnd: (ctx) => { const f = furnaceFig(ctx); if (ctx.S.wantCut && f.phase === "live" && f.knife.to > 50) f.setKnife(0); },
+  leave: (ctx) => { ctx.S.wantCut = false; ctx.S.viewOverride = null; furnaceFig(ctx).setChem("ride"); },
+  act: (ctx, a) => { if (a === "react" || a === "heat" || a === "ride") setMode(ctx, a, { follow: a === "react" ? true : null }); },
+  key: (ctx, k, e) => {
+    if (ctx.S.fMode !== "react") return;
+    if (k === "ArrowUp") { goStop(ctx, (ctx.S.fStop ?? 0) - 1); e.preventDefault(); }
+    if (k === "ArrowDown") { goStop(ctx, (ctx.S.fStop ?? 0) + 1); e.preventDefault(); }
+  },
   caption: (ctx) => {
+    const S = ctx.S, M = ctx.M;
     if (!ctx.saved.predict.furnace) return "Predict on the card first: how long does a lump take to come down?";
+    if (S.fMode === "react") { const i = S.fStop ?? 0; return `Reaction ${i + 1} of ${M.STOPS.length}: ${M.STOPS[i].name.toLowerCase()}. ${S.fFollow ? "It follows your lump down." : "↑ ↓ for the next one."}`; }
+    if (S.fMode === "heat") return "The gas cools from about 2,000 °C to a few hundred; the burden heats from the top down.";
     if (!ctx.saved.flaps.furnace) return "Drag the clock on the right to ride your lump down, then lift the flap.";
     if (!ctx.saved.stamps.furnace) return "Challenge: stop your lump where wüstite turns to iron by gas.";
     return "Stamp earned. Try the tour again, or close the knife to see the furnace whole.";
   },
   shots: [
-    { cap: "BF-3, drawn from its published volumes: 1,400 m³ useful, 1,204 m³ working.", dur: 5, view: () => ({ target: FUR(300, 170, -92), yaw: 28, pitch: 12, dist: 900, width: 400 }), act: (ctx) => { ctx.plant.byId.furnace.fig.setKnife(99); } },
-    { cap: "Cut it along its axis. Solid burden comes down; hot gas goes up through it.", dur: 5.5, view: () => ({ target: FUR(300, 160, -92), yaw: 8, pitch: 10, dist: 700, width: 330 }), act: (ctx) => { ctx.plant.byId.furnace.fig.setKnife(0); } },
+    { cap: "BF-3, drawn from its published volumes: 1,400 m³ useful, 1,204 m³ working.", dur: 5, view: () => ({ target: FUR(300, 170, -92), yaw: 28, pitch: 12, dist: 900, width: 400 }), act: (ctx) => { furnaceFig(ctx).setKnife(99); } },
+    { cap: "Cut it along its axis. Solid burden comes down; hot gas goes up through it.", dur: 5.5, view: () => ({ target: FUR(300, 160, -92), yaw: 8, pitch: 10, dist: 700, width: 330 }), act: (ctx) => { furnaceFig(ctx).setKnife(0); } },
     { cap: "At the top a rotating chute lays ore and coke in alternate layers (BF-3 has a bell-less top).", dur: 6, view: () => ({ target: FUR(300, 220, -92), yaw: 18, pitch: 22, dist: 300, width: 130 }) },
     { cap: "Lower down the ore softens and melts in an inverted V: the cohesive zone. Only the coke stays open.", dur: 6.5, view: () => ({ target: FUR(300, 112, -92), yaw: 4, pitch: 6, dist: 320, width: 150 }) },
     { cap: "Hot blast at the tuyeres burns coke to CO at about 2,000 °C: the raceway. Iron drips into the hearth under its slag.", dur: 6.5, view: () => ({ target: FUR(300, 76, -92), yaw: -6, pitch: 8, dist: 250, width: 120 }) },
-    { cap: "The gas takes seconds to rise; your lump takes hours. Your turn: drag the clock.", dur: 4, view: () => ({ target: FUR(300, 150, -92), yaw: 12, pitch: 10, dist: 560, width: 260 }) },
+    { cap: "The gas does the chemistry on its way up. Here, at 900 to 1,000 °C, CO takes the last oxygen from wüstite: FeO + CO → Fe + CO₂.", dur: 7, view: () => ({ target: FUR(300, 150, -92), yaw: 6, pitch: 8, dist: 360, width: 175 }), act: (ctx) => setMode(ctx, "react", { stop: 4, follow: false }) },
+    { cap: "Hotter than about 1,000 °C the coke turns CO₂ back into CO. That takes heat: CO₂ + C → 2CO.", dur: 6, view: () => ({ target: FUR(300, 120, -92), yaw: 6, pitch: 8, dist: 340, width: 170 }), act: (ctx) => setMode(ctx, "react", { stop: 5, follow: false }) },
+    { cap: "Heat and gas: the burden heats from the top down while the gas cools from about 2,000 °C to a few hundred.", dur: 6, view: () => ({ target: FUR(300, 150, -92), yaw: 12, pitch: 10, dist: 560, width: 260 }), act: (ctx) => setMode(ctx, "heat") },
+    { cap: "Your turn: follow your lump through all ten reactions, or step them with ↑ ↓.", dur: 4.5, view: () => ({ target: FUR(300, 150, -92), yaw: 12, pitch: 10, dist: 560, width: 260 }), act: (ctx) => setMode(ctx, "react", { follow: true }) },
   ],
   card: (ctx) => `
     <h1>Inside the blast furnace</h1>
-    <p class="lede">A counter-current reactor: solids go down, gas comes up.</p>
+    <p class="lede">A counter-current reactor: the burden comes down for hours, the gas goes up in seconds, and on the way the gas turns ore into iron.</p>
     ${predictBlock(ctx, "furnace", "A lump of sinter is charged at the top. About how long does it take to reach the hearth?", [["a", "About 7 seconds"], ["b", "About 7 minutes"], ["c", "About 7 hours"], ["d", "About 7 days"]], "c")}
-    <p>Watch the marked lump on the cut face. It keeps its share of the radius and moves with its layer, so it slows where the furnace is wide and speeds up where it narrows.</p>
+    <p>Watch the marked lump on the cut face. Three ways to look, on the right: <b class="gas">Reactions</b> lights each reaction where it runs, ten stops from the stockline to the hearth; <b class="heat">Heat and gas</b> plots both temperatures and the gas; <b>Ride the burden</b> names the zones.</p>
+    <div class="row"><button class="go" data-act="react">Show the reactions</button><button class="go soft" data-act="heat">Heat and gas</button></div>
     ${flapBlock(ctx, "furnace", "Why counter-current?", `
       <p>The burden takes <b>6 to 8 hours</b> to come down; the gas rises in about <b>6 to 12 seconds</b>. On the way the gas gives its heat to the solids and takes their oxygen.</p>
-      <p>High up, CO strips oxygen in steps: Fe₂O₃ → Fe₃O₄ → FeO. Near 900 to 1,000 °C (the thermal reserve zone) <b>FeO + CO → Fe + CO₂</b>. This <i>indirect</i> reduction is cheap. What is left is reduced by carbon itself lower down (FeO + C → Fe + CO), which takes heat and so more coke.</p>
+      <p>High up, CO strips oxygen in steps: Fe₂O₃ → Fe₃O₄ → FeO. Near 900 to 1,000 °C (the thermal reserve zone) <b>FeO + CO → Fe + CO₂</b>. This <i>indirect</i> reduction is cheap. Hotter than about 1,000 °C any CO₂ meets coke and turns back into CO (<b>CO₂ + C → 2CO</b>, which takes 172 kJ a mole), so what is reduced there costs coke: <i>direct</i> reduction.</p>
       <p>Coke never melts. In the cohesive zone the ore layers soften and close, and the gas gets through only by the coke slits between them. An inverted V is the shape operators want.</p>`)}
+    ${keyBlock()}
     ${challengeBlock(ctx, "furnace", "Stop your lump in the thermal reserve zone,", "where wüstite turns to iron by gas. Pause the clock there and hold it for two seconds.", "Gas<br>reducer")}
-    <p class="src">Volumes, productivity: SAIL. Bell-less top on BF-3: SAIL. Times: Ricketts (Ispat Inland); Techniques de l'Ingénieur. Zone temperatures: typical textbook ranges. Shape: a typical profile scaled to the published volumes (Durgapur does not publish its furnace lines).</p>`,
-  panelKicker: "Ride the burden",
-  panel: (ctx) => `
+    <p class="src">Volumes, productivity: SAIL. Bell-less top on BF-3: SAIL. Hot blast and oxygen: CAG Report 38 of 2025. Times: Ricketts (Ispat Inland); Techniques de l'Ingénieur. Reactions and where they run: ispatguru and standard texts (typical). ΔH: standard heats of formation at 25 °C, our arithmetic. Zone temperatures and the gas profile: typical shapes, not Durgapur measurements. Shape: a typical profile scaled to the published volumes (Durgapur does not publish its furnace lines).</p>`,
+  panelKicker: "Inside BF-3",
+  panel: (ctx) => {
+    const S = ctx.S, M = ctx.M, mode = S.fMode || "react";
+    const modes = [["react", "Reactions", "10 stops"], ["heat", "Heat and gas", "the profile"], ["ride", "Ride", "the zones"]];
+    const head = `
+    <div class="seg" role="radiogroup" aria-label="What the cut shows" id="fModes">${modes.map(([k, t, s]) => `<button type="button" role="radio" data-mode="${k}" aria-checked="${mode === k}">${t}<small>${s}</small></button>`).join("")}</div>
     <div class="big"><b id="fT">–</b><span id="fZone">–</span></div>
-    <label class="slider"><span>Hours since your lump was charged</span><output id="fHours">0.0 h</output><input id="fClock" type="range" min="0" max="${(ctx.M.RESIDENCE + 0.5).toFixed(1)}" step="0.01" value="0"></label>
-    <div class="actions"><button type="button" id="fPlay" aria-pressed="true">Pause</button><button type="button" id="fCut" aria-pressed="true">Close the furnace</button><button type="button" id="fRestart">Charge a new lump</button></div>
+    <label class="slider"><span>Hours since your lump was charged</span><output id="fHours">0.0 h</output><input id="fClock" type="range" min="0" max="${(M.RESIDENCE + 0.5).toFixed(1)}" step="0.01" value="0"></label>
+    <div class="actions"><button type="button" id="fPlay" aria-pressed="true">Pause</button><button type="button" id="fCut" aria-pressed="true">Close the furnace</button><button type="button" id="fRestart">Charge a new lump</button></div>`;
+    if (mode === "react") return head + `
+    <p class="reaction"><b id="rxEq">–</b><br><span id="rxPlain">–</span></p>
+    <div class="actions"><button type="button" id="rxUp" aria-label="Previous reaction, higher up">↑ Up</button><button type="button" id="rxDown" aria-label="Next reaction, lower down">Down ↓</button><button type="button" id="rxFollow" aria-pressed="true">Following your lump</button></div>
+    <dl class="readings">
+      <dt>Reaction</dt><dd id="rxN">–</dd>
+      <dt>Heat, per mole (25 °C)</dt><dd id="rxHeat" class="key">–</dd>
+      <dt>Where it runs</dt><dd id="rxT">–</dd>
+    </dl>
+    <p class="note" id="rxWhy"></p>
+    <div class="legend"><span><i class="g"></i>the gas at work</span><span><i class="h"></i>heat</span></div>`;
+    if (mode === "heat") return head + `
+    <div class="legend chartkey"><span><i class="h"></i>the burden</span><span><i class="g"></i>the gas</span><span><i class="d"></i>your lump</span></div>
+    ${reichardtSVG(ctx)}
+    <h4 class="gash">The gas at your lump's height</h4>
+    <div class="gasbar" id="fGas" aria-label="Gas make-up at your lump's height"><i class="co"></i><i class="co2"></i><i class="h2"></i><i class="n2"></i></div>
+    <div class="gaslegend"><span><i class="co"></i>CO</span><span><i class="co2"></i>CO₂</span><span><i class="h2"></i>H₂</span><span><i class="n2"></i>N₂ (from the air)</span></div>
+    <dl class="readings">
+      <dt>Gas here</dt><dd id="fGasT">–</dd>
+      <dt>Burden here</dt><dd id="fSolT">–</dd>
+      <dt>CO₂ ÷ (CO + CO₂): the gas's work done</dt><dd id="fEta" class="key">–</dd>
+    </dl>
+    <p class="note">At 55 % of the radius, the path your lump rides. Typical shapes: the gas leaves the raceway at about 39 % CO (898 °C blast with 3.69 % oxygen, CAG; our arithmetic) and the top inside published ranges (CO + CO₂ 37 to 53 %, CO/CO₂ 1.25 to 2.5, ispatguru). Not Durgapur measurements.</p>`;
+    return head + `
     <div class="oxides" id="fOx"><i>Fe₂O₃</i><i>Fe₃O₄</i><i>FeO</i><i>Fe</i></div>
     <div class="oxlegend"><span>hematite</span><span>magnetite</span><span>wüstite</span><span>iron</span></div>
     <p class="reaction" id="fReact">–</p>
@@ -139,29 +351,42 @@ const furnace = {
       <dt>Hot blast, 2023-24</dt><dd>898 °C (wanted 1,000)</dd>
     </dl>
     <div class="legend"><span><i class="h"></i>heat</span><span><i class="g"></i>gas (CO-rich)</span></div>
-    <p class="note">The burden clock runs about ${Math.round(3600 * ctx.S.rate)} times real time; the gas beads are slowed for the eye.</p>`,
+    <p class="note">The burden clock runs about ${Math.round(3600 * S.rate)} times real time; the gas beads are slowed for the eye.</p>`;
+  },
   wire: (ctx, el) => {
     const S = ctx.S;
-    el.querySelector("#fClock").addEventListener("input", (e) => { S.play = false; S.hoursTo = null; S.hours = Number(e.target.value); syncF(ctx); });
-    el.querySelector("#fPlay").addEventListener("click", () => { S.play = !S.play; syncF(ctx); });
-    el.querySelector("#fCut").addEventListener("click", () => { const f = ctx.plant.byId.furnace.fig; f.setKnife(f.knife.to < 50 ? 99 : 0); S.wantCut = f.knife.to < 50; syncF(ctx); });
-    el.querySelector("#fRestart").addEventListener("click", () => { S.hours = 0; S.play = true; syncF(ctx); });
+    el.querySelectorAll("#fModes [data-mode]").forEach((b) => b.addEventListener("click", () => { setMode(ctx, b.dataset.mode, { follow: b.dataset.mode === "react" ? true : null }); ctx.sound.tick(); }));
+    el.querySelector("#fClock").addEventListener("input", (e) => { S.play = false; S.hoursTo = null; S.hours = Number(e.target.value); if (S.fMode === "react") { S.fFollow = true; S.viewOverride = null; } syncF(ctx); });
+    el.querySelector("#fPlay").addEventListener("click", () => { S.play = !S.play; if (S.play && S.fMode === "react" && !S.fFollow) { S.fFollow = true; S.viewOverride = null; updateRx(ctx); } syncF(ctx); });
+    el.querySelector("#fCut").addEventListener("click", () => { const f = furnaceFig(ctx); f.setKnife(f.knife.to < 50 ? 99 : 0); S.wantCut = f.knife.to < 50; syncF(ctx); });
+    el.querySelector("#fRestart").addEventListener("click", () => { S.hours = 0; S.hoursTo = null; S.play = true; if (S.fMode === "react") { S.fFollow = true; S.viewOverride = null; } syncF(ctx); });
+    if (S.ui.rxUp) {
+      S.ui.rxUp.addEventListener("click", () => goStop(ctx, (S.fStop ?? 0) - 1));
+      S.ui.rxDown.addEventListener("click", () => goStop(ctx, (S.fStop ?? 0) + 1));
+      S.ui.rxFollow.addEventListener("click", () => { S.fFollow = true; S.play = true; S.hoursTo = null; S.viewOverride = null; const f = furnaceFig(ctx); if (f.journey) S.fStop = ctx.M.stopOf(f.journey); f.setChem("react", S.fStop); syncF(ctx); updateRx(ctx); ctx.setCaption(furnace.caption(ctx)); });
+      updateRx(ctx);
+    }
     syncF(ctx);
   },
   tick: (ctx, dt) => {
-    const f = ctx.plant.byId.furnace.fig, S = ctx.S;
+    const f = furnaceFig(ctx), S = ctx.S;
     if (S.wantCut && f.phase === "live" && !S.tour.on && f.knife.to > 50 && !S.cutOnce) { S.cutOnce = true; f.setKnife(0); }
     const J = f.journey;
     if (!J) return;
+    // the reactions follow the lump down
+    if (S.fMode === "react" && S.fFollow) {
+      const k = ctx.M.stopOf(J);
+      if (k !== S.fStop) { S.fStop = k; f.setChem("react", k); updateRx(ctx); if (!S.tour.on) ctx.setCaption(furnace.caption(ctx)); }
+    }
     // the challenge: armed once the lump has been above the zone; paused inside it for 2 s
     if (J.zone === "Upper stack" || J.zone === "Stack") S.fArmed = true;
     if (S.fArmed && !S.play && !S.tour.on && J.zone === "Thermal reserve zone") { S.fHold = (S.fHold || 0) + dt; if (S.fHold > 2) ctx.earn("furnace", "Stamp: you stopped the lump where gas turns wüstite to iron."); } else S.fHold = 0;
   },
   readouts: (ctx) => {
-    const J = ctx.plant.byId.furnace.fig.journey;
+    const J = furnaceFig(ctx).journey;
     if (!J) return;
     set(ctx, "fT", `${ctx.fmt(J.T)} °C`);
-    set(ctx, "fZone", J.zone);
+    set(ctx, "fZone", ctx.S.fMode === "react" ? ctx.M.STOPS[ctx.S.fStop ?? 0].name : J.zone);
     set(ctx, "fHours", `${J.hours.toFixed(1)} h`);
     set(ctx, "fDepth", `${J.depth.toFixed(1)} m`);
     set(ctx, "fReact", J.reaction);
@@ -169,11 +394,15 @@ const furnace = {
     if (ox) [...ox.children].forEach((c, i) => { const v = J.phase === "solid" ? J.mix[i] : i === 3 ? 1 : 0; c.style.flexBasis = `${(v * 100).toFixed(1)}%`; c.style.flexGrow = "0"; });
     const sl = ctx.S.ui.fClock;
     if (sl && document.activeElement !== sl) sl.value = String(ctx.S.hours);
+    updateChart(ctx);
   },
-  text: () => `<h2>4 · Inside the blast furnace</h2><p>A blast furnace is a counter-current shaft: sinter, lump ore and coke are charged at the top in layers and come down over 6 to 8 hours, while gas made at the tuyeres rises through them in 6 to 12 seconds. The gas heats the burden and strips its oxygen: Fe₂O₃ to Fe₃O₄ to FeO high up, then FeO + CO → Fe + CO₂ near 900 to 1,000 °C (indirect reduction). The rest is reduced by carbon lower down (direct reduction), which costs heat. In the cohesive zone, an inverted V, the ore softens and melts at about 1,200 to 1,400 °C; only coke stays solid, holding the column open for the gas. At the tuyeres the hot blast burns coke to CO at about 2,000 °C. Liquid iron and slag drip into the hearth.</p><p>BF-3 has 1,400 m³ of useful volume (taphole to stockline) and 1,204 m³ of working volume (tuyeres to stockline), so 196 m³ of hearth sits below the tuyeres. At 1.82 t per m³ of working volume a day it makes about ${Math.round(1.82 * 1204).toLocaleString("en-IN")} t a day. Its hot blast averaged 898 °C in 2023-24 against a wanted 1,000 °C (CAG).</p>`,
+  text: (ctx) => `<h2>4 · Inside the blast furnace</h2><p>A blast furnace is a counter-current shaft: sinter, lump ore and coke are charged at the top in layers and come down over 6 to 8 hours, while gas made at the tuyeres rises through them in 6 to 12 seconds. The gas heats the burden and strips its oxygen. In the cohesive zone, an inverted V, the ore softens and melts at about 1,200 to 1,400 °C; only coke stays solid, holding the column open for the gas. Liquid iron and slag drip into the hearth.</p>
+    <h3>The reactions, top to bottom (typical; ΔH per mole as written at 25 °C)</h3><ol>${ctx.M.STOPS.map((s) => `<li><b>${s.name}</b> (${s.zone.toLowerCase()}, ${s.T}): ${s.eq}${s.dH == null ? "" : `, ΔH ${s.dH < 0 ? "−" : "+"}${Math.abs(s.dH)} kJ${s.dHnote ? ` ${s.dHnote}` : ""}`}. ${s.plain}</li>`).join("")}</ol>
+    <p>The gas leaves the raceway at about 2,000 °C with no CO₂ and roughly 39 % CO (for BF-3's 898 °C blast with 3.69 % oxygen enrichment, CAG; our arithmetic). It stays near the burden's temperature through the thermal reserve zone and leaves the top at a few hundred degrees with some of its CO turned to CO₂ (top gas ranges: CO + CO₂ 37 to 53 %, CO/CO₂ 1.25 to 2.5, ispatguru).</p>
+    <p>BF-3 has 1,400 m³ of useful volume (taphole to stockline) and 1,204 m³ of working volume (tuyeres to stockline), so 196 m³ of hearth sits below the tuyeres. At 1.82 t per m³ of working volume a day it makes about ${Math.round(1.82 * 1204).toLocaleString("en-IN")} t a day. Its hot blast averaged 898 °C in 2023-24 against a wanted 1,000 °C (CAG).</p>`,
 };
 function syncF(ctx) {
-  const S = ctx.S, f = ctx.plant.byId.furnace.fig;
+  const S = ctx.S, f = furnaceFig(ctx);
   const p = S.ui.fPlay; if (p) { p.textContent = S.play ? "Pause" : "Play"; p.setAttribute("aria-pressed", String(S.play)); }
   const c = S.ui.fCut; if (c) { const open = f.knife.to < 50; c.textContent = open ? "Close the furnace" : "Cut it open"; c.setAttribute("aria-pressed", String(open)); }
 }

@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { paperMaterial, surfaceUniforms } from "./paper.js?v=c883ab7a";
-import { pageUniforms } from "./lift.js?v=c883ab7a";
-import { PRODUCTIVITY, FURNACES, PLANT, AUDIT } from "./model.js?v=c883ab7a";
+import { paperMaterial, surfaceUniforms } from "./paper.js?v=d8f12ce5";
+import { pageUniforms } from "./lift.js?v=d8f12ce5";
+import { PRODUCTIVITY, FURNACES, PLANT, AUDIT } from "./model.js?v=d8f12ce5";
 
 // The poster: an A0 sheet (1189 × 841 mm) on a desk. Everything printed on it is drawn on one
 // canvas: the title block, the figure captions, the flow arrows between the units, the numbers and

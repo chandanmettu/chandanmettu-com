@@ -2,8 +2,9 @@
 node_modules/
 *.log
 *.pdf
-# the one public PDF: the Durgapur A0 poster (public copy, no roll number)
-!lab/durgapur-iron/poster.pdf
+# the public PDFs, both Durgapur's: his case study (no name or roll number) and the A0 poster (public copy, no roll number)
+!lab/durgapur-iron/docs/case-study.pdf
+!lab/durgapur-iron/docs/poster.pdf
 .env
 .env.*
 
