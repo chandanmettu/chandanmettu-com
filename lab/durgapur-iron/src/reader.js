@@ -212,12 +212,37 @@ export class Reader {
     this.tasks.add(task);
     try {
       await task.promise;
+      const links = await this.links(doc.sized[i]);
       if (pg.dataset.scale !== String(s)) return; // the zoom moved on while this drew
-      pg.replaceChildren(canvas);
+      pg.replaceChildren(canvas, links);
       pg.dataset.drawn = String(s);
       pg.classList.add("drawn");
     } catch (e) { if (e?.name !== "RenderingCancelledException") console.warn(e); }
     finally { this.tasks.delete(task); if (pg.dataset.busy === String(s)) delete pg.dataset.busy; }
+  }
+
+  // the page's web links as real anchors over the canvas (a canvas alone cannot be clicked), placed
+  // in percentages so they stay put at any zoom; only http(s) and mailto links, so a dead link left
+  // in the PDF by the app that made it does nothing
+  async links(sp) {
+    if (!sp.links) {
+      const anns = await sp.p.getAnnotations({ intent: "display" }).catch(() => []);
+      const base = sp.p.getViewport({ scale: 1 });
+      sp.links = anns.filter((a) => a.subtype === "Link" && /^(https?:|mailto:)/i.test(a.url || "")).map((a) => {
+        const [x1, y1, x2, y2] = base.convertToViewportRectangle(a.rect);
+        return { url: a.url, l: Math.min(x1, x2) / base.width, t: Math.min(y1, y2) / base.height, w: Math.abs(x2 - x1) / base.width, h: Math.abs(y2 - y1) / base.height };
+      });
+    }
+    const layer = document.createElement("div");
+    layer.className = "rd-links";
+    for (const k of sp.links) {
+      const a = document.createElement("a");
+      a.href = k.url; a.target = "_blank"; a.rel = "noopener"; a.title = k.url;
+      a.setAttribute("aria-label", k.url);
+      Object.assign(a.style, { left: `${100 * k.l}%`, top: `${100 * k.t}%`, width: `${100 * k.w}%`, height: `${100 * k.h}%` });
+      layer.appendChild(a);
+    }
+    return layer;
   }
 
   // a picture page: the screen-sized set of tiles first, the big set once the zoom needs its pixels;

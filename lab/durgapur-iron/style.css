@@ -235,7 +235,11 @@ body.still *, body.still *::before, body.still *::after { transition: none !impo
 .rd-pages[data-fit="page"] { min-height: 100%; align-content: center; }
 .rd-pg { background: #fff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); border-radius: 2px; overflow: hidden; animation: rdIn .45s cubic-bezier(.2, .8, .2, 1) both; background-image: linear-gradient(90deg, #fff 40%, #f3efe6 50%, #fff 60%); background-size: 300% 100%; }
 .rd-pg:not(.drawn) { animation: rdIn .45s cubic-bezier(.2, .8, .2, 1) both, rdShimmer 1.4s linear infinite; }
+.rd-pg { position: relative; }
 .rd-pg canvas { display: block; width: 100%; height: 100%; }
+.rd-links { position: absolute; inset: 0; }
+.rd-links a { position: absolute; display: block; border-radius: 2px; }
+.rd-links a:hover, .rd-links a:focus-visible { background: rgba(37, 99, 235, 0.12); outline: none; }
 .rd-tiles { position: relative; width: 100%; height: 100%; }
 .rd-tiles img { position: absolute; display: block; max-width: none; user-select: none; }
 @keyframes rdIn { from { opacity: 0; transform: translateY(18px) scale(.985); } }

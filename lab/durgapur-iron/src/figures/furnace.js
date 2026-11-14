@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Figure, HEAT, GAS, V3, UP, circle, ring, hArc, smooth } from "../figure.js?v=f251d2ad";
-import { InkSet, inkMaterial } from "../ink.js?v=f251d2ad";
-import { glassMaterial } from "../paper.js?v=f251d2ad";
-import { LIFT_GLSL } from "../lift.js?v=f251d2ad";
-import { sectionUniforms, sectionMaterials } from "../section.js?v=f251d2ad";
-import { linesOf, cohesiveOf, journeyPath, journeyAt, DIP, FURNACES, hearthLevel, STOPS } from "../model.js?v=f251d2ad";
-import { Flow } from "../flow.js?v=f251d2ad";
+import { Figure, HEAT, GAS, V3, UP, circle, ring, hArc, smooth } from "../figure.js?v=528b383e";
+import { InkSet, inkMaterial } from "../ink.js?v=528b383e";
+import { glassMaterial } from "../paper.js?v=528b383e";
+import { LIFT_GLSL } from "../lift.js?v=528b383e";
+import { sectionUniforms, sectionMaterials } from "../section.js?v=528b383e";
+import { linesOf, cohesiveOf, journeyPath, journeyAt, DIP, FURNACES, hearthLevel, STOPS } from "../model.js?v=528b383e";
+import { Flow } from "../flow.js?v=528b383e";
 
 // The blast furnace complex, drawn at 6 mm to the metre: BF-3 with its published volumes (useful
 // 1,400 m³, working 1,204 m³), its bell-less top, its twin tapholes and rocking runners (PIB 2002),

@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import { Furnace } from "./figures/furnace.js?v=f251d2ad";
-import { Coke } from "./figures/coke.js?v=f251d2ad";
-import { Sinter } from "./figures/sinter.js?v=f251d2ad";
-import { Raw } from "./figures/raw.js?v=f251d2ad";
-import { Lineup } from "./figures/lineup.js?v=f251d2ad";
-import { OBLIQUE } from "./lift.js?v=f251d2ad";
+import { Furnace } from "./figures/furnace.js?v=528b383e";
+import { Coke } from "./figures/coke.js?v=528b383e";
+import { Sinter } from "./figures/sinter.js?v=528b383e";
+import { Raw } from "./figures/raw.js?v=528b383e";
+import { Lineup } from "./figures/lineup.js?v=528b383e";
+import { OBLIQUE } from "./lift.js?v=528b383e";
 
 // Where each figure stands on the poster: its hinge line on the sheet (x of its left end, z of the
 // line). The furnace complex takes the right of the poster; the three units that prepare its
