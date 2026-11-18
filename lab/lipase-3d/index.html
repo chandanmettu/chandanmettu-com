@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lipase at the interface</title>
+<meta name="description" content="Thermomyces lanuginosus lipase from its crystal structures (PDB 1DT3 and 1GT6): the lid opening at an oil droplet, the catalytic triad, the reaction that turns used cooking oil and methanol into biodiesel, the conditions that set its activity, and the bead and reactor it works in.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1520'/%3E%3Cpath d='M4 22c6-3 18-3 24 0v6H4z' fill='%23e8a23a'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%234fc3b5'/%3E%3C/svg%3E">
+<link rel="preload" href="./vendor/fonts/newsreader-latin-opsz-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./vendor/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./vendor/fonts/jetbrains-mono-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:title" content="Lipase at the interface · The Lab">
+<meta property="og:description" content="A real lipase from its crystal structures: watch the lid open on a drop of used cooking oil and turn it into biodiesel, atom by atom.">
+<meta property="og:image" content="https://chandanmettu.com/lab/lipase-3d/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="./style.css?v=3be210fe">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<script type="module" src="./src/main.js?v=3be210fe"></script>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="Thermomyces lanuginosus lipase in 3D. Use the chapters at the top, or press Space to play the tour."></canvas>
+<div id="labels" aria-hidden="true"><svg></svg></div>
+<div id="dip" aria-hidden="true"></div>
+<div id="ui">
+  <header id="top">
+    <a id="bLab" class="lab-back" href="../" title="Back to The Lab" hidden>← The Lab</a>
+    <div class="brand"><span class="eyebrow">CH2110 · Biological Engineering</span><span class="t">Lipase at the interface</span></div>
+    <nav id="chapters" aria-label="Chapters"></nav>
+  </header>
+
+  <article id="card" class="card cap" aria-live="polite">
+    <div class="card-head" title="Drag to move · double-click to reset">
+      <span class="eyebrow" id="kicker"></span>
+      <button class="card-min" type="button" aria-expanded="true" title="Collapse">–</button>
+    </div>
+    <button class="card-pill" type="button"><span class="eyebrow" id="pillK"></span><span class="pt" id="pillT"></span></button>
+    <div class="card-body">
+      <h1 id="title"></h1>
+      <div id="body"></div>
+      <div id="rail" class="rail" hidden></div>
+    </div>
+  </article>
+
+  <section id="player" class="card player" aria-label="Reaction player" hidden>
+    <div class="card-head" title="Drag to move · double-click to reset">
+      <span class="eyebrow">Reaction · <span id="plStep">1</span> of 8</span>
+      <button class="card-min" type="button" aria-expanded="true" title="Collapse">–</button>
+    </div>
+    <button class="card-pill" type="button"><span class="eyebrow">Reaction</span><span class="pt" id="plPill">Play</span></button>
+    <div class="card-body">
+      <div class="pl-row">
+        <button id="plBack" class="pl-ic" type="button" title="Step back (,)" aria-label="Step back"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 4v12M16 4 7 10l9 6z"/></svg></button>
+        <button id="plPlay" class="pl-play" type="button" aria-label="Play reaction"><svg class="i-play" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4l10 6-10 6z"/></svg><svg class="i-pause" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4v12M14 4v12"/></svg><span id="plLabel">Play reaction</span></button>
+        <button id="plFwd" class="pl-ic" type="button" title="Step forward (.)" aria-label="Step forward"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15 4v12M4 4l9 6-9 6z"/></svg></button>
+        <span class="pl-sp"></span>
+        <div class="seg" role="group" aria-label="Speed"><button type="button" data-speed="0.5">0.5×</button><button type="button" data-speed="1" aria-pressed="true">1×</button></div>
+        <div class="seg" role="group" aria-label="Second substrate"><button type="button" data-mode="methanol" aria-pressed="true">Methanol</button><button type="button" data-mode="water">Water</button></div>
+      </div>
+      <div id="scrub" class="scrub" role="slider" tabindex="0" aria-label="Reaction progress" aria-valuemin="0" aria-valuemax="100">
+        <div class="scrub-track"><i class="scrub-fill"></i></div>
+        <div class="scrub-ticks" id="ticks"></div>
+        <i class="scrub-head"></i>
+      </div>
+    </div>
+  </section>
+
+  <aside id="bench" class="card bench" aria-label="Conditions" hidden>
+    <div class="card-head" title="Drag to move · double-click to reset">
+      <span class="eyebrow">5 · Conditions · live</span>
+      <button class="card-min" type="button" aria-expanded="true" title="Collapse">–</button>
+    </div>
+    <button class="card-pill" type="button"><span class="eyebrow">Activity</span><span class="pt" id="benchPill">100 %</span></button>
+    <div class="card-body" id="benchBody"></div>
+  </aside>
+
+  <div id="scale" aria-hidden="true"><i></i><span></span></div>
+  <div id="dock" role="toolbar" aria-label="Controls">
+    <button id="bPrev" class="d-ic" type="button" title="Back (←)" aria-label="Back"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4 6 10l6 6"/></svg></button>
+    <button id="bPlay" class="d-tour" type="button"><span class="lbl">Play the tour</span></button>
+    <button id="bNext" class="d-ic" type="button" title="Next (→)" aria-label="Next"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button>
+    <span class="d-sep" aria-hidden="true"></span>
+    <button id="bView" class="d-tx" type="button" title="Ribbon or surface (V)" aria-pressed="false">Surface</button>
+    <button id="bLabels" class="d-tx" type="button" title="Labels (L)" aria-pressed="true">Labels</button>
+    <button id="bText" class="d-tx" type="button" title="Text version (T)">Text</button>
+    <button id="bHide" class="d-tx" type="button" title="Hide the interface (H)">Hide UI</button>
+    <button id="bFull" class="d-ic" type="button" title="Full screen (F)" aria-label="Full screen"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5"/></svg></button>
+  </div>
+  <p id="credit">Saichandan Mettu · built with Claude · PDB 1DT3 &amp; 1GT6 · every number sourced in the text version (T)</p>
+</div>
+<button id="showui" type="button" title="Show the interface (H)">Show interface · H</button>
+<main id="text" class="textv" hidden tabindex="-1"></main>
+<div id="loader" role="status"><div><span class="eyebrow">CH2110 · Biological Engineering</span><span class="k">Lipase at the interface</span><span class="s">Reading the crystal structures…</span></div></div>
+<div id="nogl" role="alert"><div><h1>This model needs WebGL</h1><p>Your browser could not start 3D graphics. Try a recent Chrome, Edge, Firefox or Safari with hardware acceleration on.</p></div></div>
+<noscript><p class="noscript">This model needs JavaScript.</p></noscript>
+</body>
+</html>

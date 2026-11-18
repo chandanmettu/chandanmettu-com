@@ -27,6 +27,13 @@
       "short": "Iron",
       "tone": "creator",
       "blurb": "Making iron: from ore and coal to hot metal in a blast furnace."
+    },
+    {
+      "id": "bioeng",
+      "name": "Biological Engineering",
+      "short": "Bio",
+      "tone": "overview",
+      "blurb": "Enzymes and bioprocesses: how microbes and their proteins do chemistry."
     }
   ],
   "builds": [
@@ -165,6 +172,24 @@
       "image": "thumbs/durgapur-iron.jpg",
       "wide": "thumbs/durgapur-iron-wide.jpg",
       "href": "./durgapur-iron/"
+    },
+    {
+      "slug": "lipase-3d",
+      "title": "Lipase at the Interface",
+      "kind": "3D molecule",
+      "course": "bioeng",
+      "date": "2026-11-19",
+      "summary": "A real lipase built from its crystal structures. Watch its lid open on a drop of used cooking oil, step through the reaction that turns the oil into biodiesel atom by atom, and change pH, heat, metal ions and methanol to see what stops it.",
+      "tags": [
+        "3D",
+        "Real PDB structure",
+        "Enzymes"
+      ],
+      "status": "open",
+      "featured": false,
+      "image": "thumbs/lipase-3d.jpg",
+      "wide": "thumbs/lipase-3d-wide.jpg",
+      "href": "./lipase-3d/"
     }
   ]
 }
