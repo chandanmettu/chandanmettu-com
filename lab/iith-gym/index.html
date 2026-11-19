@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>IITH Old Gym</title>
+    <meta name="description" content="The old gym at IIT Hyderabad, rebuilt in 3D from photos. Walk in at eye height, read it as a floor plan, rearrange every machine with spacing checked against published gym guidance, and watch the equipment glide between layouts." />
+    <meta property="og:title" content="IITH Old Gym · The Lab" />
+    <meta property="og:description" content="The old gym at IIT Hyderabad in 3D: walk in, rearrange the machines, and watch them glide to their new places." />
+    <meta property="og:image" content="https://chandanmettu.com/lab/iith-gym/og.jpg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316171a'/%3E%3Crect x='5' y='14' width='22' height='4' rx='1' fill='%23f4f2ed'/%3E%3Crect x='5' y='9' width='4' height='14' rx='1' fill='%23d86fa8'/%3E%3Crect x='23' y='9' width='4' height='14' rx='1' fill='%23d86fa8'/%3E%3C/svg%3E" />
+    <script type="module" crossorigin src="./assets/index-CrzsU9El.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BsPmEUmP.css">
+  </head>
+  <body data-view="dollhouse">
+    <div id="stage"></div>
+
+    <a class="lab-back" id="lab-back" href="../" hidden>&larr; The Lab</a>
+    <header class="brand">
+      <h1>IITH Old Gym</h1>
+      <p id="brand-sub">Today's layout</p>
+    </header>
+
+    <nav class="views" aria-label="How to look at the gym">
+      <button data-view="dollhouse" title="Overview (2)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9 12 4l9 5-9 5-9-5Z" /><path d="M3 9v6l9 5 9-5V9" /></svg>
+        <span>Overview</span>
+      </button>
+      <button data-view="walk" title="Walk in (1)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="4.5" r="1.8" /><path d="m9.5 21 2.5-6 3 3v3M8 12l2-4 4 1 2 3 2.5 1M12 15l-1.5-3" /></svg>
+        <span>Walk in</span>
+      </button>
+      <button data-view="plan" title="Floor plan (3)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" /><path d="M3.5 12h7v8.5M14 3.5v6h6.5" /></svg>
+        <span>Floor plan</span>
+      </button>
+      <button data-view="tour" title="Play tour (4)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5L8 5.5Z" /></svg>
+        <span>Tour</span>
+      </button>
+    </nav>
+
+    <div class="corner">
+      <button class="icon-btn" id="tools-btn" aria-expanded="false" title="More tools">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="19" cy="12" r="1.6" /></svg>
+      </button>
+      <button class="icon-btn" id="help-btn" title="How to use this">?</button>
+    </div>
+
+    <div class="menu card" id="tools" hidden>
+      <button data-tool="measure"><span class="tick"></span>Measure a distance <kbd>M</kbd></button>
+      <button data-toggle="labels"><span class="tick"></span>Show names <kbd>L</kbd></button>
+      <button data-toggle="spacing"><span class="tick"></span>Show all spacing zones <kbd>C</kbd></button>
+      <hr />
+      <button data-snap="grid" class="on"><span class="tick"></span>Snap to a 5 cm grid</button>
+      <button data-snap="walls" class="on"><span class="tick"></span>Snap to walls</button>
+      <button data-snap="align" class="on"><span class="tick"></span>Line up with other pieces</button>
+      <hr />
+      <p class="menu-note" id="tier-note"></p>
+    </div>
+
+    <!-- The layouts, like stages on a timeline: pick one and the equipment moves there -->
+    <section class="dock" aria-label="Layouts">
+      <ol class="strip" id="strip"></ol>
+      <div class="dock-actions">
+        <button class="primary" id="rearrange">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9 2 12l3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20" /></svg>
+          Rearrange
+        </button>
+        <span class="edit-tools">
+          <button id="add-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            Add equipment
+          </button>
+          <button class="icon-btn" id="undo" title="Undo (Cmd or Ctrl+Z)" aria-label="Undo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 4 11l5 5M4.5 11H15a5 5 0 0 1 0 10h-2" /></svg>
+          </button>
+          <button class="icon-btn" id="redo" title="Redo (Cmd or Ctrl+Shift+Z)" aria-label="Redo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6 5 5-5 5M19.5 11H9a5 5 0 0 0 0 10h2" /></svg>
+          </button>
+          <button id="changes-btn" aria-expanded="false">What changed <b id="changes-count">0</b></button>
+        </span>
+      </div>
+    </section>
+
+    <aside class="card changes-card" id="changes-card" hidden aria-label="What changed">
+      <header><h2>What changed from today</h2><button class="x" data-close="changes-card" aria-label="Close">&times;</button></header>
+      <ol class="changes" id="changes"></ol>
+      <p class="empty" id="changes-empty">Nothing has moved yet. Drag a piece to start.</p>
+    </aside>
+
+    <aside class="card inspector" id="inspector" hidden aria-label="Selected equipment">
+      <header>
+        <div><h2 id="insp-name"></h2><p class="insp-id" id="insp-id"></p></div>
+        <button class="x" id="insp-close" aria-label="Close">&times;</button>
+      </header>
+      <p class="space" id="insp-space"></p>
+      <dl class="facts">
+        <dt>Size</dt><dd id="insp-size"></dd>
+        <dt>Where</dt><dd id="insp-where"></dd>
+        <dt>Faces</dt><dd id="insp-rot"></dd>
+      </dl>
+      <p class="note" id="insp-note"></p>
+      <div class="insp-actions" id="insp-actions">
+        <button data-act="turn-left" title="Turn 15° (Shift+R)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v6h6" /><path d="M5 13a8 8 0 1 0 2-6.5L4 10" /></svg>Turn</button>
+        <button data-act="turn-right" title="Turn 15° the other way (R)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4v6h-6" /><path d="M19 13a8 8 0 1 1-2-6.5L20 10" /></svg>Turn</button>
+        <button data-act="duplicate" title="Duplicate (Cmd or Ctrl+D)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" /><path d="M16 8V4H4v12h4" /></svg>Copy</button>
+        <button data-act="remove" title="Remove (Delete)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" /></svg>Remove</button>
+      </div>
+      <button class="primary wide" id="insp-rearrange" hidden>Rearrange to move this</button>
+    </aside>
+
+    <div class="catalogue card" id="catalogue" hidden></div>
+
+    <div class="scale" aria-hidden="true">
+      <div class="bar" id="scalebar"></div><span id="scalelabel">0 to 2 m</span>
+    </div>
+
+    <p class="hint" id="hint"></p>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toast-text"></span><button id="toast-act" hidden></button></div>
+
+    <div class="joystick" id="joystick" aria-hidden="true"><div class="knob"></div></div>
+
+    <div class="help" id="help" hidden>
+      <div class="help-card card" role="dialog" aria-labelledby="help-title">
+        <h2 id="help-title">How to use this</h2>
+        <ol class="steps">
+          <li><b>Look around.</b> Drag to turn the model, scroll or pinch to zoom. <em>Walk in</em> puts you inside at eye height.</li>
+          <li><b>Switch layouts.</b> Pick a layout at the bottom. The equipment moves there so you can watch the change happen.</li>
+          <li><b>Rearrange.</b> Press <em>Rearrange</em> to start your own proposal, then drag any machine. Turn it with the round handle or the R key.</li>
+          <li><b>Check spacing.</b> A red zone means a machine is too close to a wall or another machine, by published gym spacing guidance.</li>
+        </ol>
+        <p class="help-keys">Keys: 1 Walk in, 2 Overview, 3 Floor plan, 4 Tour. In Walk: W A S D or the arrows. Esc closes things.</p>
+        <p class="help-keys">The hall and its machines are rebuilt from photos. Sizes and positions are estimates until the hall is measured.</p>
+        <button class="primary wide" id="help-ok">Start exploring</button>
+      </div>
+    </div>
+
+  </body>
+</html>

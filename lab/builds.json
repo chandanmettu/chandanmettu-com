@@ -34,6 +34,13 @@
       "short": "Bio",
       "tone": "overview",
       "blurb": "Enzymes and bioprocesses: how microbes and their proteins do chemistry."
+    },
+    {
+      "id": "campus",
+      "name": "IITH Campus",
+      "short": "Campus",
+      "tone": "athlete",
+      "blurb": "Places on campus, rebuilt in 3D so changes can be tried before anything moves."
     }
   ],
   "builds": [
@@ -190,6 +197,24 @@
       "image": "thumbs/lipase-3d.jpg",
       "wide": "thumbs/lipase-3d-wide.jpg",
       "href": "./lipase-3d/"
+    },
+    {
+      "slug": "iith-gym",
+      "title": "IITH Old Gym",
+      "kind": "3D walkthrough",
+      "course": "campus",
+      "date": "2026-11-19",
+      "summary": "The old gym at IIT Hyderabad, rebuilt in 3D from photos. Walk in at eye height, read it as a floor plan, and rearrange every machine with its spacing checked against published gym guidance. Switch layouts and watch the equipment glide to its new place.",
+      "tags": [
+        "3D",
+        "Walk in",
+        "Rearrange"
+      ],
+      "status": "open",
+      "featured": false,
+      "image": "thumbs/iith-gym.jpg",
+      "wide": "thumbs/iith-gym-wide.jpg",
+      "href": "./iith-gym/"
     }
   ]
 }
