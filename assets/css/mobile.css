@@ -1,0 +1,113 @@
+/* Phone and touch layout for the homepage. Loaded after every other homepage style,
+   so these rules win without !important. Desktop is untouched above 850px. */
+
+/* Touch screens keep the hover state after a tap, which made cards jump while scrolling. */
+@media (hover: none) {
+  .apple-bento-card:hover,
+  .item:hover,
+  .mode-link:hover,
+  .nav-contact:hover,
+  .brand:hover,
+  .project-filter:hover { transform: none; }
+  .apple-bento-card:hover::before { transform: none; }
+  .stat:hover .stat-icon,
+  .item:hover .item-icon,
+  .project-card:hover .project-preview-media img { transform: none; }
+  .apple-bento-card:active { transform: scale(.985); transition-duration: .12s; }
+}
+
+/* Faster, lighter entrances everywhere. */
+.bento-ready.bento-in { animation: bentoInQuick .46s var(--delay, 0ms) cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes bentoInQuick {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to { opacity: 1; transform: none; }
+}
+.kinetic-out[data-kinetic] { animation-duration: .12s; }
+.kinetic-in[data-kinetic] { animation-duration: .42s; }
+
+@media (max-width: 850px) {
+  /* The heading block had a 680px flex-basis inside a column, so it stood 680px tall
+     with the title pushed to its bottom right. That was the big empty gap. */
+  .collection-head { flex-direction: column; align-items: stretch; gap: 14px; }
+  .collection-heading { display: block; flex: none; width: 100%; }
+  .collection-heading p { margin-top: 10px; }
+  .project-view-switch { align-self: flex-start; }
+  .panel h2, .profile-story h2 { hyphens: manual; -webkit-hyphens: manual; text-wrap: balance; }
+}
+
+@media (max-width: 680px) {
+  /* Use the whole screen instead of a framed card. */
+  .shell { padding: 0; }
+  .site { border: 0; border-radius: 0; box-shadow: none; }
+  .nav { inset: 14px auto auto 50%; width: calc(100% - 28px); }
+  .nav-contact { padding: 9px 15px; }
+
+  /* Hero: scrolls normally and fits the first screen with the cards in view. */
+  .hero {
+    position: relative;
+    min-height: clamp(600px, 100svh, 740px);
+    padding: clamp(84px, 12.5svh, 100px) 18px 0;
+  }
+  .hero-copy { gap: 12px; }
+  .hero h1 { font-size: clamp(2.5rem, 12.4vw, 3.5rem); line-height: .95; letter-spacing: -.06em; text-wrap: balance; }
+  .hero-copy > p:last-child { max-width: 34ch; font-size: 15px; line-height: 1.5; }
+  .stage { bottom: 40px; height: 236px; }
+  .persona { top: 26px; width: 118px; margin-left: -59px; border-radius: 20px; }
+  .persona-label { padding: 40px 11px 11px; }
+  .persona-label strong { font-size: 14px; }
+  .persona-label span { font-size: 10.5px; }
+  .wheel-thread { bottom: -60px; height: 250px; }
+  .mode-hint { bottom: 40px; font-size: 11.5px; }
+  .main-content { margin-top: -28px; border-radius: 26px 26px 0 0; box-shadow: 0 -18px 50px rgba(8, 26, 40, .12); }
+
+  /* Panel rhythm */
+  .inner { width: calc(100% - 28px); }
+  .panel { padding: 22px 0 36px; border-radius: 26px 26px 0 0; }
+  .profile-grid, .collection { gap: 12px; }
+  .profile-visual { min-height: 0; aspect-ratio: 1 / 1; border-radius: 24px; }
+  .profile-story { padding: 24px 22px; border-radius: 24px; }
+  .profile-story h2 { margin: 16px 0 12px; font-size: clamp(2rem, 9vw, 2.6rem); line-height: 1; }
+  .panel-summary { font-size: 15.5px; line-height: 1.6; }
+  .links { margin-top: 22px; justify-content: flex-start; }
+
+  /* Stats: two compact columns instead of four 190px-tall cards in a stack. */
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .stat { min-height: 0; padding: 16px 16px 18px; border-radius: 22px; }
+  .stat-icon { width: 34px; height: 34px; flex-basis: 34px; border-radius: 11px; }
+  .stat-icon svg { width: 18px; height: 18px; }
+  .stat strong { margin-top: 18px; font-size: clamp(1.45rem, 6.6vw, 2rem); white-space: normal; overflow-wrap: anywhere; letter-spacing: -.05em; }
+  .stat span:last-child { margin-top: 6px; font-size: 12.5px; line-height: 1.35; }
+  .stats > .stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+  /* Collection */
+  .collection-head { margin: 44px 0 16px; }
+  .collection-head h3 { font-size: clamp(2rem, 9.4vw, 2.7rem); line-height: 1.02; text-wrap: balance; }
+  .project-filters { width: auto; margin-inline: -14px; padding: 2px 14px 4px; scroll-padding-inline: 14px; }
+  .project-filter { min-height: 40px; padding: 8px 14px; font-size: 13.5px; border-radius: 13px; }
+  .project-view-button { min-height: 38px; }
+
+  /* Text cards size to their content. */
+  .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)), body[data-mode="overview"] .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)) { min-height: 0; padding: 20px 20px 22px; border-radius: 22px; }
+  .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)) .item-icon { width: 40px; height: 40px; margin-bottom: 18px; border-radius: 12px; }
+  .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)) .item-icon img { border-radius: 12px; }
+  .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)) .item-icon svg { width: 19px; height: 19px; }
+  .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)) h3 { margin-top: 0; font-size: 1.22rem; }
+  .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)) p { font-size: 14px; }
+  .item:not(:where(.photo-item,.medal-cabinet,.athlete-focus,.athlete-gallery-loop,.certificate-loop)) .item-meta { padding-top: 14px; }
+
+  /* Builder project cards */
+  body[data-mode="builder"] .collection[data-project-view="icons"] .project-card,
+  .collection[data-project-view="preview"] .project-card.has-project-preview { min-height: 0; }
+  .project-card-compact .item-icon { width: 44px; height: 44px; margin-bottom: 18px; }
+  .project-preview-body { padding: 14px 8px 8px; }
+  .project-preview-title-row h3 { font-size: 1.3rem; }
+
+  .photo-item, .photo-item.wide { min-height: 300px; }
+  .builder-toolkit { margin-top: 24px; }
+  .athlete-proof-head { margin-top: 48px; }
+  .athlete-proof-head h3 { font-size: clamp(2rem, 9.4vw, 2.6rem); }
+
+  /* Footer */
+  .personal-footer { width: calc(100% - 20px); margin: 28px auto 10px; border-radius: 26px; }
+  .footer-headline { font-size: clamp(2rem, 9vw, 2.6rem); }
+}

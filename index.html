@@ -1617,9 +1617,10 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
 }
 </style>
 <link rel="stylesheet" href="assets/css/medal-cabinet.css?v=4">
-<link rel="stylesheet" href="assets/css/athlete-gallery.css?v=3">
+<link rel="stylesheet" href="assets/css/athlete-gallery.css?v=4">
 <link rel="stylesheet" href="assets/css/athlete-focus.css?v=6">
-<link rel="stylesheet" href="assets/css/certificate-loop.css?v=3">
+<link rel="stylesheet" href="assets/css/certificate-loop.css?v=4">
+<link rel="stylesheet" href="assets/css/mobile.css?v=1">
 </head>
 <body data-mode="overview" data-preview-mode="overview">
 <a class="skip" href="#experience">Skip to the selected profile</a>
@@ -1790,11 +1791,11 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
   </main>
 </div></div>
 
-<script src="assets/js/smooth.js?v=3"></script>
+<script src="assets/js/smooth.js?v=4"></script>
 <script src="assets/js/medal-cabinet.js?v=3"></script>
-<script src="assets/js/athlete-gallery.js?v=6"></script>
+<script src="assets/js/athlete-gallery.js?v=7"></script>
 <script src="assets/js/athlete-focus.js?v=7"></script>
-<script src="assets/js/certificate-loop.js?v=5"></script>
+<script src="assets/js/certificate-loop.js?v=6"></script>
 <script>
 const lineIcon=paths=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
 const brandIcon=path=>`<svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
@@ -2144,22 +2145,21 @@ function animateCounts(){
 function revealBentos(){
   const elements=[...document.querySelectorAll('.profile-grid > *,.stat,.item,.builder-toolkit')];
   bentoObserver?.disconnect();
-  elements.forEach((element,index)=>{
+  elements.forEach(element=>{
     element.classList.remove('bento-in','bento-ready');
-    element.style.setProperty('--delay',`${Math.min(index*32,224)}ms`);
+    element.style.removeProperty('--delay');
   });
   if(reduced||!('IntersectionObserver' in window))return;
   bentoObserver=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(!entry.isIntersecting)return;
-      const element=entry.target;
+    entries.filter(entry=>entry.isIntersecting).forEach((entry,batchIndex)=>{
+      const element=entry.target,delay=Math.min(batchIndex*45,135);
       bentoObserver.unobserve(element);
+      element.style.setProperty('--delay',`${delay}ms`);
       element.classList.add('bento-ready');
       requestAnimationFrame(()=>element.classList.add('bento-in'));
-      const delay=parseInt(element.style.getPropertyValue('--delay'),10)||0;
-      setTimeout(()=>{element.classList.remove('bento-ready','bento-in');element.style.removeProperty('--delay')},820+delay);
+      setTimeout(()=>{element.classList.remove('bento-ready','bento-in');element.style.removeProperty('--delay')},520+delay);
     });
-  },{threshold:.08,rootMargin:'0px 0px -4% 0px'});
+  },{threshold:.04,rootMargin:'0px 0px -2% 0px'});
   elements.forEach(element=>bentoObserver.observe(element));
 }
 function attachSpotlightListeners(){
@@ -2234,13 +2234,13 @@ function transitionText(data,direction,includeDetails=true){
     if(token!==kineticToken)return;
     if(includeDetails)applyText(data);else applyHeroText(data);
     nodes.forEach((node,index)=>{
-      node.classList.remove('kinetic-out');node.style.animationDelay=`${Math.min(index%3,2)*45}ms`;node.classList.add('kinetic-in');
+      node.classList.remove('kinetic-out');node.style.animationDelay=`${Math.min(index%3,2)*35}ms`;node.classList.add('kinetic-in');
     });
-  },245));
+  },150));
   kineticTimers.push(setTimeout(()=>{
     if(token!==kineticToken)return;
     nodes.forEach(node=>{node.classList.remove('kinetic-in');node.style.animationDelay=''});
-  },1000));
+  },700));
 }
 function render(mode,animateText=true,direction=1){
   const data=modes[mode],media=modeMedia[mode];
@@ -2450,7 +2450,10 @@ function updateScrollEffects(){
 }
 addEventListener('scroll',updateScrollEffects,{passive:true});
 addEventListener('scroll',syncShowcaseViewport,{passive:true});
-addEventListener('resize',()=>{requestWheel();updateScrollEffects();syncShowcaseViewport()},{passive:true});
+// iOS fires resize whenever its toolbar shows or hides mid-scroll; only a width change needs a relayout.
+let lastLayoutWidth=innerWidth;
+const widthChanged=()=>{if(innerWidth===lastLayoutWidth)return false;lastLayoutWidth=innerWidth;return true};
+addEventListener('resize',()=>{if(!widthChanged())return;requestWheel();updateScrollEffects();syncShowcaseViewport();scheduleFit()},{passive:true});
 // Live IST Clock
 function updateClocks() {
   const now = new Date();
@@ -2516,7 +2519,7 @@ function fitHeroStage(){
   hero.style.setProperty('--stage-scale',String(clamp((rise-overlap)/rise,.62,1).toFixed(3)));
 }
 let fitTimer=0;const scheduleFit=()=>{clearTimeout(fitTimer);fitTimer=setTimeout(fitHeroStage,80)};
-scheduleFit();addEventListener('resize',scheduleFit,{passive:true});addEventListener('orientationchange',scheduleFit);addEventListener('load',scheduleFit);document.fonts?.ready.then(scheduleFit);document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleFit()});
+scheduleFit();addEventListener('orientationchange',scheduleFit);addEventListener('load',scheduleFit);document.fonts?.ready.then(scheduleFit);document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleFit()});
 </script>
 
 <div class="toast-notice" id="toastNotice" role="status" aria-live="polite">

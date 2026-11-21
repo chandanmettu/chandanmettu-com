@@ -246,3 +246,56 @@ a.card:hover .card-arrow { transform: translate(3px,-3px); }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
   .portrait-tile { transform: none; }
 }
+
+/* ---------- Badge sizing and phone layout ---------- */
+/* Badges sat in block cards and stretched into full-width bars; size them to their content. */
+.card-mark { width: fit-content; }
+
+/* Back-to-top fades in after the first screen where scroll-driven animation exists,
+   instead of sitting over the opening content. Elsewhere it stays visible as before. */
+@supports (animation-timeline: scroll()) {
+  .back-top { animation: backTopIn linear both; animation-timeline: scroll(root); animation-range: 0 90vh; }
+  @keyframes backTopIn { 0%, 70% { opacity: 0; transform: translateY(12px) scale(.9); pointer-events: none; } 100% { opacity: 1; transform: none; pointer-events: auto; } }
+}
+
+@media (hover: none) {
+  a.card:hover, .button:hover, .topnav a:hover { transform: none; }
+}
+
+@media (max-width: 680px) {
+  .page-shell { padding: 0; }
+  .page-frame { min-height: 100svh; border: 0; border-radius: 0; box-shadow: none; }
+  .topbar { width: calc(100% - 20px); }
+  .page-inner { width: calc(100% - 32px); }
+  .subhero { gap: 28px; padding: 52px 0 48px; }
+  .subhero .lead { margin-top: 20px; font-size: 1rem; }
+  .portrait-tile { width: min(72vw, 300px); transform: rotate(2deg); }
+  .content-section { padding: 48px 0; }
+  .section-heading { margin-bottom: 24px; }
+  .section-heading h2 { font-size: clamp(2.2rem, 10vw, 2.9rem); text-wrap: balance; }
+  .section-heading p { margin-top: 12px; font-size: 1rem; }
+
+  /* Numbers in two compact columns */
+  .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .proof { min-height: 0; padding: 16px 16px 18px; border-radius: 20px; }
+  .proof .card-mark { min-width: 34px; height: 34px; padding: 0 9px; border-radius: 11px; font-size: 11px; }
+  .proof strong { margin-top: 18px; font-size: clamp(1.6rem, 7.4vw, 2.1rem); overflow-wrap: anywhere; }
+  .proof > span:not(.card-mark) { margin-top: 6px; font-size: 12.5px; line-height: 1.4; }
+  .proof-grid > .proof:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+  .card-grid, .project-list, .lane-grid { gap: 10px; }
+  .card, .card.tall { min-height: 0; padding: 20px; border-radius: 22px; }
+  .card-meta { padding-top: 16px; }
+  .card-arrow { top: 18px; right: 18px; width: 36px; height: 36px; }
+  .lane { min-height: 0; padding: 20px; border-radius: 22px; }
+  .lane h3 { margin: 22px 0 6px; font-size: 1.4rem; }
+  .project-card { min-height: 0; padding: 20px; border-radius: 22px; }
+  .project-card h3 { margin-top: 0; padding-top: 22px; font-size: 1.45rem; }
+  .resume-row { padding: 20px 0; }
+
+  .page-footer { margin: 10px; padding: 30px 22px; }
+  .footer-top h2 { font-size: clamp(2.1rem, 9.5vw, 2.7rem); }
+  .footer-bottom { margin-top: 30px; }
+  /* It sat on top of the cards' own arrow buttons; on phones, tapping the status bar scrolls up. */
+  .back-top { display: none; }
+}

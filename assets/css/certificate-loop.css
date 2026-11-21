@@ -387,3 +387,13 @@
     transition: none !important;
   }
 }
+
+/* Touch screens: the archive steps one certificate at a time and snaps it to the centre. */
+@media (hover: none) {
+  .certificate-viewport { scroll-snap-type: x mandatory; }
+  .certificate-card { scroll-snap-align: center; }
+}
+/* Mixed portrait/landscape certificates: centre each in the row instead of hanging from the top. */
+@media (max-width: 680px) {
+  .certificate-set { align-items: center; }
+}

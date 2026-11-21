@@ -77,10 +77,22 @@
       if (position >= half) { position -= half; viewport.scrollLeft = position; }
       else if (position < 0) { position += half; viewport.scrollLeft = position; }
     };
+    // On touch screens a constantly drifting reel can't be read, so it steps one photo
+    // at a time and snaps instead. Mouse and trackpad keep the continuous glide.
+    const stepMode = window.matchMedia('(hover: none)').matches;
+    let stepElapsed = 0;
     const tick = time => {
       const elapsed = Math.min(48, time - (lastTime || time));
       lastTime = time;
-      if (!manualPause && !interactionPause && visible && !document.hidden) {
+      if (stepMode) {
+        if (!manualPause && !interactionPause && visible && !document.hidden) {
+          stepElapsed += elapsed;
+          if (stepElapsed >= 3800) {
+            stepElapsed = 0;
+            viewport.scrollBy({ left: cardStep(), behavior: 'smooth' });
+          }
+        } else stepElapsed = 0;
+      } else if (!manualPause && !interactionPause && visible && !document.hidden) {
         if (Math.abs(viewport.scrollLeft - position) > 1.5) position = viewport.scrollLeft;
         position += elapsed * 0.038;
         if (half && position >= half) position -= half;
