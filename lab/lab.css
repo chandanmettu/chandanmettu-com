@@ -291,3 +291,11 @@ a.build:hover .build-go { transform: rotate(45deg) scale(1.06); }
 .lab-stage { padding-bottom: 62px; }
 .lab-stage + .content-section { position: relative; z-index: 1; margin-top: -40px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; background: var(--surface); box-shadow: 0 -18px 40px -24px rgba(8, 4, 20, .55); width: 100%; padding-left: max(28px, calc((100% - 1160px) / 2)); padding-right: max(28px, calc((100% - 1160px) / 2)); }
 @media (max-width: 760px) { .lab-stage { padding-bottom: 52px; } .lab-stage + .content-section { margin-top: -30px; border-radius: 28px 28px 0 0; } }
+
+/* phones: course filters scroll sideways in one row instead of stacking six lines */
+@media (max-width: 680px) {
+  .filters { flex-wrap: nowrap; margin: 0 -16px 18px; padding: 2px 16px 6px; overflow-x: auto; scrollbar-width: none; scroll-padding-inline: 16px; }
+  .filters::-webkit-scrollbar { display: none; }
+  .chip { flex: none; min-height: 38px; padding: 8px 13px; font-size: 13.5px; }
+}
+@media (hover: none) { .chip:hover { transform: none; } }

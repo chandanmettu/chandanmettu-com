@@ -93,7 +93,9 @@
 
     const modeHint = document.getElementById('modeHint');
     if (modeHint && !reducedMotion.matches) {
-      modeHint.textContent = 'Scroll or drag the cards. Select one to explore.';
+      modeHint.textContent = matchMedia('(hover: none)').matches
+        ? 'Swipe the cards. Tap one to explore.'
+        : 'Scroll or drag the cards. Select one to explore.';
     }
   }
 

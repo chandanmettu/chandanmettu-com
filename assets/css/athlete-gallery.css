@@ -178,6 +178,13 @@
   .athlete-loop-controls { padding-inline: 15px; }
 }
 
+/* Touch screens: the reel steps one photo at a time, so each photo lands centred. */
+@media (hover: none) {
+  .athlete-loop-viewport { scroll-snap-type: x mandatory; scroll-padding-inline: 12px; }
+  .athlete-loop-card { scroll-snap-align: start; }
+  .athlete-loop-card img, .athlete-loop-card video { transform: none; transition: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .athlete-loop-card img { transition: none; transform: none; }
   .athlete-loop-card:hover img { transform: none; }

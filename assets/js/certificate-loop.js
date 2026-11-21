@@ -30,7 +30,7 @@
   function markup() {
     const primary = RECORDS.map(record => card(record)).join('');
     const duplicate = RECORDS.map(record => card(record, true)).join('');
-    return `<article class="item certificate-loop apple-bento-card" data-certificate-loop><div class="bento-spotlight" aria-hidden="true"></div><div class="certificate-loop-head"><div><h3>The journey,<br>documented.</h3></div><p class="certificate-loop-intro">Five records, from school competitions to three IOQM merit certificates.</p></div><div class="certificate-viewport" data-certificate-viewport tabindex="0" aria-label="Scrollable certificate archive"><div class="certificate-track" data-certificate-track><div class="certificate-set">${primary}</div><div class="certificate-set" aria-hidden="true">${duplicate}</div></div></div><div class="certificate-loop-foot"><span class="certificate-loop-help"><strong>Keep moving.</strong> Drag, scroll, or use the arrow keys.</span><div class="certificate-controls"><button class="certificate-control" type="button" data-certificate-previous aria-label="Previous certificate">←</button><button class="certificate-control" type="button" data-certificate-toggle aria-pressed="false">Pause</button><button class="certificate-control" type="button" data-certificate-next aria-label="Next certificate">→</button></div></div></article>`;
+    return `<article class="item certificate-loop apple-bento-card" data-certificate-loop><div class="bento-spotlight" aria-hidden="true"></div><div class="certificate-loop-head"><div><h3>The journey,<br>documented.</h3></div><p class="certificate-loop-intro">Five records, from school competitions to three IOQM merit certificates.</p></div><div class="certificate-viewport" data-certificate-viewport tabindex="0" aria-label="Scrollable certificate archive"><div class="certificate-track" data-certificate-track><div class="certificate-set">${primary}</div><div class="certificate-set" aria-hidden="true">${duplicate}</div></div></div><div class="certificate-loop-foot"><span class="certificate-loop-help"><strong>Keep moving.</strong> ${window.matchMedia('(hover: none)').matches ? 'Swipe to browse.' : 'Drag, scroll, or use the arrow keys.'}</span><div class="certificate-controls"><button class="certificate-control" type="button" data-certificate-previous aria-label="Previous certificate">←</button><button class="certificate-control" type="button" data-certificate-toggle aria-pressed="false">Pause</button><button class="certificate-control" type="button" data-certificate-next aria-label="Next certificate">→</button></div></div></article>`;
   }
 
   function mount(root) {
@@ -61,10 +61,18 @@
       if (position >= half) { position -= half; viewport.scrollLeft = position; }
       else if (position < 0) { position += half; viewport.scrollLeft = position; }
     };
+    // Touch screens step one certificate at a time and snap, so each one can be read.
+    const stepMode = window.matchMedia('(hover: none)').matches;
+    let stepElapsed = 0;
     const tick = time => {
       const elapsed = Math.min(48, time - (lastTime || time));
       lastTime = time;
-      if (!manualPause && !interactionPause && visible && !document.hidden) {
+      if (stepMode) {
+        if (!manualPause && !interactionPause && visible && !document.hidden) {
+          stepElapsed += elapsed;
+          if (stepElapsed >= 3400) { stepElapsed = 0; viewport.scrollBy({ left: cardStep(), behavior: 'smooth' }); }
+        } else stepElapsed = 0;
+      } else if (!manualPause && !interactionPause && visible && !document.hidden) {
         if (Math.abs(viewport.scrollLeft - position) > 1.5) position = viewport.scrollLeft;
         position += elapsed * 0.032;
         if (half && position >= half) position -= half;
