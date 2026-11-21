@@ -215,6 +215,24 @@
       "image": "thumbs/iith-gym.jpg",
       "wide": "thumbs/iith-gym-wide.jpg",
       "href": "./iith-gym/"
+    },
+    {
+      "slug": "microvision-ai",
+      "title": "MicroVision AI",
+      "kind": "3D pitch deck",
+      "course": "characterisation",
+      "date": "2026-11-20",
+      "summary": "The motorized digital microscope our team of five built for MS2930, as a 16-slide deck with a live 3D model. Watch it light a sample, focus on Z, scan on X and name what it sees, then explode it into its parts.",
+      "tags": [
+        "3D",
+        "Team build",
+        "Optical microscopy"
+      ],
+      "status": "open",
+      "featured": false,
+      "image": "thumbs/microvision-ai.jpg",
+      "wide": "thumbs/microvision-ai-wide.jpg",
+      "href": "./microvision-ai/"
     }
   ]
 }

@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MicroVision AI · The Lab</title>
+<meta name="description" content="MicroVision AI, a motorized digital microscope built for MS2930 Imaging in Materials Science at IIT Hyderabad: a live 3D model that lights, focuses, scans and classifies samples, with the team's real micrographs and AI results.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230E1A2E'/%3E%3Crect x='13' y='5' width='6' height='15' rx='2' fill='%23F2F4F7'/%3E%3Crect x='7' y='22' width='18' height='4' rx='1.5' fill='%23F1B23C'/%3E%3C/svg%3E">
+<meta property="og:title" content="MicroVision AI · The Lab">
+<meta property="og:description" content="A student-built motorized microscope in 3D: watch it light, focus, scan and name what it sees.">
+<meta property="og:image" content="https://chandanmettu.com/lab/microvision-ai/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://chandanmettu.com/lab/microvision-ai/">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(./fonts/bricolage-grotesque-400-0.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(./fonts/bricolage-grotesque-500-1.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(./fonts/bricolage-grotesque-600-2.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(./fonts/bricolage-grotesque-700-3.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/inter-400-4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(./fonts/inter-500-5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(./fonts/inter-600-6.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/jetbrains-mono-400-7.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(./fonts/jetbrains-mono-500-8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+</style>
+<style>
+/* Layout: fixed 1920×1080 stage scaled to the window; 128px side margins, heading pinned at the top margin, one mono footer row. */
+:root{
+  --paper:#F2F4F7;      /* cool porcelain, slide ground */
+  --paper-2:#E7EBF1;    /* second ground for alternating slides */
+  --card:#FCFDFE;       /* raised surfaces */
+  --ink:#0E1A2E;        /* navy ink, headings */
+  --ink-2:#3D4A62;      /* body text */
+  --muted:#6F7B90;      /* captions, labels */
+  --line:#D3DAE4;       /* hairlines */
+  --brass:#9C7020;      /* accent: their gold, deepened for contrast */
+  --brass-2:#E8D5AA;    /* accent tint */
+  --glow:#F1B23C;       /* light path */
+  --cobalt:#2A55CF;     /* control path */
+  --scope:#0A0D12;      /* micrograph surround */
+  --f-display:'Bricolage Grotesque','Inter',system-ui,sans-serif;
+  --f-text:'Inter',system-ui,-apple-system,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--paper-2);color:var(--ink);font-family:var(--f-text);overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+#viewport{position:fixed;inset:0;overflow:hidden}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;background:var(--paper);
+  box-shadow:0 30px 80px -30px rgba(14,26,46,.28),0 0 0 1px rgba(14,26,46,.05);border-radius:6px;overflow:hidden}
+
+/* ---------- slide frame ---------- */
+.slide{position:absolute;inset:0;padding:112px 128px 150px;background:var(--paper);display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transition:opacity .55s ease,visibility 0s linear .55s}
+.slide.alt{background:var(--paper-2)}
+.slide.on{opacity:1;visibility:visible;transition:opacity .55s ease}
+.foot{position:absolute;left:128px;right:128px;bottom:56px;display:flex;justify-content:space-between;align-items:center;
+  font:500 18px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.foot b{color:var(--ink);font-weight:500}
+.eyebrow{font:500 20px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--brass);display:flex;align-items:center;gap:16px}
+.eyebrow::before{content:"";width:36px;height:2px;background:var(--brass)}
+h1,h2,h3{font-family:var(--f-display);color:var(--ink);margin:0;text-wrap:balance;font-optical-sizing:auto}
+h2{font-size:76px;line-height:1.02;font-weight:600;letter-spacing:-.025em;margin-top:22px}
+h3{font-size:32px;line-height:1.12;font-weight:600;letter-spacing:-.01em}
+p{margin:0}
+.lede{font-size:30px;line-height:1.45;color:var(--ink-2);max-width:1180px;margin-top:22px}
+.body{font-size:25px;line-height:1.5;color:var(--ink-2)}
+.cap{font:500 17px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono)}
+.fill{flex:1;min-height:0}
+.row{display:flex;gap:40px}
+img{display:block}
+
+/* staged arrival */
+@keyframes rise{from{opacity:0;transform:translateY(26px)}}
+@keyframes fadein{from{opacity:0}}
+.slide.on .r{animation:rise .9s cubic-bezier(.2,.75,.2,1) both;animation-delay:calc(var(--i,0) * 85ms + 120ms)}
+@media (prefers-reduced-motion:reduce){.slide.on .r{animation:none}.slide{transition:none}}
+
+/* photo frames */
+.ph{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 0 rgba(14,26,46,.05),0 18px 40px -26px rgba(14,26,46,.35)}
+.ph img{width:100%;height:100%;object-fit:cover}
+.micro{background:var(--scope);border-radius:14px;overflow:hidden;position:relative}
+.micro img{width:100%;height:100%;object-fit:cover}
+.micro .cap{position:absolute;left:18px;bottom:16px;color:#E9EDF3;background:rgba(10,13,18,.55);padding:8px 12px;border-radius:8px;backdrop-filter:blur(6px)}
+
+/* ---------- 01 cover ---------- */
+#s-cover{padding:0;flex-direction:row;background:
+  radial-gradient(900px 700px at 74% 46%,#FFFFFF 0%,rgba(255,255,255,0) 70%),var(--paper)}
+#s-cover .left{width:900px;padding:96px 0 0 128px;display:flex;flex-direction:column;position:relative;z-index:2}
+#s-cover .logo{width:420px;}
+#s-cover h1{font-size:168px;line-height:.9;font-weight:600;letter-spacing:-.045em;margin-top:84px}
+#s-cover h1 span{display:block;color:var(--brass)}
+#s-cover .sub{font-size:32px;line-height:1.4;color:var(--ink-2);margin-top:34px;max-width:700px}
+#s-cover .meta{margin-top:auto;margin-bottom:64px;display:grid;grid-template-columns:auto 1fr;gap:12px 28px;font-size:21px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:26px;max-width:760px}
+#s-cover .meta .cap{padding-top:3px}
+#s-cover .team{display:flex;flex-wrap:wrap;gap:6px 22px;color:var(--ink)}
+#cover3d{position:absolute;right:0;top:0;width:1100px;height:1080px}
+.hint{position:absolute;right:128px;bottom:56px;z-index:3;display:flex;gap:10px;align-items:center}
+.hint i{width:28px;height:28px;border:2px solid var(--muted);border-radius:50%;position:relative}
+.hint i::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--glow)}
+
+/* ---------- 3D canvas + labels ---------- */
+.mv-canvas{position:absolute;inset:0;display:block;cursor:grab;touch-action:none}
+.mv-canvas:active{cursor:grabbing}
+.mv-labels{position:absolute;inset:0;pointer-events:none}
+.mv-label{display:flex;align-items:center;gap:8px;font:500 15px/1 var(--f-mono);letter-spacing:.04em;color:var(--ink);
+  opacity:0;transform:translateY(6px);transition:opacity .45s ease,transform .45s ease;white-space:nowrap}
+.mv-label.on{opacity:1;transform:none}
+.mv-label i{width:9px;height:9px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 4px rgba(156,112,32,.18)}
+.mv-label span{background:rgba(252,253,254,.92);border:1px solid var(--line);padding:7px 10px;border-radius:7px;box-shadow:0 6px 16px -10px rgba(14,26,46,.4)}
+
+/* ---------- 03 how it works ---------- */
+#s-how{flex-direction:row;gap:0;padding-right:0;padding-bottom:120px}
+#s-how .side{width:560px;flex:none;display:flex;flex-direction:column;position:relative;z-index:2}
+#how3d{position:absolute;left:600px;right:400px;top:0;bottom:0}
+.steps{list-style:none;margin:34px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.steps button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:52px 1fr;gap:0 14px;width:100%;padding:16px 18px;border-radius:12px;cursor:pointer;
+  border:1px solid transparent;transition:background .3s,border-color .3s}
+.steps button:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+.steps .n{font:500 18px/1.6 var(--f-mono);color:var(--muted);grid-row:span 2}
+.steps .t{font:600 27px/1.2 var(--f-display);color:var(--muted);transition:color .3s}
+.steps .d{font-size:20px;line-height:1.45;color:var(--ink-2);max-height:0;overflow:hidden;opacity:0;transition:max-height .5s ease,opacity .4s ease,margin .4s}
+.steps button.on{background:var(--card);border-color:var(--line);box-shadow:0 14px 30px -24px rgba(14,26,46,.5)}
+.steps button.on .n{color:var(--brass)}
+.steps button.on .t{color:var(--ink)}
+.steps button.on .d{max-height:120px;opacity:1;margin-top:8px}
+.steps button.done .t{color:var(--ink-2)}
+.ctrls{display:flex;gap:10px;margin-top:auto;flex-wrap:wrap}
+.chip{all:unset;cursor:pointer;font:500 17px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
+  padding:14px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);display:inline-flex;gap:10px;align-items:center}
+.chip:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+.chip.active{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;background:var(--card);padding:4px}
+.seg .chip{border:none;padding:10px 14px}
+.liveview{position:absolute;right:64px;top:250px;width:340px;z-index:3;background:var(--card);border-radius:16px;padding:14px;
+  box-shadow:0 24px 50px -28px rgba(14,26,46,.55),0 0 0 1px rgba(14,26,46,.06)}
+.lv-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.lv-top .rec{display:flex;gap:8px;align-items:center;font:500 14px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.lv-top .rec i{width:8px;height:8px;border-radius:50%;background:#D93A2B;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+.lv-img{height:270px;border-radius:10px;background:var(--scope);overflow:hidden;position:relative}
+.lv-img img{position:absolute;left:-15%;top:-15%;width:130%;height:130%;object-fit:cover;transition:filter .15s linear}
+.lv-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.lv-res{margin-top:12px;opacity:.25;transition:opacity .4s}
+.lv-res.on{opacity:1}
+.lv-res .lab{font:600 21px/1.2 var(--f-display);color:var(--ink)}
+.bar{height:8px;border-radius:8px;background:var(--paper-2);margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--brass);border-radius:8px;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
+.lv-res .pct{font:500 18px/1 var(--f-mono);color:var(--brass);float:right;margin-top:-26px}
+
+/* ---------- 02 three systems ---------- */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:52px;flex:1;min-height:0}
+.sys{display:flex;flex-direction:column;gap:20px;min-height:0}
+.sys .ph{height:380px;flex:none}
+.sys .spec{font:500 18px/1.5 var(--f-mono);color:var(--brass);letter-spacing:.02em;margin-top:auto;padding-top:16px;border-top:1px solid var(--line)}
+
+/* ---------- 04 signal paths ---------- */
+.lanes{display:flex;flex-direction:column;gap:56px;margin-top:64px}
+.lane{display:grid;grid-template-columns:200px 1fr;align-items:center;gap:24px}
+.lane .tag{font:500 18px/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+.flow{display:flex;align-items:center}
+.node{flex:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;width:196px;box-shadow:0 14px 30px -26px rgba(14,26,46,.5)}
+.node .k{font:500 15px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.node .v{font:600 24px/1.15 var(--f-display);color:var(--ink);margin-top:10px}
+.node.end{background:var(--ink);border-color:var(--ink)}
+.node.end .v{color:var(--card)} .node.end .k{color:#AEB8C9}
+.wire{flex:1;height:2px;position:relative;min-width:24px}
+.wire::before{content:"";position:absolute;inset:0;background:var(--line)}
+.wire::after{content:"";position:absolute;top:-4px;left:0;width:10px;height:10px;border-radius:50%;background:currentColor;animation:travel 2.4s linear infinite;animation-delay:var(--d,0s)}
+@keyframes travel{from{left:0;opacity:0}15%{opacity:1}85%{opacity:1}to{left:calc(100% - 10px);opacity:0}}
+.ctl{color:var(--cobalt)} .img{color:var(--glow)} .ai{color:var(--brass)}
+.note{margin-top:auto;display:flex;gap:18px;align-items:flex-start;font-size:22px;line-height:1.5;color:var(--ink-2);max-width:1400px}
+.note .cap{flex:none;padding-top:5px;color:var(--brass)}
+
+/* ---------- 05 sketch to prototype ---------- */
+.journey{display:grid;grid-template-columns:repeat(4,1fr) 1.25fr;gap:28px;margin-top:48px;flex:1;min-height:0}
+.jcard{display:flex;flex-direction:column;gap:16px;min-height:0}
+.jcard .ph{flex:1;min-height:0;background:#FBFBF9}
+.jcard .ph img{object-fit:contain;padding:10px;box-sizing:border-box}
+.jcard.final .ph img{object-fit:cover;padding:0}
+.jcard h3{font-size:24px}
+.jstep{font:500 16px/1 var(--f-mono);letter-spacing:.1em;color:var(--brass);text-transform:uppercase}
+
+/* ---------- 06 electronics ---------- */
+.elec{display:grid;grid-template-columns:560px 1fr;gap:40px;margin-top:40px;flex:1;min-height:0}
+.elec .hero{display:flex;flex-direction:column;gap:14px;min-height:0}
+.elec .hero .ph{flex:1;min-height:0}
+.egrid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:26px;min-height:0}
+.ecard{display:flex;flex-direction:column;gap:12px;min-height:0}
+.ecard .ph{flex:1;min-height:0}
+.ecard h3{font-size:24px}
+.ecard p{font-size:19px;line-height:1.4;color:var(--ink-2)}
+
+/* ---------- 07 optics ---------- */
+.optics{display:grid;grid-template-columns:620px 460px 1fr;gap:48px;margin-top:40px;flex:1;min-height:0}
+.mag{display:flex;flex-direction:column;gap:28px}
+.eq{display:flex;align-items:baseline;gap:18px;font-family:var(--f-display);color:var(--ink);font-weight:600;letter-spacing:-.03em}
+.eq .big{font-size:110px;line-height:1}
+.eq .op{font-size:56px;color:var(--muted);font-weight:400}
+.eq .res{color:var(--brass)}
+.eqlab{display:flex;gap:18px;font:500 16px/1.3 var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:14px 26px;font-size:23px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:24px}
+.facts b{font:500 19px/1.5 var(--f-mono);color:var(--ink)}
+.caveat{font-size:20px;line-height:1.5;color:var(--muted);border-left:3px solid var(--brass-2);padding-left:18px}
+.optics svg{width:100%;height:100%}
+.ophotos{display:grid;grid-template-rows:1fr 1fr;gap:24px;min-height:0}
+.ophotos figure{margin:0;display:flex;flex-direction:column;gap:10px;min-height:0}
+.ophotos .ph{flex:1;min-height:0}
+
+/* ---------- 08 anatomy ---------- */
+.anat{display:grid;grid-template-columns:600px 1fr;gap:80px;margin-top:-20px;flex:1;min-height:0}
+.anat .shot{position:relative;height:850px;margin-top:-30px}
+.anat .shot .ph{height:100%}
+.pin{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--glow);color:var(--ink);
+  font:600 20px/46px var(--f-mono);text-align:center;box-shadow:0 0 0 6px rgba(241,178,60,.3),0 8px 18px -6px rgba(0,0,0,.5);transition:transform .3s}
+.pin.hot{transform:scale(1.25);background:var(--card)}
+.parts{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;align-content:start;margin-top:40px}
+.parts div{display:grid;grid-template-columns:64px 1fr;padding:22px 0;border-top:1px solid var(--line);cursor:default}
+.parts .n{font:500 20px/1.4 var(--f-mono);color:var(--brass)}
+.parts h3{font-size:30px}
+.parts p{grid-column:2;font-size:20px;line-height:1.45;color:var(--ink-2);margin-top:6px}
+
+/* ---------- 09 lighting modes ---------- */
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:44px;flex:1;min-height:0}
+.mode{background:var(--card);border-radius:18px;padding:36px 40px;display:grid;grid-template-columns:330px 1fr;gap:36px;box-shadow:0 20px 40px -32px rgba(14,26,46,.45)}
+.mode svg{width:100%;height:100%}
+.mode .txt{display:flex;flex-direction:column;gap:18px}
+.mode .thumbs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:auto}
+.mode .thumbs .micro{height:170px;border-radius:10px}
+
+/* ---------- galleries ---------- */
+.gal{display:grid;gap:44px;margin-top:40px;flex:1;min-height:0}
+.gal-6{grid-template-columns:480px 1fr}
+.g6{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:18px;min-height:0}
+.obs{display:flex;flex-direction:column;gap:22px}
+.obs .k{font:500 17px/1 var(--f-mono);letter-spacing:.12em;color:var(--brass);text-transform:uppercase}
+.gal-px{grid-template-columns:560px 1fr 420px}
+.gal-leaf{grid-template-columns:1fr 1fr 520px}
+.g4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:18px;min-height:0;grid-column:span 2}
+.onion{display:grid;grid-template-columns:960px 1fr;gap:40px;margin-top:36px;flex:1;min-height:0}
+.onion .side{display:flex;flex-direction:column;gap:24px;min-height:0}
+.onion .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;height:200px;flex:none}
+.olist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.olist li{font-size:22px;line-height:1.45;color:var(--ink-2);padding:16px 0 16px 34px;border-top:1px solid var(--line);position:relative}
+.olist li::before{content:"";position:absolute;left:2px;top:27px;width:14px;height:2px;background:var(--brass)}
+
+/* ---------- 14 AI ---------- */
+.pipe{display:flex;align-items:center;gap:0;margin-top:36px}
+.pipe .node{width:auto;padding:16px 22px}
+.pipe .node .v{font-size:22px;margin-top:6px}
+.pipe .wire{flex:0 0 90px}
+.ai3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:40px;flex:1;min-height:0}
+.aicard{background:var(--card);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:16px;box-shadow:0 20px 40px -32px rgba(14,26,46,.45);min-height:0}
+.aicard .shot{flex:1;min-height:0;border-radius:10px;overflow:hidden;background:#0d1b2a}
+.aicard .shot img{width:100%;height:100%;object-fit:cover;object-position:left top}
+.aicard .row1{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.aicard h3{font-size:27px}
+.aicard .pct{font:600 40px/1 var(--f-display);color:var(--brass);letter-spacing:-.02em}
+.aicard p{font-size:19px;line-height:1.45;color:var(--ink-2)}
+.slide.on .aicard .bar i{width:var(--w)}
+
+/* ---------- 15 results ---------- */
+.res3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-top:52px;flex:1;min-height:0}
+.rcol{display:flex;flex-direction:column;gap:6px}
+.rcol h3{font-size:30px;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.rcol.prop h3{border-color:var(--brass)}
+.rcol ul{list-style:none;margin:0;padding:0}
+.rcol li{font-size:26px;line-height:1.45;color:var(--ink-2);padding:22px 0;border-bottom:1px solid var(--line)}
+.rcol li b{color:var(--ink);font-weight:600}
+
+/* ---------- 16 team ---------- */
+#s-team{flex-direction:row;gap:72px;align-items:stretch}
+.groupframe{width:1020px;flex:none;position:relative;border-radius:18px;overflow:hidden;background:var(--card);box-shadow:0 30px 60px -36px rgba(14,26,46,.5)}
+.groupframe img{width:100%;height:100%;object-fit:cover}
+.gp-empty{position:absolute;inset:18px;border:2px dashed var(--line);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;
+  background:repeating-linear-gradient(135deg,transparent 0 22px,rgba(14,26,46,.025) 22px 44px)}
+.gp-empty .cap{color:var(--brass)}
+.gp-empty p{font:600 40px/1.1 var(--f-display);color:var(--ink);letter-spacing:-.02em}
+.tcol{flex:1;display:flex;flex-direction:column;min-width:0}
+.tcol h2{font-size:96px;margin-top:18px}
+.members{list-style:none;margin:40px 0 0;padding:0}
+.members li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.members .nm{font:600 27px/1.2 var(--f-display);color:var(--ink)}
+.members .id{font:500 17px/1 var(--f-mono);color:var(--muted);letter-spacing:.04em}
+.guide{margin-top:auto;display:flex;align-items:center;gap:24px;border-top:2px solid var(--ink);padding-top:22px}
+.guide img{width:230px}
+.guide p{font-size:21px;line-height:1.45;color:var(--ink-2)}
+
+/* ---------- chrome outside the stage ---------- */
+#bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:6px;
+  background:rgba(252,253,254,.88);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:6px;z-index:20;
+  box-shadow:0 10px 30px -18px rgba(14,26,46,.5);transition:opacity .4s}
+#bar.idle{opacity:0}
+#bar #bLab{font:500 14px/1 var(--f-mono);letter-spacing:.04em;color:var(--ink);text-decoration:none;padding:12px 14px 12px 12px;border-right:1px solid var(--line);margin-right:4px}
+#bar #bLab:hover{color:var(--brass)}
+#bar button{all:unset;cursor:pointer;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+#bar button:hover{background:var(--paper-2)}
+#bar button:focus-visible{outline:2px solid var(--cobalt)}
+#bar .count{font:500 14px/1 var(--f-mono);color:var(--ink-2);min-width:64px;text-align:center;letter-spacing:.06em}
+#progress{position:absolute;left:0;top:0;height:4px;background:var(--brass);z-index:10;transition:width .5s ease}
+</style>
+</head>
+<body>
+<div id="viewport">
+<div id="stage">
+<div id="progress"></div>
+
+<!-- 01 COVER -->
+<section class="slide" id="s-cover" data-3d="cover">
+  <div class="left">
+    <img class="logo r" src="img/iith-logo.png" alt="Indian Institute of Technology Hyderabad">
+    <h1 class="r" style="--i:1">MicroVision <span>AI</span></h1>
+    <p class="sub r" style="--i:2">A student-built motorized microscope that focuses, scans and recognises its samples.</p>
+    <div class="meta r" style="--i:3">
+      <span class="cap">Course</span><span>MS2930 · Imaging in Materials Science</span>
+      <span class="cap">Guide</span><span>Prof. Shourya Dutta Gupta · Dept. of MSME, IIT Hyderabad</span>
+      <span class="cap">Team</span><span class="team"><span>N. Mahela Jaya Vardhane</span><span>M. Sai Chandan</span><span>N. V. Anantha Bhargav</span><span>N. Chandra Shekar</span><span>N. Sri Sai Ujjwal</span></span>
+    </div>
+  </div>
+  <div id="cover3d"></div>
+  <div class="hint cap"><i></i>Live 3D model · drag to rotate</div>
+</section>
+
+<!-- 02 THREE SYSTEMS -->
+<section class="slide alt" id="s-idea">
+  <div class="eyebrow r">The instrument</div>
+  <h2 class="r" style="--i:1">Three systems working as one microscope</h2>
+  <div class="three">
+    <div class="sys r" style="--i:2">
+      <div class="ph"><img src="img/p05_2.jpg" alt="Camera mount and optical body"></div>
+      <h3>Optics</h3>
+      <p class="body">A compound lens train magnifies the sample and a webcam turns the view into a live digital image.</p>
+      <div class="spec">10× objective · 15× eyepiece · 160 mm tube</div>
+    </div>
+    <div class="sys r" style="--i:3">
+      <div class="ph"><img src="img/p04_6.jpg" alt="Rack and pinion linkage"></div>
+      <h3>Motion</h3>
+      <p class="body">Two joysticks command stepper motors that focus on Z and move the field of view on X.</p>
+      <div class="spec">Arduino Uno · 2 × 28BYJ-48 · ULN2003</div>
+    </div>
+    <div class="sys r" style="--i:4">
+      <div class="ph"><img src="img/p11_0.jpg" alt="Live classification app" style="object-position:left top"></div>
+      <h3>Intelligence</h3>
+      <p class="body">Live webcam frames go to an image model that names the sample on screen with a confidence score.</p>
+      <div class="spec">Google Teachable Machine · live frames</div>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 03 HOW IT WORKS (3D) -->
+<section class="slide" id="s-how" data-3d="how">
+  <div class="side">
+    <div class="eyebrow r">How it works</div>
+    <h2 class="r" style="--i:1;font-size:66px">From light to label in five moves</h2>
+    <ol class="steps r" style="--i:2" id="steps"></ol>
+    <div class="ctrls r" style="--i:3">
+      <button class="chip" id="btnPlay">▶ Play tour</button>
+      <button class="chip" id="btnExplode">Explode</button>
+      <span class="seg"><button class="chip active" data-mode="reflected">Metal</button><button class="chip" data-mode="transmitted">Onion</button></span>
+    </div>
+  </div>
+  <div id="how3d"></div>
+  <div class="liveview r" style="--i:4">
+    <div class="lv-top"><span class="rec"><i></i>Webcam live view</span><span class="cap" id="lvMode">Reflected</span></div>
+    <div class="lv-img"><img id="lvImg" src="img/p07_6.jpg" alt="Live microscope view"><div class="lv-flash" id="lvFlash"></div></div>
+    <div class="lv-res" id="lvRes"><div class="lab" id="lvLab">Scratches on metal surface</div><span class="pct" id="lvPct">94.8%</span><div class="bar"><i id="lvBar"></i></div></div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 04 SIGNAL PATHS -->
+<section class="slide alt" id="s-paths">
+  <div class="eyebrow r">Signal chain</div>
+  <h2 class="r" style="--i:1">Two paths run in parallel: motion and image</h2>
+  <div class="lanes">
+    <div class="lane r" style="--i:2">
+      <div class="tag ctl">Motion<br>control</div>
+      <div class="flow ctl">
+        <div class="node"><div class="k">Input</div><div class="v">Two joysticks</div></div><div class="wire"></div>
+        <div class="node"><div class="k">Controller</div><div class="v">Arduino Uno</div></div><div class="wire" style="--d:.5s"></div>
+        <div class="node"><div class="k">Driver</div><div class="v">ULN2003</div></div><div class="wire" style="--d:1s"></div>
+        <div class="node"><div class="k">Actuator</div><div class="v">28BYJ-48 stepper</div></div><div class="wire" style="--d:1.5s"></div>
+        <div class="node end"><div class="k">Result</div><div class="v">X / Z position</div></div>
+      </div>
+    </div>
+    <div class="lane r" style="--i:3">
+      <div class="tag img" style="color:#B07A10">Imaging</div>
+      <div class="flow img">
+        <div class="node"><div class="k">Source</div><div class="v">5 V LED</div></div><div class="wire"></div>
+        <div class="node"><div class="k">Sample</div><div class="v">Specimen</div></div><div class="wire" style="--d:.5s"></div>
+        <div class="node"><div class="k">Optics</div><div class="v">Objective + tube</div></div><div class="wire" style="--d:1s"></div>
+        <div class="node"><div class="k">Sensor</div><div class="v">Webcam</div></div><div class="wire" style="--d:1.5s"></div>
+        <div class="node end"><div class="k">Result</div><div class="v">Live image</div></div>
+      </div>
+    </div>
+    <div class="lane r" style="--i:4">
+      <div class="tag ai">AI<br>detection</div>
+      <div class="flow ai">
+        <div class="node"><div class="k">Input</div><div class="v">Webcam frame</div></div><div class="wire"></div>
+        <div class="node" style="width:300px"><div class="k">Model</div><div class="v">Teachable Machine image model</div></div><div class="wire" style="--d:.7s"></div>
+        <div class="node end" style="width:300px"><div class="k">Result</div><div class="v">Sample label + confidence</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note r" style="--i:5"><span class="cap">Note</span><span>The classes the model can name come from our own training images. Confidence is the score for a single frame; overall accuracy was not measured.</span></div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 05 SKETCH TO PROTOTYPE -->
+<section class="slide" id="s-journey">
+  <div class="eyebrow r">Design process</div>
+  <h2 class="r" style="--i:1">From a hand sketch to a working prototype</h2>
+  <div class="journey">
+    <div class="jcard r" style="--i:2"><div class="jstep">Concept</div><div class="ph"><img src="img/p03_2.jpg" alt="Initial 3D framework concept sketch"></div><h3>Rigid vertical frame</h3></div>
+    <div class="jcard r" style="--i:3"><div class="jstep">Layout</div><div class="ph"><img src="img/p03_4.jpg" alt="Front view sketch of the Z-stage and lead screw"></div><h3>Z-stage and lead screw</h3></div>
+    <div class="jcard r" style="--i:4"><div class="jstep">Support</div><div class="ph"><img src="img/p03_3.jpg" alt="Preliminary support geometry sketch"></div><h3>Support geometry</h3></div>
+    <div class="jcard r" style="--i:5"><div class="jstep">Reference</div><div class="ph"><img src="img/p03_1.jpg" alt="Mechanical reference design"></div><h3>Reference mechanism</h3></div>
+    <div class="jcard final r" style="--i:6"><div class="jstep">Built</div><div class="ph"><img src="img/p06_1.jpg" alt="Assembled prototype"></div><h3>Assembled prototype</h3></div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 06 ELECTRONICS -->
+<section class="slide alt" id="s-elec">
+  <div class="eyebrow r">Electronics and control</div>
+  <h2 class="r" style="--i:1">An Arduino turns joystick moves into motor steps</h2>
+  <div class="elec">
+    <div class="hero r" style="--i:2"><div class="ph"><img src="img/p04_7.jpg" alt="Assembled control electronics"></div><span class="cap">Assembled control electronics</span></div>
+    <div class="egrid">
+      <div class="ecard r" style="--i:3"><div class="ph"><img src="img/p04_1.jpg" alt="Arduino connection"></div><h3>Arduino Uno</h3><p>Reads the joystick inputs and sequences the motion.</p></div>
+      <div class="ecard r" style="--i:4"><div class="ph"><img src="img/p04_3.jpg" alt="ULN2003 driver"></div><h3>ULN2003 drivers</h3><p>Switch the motor windings safely.</p></div>
+      <div class="ecard r" style="--i:5"><div class="ph"><img src="img/p04_2.jpg" alt="Wiring and motor interface"></div><h3>28BYJ-48 steppers</h3><p>Geared 5 V actuators for the X and Z axes.</p></div>
+      <div class="ecard r" style="--i:6"><div class="ph"><img src="img/p04_5.jpg" alt="Dual joystick boards"></div><h3>Two joysticks</h3><p>Manual commands, one for each axis.</p></div>
+      <div class="ecard r" style="--i:7"><div class="ph"><img src="img/p04_6.jpg" alt="Rack and pinion linkage"></div><h3>Rack and pinion</h3><p>Turns motor rotation into straight X travel.</p></div>
+      <div class="ecard r" style="--i:8"><div class="ph"><img src="img/p04_4.jpg" alt="Power input and regulator"></div><h3>Power and breadboard</h3><p>Regulated low voltage and the circuit interconnects.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 07 OPTICS -->
+<section class="slide" id="s-optics">
+  <div class="eyebrow r">Optical system</div>
+  <h2 class="r" style="--i:1">A 160 mm tube between objective and camera</h2>
+  <div class="optics">
+    <div class="mag r" style="--i:2">
+      <div>
+        <div class="eq"><span class="big">10×</span><span class="op">×</span><span class="big">15×</span><span class="op">=</span><span class="big res">150×</span></div>
+        <div class="eqlab"><span style="width:150px">Objective</span><span style="width:210px">Eyepiece</span><span>Nominal visual</span></div>
+      </div>
+      <div class="facts">
+        <b>Tube</b><span>160 mm PVC optical tube</span>
+        <b>Light</b><span>5 V LEDs, reflected or transmitted</span>
+        <b>Camera</b><span>Webcam in a fabricated holder for live view</span>
+      </div>
+      <p class="caveat">On-screen magnification also depends on the camera coupling, sensor size and display, so it is not simply 150×.</p>
+    </div>
+    <svg class="r" style="--i:3" viewBox="0 0 460 820" aria-label="Optical path from LED through specimen, objective, tube and eyepiece to the webcam">
+      <defs><linearGradient id="beamg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#F1B23C" stop-opacity=".9"/><stop offset="1" stop-color="#F1B23C" stop-opacity=".35"/></linearGradient></defs>
+      <rect x="150" y="10" width="60" height="58" rx="8" fill="#14161B"/><circle cx="180" cy="70" r="10" fill="#7FA6F5"/>
+      <rect x="138" y="90" width="84" height="64" rx="6" fill="#FCFDFE" stroke="#D3DAE4" stroke-width="2"/>
+      <rect x="160" y="154" width="40" height="420" fill="#1B1E24" opacity=".9"/>
+      <path d="M180 584 L172 760 L188 760 Z" fill="url(#beamg)"/>
+      <path d="M176 150 L184 150 L190 584 L170 584 Z" fill="url(#beamg)" opacity=".85"/>
+      <ellipse cx="180" cy="120" rx="26" ry="7" fill="#9DBBF5" stroke="#5E7DB8" stroke-width="2"/>
+      <rect x="166" y="574" width="28" height="34" rx="4" fill="#C4CAD3"/><rect x="166" y="592" width="28" height="5" fill="#E8B928"/>
+      <ellipse cx="180" cy="612" rx="12" ry="4" fill="#9DBBF5"/>
+      <rect x="120" y="640" width="120" height="8" rx="2" fill="#CFE3F5" stroke="#9CB4CC"/>
+      <rect x="164" y="634" width="32" height="6" fill="#4F8A3A"/>
+      <rect x="110" y="648" width="140" height="14" rx="3" fill="#F3F2EE" stroke="#D3DAE4"/>
+      <path d="M168 790 h24 a12 12 0 0 0 -24 0" fill="#FFE7B0" stroke="#E0A93A" stroke-width="2"/>
+      <rect x="160" y="790" width="40" height="12" rx="2" fill="#C4CAD3"/>
+      <g font-family="JetBrains Mono, monospace" font-size="21" fill="#3D4A62">
+        <line x1="214" y1="40" x2="250" y2="40" stroke="#9C7020"/><text x="256" y="45">Webcam</text>
+        <line x1="210" y1="120" x2="250" y2="120" stroke="#9C7020"/><text x="256" y="125">Eyepiece 15×</text>
+        <line x1="204" y1="360" x2="250" y2="360" stroke="#9C7020"/><text x="256" y="356">Tube</text><text x="256" y="376">160 mm</text>
+        <line x1="198" y1="596" x2="250" y2="596" stroke="#9C7020"/><text x="256" y="601">Objective 10×</text>
+        <line x1="242" y1="642" x2="262" y2="642" stroke="#9C7020"/><text x="266" y="647">Sample</text>
+        <line x1="204" y1="792" x2="250" y2="792" stroke="#9C7020"/><text x="256" y="797">5 V LED</text>
+      </g>
+    </svg>
+    <div class="ophotos">
+      <figure class="r" style="--i:4"><div class="ph"><img src="img/p05_1.jpg" alt="Fabricated camera holder"></div><figcaption class="cap">Fabricated camera holder</figcaption></figure>
+      <figure class="r" style="--i:5"><div class="ph"><img src="img/p05_3.jpg" alt="Leaf sample test on the microscope" style="object-position:center 30%"></div><figcaption class="cap">Leaf-sample test</figcaption></figure>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 08 ANATOMY -->
+<section class="slide alt" id="s-anatomy">
+  <div class="anat">
+    <div class="shot r">
+      <div class="ph"><img src="img/p06_1.jpg" alt="Completed microscope with numbered assemblies"></div>
+      <span class="pin" data-p="1" style="left:42%;top:3%">1</span>
+      <span class="pin" data-p="2" style="left:40%;top:27.5%">2</span>
+      <span class="pin" data-p="3" style="left:37%;top:54.4%">3</span>
+      <span class="pin" data-p="4" style="left:79%;top:15.7%">4</span>
+      <span class="pin" data-p="5" style="left:73%;top:48.3%">5</span>
+      <span class="pin" data-p="6" style="left:76%;top:70%">6</span>
+      <span class="pin" data-p="7" style="left:41%;top:77.3%">7</span>
+      <span class="pin" data-p="8" style="left:52%;top:94%">8</span>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <div class="eyebrow r">The completed microscope</div>
+      <h2 class="r" style="--i:1">Eight assemblies in one rigid frame</h2>
+      <div class="parts r" style="--i:2">
+        <div data-p="1"><span class="n">01</span><h3>Webcam</h3><p>Streams the live image to the laptop.</p></div>
+        <div data-p="5"><span class="n">05</span><h3>Z-axis screw</h3><p>Lead screw that sets the focus distance.</p></div>
+        <div data-p="2"><span class="n">02</span><h3>Camera holder</h3><p>Couples the webcam to the eyepiece.</p></div>
+        <div data-p="6"><span class="n">06</span><h3>Guide rods</h3><p>Keep the stage square while it travels.</p></div>
+        <div data-p="3"><span class="n">03</span><h3>Optical body</h3><p>10× objective and the 160 mm tube.</p></div>
+        <div data-p="7"><span class="n">07</span><h3>Sample stage</h3><p>Carries the slide on X and Z.</p></div>
+        <div data-p="4"><span class="n">04</span><h3>Control joysticks</h3><p>One stick for each axis.</p></div>
+        <div data-p="8"><span class="n">08</span><h3>Support base</h3><p>Houses the electronics and LED.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 09 LIGHTING MODES -->
+<section class="slide" id="s-modes">
+  <div class="eyebrow r">Imaging modes</div>
+  <h2 class="r" style="--i:1">Two ways to light a sample</h2>
+  <div class="modes">
+    <div class="mode r" style="--i:2">
+      <svg viewBox="0 0 330 560" aria-label="Reflected light: LED shines onto an opaque metal surface and the reflection enters the objective">
+        <rect x="140" y="20" width="50" height="190" rx="6" fill="#1B1E24"/><rect x="135" y="210" width="60" height="44" rx="5" fill="#C4CAD3"/><rect x="135" y="230" width="60" height="6" fill="#E8B928"/>
+        <path d="M60 140 L165 410" stroke="#F1B23C" stroke-width="10" stroke-linecap="round" opacity=".85"/>
+        <path d="M165 410 L165 262" stroke="#F1B23C" stroke-width="10" stroke-linecap="round" opacity=".55"/>
+        <path d="M165 410 L165 262" stroke="#FFF3D1" stroke-width="3"/>
+        <circle cx="52" cy="122" r="22" fill="#FFE7B0" stroke="#E0A93A" stroke-width="3"/>
+        <rect x="40" y="410" width="250" height="40" rx="4" fill="#9AA3AF"/>
+        <path d="M50 418 l230 0 M50 428 l230 0 M50 438 l230 0" stroke="#C8CED6" stroke-width="2"/>
+        <g font-family="JetBrains Mono, monospace" font-size="21" fill="#3D4A62"><text x="20" y="90">LED</text><text x="40" y="480">Opaque metal</text><text x="205" y="240">Objective</text></g>
+      </svg>
+      <div class="txt">
+        <div class="cap" style="color:var(--brass)">Reflected light</div>
+        <h3>For opaque surfaces</h3>
+        <p class="body">Light bounces off the metal back into the objective. Scratches and machining marks change the reflection angle, so they show up as bright and dark streaks.</p>
+        <div class="thumbs"><div class="micro"><img src="img/p07_4.jpg" alt="Crossing scratch traces"></div><div class="micro"><img src="img/p07_8.jpg" alt="RGB display subpixels"></div></div>
+      </div>
+    </div>
+    <div class="mode r" style="--i:3">
+      <svg viewBox="0 0 330 560" aria-label="Transmitted light: LED below shines up through a thin specimen into the objective">
+        <rect x="140" y="20" width="50" height="190" rx="6" fill="#1B1E24"/><rect x="135" y="210" width="60" height="44" rx="5" fill="#C4CAD3"/><rect x="135" y="230" width="60" height="6" fill="#E8B928"/>
+        <path d="M165 500 L165 262" stroke="#F1B23C" stroke-width="12" stroke-linecap="round" opacity=".7"/>
+        <path d="M165 500 L165 262" stroke="#FFF3D1" stroke-width="3"/>
+        <rect x="60" y="380" width="210" height="10" rx="2" fill="#CFE3F5" stroke="#9CB4CC"/>
+        <rect x="130" y="372" width="70" height="8" fill="#5C9A44"/>
+        <path d="M150 520 h30 a15 15 0 0 0 -30 0" fill="#FFE7B0" stroke="#E0A93A" stroke-width="3"/>
+        <g font-family="JetBrains Mono, monospace" font-size="21" fill="#3D4A62"><text x="200" y="525">LED below</text><text x="40" y="420">Thin specimen</text><text x="205" y="240">Objective</text></g>
+      </svg>
+      <div class="txt">
+        <div class="cap" style="color:var(--brass)">Transmitted light</div>
+        <h3>For thin, see-through samples</h3>
+        <p class="body">Light passes up through the specimen. Differences in thickness and absorption create the contrast between cells, walls and veins.</p>
+        <div class="thumbs"><div class="micro"><img src="img/p08_1.jpg" alt="Leaf in transmitted light"></div><div class="micro"><img src="img/p09_3.jpg" alt="Onion epidermal cells"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 10 METALS -->
+<section class="slide alt" id="s-metal">
+  <div class="eyebrow r">Results · reflected light</div>
+  <h2 class="r" style="--i:1">Metal surfaces reveal scratches and machining marks</h2>
+  <div class="gal gal-6">
+    <div class="obs r" style="--i:2">
+      <div class="k">What we see</div>
+      <p class="body">Long bright and dark lines follow the surface relief, where the reflection angle changes.</p>
+      <p class="body">Traces that cross each other are scratches made in different directions.</p>
+      <p class="body" style="color:var(--muted);font-size:21px">These are unetched surfaces, so individual grains or phases cannot be confirmed from these images.</p>
+    </div>
+    <div class="g6">
+      <div class="micro r" style="--i:3"><img src="img/p07_4.jpg" alt=""><span class="cap">Parallel grooves</span></div>
+      <div class="micro r" style="--i:4"><img src="img/p07_2.jpg" alt=""><span class="cap">Crossing scratches</span></div>
+      <div class="micro r" style="--i:5"><img src="img/p07_5.jpg" alt=""><span class="cap">Many directions</span></div>
+      <div class="micro r" style="--i:6"><img src="img/p07_6.jpg" alt=""><span class="cap">Reflected streaks</span></div>
+      <div class="micro r" style="--i:7"><img src="img/p07_1.jpg" alt=""><span class="cap">Irregular texture</span></div>
+      <div class="micro r" style="--i:8"><img src="img/p07_3.jpg" alt=""><span class="cap">Fine texture</span></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 11 DISPLAY -->
+<section class="slide" id="s-display">
+  <div class="eyebrow r">Results · fine features</div>
+  <h2 class="r" style="--i:1">Screen subpixels show what the optics can resolve</h2>
+  <div class="gal gal-px">
+    <div class="micro r" style="--i:2"><img src="img/p07_8.jpg" alt="RGB subpixel array"><span class="cap">RGB subpixel array</span></div>
+    <div class="micro r" style="--i:3"><img src="img/p07_7.jpg" alt="Patterned illuminated display"><span class="cap">Patterned illuminated display</span></div>
+    <div class="obs r" style="--i:4">
+      <div class="k">Why a screen</div>
+      <p class="body">A display is a ready-made test target: a regular grid of red, green and blue emitters at microscale.</p>
+      <p class="body">Seeing each coloured subpixel as a separate dot shows the microscope resolves repeating microscale structure.</p>
+      <p class="body" style="color:var(--muted);font-size:21px">The pixel pitch was not calibrated, so this is a qualitative check.</p>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 12 LEAF -->
+<section class="slide alt" id="s-leaf">
+  <div class="eyebrow r">Results · transmitted light</div>
+  <h2 class="r" style="--i:1">A thin leaf shows tissue and vein structure</h2>
+  <div class="gal gal-leaf">
+    <div class="g4">
+      <div class="micro r" style="--i:2"><img src="img/p08_1.jpg" alt=""><span class="cap">Fine texture and branching</span></div>
+      <div class="micro r" style="--i:3"><img src="img/p08_2.jpg" alt=""><span class="cap">Prominent bright branch</span></div>
+      <div class="micro r" style="--i:4"><img src="img/p08_3.jpg" alt=""><span class="cap">Broad illuminated structures</span></div>
+      <div class="micro r" style="--i:5"><img src="img/p08_4.jpg" alt=""><span class="cap">Alternate field of view</span></div>
+    </div>
+    <div class="obs r" style="--i:6">
+      <div class="k">Key result</div>
+      <p class="body">LED light passing through the leaf gives clear contrast: green tissue, pale branching veins and changes in brightness.</p>
+      <p class="body">Larger tissue and vein structures are easy to see. Individual cell boundaries are not resolved in every image.</p>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 13 ONION -->
+<section class="slide" id="s-onion">
+  <div class="eyebrow r">Results · transmitted light</div>
+  <h2 class="r" style="--i:1">Onion epidermis: individual cells, clearly walled</h2>
+  <div class="onion">
+    <div class="micro r" style="--i:2"><img src="img/p09_2.jpg" alt="Onion epidermal cells with distinct cell walls"><span class="cap">Distinct cell walls</span></div>
+    <div class="side">
+      <div class="trio r" style="--i:3">
+        <div class="micro"><img src="img/p09_3.jpg" alt="Closely packed cells"></div>
+        <div class="micro"><img src="img/p09_1.jpg" alt="Elongated cell outlines"></div>
+        <div class="micro"><img src="img/p09_4.jpg" alt="Alternate field of view"></div>
+      </div>
+      <ul class="olist r" style="--i:4">
+        <li>Brick-like, closely packed cells with continuous walls.</li>
+        <li>Cell interiors are pale; fine organelles are not resolved.</li>
+        <li>No chloroplasts, as expected for onion bulb epidermis.</li>
+        <li>Small dark specks and rings are likely debris or artifacts.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 14 AI -->
+<section class="slide alt" id="s-ai">
+  <div class="eyebrow r">AI-assisted sample detection</div>
+  <h2 class="r" style="--i:1">The microscope names what it sees, live</h2>
+  <div class="pipe r ai" style="--i:2">
+    <div class="node"><div class="k">1 · Capture</div><div class="v">Webcam frame</div></div><div class="wire"></div>
+    <div class="node"><div class="k">2 · Infer</div><div class="v">Teachable Machine model</div></div><div class="wire" style="--d:.6s"></div>
+    <div class="node end"><div class="k">3 · Show</div><div class="v">Label + confidence beside the feed</div></div>
+  </div>
+  <div class="ai3">
+    <div class="aicard r" style="--i:3">
+      <div class="shot"><img src="img/p10_0.jpg" alt="App classifying an empty field as No sample"></div>
+      <div class="row1"><h3>No sample</h3><span class="pct">98.9%</span></div>
+      <div class="bar"><i style="--w:98.9%"></i></div>
+      <p>An empty, bright field is rejected as no sample.</p>
+    </div>
+    <div class="aicard r" style="--i:4">
+      <div class="shot"><img src="img/p11_0.jpg" alt="App classifying rough metal surface"></div>
+      <div class="row1"><h3>Rough metal surface</h3><span class="pct">94.9%</span></div>
+      <div class="bar"><i style="--w:94.9%"></i></div>
+      <p>Irregular texture under reflected light.</p>
+    </div>
+    <div class="aicard r" style="--i:5">
+      <div class="shot"><img src="img/p12_0.jpg" alt="App classifying scratches on metal surface"></div>
+      <div class="row1"><h3>Scratches on metal</h3><span class="pct">94.8%</span></div>
+      <div class="bar"><i style="--w:94.8%"></i></div>
+      <p>Directional line features read as scratches.</p>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930 · Scores are per frame, not overall test accuracy</span><span class="pg"></span></div>
+</section>
+
+<!-- 15 RESULTS + NEXT -->
+<section class="slide" id="s-next">
+  <div class="eyebrow r">Outcome</div>
+  <h2 class="r" style="--i:1">What the prototype shows, and where it goes next</h2>
+  <div class="res3">
+    <div class="rcol r" style="--i:2"><h3>Demonstrated</h3><ul>
+      <li><b>Motorized X and Z</b> positioning from two joysticks.</li>
+      <li><b>Live digital imaging</b> through a webcam on a 160 mm tube.</li>
+      <li><b>Two light modes</b>: reflected for metals, transmitted for thin samples.</li>
+      <li><b>Live classification</b> of empty field, rough metal and scratches.</li></ul></div>
+    <div class="rcol r" style="--i:3"><h3>Not yet measured</h3><ul>
+      <li><b>Calibrated magnification</b> of the camera image.</li>
+      <li><b>Resolution</b> in micrometres, e.g. display pixel pitch.</li>
+      <li><b>Classifier accuracy</b> on a held-out test set.</li>
+      <li><b>Grain and phase</b> features, which need etched samples.</li></ul></div>
+    <div class="rcol prop r" style="--i:4"><h3>Proposed next steps</h3><ul>
+      <li><b>Stage micrometer</b> calibration for a true scale bar.</li>
+      <li><b>Autofocus</b> by sweeping Z and maximising image sharpness.</li>
+      <li><b>More classes</b> such as leaf and onion, with a test split.</li>
+      <li><b>Etched metal</b> samples to study microstructure.</li></ul></div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+<!-- 16 TEAM -->
+<section class="slide alt" id="s-team">
+  <div class="groupframe r">
+    <img id="groupPhoto" src="img/group.jpg" alt="The MicroVision AI team with the microscope" style="object-position:center 35%" onload="this.nextElementSibling && this.nextElementSibling.remove()" onerror="this.remove()">
+    <div class="gp-empty"><span class="cap">Reserved</span><p>Team photo</p><span class="cap" style="color:var(--muted)">Landscape · 3:2 works best</span></div>
+  </div>
+  <div class="tcol">
+    <div class="eyebrow r" style="--i:1">The team</div>
+    <h2 class="r" style="--i:2">Thank you</h2>
+    <ul class="members r" style="--i:3">
+      <li><span class="nm">N. Mahela Jaya Vardhane</span><span class="id">MS25BTECH11026</span></li>
+      <li><span class="nm">M. Sai Chandan</span><span class="id">MS24BTECH11021</span></li>
+      <li><span class="nm">N. V. Anantha Bhargav</span><span class="id">MS25BTECH11024</span></li>
+      <li><span class="nm">N. Chandra Shekar</span><span class="id">MS25BTECH11027</span></li>
+      <li><span class="nm">N. Sri Sai Ujjwal</span><span class="id">MS25BTECH11025</span></li>
+    </ul>
+    <div class="guide r" style="--i:4">
+      <img src="img/iith-logo.png" alt="IIT Hyderabad">
+      <p>MS2930 · Imaging in Materials Science<br>Prof. Shourya Dutta Gupta</p>
+    </div>
+  </div>
+  <div class="foot"><span><b>MicroVision AI</b> · MS2930</span><span class="pg"></span></div>
+</section>
+
+</div>
+</div>
+
+<nav id="bar" aria-label="Slide controls">
+  <a id="bLab" href="../" hidden>← The Lab</a>
+  <button id="prev" aria-label="Previous slide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <span class="count" id="count">1 / 16</span>
+  <button id="next" aria-label="Next slide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+  <button id="fs" aria-label="Full screen"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+</nav>
+
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const total = slides.length;
+  let cur = -1;
+
+  // scale the 1920×1080 stage to the window
+  function fit() {
+    const vw = innerWidth, vh = innerHeight;
+    const pad = vw < 700 ? 16 : 28;
+    const s = Math.min((vw - pad * 2) / 1920, (vh - pad * 2 - (vw < 700 ? 60 : 0)) / 1080);
+    const x = (vw - 1920 * s) / 2, y = (vh - 1080 * s) / 2 - (vw < 700 ? 24 : 0);
+    stage.style.transform = `translate(${x}px,${y}px) scale(${s})`;
+    window.MV3D && window.MV3D.resize();
+  }
+  addEventListener('resize', fit); fit();
+
+  slides.forEach((s, i) => { const pg = s.querySelector('.pg'); if (pg) pg.textContent = String(i + 1).padStart(2, '0') + ' / ' + total; });
+
+  function go(n, fromHash) {
+    n = Math.max(0, Math.min(total - 1, n));
+    if (n === cur) return;
+    if (cur >= 0) slides[cur].classList.remove('on');
+    cur = n;
+    slides[cur].classList.add('on');
+    document.getElementById('count').textContent = (cur + 1) + ' / ' + total;
+    document.getElementById('progress').style.width = ((cur + 1) / total * 100) + '%';
+    if (!fromHash) { try { history.replaceState(null, '', '#slide-' + (cur + 1)); } catch (e) {} }
+    onSlide(slides[cur]);
+  }
+  const fromHash = () => { const m = /^#slide-(\d+)$/.exec(location.hash); return m ? +m[1] - 1 : 0; };
+  addEventListener('hashchange', () => go(fromHash(), true));
+
+  document.getElementById('prev').onclick = () => go(cur - 1);
+  document.getElementById('next').onclick = () => go(cur + 1);
+  document.getElementById('fs').onclick = () => {
+    try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); } catch (e) {}
+  };
+  addEventListener('keydown', e => {
+    if (e.target.closest && e.target.closest('input,textarea')) return;
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    else if (e.key === 'Home') go(0); else if (e.key === 'End') go(total - 1);
+    else if (e.key === 'f' || e.key === 'F') document.getElementById('fs').click();
+  });
+  // swipe (ignored on the 3D canvas, which uses drag to rotate)
+  let tx = null, ty = 0;
+  addEventListener('touchstart', e => { if (e.target.closest('.mv-canvas')) { tx = null; return; } tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+    tx = null;
+  });
+  // hide the control bar when idle
+  const bar = document.getElementById('bar'); let idleT;
+  const wake = () => { bar.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => bar.classList.add('idle'), 2600); };
+  addEventListener('mousemove', wake); addEventListener('touchstart', wake, { passive: true }); wake();
+
+  // ---------- anatomy hover ----------
+  document.querySelectorAll('#s-anatomy [data-p]').forEach(el => {
+    const p = el.dataset.p;
+    el.addEventListener('mouseenter', () => document.querySelectorAll(`#s-anatomy .pin[data-p="${p}"]`).forEach(x => x.classList.add('hot')));
+    el.addEventListener('mouseleave', () => document.querySelectorAll('#s-anatomy .pin').forEach(x => x.classList.remove('hot')));
+  });
+
+  // ---------- how-it-works tour ----------
+  const STEPS = [
+    { t: 'Illuminate', d: 'A 5 V LED lights the specimen: from the side for metals, from below for thin samples.', tags: ['light'] },
+    { t: 'Focus on Z', d: 'The Z joystick drives a stepper. The lead screw lifts the stage until the image turns sharp.', tags: ['focus'] },
+    { t: 'Scan on X', d: 'The X stepper turns a pinion along a rack and slides the sample to pick the field of view.', tags: ['scan'] },
+    { t: 'Capture', d: 'Light travels through the 10× objective and the 160 mm tube to the webcam.', tags: ['capture'] },
+    { t: 'Classify', d: 'Each frame goes to our Teachable Machine model, which returns a label and a confidence.', tags: ['classify'] },
+  ];
+  const stepsEl = document.getElementById('steps');
+  STEPS.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<button data-i="${i}"><span class="n">0${i + 1}</span><span class="t">${s.t}</span><span class="d">${s.d}</span></button>`;
+    stepsEl.appendChild(li);
+  });
+  const stepBtns = [...stepsEl.querySelectorAll('button')];
+  const lvImg = document.getElementById('lvImg'), lvFlash = document.getElementById('lvFlash');
+  const lvRes = document.getElementById('lvRes'), lvBar = document.getElementById('lvBar');
+  let step = -1, tourTimer = null, exploded = false, mode = 'reflected';
+
+  function setModeUI(m) {
+    mode = m;
+    document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
+    lvImg.src = m === 'reflected' ? 'img/p07_6.jpg' : 'img/p09_2.jpg';
+    document.getElementById('lvMode').textContent = m === 'reflected' ? 'Reflected' : 'Transmitted';
+    window.MV3D && window.MV3D.setMode(m);
+  }
+  function applyStep(i) {
+    const V = window.MV3D; if (!V) return;
+    step = i;
+    stepBtns.forEach((b, k) => { b.classList.toggle('on', k === i); b.classList.toggle('done', k < i); });
+    if (i === 4 && mode !== 'reflected') setModeUI('reflected');
+    V.set({
+      lightT: i >= 0 ? 1 : 0,
+      xrayT: i >= 3 ? 0.9 : (i >= 0 ? 0.35 : 0),
+      stageT: i >= 1 ? V.FOCUS_Y : 14,
+      scanOsc: i === 2, scanT: 0,
+      tags: i >= 0 ? STEPS[i].tags : [],
+    });
+    if (i === 3) V.set({ flash: 1 });
+    lvRes.classList.toggle('on', i === 4);
+    lvBar.style.width = i === 4 ? '94.8%' : '0';
+  }
+  function resetHow() { applyStep(-1); const V = window.MV3D; if (V) { V.state.stageY = 14; V.state.light = 0; } }
+  function stopTour() { clearTimeout(tourTimer); tourTimer = null; document.getElementById('btnPlay').textContent = '▶ Play tour'; }
+  function playTour() {
+    stopTour(); resetHow();
+    document.getElementById('btnPlay').textContent = '■ Stop';
+    let i = 0;
+    const next = () => { applyStep(i); i++; if (i < STEPS.length) tourTimer = setTimeout(next, i === 2 ? 4200 : 3600); else tourTimer = setTimeout(stopTour, 3000); };
+    tourTimer = setTimeout(next, 700);
+  }
+  stepBtns.forEach(b => b.addEventListener('click', () => { stopTour(); applyStep(+b.dataset.i); }));
+  document.getElementById('btnPlay').onclick = () => tourTimer ? stopTour() : playTour();
+  document.getElementById('btnExplode').onclick = e => {
+    exploded = !exploded; e.currentTarget.classList.toggle('active', exploded);
+    e.currentTarget.textContent = exploded ? 'Assemble' : 'Explode';
+    window.MV3D && window.MV3D.set({ explodeT: exploded ? 1 : 0 });
+  };
+  document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => setModeUI(b.dataset.mode));
+
+  // live view follows the 3D state
+  function hookLive() {
+    window.MV3D.state.onUpdate = ({ focusErr, scan, light, flash }) => {
+      if (slides[cur].id !== 's-how') return;
+      lvImg.style.filter = `blur(${Math.min(14, focusErr * 3.2).toFixed(2)}px) brightness(${(0.15 + 0.85 * light).toFixed(3)})`;
+      lvImg.style.transform = `translateX(${(-scan * 22).toFixed(1)}px)`;
+      lvFlash.style.opacity = (flash * 0.85).toFixed(3);
+    };
+  }
+
+  function onSlide(s) {
+    const V = window.MV3D;
+    if (!V) return;
+    const which = s.dataset['3d'];
+    if (which === 'cover') {
+      stopTour();
+      V.set({ lightT: 1, xrayT: 0.6, stageT: V.FOCUS_Y, scanOsc: false, scanT: 0, tags: [], explodeT: 0, showAll: false });
+      V.setMode('transmitted');
+      V.mount(document.getElementById('cover3d'), { autoRotate: true, view: { pos: [72, 38, 82], target: [0, 21, 0] } });
+    } else if (which === 'how') {
+      V.set({ explodeT: exploded ? 1 : 0 });
+      setModeUI(mode);
+      V.mount(document.getElementById('how3d'), { autoRotate: false, view: { pos: [62, 38, 76], target: [0, 22, 0] } });
+      playTour();
+    } else { V.stop(); stopTour(); }
+  }
+
+  if (/\/lab\/[^/]+\/?$/.test(location.pathname)) { const b = document.getElementById('bLab'); if (b) b.hidden = false; }
+  function start() { hookLive(); const n = fromHash(); cur = -1; go(n, true); }
+  if (window.MV3D) start(); else { addEventListener('mv3d-ready', start, { once: true }); go(fromHash(), true); }
+})();
+</script>
+<script src="./app.js?v=7dae2f17"></script>
+
+</body>
+</html>
