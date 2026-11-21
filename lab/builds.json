@@ -233,6 +233,24 @@
       "image": "thumbs/microvision-ai.jpg",
       "wide": "thumbs/microvision-ai-wide.jpg",
       "href": "./microvision-ai/"
+    },
+    {
+      "slug": "streamlines",
+      "title": "One wake, three pictures",
+      "kind": "3D lesson",
+      "course": "transport",
+      "date": "2026-11-22",
+      "summary": "Streamlines, pathlines and streaklines behind a cylinder shedding vortices. Three photographs of one wake disagree; ride the camera along until they agree, and watch the dye curl where the vortices are already gone.",
+      "tags": [
+        "3D",
+        "Team build",
+        "Fluid mechanics"
+      ],
+      "status": "open",
+      "featured": false,
+      "image": "thumbs/streamlines.jpg",
+      "wide": "thumbs/streamlines-wide.jpg",
+      "href": "./streamlines/"
     }
   ]
 }
