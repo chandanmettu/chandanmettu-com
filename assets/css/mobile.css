@@ -25,6 +25,14 @@
 .kinetic-out[data-kinetic] { animation-duration: .12s; }
 .kinetic-in[data-kinetic] { animation-duration: .42s; }
 
+/* Headings broke words with hyphens ("be- / fore"); wrap whole words and balance the lines. */
+.panel h2, .profile-story h2, .collection-head h3, .athlete-proof-head h3 { hyphens: manual; -webkit-hyphens: manual; text-wrap: balance; }
+
+/* Educator has seven text cards, so the last one sat alone with two empty slots beside it. */
+@media (min-width: 681px) {
+  body[data-mode="educator"] .collection > .item:not(.certificate-loop):nth-last-child(2) { grid-column: 1 / -1; min-height: 0; }
+}
+
 @media (max-width: 850px) {
   /* The heading block had a 680px flex-basis inside a column, so it stood 680px tall
      with the title pushed to its bottom right. That was the big empty gap. */
@@ -32,7 +40,6 @@
   .collection-heading { display: block; flex: none; width: 100%; }
   .collection-heading p { margin-top: 10px; }
   .project-view-switch { align-self: flex-start; }
-  .panel h2, .profile-story h2 { hyphens: manual; -webkit-hyphens: manual; text-wrap: balance; }
 }
 
 @media (max-width: 680px) {

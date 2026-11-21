@@ -1620,7 +1620,7 @@ body[data-mode="builder"] .collection[data-project-view="icons"] .project-card {
 <link rel="stylesheet" href="assets/css/athlete-gallery.css?v=4">
 <link rel="stylesheet" href="assets/css/athlete-focus.css?v=6">
 <link rel="stylesheet" href="assets/css/certificate-loop.css?v=4">
-<link rel="stylesheet" href="assets/css/mobile.css?v=1">
+<link rel="stylesheet" href="assets/css/mobile.css?v=2">
 </head>
 <body data-mode="overview" data-preview-mode="overview">
 <a class="skip" href="#experience">Skip to the selected profile</a>
@@ -2389,7 +2389,9 @@ function stopAutoShowcase(){
   autoShowcaseStopped=true;cancelAutoShowcase();
 }
 function syncShowcaseViewport(){
-  const next=window.scrollY<Math.min(window.innerHeight*.52,520);
+  // Commit the previewed persona the moment scrolling starts, while the panel is still
+  // below the fold. Waiting until half a screen had scrolled swapped content mid-read.
+  const next=window.scrollY<48;
   if(next===showcaseInView)return;
   showcaseInView=next;
   if(!showcaseInView&&previewMode!==current&&!transitionLock){render(previewMode,false);modeHint.textContent=`${modes[previewMode].label} selected. Explore the story below.`;window.__lenis?.resize?.()}
